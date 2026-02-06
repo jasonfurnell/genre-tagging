@@ -1,0 +1,190 @@
+/* ── Reset & Base ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface-alt: #0f3460;
+    --accent: #e94560;
+    --accent-hover: #d6334e;
+    --text: #eee;
+    --text-muted: #999;
+    --tagged-bg: transparent;
+    --untagged-bg: rgba(233, 69, 96, 0.08);
+    --border: #2a2a4a;
+    --success: #4ecca3;
+    --radius: 6px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 0 1rem 2rem;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+header {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+}
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* ── Upload Area ─────────────────────────────────────────── */
+.upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    max-width: 600px;
+    margin: 0 auto 1rem;
+}
+.upload-area.dragover {
+    border-color: var(--accent);
+    background: rgba(233, 69, 96, 0.05);
+}
+.file-label {
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* ── Summary ─────────────────────────────────────────────── */
+.summary {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+.summary .sep { margin: 0 0.5rem; color: var(--text-muted); }
+.tagged-count { color: var(--success); }
+.untagged-count { color: var(--accent); }
+
+/* ── Toolbar ─────────────────────────────────────────────── */
+.toolbar {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn {
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: #fff;
+}
+.btn-primary { background: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--surface-alt); }
+.btn-secondary:hover { background: #124a80; }
+.btn-danger { background: #c0392b; }
+.btn-danger:hover { background: #a93226; }
+.btn-sm {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* ── Progress Bar ────────────────────────────────────────── */
+.progress-container {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+}
+
+/* ── AG Grid Container ───────────────────────────────────── */
+#track-grid {
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* Untagged row highlight (applied via rowClassRules) */
+.ag-row.untagged {
+    background-color: var(--untagged-bg) !important;
+}
+
+/* AG Grid flash override for green flash on updates */
+.ag-cell-data-changed {
+    background-color: rgba(78, 204, 163, 0.3) !important;
+}
+.ag-cell-data-changed-animation {
+    transition: background-color 0.6s ease;
+}
+
+/* ── Modal ────────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 560px;
+}
+.modal h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+.modal label {
+    display: block;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+.modal textarea,
+.modal input[type="number"] {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    resize: vertical;
+}
+.modal .hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+.modal .hint code {
+    background: var(--bg);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+}
+.modal-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    justify-content: flex-end;
+}
+
+/* ── Utility ─────────────────────────────────────────────── */
+.hidden { display: none !important; }
