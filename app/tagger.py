@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
     before_sleep=before_sleep_log(logger, logging.INFO),
 )
 def generate_genre_comment(client, title, artist, system_prompt, user_prompt_template,
-                           bpm="", key="", year=""):
+                           bpm="", key="", year="", model="gpt-4", provider="openai"):
     prompt = user_prompt_template.format(
         title=title,
         artist=artist,
@@ -20,8 +20,18 @@ def generate_genre_comment(client, title, artist, system_prompt, user_prompt_tem
         year=year,
     )
 
+    if provider == "anthropic":
+        response = client.messages.create(
+            model=model,
+            max_tokens=256,
+            system=system_prompt,
+            messages=[{"role": "user", "content": prompt.strip()}],
+        )
+        return response.content[0].text.strip()
+
+    # OpenAI (default)
     response = client.chat.completions.create(
-        model="gpt-4",
+        model=model,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt.strip()},

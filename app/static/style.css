@@ -112,6 +112,49 @@ header h1 {
     transition: width 0.3s ease;
 }
 
+/* ── Genre Chart ─────────────────────────────────────────── */
+.genre-chart {
+    max-width: 480px;
+    margin: 0 auto 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.genre-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+}
+.genre-bar-label {
+    width: 110px;
+    text-align: right;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.genre-bar-track {
+    flex: 1;
+    height: 14px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.genre-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    min-width: 2px;
+}
+.genre-bar-count {
+    width: 24px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
 /* ── AG Grid Container ───────────────────────────────────── */
 #track-grid {
     border-radius: var(--radius);
@@ -157,6 +200,7 @@ header h1 {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+.modal select,
 .modal textarea,
 .modal input[type="number"] {
     width: 100%;

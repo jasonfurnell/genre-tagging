@@ -20,6 +20,7 @@ DEFAULT_USER_PROMPT_TEMPLATE = (
 )
 
 DEFAULT_CONFIG = {
+    "model": "claude-sonnet-4-5-20250929",
     "system_prompt": DEFAULT_SYSTEM_PROMPT,
     "user_prompt_template": DEFAULT_USER_PROMPT_TEMPLATE,
     "delay_between_requests": 1.5,

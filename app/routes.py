@@ -1,5 +1,6 @@
 import io
 import json
+import logging
 import os
 import subprocess
 import threading
@@ -7,6 +8,7 @@ import time
 
 import pandas as pd
 from flask import Blueprint, request, jsonify, Response, send_file
+from anthropic import Anthropic
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -66,7 +68,13 @@ def _caffeinate_stop():
         _caffeinate_proc = None
 
 
-def _get_client():
+def _provider_for_model(model):
+    return "anthropic" if model.startswith("claude") else "openai"
+
+
+def _get_client(provider):
+    if provider == "anthropic":
+        return Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
     return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
@@ -171,7 +179,9 @@ def _tagging_worker():
 def _tagging_loop():
     df = _state["df"]
     config = load_config()
-    client = _get_client()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
     delay = config.get("delay_between_requests", 1.5)
 
     untagged = [(i, r) for i, r in df.iterrows()
@@ -194,11 +204,14 @@ def _tagging_loop():
                 bpm=str(row.get("bpm", "")),
                 key=str(row.get("key", "")),
                 year=str(row.get("year", "")),
+                model=model,
+                provider=provider,
             )
             df.at[idx, "comment"] = comment
             _autosave()
             status = "tagged"
         except Exception:
+            logging.exception("Tagging failed for track %s – %s", row["title"], row["artist"])
             status = "error"
 
         _broadcast({
@@ -277,7 +290,9 @@ def tag_single(track_id):
         return jsonify({"error": "Track not found"}), 404
 
     config = load_config()
-    client = _get_client()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
     row = df.loc[track_id]
 
     try:
@@ -290,6 +305,8 @@ def tag_single(track_id):
             bpm=str(row.get("bpm", "")),
             key=str(row.get("key", "")),
             year=str(row.get("year", "")),
+            model=model,
+            provider=provider,
         )
         df.at[track_id, "comment"] = comment
         return jsonify({"id": track_id, "comment": comment})

@@ -21,6 +21,10 @@ const gridDiv      = $("#track-grid");
 let tracks = [];
 let eventSource = null;
 let gridApi = null;
+let genreCounts = {};
+
+const genreChart = $("#genre-chart");
+const TOP_N_GENRES = 8;
 
 // ── AG Grid Setup ────────────────────────────────────────────
 
@@ -205,6 +209,9 @@ async function startTagging() {
     btnStop.classList.remove("hidden");
     progressCtr.classList.remove("hidden");
     progressBar.style.width = "0%";
+    genreCounts = {};
+    genreChart.innerHTML = "";
+    genreChart.classList.remove("hidden");
 
     eventSource = new EventSource("/api/tag/progress");
     eventSource.onmessage = (e) => {
@@ -223,6 +230,8 @@ async function startTagging() {
                 rowNode.setData({ ...rowNode.data, comment: msg.comment, status: msg.status });
                 gridApi.flashCells({ rowNodes: [rowNode], columns: ["comment"] });
             }
+            // Genre chart
+            if (msg.status === "tagged") updateGenreChart(msg.comment);
             // Progress bar
             const [done, total] = msg.progress.split("/").map(Number);
             progressBar.style.width = ((done / total) * 100) + "%";
@@ -247,6 +256,33 @@ function finishTagging() {
 async function stopTagging() {
     await fetch("/api/tag/stop", { method: "POST" });
     finishTagging();
+}
+
+function updateGenreChart(comment) {
+    if (!comment) return;
+    const parts = comment.split(";");
+    for (let i = 0; i < 2 && i < parts.length; i++) {
+        const genre = parts[i].trim();
+        if (genre) genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+    }
+    renderGenreChart();
+}
+
+function renderGenreChart() {
+    const sorted = Object.entries(genreCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, TOP_N_GENRES);
+    if (sorted.length === 0) return;
+    const max = sorted[0][1];
+    genreChart.innerHTML = sorted.map(([genre, count]) =>
+        `<div class="genre-bar-row">
+            <span class="genre-bar-label" title="${genre}">${genre}</span>
+            <div class="genre-bar-track">
+                <span class="genre-bar-fill" style="width:${(count / max) * 100}%"></span>
+            </div>
+            <span class="genre-bar-count">${count}</span>
+        </div>`
+    ).join("");
 }
 
 function refreshSummary() {
@@ -318,6 +354,7 @@ modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList
 async function openSettings() {
     const res = await fetch("/api/config");
     const cfg = await res.json();
+    $("#cfg-model").value = cfg.model || "claude-sonnet-4-5-20250929";
     $("#cfg-system-prompt").value = cfg.system_prompt || "";
     $("#cfg-user-prompt").value = cfg.user_prompt_template || "";
     $("#cfg-delay").value = cfg.delay_between_requests ?? 1.5;
@@ -326,6 +363,7 @@ async function openSettings() {
 
 async function saveSettings() {
     const body = {
+        model: $("#cfg-model").value,
         system_prompt: $("#cfg-system-prompt").value,
         user_prompt_template: $("#cfg-user-prompt").value,
         delay_between_requests: parseFloat($("#cfg-delay").value) || 1.5,
