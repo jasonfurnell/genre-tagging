@@ -195,7 +195,7 @@ def _tagging_loop():
             return
 
         try:
-            comment = generate_genre_comment(
+            comment, detected_year = generate_genre_comment(
                 client=client,
                 title=row["title"],
                 artist=row["artist"],
@@ -208,6 +208,8 @@ def _tagging_loop():
                 provider=provider,
             )
             df.at[idx, "comment"] = comment
+            if detected_year:
+                df.at[idx, "year"] = int(detected_year)
             _autosave()
             status = "tagged"
         except Exception:
@@ -220,6 +222,7 @@ def _tagging_loop():
             "title": row["title"],
             "artist": row["artist"],
             "comment": df.at[idx, "comment"] if status == "tagged" else "",
+            "year": int(df.at[idx, "year"]) if status == "tagged" else "",
             "status": status,
             "progress": f"{count}/{total_untagged}",
         })
@@ -296,7 +299,7 @@ def tag_single(track_id):
     row = df.loc[track_id]
 
     try:
-        comment = generate_genre_comment(
+        comment, detected_year = generate_genre_comment(
             client=client,
             title=row["title"],
             artist=row["artist"],
@@ -309,7 +312,11 @@ def tag_single(track_id):
             provider=provider,
         )
         df.at[track_id, "comment"] = comment
-        return jsonify({"id": track_id, "comment": comment})
+        result = {"id": track_id, "comment": comment}
+        if detected_year:
+            df.at[track_id, "year"] = int(detected_year)
+            result["year"] = int(detected_year)
+        return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

@@ -223,12 +223,17 @@ async function startTagging() {
             if (track) {
                 track.comment = msg.comment;
                 track.status = msg.status;
+                if (msg.year) track.year = msg.year;
             }
             // Update the AG Grid row
             const rowNode = gridApi.getRowNode(String(msg.id));
             if (rowNode) {
-                rowNode.setData({ ...rowNode.data, comment: msg.comment, status: msg.status });
-                gridApi.flashCells({ rowNodes: [rowNode], columns: ["comment"] });
+                const updates = { ...rowNode.data, comment: msg.comment, status: msg.status };
+                if (msg.year) updates.year = msg.year;
+                rowNode.setData(updates);
+                const flashCols = ["comment"];
+                if (msg.year) flashCols.push("year");
+                gridApi.flashCells({ rowNodes: [rowNode], columns: flashCols });
             }
             // Genre chart
             if (msg.status === "tagged") updateGenreChart(msg.comment);
@@ -306,9 +311,17 @@ async function retagTrack(id) {
         const data = await res.json();
         if (data.comment !== undefined) {
             const track = tracks.find((t) => t.id === id);
-            if (track) { track.comment = data.comment; track.status = "tagged"; }
-            rowNode.setData({ ...rowNode.data, comment: data.comment, status: "tagged", _spinning: false });
-            gridApi.flashCells({ rowNodes: [rowNode], columns: ["comment"] });
+            if (track) {
+                track.comment = data.comment;
+                track.status = "tagged";
+                if (data.year) track.year = data.year;
+            }
+            const updates = { ...rowNode.data, comment: data.comment, status: "tagged", _spinning: false };
+            if (data.year) updates.year = data.year;
+            rowNode.setData(updates);
+            const flashCols = ["comment"];
+            if (data.year) flashCols.push("year");
+            gridApi.flashCells({ rowNodes: [rowNode], columns: flashCols });
         }
     } catch (err) {
         alert("Re-tag failed: " + err.message);
