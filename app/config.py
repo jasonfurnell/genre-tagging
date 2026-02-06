@@ -6,12 +6,17 @@ CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.j
 DEFAULT_SYSTEM_PROMPT = "You are a music genre expert and DJ selector."
 
 DEFAULT_USER_PROMPT_TEMPLATE = (
-    'Describe the track for DJs in one line. Include decade and country if possible. '
-    'Use vivid club-friendly phrasing. Avoid repeating genre terms and keep the tone '
-    'colorful and stylish.\n'
-    'Format: <Main genre>; <production traits>; <scene/mood/era info>.\n\n'
+ 'Describe this track for DJs in one concise sentence (15–25 words). '
+    'Do not repeat the main genre name in the description fields. '
+    'Use vivid, club-friendly phrasing.\n'
+    'Format: Main genre; Sub genre; production traits; scene/mood/country; area of origin, era info.\n'
+    'Example: New Wave; Synth-pop; seductive synth, driving drum patterns, catchy guitar riffs; boundary-pushing 80s glam rock scene; UK, early 80s. '
+    'late-night Ibiza terrace, mid-2010s.\n\n'
     'Track title: "{title}"\n'
-    'Artist: {artist}'
+    'Artist: {artist}\n'
+    'BPM: {bpm}\n'
+    'Key: {key}\n'
+    'Year: {year}'
 )
 
 DEFAULT_CONFIG = {
