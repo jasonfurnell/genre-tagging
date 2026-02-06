@@ -1,6 +1,7 @@
 import io
 import json
 import os
+import subprocess
 import threading
 import time
 
@@ -26,6 +27,43 @@ _state = {
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
+
+_OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output")
+
+
+def _autosave():
+    """Write the current DataFrame to output/<original>_autosave.csv."""
+    try:
+        df = _state["df"]
+        if df is None:
+            return
+        os.makedirs(_OUTPUT_DIR, exist_ok=True)
+        original = _state.get("original_filename", "playlist.csv")
+        name = original.rsplit(".", 1)[0] + "_autosave.csv"
+        df.to_csv(os.path.join(_OUTPUT_DIR, name), index=False)
+    except Exception:
+        pass  # never let a save failure interrupt tagging
+
+
+_caffeinate_proc = None
+
+
+def _caffeinate_start():
+    """Prevent macOS idle sleep while tagging is running."""
+    global _caffeinate_proc
+    _caffeinate_stop()
+    try:
+        _caffeinate_proc = subprocess.Popen(["caffeinate", "-i"])
+    except Exception:
+        pass  # not on macOS or caffeinate unavailable
+
+
+def _caffeinate_stop():
+    """Allow macOS to sleep again."""
+    global _caffeinate_proc
+    if _caffeinate_proc is not None:
+        _caffeinate_proc.terminate()
+        _caffeinate_proc = None
 
 
 def _get_client():
@@ -123,6 +161,14 @@ def tag_all():
 
 
 def _tagging_worker():
+    _caffeinate_start()
+    try:
+        _tagging_loop()
+    finally:
+        _caffeinate_stop()
+
+
+def _tagging_loop():
     df = _state["df"]
     config = load_config()
     client = _get_client()
@@ -134,6 +180,7 @@ def _tagging_worker():
     total_untagged = len(untagged)
     for count, (idx, row) in enumerate(untagged, 1):
         if _state["stop_flag"].is_set():
+            _autosave()
             _broadcast({"event": "stopped"})
             return
 
@@ -149,6 +196,7 @@ def _tagging_worker():
                 year=str(row.get("year", "")),
             )
             df.at[idx, "comment"] = comment
+            _autosave()
             status = "tagged"
         except Exception:
             status = "error"
@@ -166,6 +214,7 @@ def _tagging_worker():
         if count < total_untagged and not _state["stop_flag"].is_set():
             time.sleep(delay)
 
+    _autosave()
     _broadcast({"event": "done"})
 
 
