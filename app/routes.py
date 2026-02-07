@@ -697,6 +697,59 @@ def workshop_create_playlist():
     return jsonify({"playlist": playlist}), 201
 
 
+@api.route("/api/workshop/playlists/smart-create", methods=["POST"])
+def workshop_smart_create_playlist():
+    """Create a playlist using scored search + LLM reranking for curation."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    data = request.get_json()
+    name = data.get("name", "Untitled Playlist")
+    description = data.get("description", "")
+    filters = data.get("filters")
+    target_count = data.get("target_count", 25)
+
+    if not filters:
+        return jsonify({"error": "Filters are required for smart create"}), 400
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+
+    # Step 1: Scored search to find candidates
+    scored_results = scored_search(df, filters, min_score=0.1, max_results=80)
+
+    if not scored_results:
+        # Fallback: create empty playlist
+        playlist = create_playlist(name, description, filters, [], "llm")
+        return jsonify({"playlist": playlist, "method": "empty"}), 201
+
+    # Step 2: Build candidate track data for LLM
+    candidate_ids = [r[0] for r in scored_results]
+    candidates = _tracks_from_ids(df, candidate_ids)
+
+    # Step 3: LLM reranking
+    try:
+        result = rerank_tracks(
+            candidates, name, description,
+            client, model, provider, target_count
+        )
+        reranked_ids = [t["id"] for t in result["tracks"]]
+        # Filter to only valid IDs that exist in df
+        valid_ids = [tid for tid in reranked_ids if tid in df.index]
+        method = "smart"
+    except Exception:
+        logging.exception("LLM reranking failed during smart create, falling back to scored results")
+        # Fallback: use top scored results
+        valid_ids = [int(r[0]) for r in scored_results[:target_count]]
+        method = "scored_fallback"
+
+    playlist = create_playlist(name, description, filters, valid_ids, "llm")
+    return jsonify({"playlist": playlist, "method": method}), 201
+
+
 @api.route("/api/workshop/playlists/<playlist_id>")
 def workshop_get_playlist(playlist_id):
     p = get_playlist(playlist_id)

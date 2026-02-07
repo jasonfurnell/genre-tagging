@@ -94,5 +94,121 @@
     "source": "llm",
     "created_at": "2026-02-07T02:12:27.687052+00:00",
     "updated_at": "2026-02-07T02:12:27.687073+00:00"
+  },
+  "b339e23f": {
+    "id": "b339e23f",
+    "name": "Sophisticated Soul: 70s Lounge Luxe",
+    "description": "Lush, orchestrated soul, funk, and bossa nova from the 1970s. Perfect for sophisticated late-night lounging with strings and sultry vibes.",
+    "filters": {
+      "descriptors": [
+        "lush orchestral strings",
+        "lush strings",
+        "lush string arrangements",
+        "lush orchestration",
+        "sultry vocals"
+      ],
+      "era": [
+        "early 70s",
+        "mid-70s",
+        "late 70s",
+        "early 1970s"
+      ],
+      "genres": [
+        "Soul",
+        "Funk",
+        "Bossa Nova",
+        "Jazz-Funk",
+        "Psychedelic Soul"
+      ],
+      "mood": [
+        "sophisticated late-night lounge atmosphere",
+        "sophisticated brazilian lounge atmosphere"
+      ]
+    },
+    "track_ids": [
+      1935,
+      2121,
+      2185,
+      1933,
+      2175,
+      2164,
+      2092,
+      3194,
+      205,
+      213,
+      2174,
+      2039,
+      2088,
+      1370,
+      2491,
+      2025,
+      2096,
+      2101,
+      2188,
+      2476,
+      2000,
+      2180,
+      2384,
+      1332,
+      5999
+    ],
+    "source": "llm",
+    "created_at": "2026-02-07T02:21:16.778436+00:00",
+    "updated_at": "2026-02-07T02:21:16.778476+00:00"
+  },
+  "a25f0829": {
+    "id": "a25f0829",
+    "name": "Soundsystem Meditation",
+    "description": "Deep, bass-heavy dub-influenced reggae and dancehall for late-night sessions. Hypnotic, stripped-back productions built for proper sound systems.",
+    "filters": {
+      "bpm_max": 95,
+      "bpm_min": 65,
+      "descriptors": [
+        "hypnotic bassline",
+        "hypnotic loops",
+        "pulsing bassline",
+        "stripped-back groove",
+        "rolling bassline"
+      ],
+      "genres": [
+        "Dancehall",
+        "Reggae",
+        "Dub"
+      ],
+      "mood": [
+        "meditative soundsystem culture",
+        "cerebral after-hours introspection"
+      ]
+    },
+    "track_ids": [
+      766,
+      5031,
+      2728,
+      2724,
+      4018,
+      2298,
+      4230,
+      1240,
+      2792,
+      2506,
+      788,
+      5229,
+      846,
+      775,
+      7,
+      1026,
+      787,
+      605,
+      4068,
+      2731,
+      2238,
+      239,
+      2727,
+      2268,
+      2739
+    ],
+    "source": "llm",
+    "created_at": "2026-02-07T02:24:10.634694+00:00",
+    "updated_at": "2026-02-07T02:24:10.634740+00:00"
   }
 }

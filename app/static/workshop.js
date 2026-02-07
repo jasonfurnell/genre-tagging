@@ -308,22 +308,23 @@ function renderSuggestions(suggestions) {
         </div>
     `).join("");
 
-    // Wire Save All button
+    // Wire Save All button (uses smart-create for each playlist)
     document.getElementById("ws-btn-save-all").addEventListener("click", async () => {
         const btn = document.getElementById("ws-btn-save-all");
         btn.disabled = true;
-        btn.textContent = "Saving...";
         let created = 0;
-        for (const s of suggestions) {
+        for (let i = 0; i < suggestions.length; i++) {
+            const s = suggestions[i];
+            btn.textContent = `Creating ${i + 1}/${suggestions.length}...`;
             try {
-                await fetch("/api/workshop/playlists", {
+                await fetch("/api/workshop/playlists/smart-create", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         name: s.name,
                         description: s.description,
                         filters: s.filters,
-                        source: "llm",
+                        target_count: 25,
                     }),
                 });
                 created++;
@@ -339,7 +340,12 @@ function renderSuggestions(suggestions) {
     list.querySelectorAll("[data-action=create]").forEach(btn => {
         btn.addEventListener("click", () => {
             const s = suggestions[parseInt(btn.dataset.idx)];
-            createPlaylistFromSuggestion(s);
+            btn.disabled = true;
+            btn.textContent = "Creating...";
+            createPlaylistFromSuggestion(s).finally(() => {
+                btn.disabled = false;
+                btn.textContent = "Create Playlist";
+            });
         });
     });
     list.querySelectorAll("[data-action=search]").forEach(btn => {
@@ -352,16 +358,20 @@ function renderSuggestions(suggestions) {
 
 async function createPlaylistFromSuggestion(suggestion) {
     try {
-        const res = await fetch("/api/workshop/playlists", {
+        const res = await fetch("/api/workshop/playlists/smart-create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 name: suggestion.name,
                 description: suggestion.description,
                 filters: suggestion.filters,
-                source: "llm",
+                target_count: 25,
             }),
         });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Failed to create playlist");
+        }
         const data = await res.json();
         await loadPlaylists();
         selectPlaylist(data.playlist.id);
