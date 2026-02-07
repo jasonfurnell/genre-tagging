@@ -362,7 +362,33 @@ header h1 {
     padding: 2px 6px;
 }
 
+/* ── Vibe Input ────────────────────────────────────────── */
+.ws-vibe-input {
+    margin-bottom: 0.75rem;
+}
+.ws-vibe-input label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+.ws-vibe-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.ws-vibe-field {
+    flex: 1;
+    max-width: 600px;
+}
+
 /* ── Suggestion Cards ───────────────────────────────────── */
+.ws-suggestions-toolbar {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
 .ws-suggestions-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -419,6 +445,26 @@ header h1 {
 .ws-suggestion-actions {
     display: flex;
     gap: 0.4rem;
+}
+
+/* ── Heatmap Popover ────────────────────────────────────── */
+.ws-heatmap-popover {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.75rem;
+    z-index: 200;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.ws-heatmap-popover p {
+    font-size: 0.8rem;
+    margin: 0;
+}
+.ws-heatmap-popover .btn {
+    width: 100%;
 }
 
 /* ── Faceted Search ─────────────────────────────────────── */
@@ -496,6 +542,23 @@ header h1 {
 /* ── Search Results Table ───────────────────────────────── */
 .ws-results-toolbar {
     margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.ws-seed-col {
+    width: 28px;
+    min-width: 28px;
+    max-width: 28px;
+    text-align: center !important;
+    padding: 0.3rem 0 !important;
+}
+.ws-seed-cb {
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+tr.ws-seed-selected {
+    background: rgba(233, 69, 96, 0.08) !important;
 }
 .ws-results-table,
 .ws-pl-tracks {
@@ -691,4 +754,60 @@ header h1 {
     .ws-filter-group.ws-filter-wide {
         max-width: 100%;
     }
+}
+
+/* ── Score Badges ──────────────────────────────────────── */
+.ws-score {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.ws-score-high {
+    background: rgba(78, 204, 163, 0.25);
+    color: var(--success);
+}
+.ws-score-mid {
+    background: rgba(233, 178, 69, 0.2);
+    color: #e9b245;
+}
+.ws-score-low {
+    background: rgba(233, 69, 96, 0.15);
+    color: var(--text-muted);
+}
+.ws-score-cell {
+    width: 50px;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* ── LLM Reranking ────────────────────────────────────── */
+.ws-rerank-notes {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    background: rgba(78, 204, 163, 0.05);
+    border-left: 3px solid var(--success);
+    border-radius: 0 var(--radius) var(--radius) 0;
+}
+.ws-reason-cell {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.35;
+    max-width: 250px !important;
+    min-width: 120px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.ws-flow-notes {
+    font-size: 0.75rem;
+    color: var(--success);
+    cursor: help;
+    text-decoration: underline dotted;
+    margin-left: 0.5rem;
 }

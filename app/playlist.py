@@ -141,13 +141,7 @@ _SUGGEST_SYSTEM_PROMPT = (
     "additional text before or after the JSON."
 )
 
-_SUGGEST_USER_TEMPLATE = """Here is a summary of my music collection:
-
-{landscape}
-
-Suggest {num} themed playlists that would make great DJ sets or listening experiences from this collection. Each playlist should have a cohesive theme based on interesting genre intersections, mood/era combinations, or geographic scenes — NOT just a single broad genre.
-
-For each playlist, specify search filters using these available fields:
+_FILTER_FIELDS_HELP = """For each playlist, specify search filters using these available fields:
 - genres: list of genre names to match (matches against both primary and secondary genre)
 - mood: list of mood/atmosphere keywords to search for in the mood field
 - descriptors: list of production descriptor keywords to search in the descriptors field
@@ -160,7 +154,15 @@ Respond with a JSON array of objects, each with:
 - name: catchy, evocative playlist name (max 40 chars)
 - description: 1-2 sentence description of the vibe
 - filters: search filter object using the fields above
-- rationale: 1 sentence explaining why this grouping works with this collection
+- rationale: 1 sentence explaining why this grouping works"""
+
+_SUGGEST_USER_TEMPLATE = """Here is a summary of my music collection:
+
+{landscape}
+
+Suggest {num} themed playlists that would make great DJ sets or listening experiences from this collection. Each playlist should have a cohesive theme based on interesting genre intersections, mood/era combinations, or geographic scenes — NOT just a single broad genre.
+
+""" + _FILTER_FIELDS_HELP + """
 
 Focus on creating diverse, interesting combinations:
 - Cross-genre connections (e.g. where Funk meets Electronic)
@@ -168,6 +170,42 @@ Focus on creating diverse, interesting combinations:
 - Mood-based curation (e.g. "late-night deep grooves")
 - Geographic scenes (e.g. "UK bass culture")
 Avoid obvious single-genre lists like "All House tracks"."""
+
+# --- Vibe text mode ---
+_VIBE_USER_TEMPLATE = """Here is a summary of my music collection:
+
+{landscape}
+
+A user wants a playlist with this vibe/feel:
+"{vibe_text}"
+
+Create {num} playlist definitions that capture this vibe using tracks from the collection described above. Be creative in interpreting the vibe — think about what genres, moods, tempos, locations, and eras would match.
+
+""" + _FILTER_FIELDS_HELP
+
+# --- Seed tracks mode ---
+_SEED_USER_TEMPLATE = """Here is a summary of my music collection:
+
+{landscape}
+
+A user selected these tracks as "seed" inspiration for a playlist:
+{seed_details}
+
+Analyze the common threads across these seed tracks (genres, mood, tempo range, era, geography) and create {num} playlist definitions that expand on this selection. Each playlist should find MORE tracks like these but with a slightly different angle or twist.
+
+""" + _FILTER_FIELDS_HELP
+
+# --- Genre intersection mode ---
+_INTERSECTION_USER_TEMPLATE = """Here is a summary of my music collection:
+
+{landscape}
+
+A user is interested in the intersection of these genres: {genre1} + {genre2}
+There are approximately {intersection_count} tracks in the collection that combine these genres.
+
+Create {num} playlist definitions that explore different facets of this genre intersection. Think about different moods, eras, tempos, or regional variations within this intersection.
+
+""" + _FILTER_FIELDS_HELP
 
 
 def _extract_json_array(text):
@@ -180,43 +218,29 @@ def _extract_json_array(text):
     return json.loads(text)
 
 
-@retry(
-    wait=wait_fixed(3),
-    stop=stop_after_attempt(3),
-    retry=retry_if_exception_type(Exception),
-)
-def generate_playlist_suggestions(landscape_summary, client, model, provider,
-                                  num_suggestions=6):
-    """Ask an LLM to propose themed playlist definitions.
-
-    Returns a list of dicts with keys: name, description, filters, rationale.
-    """
-    user_prompt = _SUGGEST_USER_TEMPLATE.format(
-        landscape=landscape_summary,
-        num=num_suggestions,
-    )
-
+def _call_llm(client, model, provider, system_prompt, user_prompt):
+    """Make an LLM call and return the raw text response."""
     if provider == "anthropic":
         response = client.messages.create(
             model=model,
             max_tokens=4096,
-            system=_SUGGEST_SYSTEM_PROMPT,
+            system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
         )
-        raw = response.content[0].text.strip()
+        return response.content[0].text.strip()
     else:
         response = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": _SUGGEST_SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
         )
-        raw = response.choices[0].message.content.strip()
+        return response.choices[0].message.content.strip()
 
-    suggestions = _extract_json_array(raw)
 
-    # Validate structure
+def _validate_suggestions(suggestions):
+    """Validate and normalize a list of suggestion dicts."""
     validated = []
     for s in suggestions:
         validated.append({
@@ -228,12 +252,179 @@ def generate_playlist_suggestions(landscape_summary, client, model, provider,
     return validated
 
 
+@retry(
+    wait=wait_fixed(3),
+    stop=stop_after_attempt(3),
+    retry=retry_if_exception_type(Exception),
+)
+def generate_playlist_suggestions(landscape_summary, client, model, provider,
+                                  num_suggestions=6):
+    """Ask an LLM to propose themed playlist definitions (explore mode).
+
+    Returns a list of dicts with keys: name, description, filters, rationale.
+    """
+    user_prompt = _SUGGEST_USER_TEMPLATE.format(
+        landscape=landscape_summary,
+        num=num_suggestions,
+    )
+    raw = _call_llm(client, model, provider, _SUGGEST_SYSTEM_PROMPT, user_prompt)
+    return _validate_suggestions(_extract_json_array(raw))
+
+
+@retry(
+    wait=wait_fixed(3),
+    stop=stop_after_attempt(3),
+    retry=retry_if_exception_type(Exception),
+)
+def generate_vibe_suggestions(landscape_summary, vibe_text, client, model,
+                              provider, num_suggestions=3):
+    """Generate playlists from a free-text vibe description."""
+    user_prompt = _VIBE_USER_TEMPLATE.format(
+        landscape=landscape_summary,
+        vibe_text=vibe_text,
+        num=num_suggestions,
+    )
+    raw = _call_llm(client, model, provider, _SUGGEST_SYSTEM_PROMPT, user_prompt)
+    return _validate_suggestions(_extract_json_array(raw))
+
+
+@retry(
+    wait=wait_fixed(3),
+    stop=stop_after_attempt(3),
+    retry=retry_if_exception_type(Exception),
+)
+def generate_seed_suggestions(landscape_summary, seed_details, client, model,
+                              provider, num_suggestions=3):
+    """Generate playlists inspired by a set of seed tracks."""
+    user_prompt = _SEED_USER_TEMPLATE.format(
+        landscape=landscape_summary,
+        seed_details=seed_details,
+        num=num_suggestions,
+    )
+    raw = _call_llm(client, model, provider, _SUGGEST_SYSTEM_PROMPT, user_prompt)
+    return _validate_suggestions(_extract_json_array(raw))
+
+
+@retry(
+    wait=wait_fixed(3),
+    stop=stop_after_attempt(3),
+    retry=retry_if_exception_type(Exception),
+)
+def generate_intersection_suggestions(landscape_summary, genre1, genre2,
+                                      intersection_count, client, model,
+                                      provider, num_suggestions=3):
+    """Generate playlists exploring a specific genre intersection."""
+    user_prompt = _INTERSECTION_USER_TEMPLATE.format(
+        landscape=landscape_summary,
+        genre1=genre1,
+        genre2=genre2,
+        intersection_count=intersection_count,
+        num=num_suggestions,
+    )
+    raw = _call_llm(client, model, provider, _SUGGEST_SYSTEM_PROMPT, user_prompt)
+    return _validate_suggestions(_extract_json_array(raw))
+
+
+# ---------------------------------------------------------------------------
+# LLM track reranking
+# ---------------------------------------------------------------------------
+
+_RERANK_SYSTEM_PROMPT = (
+    "You are a professional DJ and music curator. You select and rank tracks "
+    "to build the perfect playlist flow. You consider energy, mood, genre "
+    "compatibility, BPM flow, and overall vibe coherence.\n\n"
+    "You must respond with valid JSON only. No markdown, no code fences, no "
+    "additional text before or after the JSON."
+)
+
+_RERANK_USER_TEMPLATE = """I'm building a playlist called "{playlist_name}".
+{description}
+
+Here are candidate tracks from my collection (sorted by relevance score). For each track I'm showing: ID, Artist, Title, BPM, Key, and the full Comment tag.
+
+{track_list}
+
+From these {candidate_count} candidates, select the best {target_count} tracks for this playlist. Consider:
+1. How well each track fits the playlist theme/vibe
+2. Genre cohesion (tracks should feel like they belong together)
+3. Energy and mood flow (if BPM/key info is available, consider mixing compatibility)
+4. Variety within the theme (avoid too many tracks from the same artist or identical style)
+
+Respond with a JSON object:
+{{
+  "tracks": [
+    {{"id": <track_id>, "reason": "1-sentence reason for inclusion"}}
+  ],
+  "flow_notes": "Brief description of how you ordered these tracks"
+}}
+
+Order the tracks array in your recommended playback order."""
+
+
+@retry(
+    wait=wait_fixed(3),
+    stop=stop_after_attempt(3),
+    retry=retry_if_exception_type(Exception),
+)
+def rerank_tracks(candidate_tracks, playlist_name, description,
+                  client, model, provider, target_count=25):
+    """Ask an LLM to pick and rank the best tracks from scored candidates.
+
+    candidate_tracks: list of dicts with id, artist, title, bpm, key, comment
+    Returns dict with keys: tracks (list of {id, reason}), flow_notes (str)
+    """
+    track_lines = []
+    for t in candidate_tracks:
+        bpm_str = f"BPM:{t.get('bpm', '?')}" if t.get('bpm') else ""
+        key_str = f"Key:{t.get('key', '?')}" if t.get('key') else ""
+        comment = str(t.get('comment', ''))[:200]
+        line = (
+            f"  ID:{t['id']} | {t.get('artist', '?')} — {t.get('title', '?')} "
+            f"| {bpm_str} {key_str} | Comment: {comment}"
+        )
+        track_lines.append(line)
+
+    user_prompt = _RERANK_USER_TEMPLATE.format(
+        playlist_name=playlist_name,
+        description=description or "",
+        track_list="\n".join(track_lines),
+        candidate_count=len(candidate_tracks),
+        target_count=target_count,
+    )
+
+    raw = _call_llm(client, model, provider, _RERANK_SYSTEM_PROMPT, user_prompt)
+    # Strip markdown fences if present, then parse as JSON object
+    cleaned = re.sub(r"^```(?:json)?\s*\n?", "", raw.strip())
+    cleaned = re.sub(r"\n?```\s*$", "", cleaned).strip()
+    result = json.loads(cleaned)
+
+    if isinstance(result, list):
+        result = {"tracks": result, "flow_notes": ""}
+
+    validated_tracks = []
+    for t in result.get("tracks", []):
+        if "id" in t:
+            validated_tracks.append({
+                "id": t["id"],
+                "reason": str(t.get("reason", "")),
+            })
+
+    return {
+        "tracks": validated_tracks,
+        "flow_notes": str(result.get("flow_notes", "")),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Export
 # ---------------------------------------------------------------------------
 
 def export_m3u(playlist_id, df):
-    """Generate M3U content for a playlist. Returns string."""
+    """Generate extended M3U8 content for a playlist (UTF-8, Lexicon compatible).
+
+    Returns string with #EXTM3U header, #PLAYLIST tag, and #EXTINF entries.
+    Lexicon DJ can import this by dragging the .m3u8 file onto its playlists panel.
+    """
     p = _playlists.get(playlist_id)
     if not p:
         return None

@@ -17,12 +17,14 @@ from app.config import load_config, save_config, DEFAULT_CONFIG
 from app.parser import (
     parse_all_comments, invalidate_parsed_columns,
     build_genre_cooccurrence, build_genre_landscape_summary,
-    build_facet_options, faceted_search,
+    build_facet_options, faceted_search, scored_search,
 )
 from app.playlist import (
     create_playlist, get_playlist, list_playlists, update_playlist,
     delete_playlist, add_tracks_to_playlist, remove_tracks_from_playlist,
-    generate_playlist_suggestions, export_m3u, export_csv,
+    generate_playlist_suggestions, generate_vibe_suggestions,
+    generate_seed_suggestions, generate_intersection_suggestions,
+    rerank_tracks, export_m3u, export_csv,
 )
 
 api = Blueprint("api", __name__)
@@ -495,6 +497,91 @@ def workshop_search():
 
 
 # ---------------------------------------------------------------------------
+# POST /api/workshop/scored-search
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/scored-search", methods=["POST"])
+def workshop_scored_search():
+    """Search tracks with relevance scoring instead of hard AND."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    filters = body.get("filters", {})
+    min_score = body.get("min_score", 0.15)
+    max_results = body.get("max_results", 200)
+
+    scored_results = scored_search(df, filters, min_score=min_score,
+                                   max_results=max_results)
+
+    tracks = []
+    for idx, score, matched_facets in scored_results:
+        if idx not in df.index:
+            continue
+        row = df.loc[idx]
+        track = {"id": int(idx), "score": score, "matched": matched_facets}
+        for col in df.columns:
+            if not col.startswith("_"):
+                track[col] = _safe_val(row[col])
+        tracks.append(track)
+
+    return jsonify({
+        "count": len(tracks),
+        "tracks": tracks,
+        "track_ids": [t["id"] for t in tracks],
+    })
+
+
+# ---------------------------------------------------------------------------
+# POST /api/workshop/rerank
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/rerank", methods=["POST"])
+def workshop_rerank():
+    """LLM reranking of candidate tracks for a playlist."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+
+    body = request.get_json() or {}
+    candidate_tracks = body.get("tracks", [])
+    playlist_name = body.get("playlist_name", "Untitled")
+    description = body.get("description", "")
+    target_count = body.get("target_count", 25)
+
+    if not candidate_tracks:
+        return jsonify({"error": "No candidate tracks provided"}), 400
+
+    try:
+        result = rerank_tracks(
+            candidate_tracks, playlist_name, description,
+            client, model, provider, target_count
+        )
+
+        # Enrich reranked tracks with full track data
+        reranked_ids = [t["id"] for t in result["tracks"]]
+        reason_map = {t["id"]: t["reason"] for t in result["tracks"]}
+        enriched_tracks = _tracks_from_ids(df, reranked_ids)
+
+        for t in enriched_tracks:
+            t["reason"] = reason_map.get(t["id"], "")
+
+        return jsonify({
+            "tracks": enriched_tracks,
+            "track_ids": reranked_ids,
+            "flow_notes": result["flow_notes"],
+            "count": len(enriched_tracks),
+        })
+    except Exception as e:
+        logging.exception("LLM reranking failed")
+        return jsonify({"error": str(e)}), 500
+
+
+# ---------------------------------------------------------------------------
 # POST /api/workshop/suggest
 # ---------------------------------------------------------------------------
 @api.route("/api/workshop/suggest", methods=["POST"])
@@ -512,24 +599,67 @@ def workshop_suggest():
     landscape = analysis["landscape_summary"]
 
     body = request.get_json() or {}
-    num = body.get("num_suggestions", 6)
+    mode = body.get("mode", "explore")
+    num = body.get("num_suggestions", 6 if mode == "explore" else 3)
 
     try:
-        suggestions = generate_playlist_suggestions(
-            landscape, client, model, provider, num
-        )
+        if mode == "vibe":
+            vibe_text = body.get("vibe_text", "")
+            if not vibe_text.strip():
+                return jsonify({"error": "vibe_text is required for vibe mode"}), 400
+            suggestions = generate_vibe_suggestions(
+                landscape, vibe_text, client, model, provider, num
+            )
+        elif mode == "seed":
+            seed_ids = body.get("seed_track_ids", [])
+            if not seed_ids:
+                return jsonify({"error": "seed_track_ids is required for seed mode"}), 400
+            seed_tracks = _tracks_from_ids(df, seed_ids)
+            seed_details = "\n".join(
+                f"- {t.get('artist', '?')} — {t.get('title', '?')} "
+                f"(BPM: {t.get('bpm', '?')}, Key: {t.get('key', '?')}, "
+                f"Comment: {t.get('comment', '')})"
+                for t in seed_tracks
+            )
+            suggestions = generate_seed_suggestions(
+                landscape, seed_details, client, model, provider, num
+            )
+        elif mode == "intersection":
+            genre1 = body.get("genre1", "")
+            genre2 = body.get("genre2", "")
+            if not genre1 or not genre2:
+                return jsonify({"error": "genre1 and genre2 required for intersection mode"}), 400
+            # Count intersection tracks
+            intersection_ids = faceted_search(df, {"genres": [genre1, genre2]})
+            suggestions = generate_intersection_suggestions(
+                landscape, genre1, genre2, len(intersection_ids),
+                client, model, provider, num
+            )
+        else:
+            # Default: explore mode
+            suggestions = generate_playlist_suggestions(
+                landscape, client, model, provider, num
+            )
     except Exception as e:
         logging.exception("Playlist suggestion generation failed")
         return jsonify({"error": str(e)}), 500
 
-    # Enrich each suggestion with track count and samples
+    # Enrich each suggestion with track count and samples (using scored search)
     for s in suggestions:
         try:
-            matching = faceted_search(df, s["filters"])
-            s["track_count"] = len(matching)
-            samples = _tracks_from_ids(df, matching[:5])
+            scored_results = scored_search(df, s["filters"], min_score=0.1,
+                                           max_results=100)
+            s["track_count"] = len(scored_results)
+            sample_ids = [r[0] for r in scored_results[:5]]
+            samples = _tracks_from_ids(df, sample_ids)
+            score_map = {r[0]: r[1] for r in scored_results[:5]}
             s["sample_tracks"] = [
-                {"id": t["id"], "title": t.get("title", ""), "artist": t.get("artist", "")}
+                {
+                    "id": t["id"],
+                    "title": t.get("title", ""),
+                    "artist": t.get("artist", ""),
+                    "score": score_map.get(t["id"], 0),
+                }
                 for t in samples
             ]
         except Exception:
@@ -620,6 +750,7 @@ def workshop_remove_tracks(playlist_id):
 
 @api.route("/api/workshop/playlists/<playlist_id>/export/m3u")
 def workshop_export_m3u(playlist_id):
+    """Export playlist as .m3u8 (UTF-8 M3U, Lexicon-compatible)."""
     df = _state["df"]
     if df is None:
         return jsonify({"error": "No file uploaded"}), 400
@@ -633,7 +764,7 @@ def workshop_export_m3u(playlist_id):
 
     buf = io.BytesIO(content.encode("utf-8"))
     return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
-                     download_name=f"{name}.m3u")
+                     download_name=f"{name}.m3u8")
 
 
 @api.route("/api/workshop/playlists/<playlist_id>/export/csv")

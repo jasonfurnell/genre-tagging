@@ -205,6 +205,26 @@ def build_genre_landscape_summary(df):
     eras = df["_era"][df["_era"] != ""]
     era_counts = Counter(eras).most_common(20)
 
+    # Mood keyword distribution
+    mood_terms = Counter()
+    for mood_val in df["_mood"][df["_mood"] != ""]:
+        tokens = re.split(r"[,/&]+|\band\b", str(mood_val))
+        for token in tokens:
+            t = token.strip().lower()
+            if t and len(t) > 2:
+                mood_terms[t] += 1
+    top_moods = mood_terms.most_common(30)
+
+    # Descriptor keyword distribution
+    desc_terms = Counter()
+    for desc_val in df["_descriptors"][df["_descriptors"] != ""]:
+        tokens = re.split(r"[,/&]+|\band\b", str(desc_val))
+        for token in tokens:
+            t = token.strip().lower()
+            if t and len(t) > 2:
+                desc_terms[t] += 1
+    top_descriptors = desc_terms.most_common(30)
+
     lines = [
         f"Collection: {total} tracks.",
         "",
@@ -227,6 +247,16 @@ def build_genre_landscape_summary(df):
     lines.append("Top eras:")
     for era, c in era_counts:
         lines.append(f"  {era}: {c}")
+
+    lines.append("")
+    lines.append("Top mood/atmosphere keywords (use these exact terms in mood filters):")
+    for term, c in top_moods:
+        lines.append(f"  {term}: {c}")
+
+    lines.append("")
+    lines.append("Top production descriptor keywords (use these exact terms in descriptor filters):")
+    for term, c in top_descriptors:
+        lines.append(f"  {term}: {c}")
 
     return "\n".join(lines)
 
@@ -343,3 +373,155 @@ def faceted_search(df, filters):
         mask &= text_mask
 
     return df.index[mask].tolist()
+
+
+# ---------------------------------------------------------------------------
+# Scored / ranked search
+# ---------------------------------------------------------------------------
+
+def scored_search(df, filters, min_score=0.0, max_results=200):
+    """Score tracks against faceted filters with weighted relevance.
+
+    Each facet match contributes points. Tracks are ranked by total score.
+    Returns list of (row_index, score, matched_facets_dict) sorted by score desc.
+    Score is normalized to 0-1.
+    """
+    if "_genre1" not in df.columns:
+        parse_all_comments(df)
+
+    genres = filters.get("genres")
+    mood_kw = filters.get("mood")
+    desc_kw = filters.get("descriptors")
+    locations = filters.get("location")
+    eras = filters.get("era")
+    bpm_min = filters.get("bpm_min")
+    bpm_max = filters.get("bpm_max")
+    year_min = filters.get("year_min")
+    year_max = filters.get("year_max")
+
+    # Normalize keyword lists
+    if mood_kw and isinstance(mood_kw, str):
+        mood_kw = [k.strip() for k in mood_kw.split(",") if k.strip()]
+    if desc_kw and isinstance(desc_kw, str):
+        desc_kw = [k.strip() for k in desc_kw.split(",") if k.strip()]
+
+    # Calculate max possible score
+    max_possible = 0.0
+    if genres:
+        max_possible += 3.0 * len(genres)
+    if mood_kw:
+        max_possible += 1.5 * len(mood_kw)
+    if desc_kw:
+        max_possible += 1.5 * len(desc_kw)
+    if locations:
+        max_possible += 2.0 * len(locations)
+    if eras:
+        max_possible += 1.5 * len(eras)
+    if bpm_min is not None or bpm_max is not None:
+        max_possible += 2.0
+    if year_min is not None or year_max is not None:
+        max_possible += 1.0
+
+    if max_possible == 0:
+        return []
+
+    results = []
+
+    for idx, row in df.iterrows():
+        score = 0.0
+        matched = {}
+
+        # Genre scoring (3pts per match)
+        if genres:
+            g1 = str(row["_genre1"]).lower()
+            g2 = str(row["_genre2"]).lower()
+            genre_matches = []
+            for g in genres:
+                gl = g.lower()
+                if gl == g1 or gl == g2:
+                    score += 3.0
+                    genre_matches.append(g)
+            if genre_matches:
+                matched["genres"] = genre_matches
+
+        # Mood keyword scoring (1.5pts per match)
+        if mood_kw:
+            mood_val = str(row["_mood"]).lower()
+            mood_matches = []
+            for kw in mood_kw:
+                if kw.lower() in mood_val:
+                    score += 1.5
+                    mood_matches.append(kw)
+            if mood_matches:
+                matched["mood"] = mood_matches
+
+        # Descriptor keyword scoring (1.5pts per match)
+        if desc_kw:
+            desc_val = str(row["_descriptors"]).lower()
+            desc_matches = []
+            for kw in desc_kw:
+                if kw.lower() in desc_val:
+                    score += 1.5
+                    desc_matches.append(kw)
+            if desc_matches:
+                matched["descriptors"] = desc_matches
+
+        # Location scoring (2pts per match)
+        if locations:
+            loc_val = str(row["_location"]).lower()
+            loc_matches = []
+            for loc in locations:
+                if loc.lower() in loc_val:
+                    score += 2.0
+                    loc_matches.append(loc)
+            if loc_matches:
+                matched["location"] = loc_matches
+
+        # Era scoring (1.5pts per match)
+        if eras:
+            era_val = str(row["_era"]).lower()
+            era_matches = []
+            for era in eras:
+                if era.lower() in era_val:
+                    score += 1.5
+                    era_matches.append(era)
+            if era_matches:
+                matched["era"] = era_matches
+
+        # BPM range scoring (2pts)
+        if bpm_min is not None or bpm_max is not None:
+            try:
+                bpm = float(row.get("bpm", 0) or 0)
+                in_range = bpm > 0
+                if in_range and bpm_min is not None and bpm < float(bpm_min):
+                    in_range = False
+                if in_range and bpm_max is not None and bpm > float(bpm_max):
+                    in_range = False
+                if in_range:
+                    score += 2.0
+                    matched["bpm"] = True
+            except (ValueError, TypeError):
+                pass
+
+        # Year range scoring (1pt)
+        if year_min is not None or year_max is not None:
+            try:
+                year = float(row.get("year", 0) or 0)
+                in_range = year > 0
+                if in_range and year_min is not None and year < float(year_min):
+                    in_range = False
+                if in_range and year_max is not None and year > float(year_max):
+                    in_range = False
+                if in_range:
+                    score += 1.0
+                    matched["year"] = True
+            except (ValueError, TypeError):
+                pass
+
+        if score > 0:
+            normalized = round(score / max_possible, 4)
+            if normalized >= min_score:
+                results.append((idx, normalized, matched))
+
+    results.sort(key=lambda x: x[1], reverse=True)
+    return results[:max_results]

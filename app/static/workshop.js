@@ -10,6 +10,9 @@ let wsSearchTrackIds = [];
 // Sort state: { table: "search"|"playlist", col: string, asc: boolean }
 let wsSort = { table: null, col: null, asc: true };
 
+// Track whether search results are in scored mode (for sort re-render)
+let wsScoredMode = false;
+
 // ── Helpers ──────────────────────────────────────────────────
 
 function escapeHtml(str) {
@@ -41,7 +44,7 @@ function sortTracks(tracksArr, col, asc) {
         if (va === undefined) return 1;
         if (vb === undefined) return -1;
         // Numeric columns
-        if (col === "bpm" || col === "year") {
+        if (col === "bpm" || col === "year" || col === "score") {
             va = parseFloat(va) || 0;
             vb = parseFloat(vb) || 0;
             return asc ? va - vb : vb - va;
@@ -68,7 +71,11 @@ function handleSearchSort(col) {
         wsSort = { table: "search", col, asc: true };
     }
     const sorted = sortTracks(wsSearchResults, col, wsSort.asc);
-    renderSearchResults(sorted, true);
+    if (wsScoredMode) {
+        renderScoredSearchResults(sorted, true);
+    } else {
+        renderSearchResults(sorted, true);
+    }
 }
 
 // ── Init ─────────────────────────────────────────────────────
@@ -152,44 +159,121 @@ function renderHeatmap(co) {
 
     container.innerHTML = html;
 
-    // Click handler for heatmap cells
+    // Click handler for heatmap cells — show action popover
     container.querySelectorAll(".heatmap-clickable").forEach(cell => {
-        cell.addEventListener("click", () => {
+        cell.addEventListener("click", (e) => {
             const g1 = cell.dataset.g1;
             const g2 = cell.dataset.g2;
-            if (g1 && g2) {
+            if (!g1 || !g2) return;
+
+            // Remove any existing popover
+            const existing = document.querySelector(".ws-heatmap-popover");
+            if (existing) existing.remove();
+
+            const popover = document.createElement("div");
+            popover.className = "ws-heatmap-popover";
+            popover.innerHTML = `
+                <p><strong>${escapeHtml(g1)} + ${escapeHtml(g2)}</strong></p>
+                <button class="btn btn-primary btn-sm" data-pop-action="search">Search</button>
+                <button class="btn btn-secondary btn-sm" data-pop-action="generate">Generate Playlists</button>
+            `;
+            popover.style.position = "absolute";
+            popover.style.left = (e.pageX + 10) + "px";
+            popover.style.top = (e.pageY - 10) + "px";
+            document.body.appendChild(popover);
+
+            popover.querySelector("[data-pop-action=search]").addEventListener("click", () => {
+                popover.remove();
                 applyFilters({ genres: [g1, g2] });
-            }
+            });
+            popover.querySelector("[data-pop-action=generate]").addEventListener("click", () => {
+                popover.remove();
+                generateSuggestions("intersection", { genre1: g1, genre2: g2 });
+                // Scroll to suggestions
+                document.getElementById("ws-suggestions-list").scrollIntoView({ behavior: "smooth" });
+            });
+
+            // Close on outside click
+            const closeHandler = (ev) => {
+                if (!popover.contains(ev.target) && ev.target !== cell) {
+                    popover.remove();
+                    document.removeEventListener("click", closeHandler);
+                }
+            };
+            setTimeout(() => document.addEventListener("click", closeHandler), 0);
         });
     });
 }
 
 // ── LLM Suggestions ─────────────────────────────────────────
 
-const btnSuggest = $("#ws-btn-suggest");
-btnSuggest.addEventListener("click", generateSuggestions);
+let wsSuggestions = [];  // keep reference for "Save All"
+let wsSelectedSeeds = new Set();  // track IDs selected as seeds
 
-async function generateSuggestions() {
+const btnSuggest = $("#ws-btn-suggest");
+btnSuggest.addEventListener("click", () => generateSuggestions("explore"));
+
+// Vibe text input
+const btnVibeSuggest = $("#ws-btn-vibe-suggest");
+const vibeInput = $("#ws-vibe-text");
+btnVibeSuggest.addEventListener("click", () => {
+    const text = vibeInput.value.trim();
+    if (!text) { vibeInput.focus(); return; }
+    generateSuggestions("vibe", { vibe_text: text });
+});
+vibeInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        btnVibeSuggest.click();
+    }
+});
+
+async function generateSuggestions(mode, extra) {
     const list = $("#ws-suggestions-list");
-    list.innerHTML = '<p class="ws-placeholder ws-loading">Generating playlist ideas... (this may take a moment)</p>';
+    const modeLabels = {
+        explore: "Generating playlist ideas",
+        vibe: "Creating playlists from your vibe",
+        seed: "Analyzing seed tracks",
+        intersection: "Exploring genre intersection",
+    };
+    list.innerHTML = `<p class="ws-placeholder ws-loading">${modeLabels[mode] || "Generating"}... (this may take a moment)</p>`;
     btnSuggest.disabled = true;
+    const vibeBtn = document.getElementById("ws-btn-vibe-suggest");
+    if (vibeBtn) vibeBtn.disabled = true;
+
+    const payload = { mode };
+    if (mode === "explore") {
+        payload.num_suggestions = 6;
+    } else if (mode === "vibe") {
+        payload.vibe_text = extra.vibe_text;
+        payload.num_suggestions = 3;
+    } else if (mode === "seed") {
+        payload.seed_track_ids = extra.seed_track_ids;
+        payload.num_suggestions = 3;
+    } else if (mode === "intersection") {
+        payload.genre1 = extra.genre1;
+        payload.genre2 = extra.genre2;
+        payload.num_suggestions = 3;
+    }
 
     try {
         const res = await fetch("/api/workshop/suggest", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ num_suggestions: 6 }),
+            body: JSON.stringify(payload),
         });
         if (!res.ok) {
             const err = await res.json();
             throw new Error(err.error || "Suggestion failed");
         }
         const data = await res.json();
-        renderSuggestions(data.suggestions);
+        wsSuggestions = data.suggestions || [];
+        renderSuggestions(wsSuggestions);
     } catch (err) {
         list.innerHTML = `<p class="ws-placeholder ws-error">Error: ${escapeHtml(err.message)}</p>`;
     } finally {
         btnSuggest.disabled = false;
+        if (vibeBtn) vibeBtn.disabled = false;
     }
 }
 
@@ -200,17 +284,21 @@ function renderSuggestions(suggestions) {
         return;
     }
 
-    list.innerHTML = suggestions.map((s, idx) => `
+    list.innerHTML = `
+        <div class="ws-suggestions-toolbar">
+            <button class="btn btn-secondary btn-sm" id="ws-btn-save-all">Save All as Playlists</button>
+        </div>
+    ` + suggestions.map((s, idx) => `
         <div class="ws-suggestion-card">
             <h3>${escapeHtml(s.name)}</h3>
             <p class="ws-suggestion-desc">${escapeHtml(s.description)}</p>
             <p class="ws-suggestion-meta">
-                <span class="ws-suggestion-count">${s.track_count || 0} tracks</span>
+                <span class="ws-suggestion-count">${s.track_count || 0} matching tracks</span>
                 <span class="ws-suggestion-rationale" title="${escapeHtml(s.rationale)}">Why?</span>
             </p>
             ${s.sample_tracks && s.sample_tracks.length > 0 ? `
                 <div class="ws-suggestion-samples">
-                    ${s.sample_tracks.map(t => `<span class="ws-sample-track">${escapeHtml(t.artist)} &mdash; ${escapeHtml(t.title)}</span>`).join("")}
+                    ${s.sample_tracks.map(t => `<span class="ws-sample-track">${escapeHtml(t.artist)} &mdash; ${escapeHtml(t.title)}${t.score ? ` (${Math.round(t.score * 100)}%)` : ''}</span>`).join("")}
                 </div>
             ` : ""}
             <div class="ws-suggestion-actions">
@@ -220,7 +308,34 @@ function renderSuggestions(suggestions) {
         </div>
     `).join("");
 
-    // Wire up buttons
+    // Wire Save All button
+    document.getElementById("ws-btn-save-all").addEventListener("click", async () => {
+        const btn = document.getElementById("ws-btn-save-all");
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+        let created = 0;
+        for (const s of suggestions) {
+            try {
+                await fetch("/api/workshop/playlists", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: s.name,
+                        description: s.description,
+                        filters: s.filters,
+                        source: "llm",
+                    }),
+                });
+                created++;
+            } catch (err) {
+                console.error("Failed to save playlist:", s.name, err);
+            }
+        }
+        btn.textContent = `Saved ${created} playlists`;
+        await loadPlaylists();
+    });
+
+    // Wire up per-card buttons
     list.querySelectorAll("[data-action=create]").forEach(btn => {
         btn.addEventListener("click", () => {
             const s = suggestions[parseInt(btn.dataset.idx)];
@@ -230,7 +345,7 @@ function renderSuggestions(suggestions) {
     list.querySelectorAll("[data-action=search]").forEach(btn => {
         btn.addEventListener("click", () => {
             const s = suggestions[parseInt(btn.dataset.idx)];
-            applyFilters(s.filters);
+            runScoredSearch(s.filters, s.name, s.description);
         });
     });
 }
@@ -438,6 +553,7 @@ function clearFilters() {
 }
 
 async function runSearch() {
+    wsScoredMode = false;
     const filters = getFilters();
     if (Object.keys(filters).length === 0) {
         $("#ws-search-count").textContent = "Select at least one filter";
@@ -463,16 +579,55 @@ async function runSearch() {
     }
 }
 
-function renderSearchResults(resultTracks, isSorted) {
+// ── Scored Search (from suggestion cards) ───────────────────
+
+// Store current scored search context for LLM reranking
+let wsScoredContext = { filters: null, playlistName: "", description: "" };
+
+async function runScoredSearch(filters, playlistName, description) {
+    wsScoredMode = true;
+    const countEl = $("#ws-search-count");
+    countEl.textContent = "Searching (scored)...";
+
+    // Scroll to search results
+    document.getElementById("ws-search-results").scrollIntoView({ behavior: "smooth" });
+
+    wsScoredContext = { filters, playlistName: playlistName || "", description: description || "" };
+
+    try {
+        const res = await fetch("/api/workshop/scored-search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filters, min_score: 0.15, max_results: 200 }),
+        });
+        const data = await res.json();
+        wsSearchResults = data.tracks || [];
+        wsSearchTrackIds = data.track_ids || [];
+        countEl.textContent = `${data.count} tracks found (scored)`;
+        renderScoredSearchResults(wsSearchResults);
+    } catch (err) {
+        countEl.textContent = "Scored search failed";
+        console.error(err);
+    }
+}
+
+function renderScoreBadge(score) {
+    const pct = Math.round(score * 100);
+    if (score >= 0.8) return `<span class="ws-score ws-score-high">${pct}%</span>`;
+    if (score >= 0.5) return `<span class="ws-score ws-score-mid">${pct}%</span>`;
+    return `<span class="ws-score ws-score-low">${pct}%</span>`;
+}
+
+function renderScoredSearchResults(resultTracks, isSorted) {
     const container = $("#ws-search-results");
     if (resultTracks.length === 0) {
         container.innerHTML = '<p class="ws-placeholder">No matching tracks.</p>';
         return;
     }
 
-    // Keep master list in sync when not a sort-only re-render
     if (!isSorted) {
         wsSearchResults = resultTracks;
+        wsSelectedSeeds.clear();
     }
 
     const max = 200;
@@ -484,16 +639,138 @@ function renderSearchResults(resultTracks, isSorted) {
     container.innerHTML = `
         <div class="ws-results-toolbar">
             <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${resultTracks.length}) to Playlist</button>
+            <button class="btn btn-secondary btn-sm" id="ws-btn-llm-refine" title="Ask the AI to pick the best tracks for this vibe">
+                Refine with AI
+            </button>
+            <span id="ws-refine-status" class="ws-search-count"></span>
         </div>
         <table class="ws-results-table">
             <thead>
                 <tr>
+                    <th class="ws-seed-col"><input type="checkbox" id="ws-seed-toggle-all" title="Toggle all as seeds"></th>
+                    <th>#</th>${th("Score","score")}${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${showing.map((t, i) => `
+                    <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
+                        <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
+                        <td>${i + 1}</td>
+                        <td class="ws-score-cell">${renderScoreBadge(t.score || 0)}</td>
+                        <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
+                        <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
+                        <td>${t.bpm ? Math.round(parseFloat(t.bpm)) : ""}</td>
+                        <td>${escapeHtml(t.key)}</td>
+                        <td>${t.year && t.year !== "0" ? Math.round(parseFloat(t.year)) : ""}</td>
+                        <td class="ws-comment-cell" title="${escapeHtml(t.comment)}">${escapeHtml(t.comment)}</td>
+                        <td><button class="btn btn-sm btn-secondary" data-add-id="${t.id}">+ Playlist</button></td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+        ${resultTracks.length > max ? `<p class="ws-placeholder">Showing first ${max} of ${resultTracks.length} results.</p>` : ""}
+    `;
+
+    // Wire sort headers
+    container.querySelectorAll(".ws-sortable").forEach(hdr => {
+        hdr.addEventListener("click", () => handleSearchSort(hdr.dataset.sortCol));
+    });
+
+    // Wire add-all button
+    document.getElementById("ws-btn-add-all").addEventListener("click", () => {
+        showAddToPlaylistModal(wsSearchTrackIds);
+    });
+
+    // Wire per-track add buttons
+    container.querySelectorAll("[data-add-id]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            showAddToPlaylistModal([parseInt(btn.dataset.addId)]);
+        });
+    });
+
+    // Wire seed checkboxes
+    function updateSeedCount() {
+        const countEl = document.getElementById("ws-seed-count");
+        const genBtn = document.getElementById("ws-btn-seed-generate");
+        if (countEl) countEl.textContent = wsSelectedSeeds.size;
+        if (genBtn) genBtn.disabled = wsSelectedSeeds.size === 0;
+    }
+
+    container.querySelectorAll(".ws-seed-cb").forEach(cb => {
+        cb.addEventListener("change", () => {
+            const tid = parseInt(cb.dataset.seedId);
+            if (cb.checked) {
+                wsSelectedSeeds.add(tid);
+                cb.closest("tr").classList.add("ws-seed-selected");
+            } else {
+                wsSelectedSeeds.delete(tid);
+                cb.closest("tr").classList.remove("ws-seed-selected");
+            }
+            updateSeedCount();
+        });
+    });
+
+    // Toggle all seeds
+    const toggleAll = document.getElementById("ws-seed-toggle-all");
+    if (toggleAll) {
+        toggleAll.addEventListener("change", () => {
+            const checked = toggleAll.checked;
+            container.querySelectorAll(".ws-seed-cb").forEach(cb => {
+                const tid = parseInt(cb.dataset.seedId);
+                cb.checked = checked;
+                if (checked) {
+                    wsSelectedSeeds.add(tid);
+                    cb.closest("tr").classList.add("ws-seed-selected");
+                } else {
+                    wsSelectedSeeds.delete(tid);
+                    cb.closest("tr").classList.remove("ws-seed-selected");
+                }
+            });
+            updateSeedCount();
+        });
+    }
+
+    // Wire LLM Refine button
+    document.getElementById("ws-btn-llm-refine").addEventListener("click", () => {
+        runLLMRerank(resultTracks.slice(0, 80), wsScoredContext.playlistName, wsScoredContext.description);
+    });
+}
+
+function renderSearchResults(resultTracks, isSorted) {
+    const container = $("#ws-search-results");
+    if (resultTracks.length === 0) {
+        container.innerHTML = '<p class="ws-placeholder">No matching tracks.</p>';
+        return;
+    }
+
+    // Keep master list in sync when not a sort-only re-render
+    if (!isSorted) {
+        wsSearchResults = resultTracks;
+        wsSelectedSeeds.clear();
+    }
+
+    const max = 200;
+    const showing = resultTracks.slice(0, max);
+
+    const th = (label, col) =>
+        `<th class="ws-sortable" data-sort-col="${col}" data-sort-table="search">${label}${sortArrow("search", col)}</th>`;
+
+    container.innerHTML = `
+        <div class="ws-results-toolbar">
+            <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${resultTracks.length}) to Playlist</button>
+            <button class="btn btn-secondary btn-sm" id="ws-btn-seed-generate" disabled title="Select tracks as seeds, then generate playlists">Generate from Selection (<span id="ws-seed-count">0</span>)</button>
+        </div>
+        <table class="ws-results-table">
+            <thead>
+                <tr>
+                    <th class="ws-seed-col"><input type="checkbox" id="ws-seed-toggle-all" title="Toggle all as seeds"></th>
                     <th>#</th>${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
                 </tr>
             </thead>
             <tbody>
                 ${showing.map((t, i) => `
-                    <tr>
+                    <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
+                        <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
                         <td>${i + 1}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                         <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -520,6 +797,149 @@ function renderSearchResults(resultTracks, isSorted) {
     });
 
     // Wire per-track add buttons
+    container.querySelectorAll("[data-add-id]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            showAddToPlaylistModal([parseInt(btn.dataset.addId)]);
+        });
+    });
+
+    // Wire seed checkboxes
+    function updateSeedCount() {
+        const countEl = document.getElementById("ws-seed-count");
+        const genBtn = document.getElementById("ws-btn-seed-generate");
+        if (countEl) countEl.textContent = wsSelectedSeeds.size;
+        if (genBtn) genBtn.disabled = wsSelectedSeeds.size === 0;
+    }
+
+    container.querySelectorAll(".ws-seed-cb").forEach(cb => {
+        cb.addEventListener("change", () => {
+            const tid = parseInt(cb.dataset.seedId);
+            if (cb.checked) {
+                wsSelectedSeeds.add(tid);
+                cb.closest("tr").classList.add("ws-seed-selected");
+            } else {
+                wsSelectedSeeds.delete(tid);
+                cb.closest("tr").classList.remove("ws-seed-selected");
+            }
+            updateSeedCount();
+        });
+    });
+
+    // Toggle all seeds
+    const toggleAll = document.getElementById("ws-seed-toggle-all");
+    if (toggleAll) {
+        toggleAll.addEventListener("change", () => {
+            const checked = toggleAll.checked;
+            container.querySelectorAll(".ws-seed-cb").forEach(cb => {
+                const tid = parseInt(cb.dataset.seedId);
+                cb.checked = checked;
+                if (checked) {
+                    wsSelectedSeeds.add(tid);
+                    cb.closest("tr").classList.add("ws-seed-selected");
+                } else {
+                    wsSelectedSeeds.delete(tid);
+                    cb.closest("tr").classList.remove("ws-seed-selected");
+                }
+            });
+            updateSeedCount();
+        });
+    }
+
+    // Wire generate from selection button
+    document.getElementById("ws-btn-seed-generate").addEventListener("click", () => {
+        if (wsSelectedSeeds.size === 0) return;
+        generateSuggestions("seed", { seed_track_ids: Array.from(wsSelectedSeeds) });
+        document.getElementById("ws-suggestions-list").scrollIntoView({ behavior: "smooth" });
+    });
+}
+
+// ── LLM Reranking ───────────────────────────────────────────
+
+async function runLLMRerank(candidateTracks, playlistName, description) {
+    const statusEl = document.getElementById("ws-refine-status");
+    const btn = document.getElementById("ws-btn-llm-refine");
+    if (statusEl) statusEl.textContent = "AI is selecting the best tracks...";
+    if (btn) btn.disabled = true;
+
+    const tracks = candidateTracks.map(t => ({
+        id: t.id,
+        artist: t.artist || "",
+        title: t.title || "",
+        bpm: t.bpm || "",
+        key: t.key || "",
+        comment: t.comment || "",
+    }));
+
+    try {
+        const res = await fetch("/api/workshop/rerank", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                tracks,
+                playlist_name: playlistName || "Playlist",
+                description: description || "",
+                target_count: 25,
+            }),
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Reranking failed");
+        }
+        const data = await res.json();
+
+        wsSearchResults = data.tracks || [];
+        wsSearchTrackIds = data.track_ids || [];
+
+        if (statusEl) statusEl.textContent = `AI selected ${data.count} tracks`;
+        renderRerankedResults(wsSearchResults, data.flow_notes);
+    } catch (err) {
+        if (statusEl) statusEl.textContent = `Refinement failed: ${err.message}`;
+        console.error(err);
+    } finally {
+        if (btn) btn.disabled = false;
+    }
+}
+
+function renderRerankedResults(tracks, flowNotes) {
+    const container = $("#ws-search-results");
+    if (tracks.length === 0) {
+        container.innerHTML = '<p class="ws-placeholder">No tracks selected by AI.</p>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="ws-results-toolbar">
+            <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${tracks.length}) to Playlist</button>
+            ${flowNotes ? `<span class="ws-flow-notes" title="${escapeHtml(flowNotes)}">AI flow notes</span>` : ""}
+        </div>
+        ${flowNotes ? `<p class="ws-rerank-notes">${escapeHtml(flowNotes)}</p>` : ""}
+        <table class="ws-results-table">
+            <thead>
+                <tr>
+                    <th>#</th><th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Year</th><th>AI Reason</th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tracks.map((t, i) => `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
+                        <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
+                        <td>${t.bpm ? Math.round(parseFloat(t.bpm)) : ""}</td>
+                        <td>${escapeHtml(t.key)}</td>
+                        <td>${t.year && t.year !== "0" ? Math.round(parseFloat(t.year)) : ""}</td>
+                        <td class="ws-reason-cell" title="${escapeHtml(t.reason || '')}">${escapeHtml(t.reason || "")}</td>
+                        <td><button class="btn btn-sm btn-secondary" data-add-id="${t.id}">+ Playlist</button></td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+
+    // Wire add-all and per-track add buttons
+    document.getElementById("ws-btn-add-all").addEventListener("click", () => {
+        showAddToPlaylistModal(wsSearchTrackIds);
+    });
     container.querySelectorAll("[data-add-id]").forEach(btn => {
         btn.addEventListener("click", () => {
             showAddToPlaylistModal([parseInt(btn.dataset.addId)]);
@@ -665,7 +1085,7 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
         </div>
         ${playlist.description ? `<p class="ws-pl-description">${escapeHtml(playlist.description)}</p>` : ""}
         <div class="ws-pl-actions">
-            <button class="btn btn-secondary btn-sm" id="ws-pl-export-m3u">Export M3U</button>
+            <button class="btn btn-secondary btn-sm" id="ws-pl-export-m3u">Export M3U8 (Lexicon)</button>
             <button class="btn btn-secondary btn-sm" id="ws-pl-export-csv">Export CSV</button>
             <button class="btn btn-danger btn-sm" id="ws-pl-delete">Delete</button>
         </div>

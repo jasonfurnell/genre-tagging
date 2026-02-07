@@ -74,10 +74,17 @@
         <section class="ws-section">
             <div class="ws-section-header">
                 <h2>Playlist Suggestions</h2>
-                <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Generate Suggestions</button>
+                <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Explore Collection</button>
+            </div>
+            <div class="ws-vibe-input">
+                <label for="ws-vibe-text">Describe a vibe:</label>
+                <div class="ws-vibe-row">
+                    <input type="text" id="ws-vibe-text" placeholder='e.g. "sunset rooftop party", "dark warehouse techno", "chill Sunday morning grooves"' class="ws-text-input ws-vibe-field">
+                    <button id="ws-btn-vibe-suggest" class="btn btn-primary btn-sm">Create from Vibe</button>
+                </div>
             </div>
             <div id="ws-suggestions-list" class="ws-suggestions-list">
-                <p class="ws-placeholder">Click "Generate Suggestions" to get AI-curated playlist ideas based on your collection.</p>
+                <p class="ws-placeholder">Use "Explore Collection" for broad suggestions, "Create from Vibe" to describe a mood, select tracks below to generate from seeds, or click a heatmap cell to explore an intersection.</p>
             </div>
         </section>
 
