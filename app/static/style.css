@@ -232,3 +232,463 @@ header h1 {
 
 /* ── Utility ─────────────────────────────────────────────── */
 .hidden { display: none !important; }
+
+/* ═══════════════════════════════════════════════════════════ */
+/* Playlist Workshop                                          */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* ── Tab Bar ────────────────────────────────────────────── */
+.tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-top: 0.5rem;
+}
+.tab-btn {
+    padding: 0.4rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+.tab-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.tab-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+.tab-btn:hover:not(.active) {
+    background: rgba(233, 69, 96, 0.1);
+}
+
+/* ── Workshop Sections ──────────────────────────────────── */
+.ws-section {
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+.ws-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+.ws-section-header h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+.ws-status-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.ws-placeholder {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+}
+.ws-loading { font-style: italic; }
+.ws-error { color: var(--accent); }
+
+/* ── Heatmap ────────────────────────────────────────────── */
+.ws-heatmap-container {
+    overflow: visible;
+}
+.ws-heatmap-scroll {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+.heatmap-table {
+    border-collapse: collapse;
+    font-size: 0.65rem;
+    margin: 0 auto;
+}
+.heatmap-table th,
+.heatmap-table td {
+    border: 1px solid rgba(42, 42, 74, 0.5);
+}
+.heatmap-cell {
+    width: 30px;
+    min-width: 30px;
+    height: 28px;
+    text-align: center;
+    vertical-align: middle;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.6rem;
+    padding: 0;
+}
+.heatmap-clickable {
+    cursor: pointer;
+}
+.heatmap-clickable:hover {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+.heatmap-diag {
+    font-weight: 600;
+    font-size: 0.65rem;
+}
+.heatmap-col-header {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 90px;
+    max-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    padding: 4px 2px;
+    text-align: left;
+}
+.heatmap-row-header {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    text-align: right;
+    padding: 2px 6px;
+}
+
+/* ── Suggestion Cards ───────────────────────────────────── */
+.ws-suggestions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+}
+.ws-suggestion-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.85rem;
+}
+.ws-suggestion-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+}
+.ws-suggestion-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+}
+.ws-suggestion-meta {
+    font-size: 0.75rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+.ws-suggestion-rationale {
+    color: var(--text-muted);
+    cursor: help;
+    text-decoration: underline dotted;
+    font-size: 0.7rem;
+}
+.ws-suggestion-samples {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+}
+.ws-sample-track {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ws-suggestion-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+/* ── Faceted Search ─────────────────────────────────────── */
+.ws-filters {
+    margin-bottom: 0.75rem;
+}
+.ws-filter-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+.ws-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 120px;
+}
+.ws-filter-group.ws-filter-wide {
+    min-width: 180px;
+    flex: 1;
+    max-width: 280px;
+}
+.ws-filter-group label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.ws-filter-group select,
+.ws-text-input {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+.ws-filter-group select[multiple] {
+    min-height: 60px;
+}
+.ws-filter-group select option {
+    padding: 2px 4px;
+}
+.ws-range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.ws-range-inputs input {
+    width: 70px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.35rem 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+.ws-range-sep {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+.ws-filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.ws-search-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+}
+
+/* ── Search Results Table ───────────────────────────────── */
+.ws-results-toolbar {
+    margin-bottom: 0.5rem;
+}
+.ws-results-table,
+.ws-pl-tracks {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.ws-results-table th,
+.ws-results-table td,
+.ws-pl-tracks th,
+.ws-pl-tracks td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+.ws-results-table th,
+.ws-pl-tracks th {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.75rem;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+}
+.ws-results-table tbody tr:hover,
+.ws-pl-tracks tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+.ws-genre-cell {
+    max-width: 200px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.ws-comment-cell {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.35;
+    max-width: 350px !important;
+    min-width: 180px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.ws-sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+.ws-sortable:hover {
+    color: var(--accent);
+}
+
+/* ── Playlist Builder ───────────────────────────────────── */
+.ws-playlists-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+    min-height: 120px;
+}
+.ws-playlist-sidebar {
+    border-right: 1px solid var(--border);
+    padding-right: 0.75rem;
+}
+.ws-playlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.5rem;
+    cursor: pointer;
+    border-radius: var(--radius);
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    transition: background 0.1s;
+}
+.ws-playlist-item:hover {
+    background: rgba(255,255,255,0.05);
+}
+.ws-playlist-item.active {
+    background: var(--surface-alt);
+}
+.ws-pl-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+.ws-pl-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: 0.3rem;
+    flex-shrink: 0;
+}
+
+/* Playlist detail panel */
+.ws-pl-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+.ws-pl-name-input {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    flex: 1;
+    max-width: 400px;
+}
+.ws-pl-track-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+.ws-pl-description {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+.ws-pl-actions {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    line-height: 1;
+}
+.btn-icon:hover {
+    background: rgba(233, 69, 96, 0.2);
+    color: var(--accent);
+}
+
+/* ── Add-to-Playlist Modal ──────────────────────────────── */
+.atp-playlist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.atp-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: border-color 0.15s;
+}
+.atp-item:hover {
+    border-color: var(--accent);
+}
+.atp-item span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ── Responsive adjustments ─────────────────────────────── */
+@media (max-width: 768px) {
+    .ws-playlists-layout {
+        grid-template-columns: 1fr;
+    }
+    .ws-playlist-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-right: 0;
+        padding-bottom: 0.75rem;
+    }
+    .ws-filter-row {
+        flex-direction: column;
+    }
+    .ws-filter-group.ws-filter-wide {
+        max-width: 100%;
+    }
+}

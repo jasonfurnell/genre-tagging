@@ -14,6 +14,16 @@ from dotenv import load_dotenv
 
 from app.tagger import generate_genre_comment
 from app.config import load_config, save_config, DEFAULT_CONFIG
+from app.parser import (
+    parse_all_comments, invalidate_parsed_columns,
+    build_genre_cooccurrence, build_genre_landscape_summary,
+    build_facet_options, faceted_search,
+)
+from app.playlist import (
+    create_playlist, get_playlist, list_playlists, update_playlist,
+    delete_playlist, add_tracks_to_playlist, remove_tracks_from_playlist,
+    generate_playlist_suggestions, export_m3u, export_csv,
+)
 
 api = Blueprint("api", __name__)
 
@@ -26,6 +36,7 @@ _state = {
     "tagging_thread": None,
     "stop_flag": threading.Event(),
     "progress_listeners": [],   # list of queue.Queue for SSE
+    "_analysis_cache": None,     # cached analysis data for workshop
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
@@ -139,6 +150,7 @@ def upload():
     _state["stop_flag"].set()
     _state["df"] = df
     _state["original_filename"] = file.filename
+    _state["_analysis_cache"] = None
 
     return jsonify(_summary())
 
@@ -400,3 +412,242 @@ def update_config():
 def reset_config():
     save_config(dict(DEFAULT_CONFIG))
     return jsonify(DEFAULT_CONFIG)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Playlist Workshop endpoints
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _ensure_parsed():
+    """Ensure facet columns exist on the DataFrame. Returns df or None."""
+    df = _state["df"]
+    if df is None:
+        return None
+    parse_all_comments(df)
+    return df
+
+
+def _safe_val(val):
+    """Convert numpy/pandas types to JSON-safe Python types."""
+    if pd.isna(val):
+        return ""
+    if hasattr(val, "item"):  # numpy scalar
+        return val.item()
+    return val
+
+
+def _tracks_from_ids(df, ids):
+    """Build a JSON-safe list of track dicts from row indices."""
+    result = []
+    for idx in ids:
+        if idx not in df.index:
+            continue
+        row = df.loc[idx]
+        track = {"id": int(idx)}
+        for col in df.columns:
+            if not col.startswith("_"):
+                track[col] = _safe_val(row[col])
+        result.append(track)
+    return result
+
+
+def _get_analysis():
+    """Return cached analysis data, computing if needed."""
+    if _state["_analysis_cache"] is not None:
+        return _state["_analysis_cache"]
+    df = _ensure_parsed()
+    if df is None:
+        return None
+    _state["_analysis_cache"] = {
+        "cooccurrence": build_genre_cooccurrence(df),
+        "landscape_summary": build_genre_landscape_summary(df),
+        "facet_options": build_facet_options(df),
+    }
+    return _state["_analysis_cache"]
+
+
+# ---------------------------------------------------------------------------
+# GET /api/workshop/analysis
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/analysis")
+def workshop_analysis():
+    analysis = _get_analysis()
+    if analysis is None:
+        return jsonify({"error": "No file uploaded"}), 400
+    return jsonify(analysis)
+
+
+# ---------------------------------------------------------------------------
+# POST /api/workshop/search
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/search", methods=["POST"])
+def workshop_search():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    filters = request.get_json().get("filters", {})
+    matching_ids = faceted_search(df, filters)
+
+    tracks = _tracks_from_ids(df, matching_ids)
+    return jsonify({"track_ids": [int(i) for i in matching_ids],
+                    "count": len(matching_ids), "tracks": tracks})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/workshop/suggest
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/suggest", methods=["POST"])
+def workshop_suggest():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+
+    analysis = _get_analysis()
+    landscape = analysis["landscape_summary"]
+
+    body = request.get_json() or {}
+    num = body.get("num_suggestions", 6)
+
+    try:
+        suggestions = generate_playlist_suggestions(
+            landscape, client, model, provider, num
+        )
+    except Exception as e:
+        logging.exception("Playlist suggestion generation failed")
+        return jsonify({"error": str(e)}), 500
+
+    # Enrich each suggestion with track count and samples
+    for s in suggestions:
+        try:
+            matching = faceted_search(df, s["filters"])
+            s["track_count"] = len(matching)
+            samples = _tracks_from_ids(df, matching[:5])
+            s["sample_tracks"] = [
+                {"id": t["id"], "title": t.get("title", ""), "artist": t.get("artist", "")}
+                for t in samples
+            ]
+        except Exception:
+            s["track_count"] = 0
+            s["sample_tracks"] = []
+
+    return jsonify({"suggestions": suggestions})
+
+
+# ---------------------------------------------------------------------------
+# Playlist CRUD
+# ---------------------------------------------------------------------------
+
+@api.route("/api/workshop/playlists")
+def workshop_list_playlists():
+    return jsonify({"playlists": list_playlists()})
+
+
+@api.route("/api/workshop/playlists", methods=["POST"])
+def workshop_create_playlist():
+    data = request.get_json()
+    name = data.get("name", "Untitled Playlist")
+    description = data.get("description", "")
+    filters = data.get("filters")
+    source = data.get("source", "manual")
+
+    # If filters provided, run the search to populate track_ids
+    track_ids = data.get("track_ids")
+    if track_ids is None and filters:
+        df = _ensure_parsed()
+        if df is not None:
+            track_ids = faceted_search(df, filters)
+
+    playlist = create_playlist(name, description, filters, track_ids, source)
+    return jsonify({"playlist": playlist}), 201
+
+
+@api.route("/api/workshop/playlists/<playlist_id>")
+def workshop_get_playlist(playlist_id):
+    p = get_playlist(playlist_id)
+    if not p:
+        return jsonify({"error": "Playlist not found"}), 404
+
+    df = _state["df"]
+    playlist_tracks = _tracks_from_ids(df, p["track_ids"]) if df is not None else []
+    return jsonify({"playlist": p, "tracks": playlist_tracks})
+
+
+@api.route("/api/workshop/playlists/<playlist_id>", methods=["PUT"])
+def workshop_update_playlist(playlist_id):
+    data = request.get_json()
+    p = update_playlist(playlist_id, data)
+    if not p:
+        return jsonify({"error": "Playlist not found"}), 404
+    return jsonify({"playlist": p})
+
+
+@api.route("/api/workshop/playlists/<playlist_id>", methods=["DELETE"])
+def workshop_delete_playlist(playlist_id):
+    if delete_playlist(playlist_id):
+        return jsonify({"deleted": True})
+    return jsonify({"error": "Playlist not found"}), 404
+
+
+@api.route("/api/workshop/playlists/<playlist_id>/tracks", methods=["POST"])
+def workshop_add_tracks(playlist_id):
+    data = request.get_json()
+    track_ids = data.get("track_ids", [])
+    p = add_tracks_to_playlist(playlist_id, track_ids)
+    if not p:
+        return jsonify({"error": "Playlist not found"}), 404
+    return jsonify({"playlist": p})
+
+
+@api.route("/api/workshop/playlists/<playlist_id>/tracks", methods=["DELETE"])
+def workshop_remove_tracks(playlist_id):
+    data = request.get_json()
+    track_ids = data.get("track_ids", [])
+    p = remove_tracks_from_playlist(playlist_id, track_ids)
+    if not p:
+        return jsonify({"error": "Playlist not found"}), 404
+    return jsonify({"playlist": p})
+
+
+# ---------------------------------------------------------------------------
+# Export
+# ---------------------------------------------------------------------------
+
+@api.route("/api/workshop/playlists/<playlist_id>/export/m3u")
+def workshop_export_m3u(playlist_id):
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    content = export_m3u(playlist_id, df)
+    if content is None:
+        return jsonify({"error": "Playlist not found"}), 404
+
+    p = get_playlist(playlist_id)
+    name = (p["name"] if p else "playlist").replace(" ", "_")
+
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{name}.m3u")
+
+
+@api.route("/api/workshop/playlists/<playlist_id>/export/csv")
+def workshop_export_csv(playlist_id):
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    buf = export_csv(playlist_id, df)
+    if buf is None:
+        return jsonify({"error": "Playlist not found"}), 404
+
+    p = get_playlist(playlist_id)
+    name = (p["name"] if p else "playlist").replace(" ", "_")
+
+    return send_file(buf, mimetype="text/csv", as_attachment=True,
+                     download_name=f"{name}.csv")

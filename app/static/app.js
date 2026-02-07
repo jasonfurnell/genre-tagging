@@ -22,6 +22,7 @@ let tracks = [];
 let eventSource = null;
 let gridApi = null;
 let genreCounts = {};
+let workshopInitialized = false;
 
 const genreChart = $("#genre-chart");
 const TOP_N_GENRES = 8;
@@ -99,6 +100,7 @@ const gridOptions = {
     defaultColDef: {
         resizable: true,
         sortable: true,
+        filter: true,
     },
     rowClassRules: {
         "untagged": (params) => params.data.status === "untagged",
@@ -170,6 +172,7 @@ async function uploadFile(file) {
         await loadTracks();
         toolbar.classList.remove("hidden");
         summary.classList.remove("hidden");
+        $("#tab-bar").classList.remove("hidden");
     } catch (err) {
         alert("Upload error: " + err.message);
     }
@@ -394,6 +397,20 @@ async function resetSettings() {
     await fetch("/api/config/reset", { method: "POST" });
     await openSettings();
 }
+
+// ── Tab Switching ──────────────────────────────────────────
+$$(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const target = btn.dataset.tab;
+        $$(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
+        $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
+
+        if (target === "workshop" && !workshopInitialized) {
+            workshopInitialized = true;
+            if (typeof initWorkshop === "function") initWorkshop();
+        }
+    });
+});
 
 // ── Initialize grid on page load ────────────────────────────
 initGrid();

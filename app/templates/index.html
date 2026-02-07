@@ -11,43 +11,100 @@
 
 <header>
     <h1>Genre Tagger</h1>
+    <nav id="tab-bar" class="tab-bar hidden">
+        <button class="tab-btn active" data-tab="tagger">Tagger</button>
+        <button class="tab-btn" data-tab="workshop">Playlist Workshop</button>
+    </nav>
 </header>
 
 <main>
-    <!-- Upload Area -->
-    <div id="upload-area" class="upload-area">
-        <p>Drag &amp; drop a CSV file here, or <label for="file-input" class="file-label">browse</label></p>
-        <input type="file" id="file-input" accept=".csv" hidden>
+    <!-- ═══ Tab: Tagger (existing content) ═══ -->
+    <div id="tab-tagger" class="tab-content">
+        <!-- Upload Area -->
+        <div id="upload-area" class="upload-area">
+            <p>Drag &amp; drop a CSV file here, or <label for="file-input" class="file-label">browse</label></p>
+            <input type="file" id="file-input" accept=".csv" hidden>
+        </div>
+
+        <!-- Summary -->
+        <div id="summary" class="summary hidden">
+            <span id="summary-total">0 tracks</span>
+            <span class="sep">&middot;</span>
+            <span id="summary-tagged" class="tagged-count">0 tagged</span>
+            <span class="sep">&middot;</span>
+            <span id="summary-untagged" class="untagged-count">0 untagged</span>
+        </div>
+
+        <!-- Toolbar -->
+        <div id="toolbar" class="toolbar hidden">
+            <button id="btn-tag-all" class="btn btn-primary">Tag All</button>
+            <button id="btn-stop" class="btn btn-danger hidden">Stop</button>
+            <button id="btn-clear-all" class="btn btn-secondary">Clear All</button>
+            <button id="btn-export" class="btn btn-secondary">Export CSV</button>
+            <button id="btn-settings" class="btn btn-secondary">Settings</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container" class="progress-container hidden">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <!-- Live Genre Chart -->
+        <div id="genre-chart" class="genre-chart hidden"></div>
+
+        <!-- Track Grid (AG Grid) -->
+        <div id="track-grid" style="width:100%;"></div>
     </div>
 
-    <!-- Summary -->
-    <div id="summary" class="summary hidden">
-        <span id="summary-total">0 tracks</span>
-        <span class="sep">&middot;</span>
-        <span id="summary-tagged" class="tagged-count">0 tagged</span>
-        <span class="sep">&middot;</span>
-        <span id="summary-untagged" class="untagged-count">0 untagged</span>
+    <!-- ═══ Tab: Playlist Workshop ═══ -->
+    <div id="tab-workshop" class="tab-content hidden">
+
+        <!-- Heatmap Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Genre Intersections</h2>
+                <span id="ws-heatmap-status" class="ws-status-text"></span>
+            </div>
+            <div id="ws-heatmap-container" class="ws-heatmap-container">
+                <p class="ws-placeholder">Loading genre analysis...</p>
+            </div>
+        </section>
+
+        <!-- LLM Suggestions Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Playlist Suggestions</h2>
+                <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Generate Suggestions</button>
+            </div>
+            <div id="ws-suggestions-list" class="ws-suggestions-list">
+                <p class="ws-placeholder">Click "Generate Suggestions" to get AI-curated playlist ideas based on your collection.</p>
+            </div>
+        </section>
+
+        <!-- Faceted Search Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Search Tracks</h2>
+            </div>
+            <div id="ws-filters" class="ws-filters"></div>
+            <div id="ws-search-results" class="ws-search-results"></div>
+        </section>
+
+        <!-- Playlist Builder Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>My Playlists</h2>
+                <button id="ws-btn-new-playlist" class="btn btn-primary btn-sm">New Playlist</button>
+            </div>
+            <div class="ws-playlists-layout">
+                <div id="ws-playlist-sidebar" class="ws-playlist-sidebar">
+                    <p class="ws-placeholder ws-playlist-empty">No playlists yet. Create one from a suggestion or search results.</p>
+                </div>
+                <div id="ws-playlist-detail" class="ws-playlist-detail"></div>
+            </div>
+        </section>
+
     </div>
-
-    <!-- Toolbar -->
-    <div id="toolbar" class="toolbar hidden">
-        <button id="btn-tag-all" class="btn btn-primary">Tag All</button>
-        <button id="btn-stop" class="btn btn-danger hidden">Stop</button>
-        <button id="btn-clear-all" class="btn btn-secondary">Clear All</button>
-        <button id="btn-export" class="btn btn-secondary">Export CSV</button>
-        <button id="btn-settings" class="btn btn-secondary">Settings</button>
-    </div>
-
-    <!-- Progress Bar -->
-    <div id="progress-container" class="progress-container hidden">
-        <div id="progress-bar" class="progress-bar"></div>
-    </div>
-
-    <!-- Live Genre Chart -->
-    <div id="genre-chart" class="genre-chart hidden"></div>
-
-    <!-- Track Grid (AG Grid) -->
-    <div id="track-grid" style="width:100%;"></div>
 </main>
 
 <!-- Settings Modal -->
@@ -85,6 +142,18 @@
     </div>
 </div>
 
+<!-- Add-to-Playlist Modal -->
+<div id="add-to-playlist-modal" class="modal-overlay hidden">
+    <div class="modal" style="max-width:400px">
+        <h2>Add to Playlist</h2>
+        <div id="atp-playlist-list" class="atp-playlist-list"></div>
+        <div class="modal-actions">
+            <button id="atp-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <script src="/static/app.js"></script>
+<script src="/static/workshop.js"></script>
 </body>
 </html>
