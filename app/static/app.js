@@ -23,6 +23,7 @@ let eventSource = null;
 let gridApi = null;
 let genreCounts = {};
 let workshopInitialized = false;
+let treeInitialized = false;
 
 const genreChart = $("#genre-chart");
 const TOP_N_GENRES = 8;
@@ -408,6 +409,10 @@ $$(".tab-btn").forEach(btn => {
         if (target === "workshop" && !workshopInitialized) {
             workshopInitialized = true;
             if (typeof initWorkshop === "function") initWorkshop();
+        }
+        if (target === "tree" && !treeInitialized) {
+            treeInitialized = true;
+            if (typeof initTree === "function") initTree();
         }
     });
 });

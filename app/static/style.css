@@ -811,3 +811,363 @@ tr.ws-seed-selected {
     text-decoration: underline dotted;
     margin-left: 0.5rem;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Collection Tree Tab
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Intro / Build section ─────────────────────────────────── */
+.tree-intro {
+    text-align: center;
+    padding: 3rem 2rem;
+    max-width: 700px;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+.tree-intro h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, var(--success) 0%, var(--surface-alt) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.tree-intro p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* ── Build progress ────────────────────────────────────────── */
+.tree-progress {
+    max-width: 600px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+.tree-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.tree-progress-header h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--success);
+}
+.tree-progress-bar-container {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+.tree-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success), #3bceac);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+}
+.tree-progress-detail {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ── Tree header / stats ───────────────────────────────────── */
+.tree-header {
+    margin-bottom: 1.5rem;
+}
+.tree-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+}
+.tree-stat {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+.tree-stat-number {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--success);
+    display: block;
+}
+.tree-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.tree-stat-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    align-self: center;
+}
+.tree-stat-warning {
+    background: rgba(233, 69, 96, 0.2);
+    color: var(--accent);
+}
+
+/* ── Toolbar ───────────────────────────────────────────────── */
+.tree-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: flex-end;
+}
+
+/* ── Trees grid (lineage cards) ────────────────────────────── */
+.trees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.tree-container {
+    background: rgba(255, 255, 255, 0.025);
+    border-radius: 14px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+}
+.tree-card-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(78, 204, 163, 0.25);
+}
+.tree-title {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+    color: var(--success);
+}
+.tree-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+.tree-card-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* ── Tree nodes ────────────────────────────────────────────── */
+.tree-node {
+    margin-bottom: 6px;
+}
+.tree-node-btn {
+    width: 100%;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: inherit;
+}
+.tree-node-btn:hover {
+    background: rgba(78, 204, 163, 0.12);
+    border-color: rgba(78, 204, 163, 0.35);
+    transform: translateX(3px);
+}
+.tree-node-btn.expanded {
+    background: rgba(78, 204, 163, 0.1);
+    border-color: rgba(78, 204, 163, 0.3);
+}
+.tree-node-btn.leaf {
+    border-left: 3px solid rgba(78, 204, 163, 0.4);
+}
+.tree-node-icon {
+    font-size: 0.85rem;
+    min-width: 16px;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+.tree-node-btn.expanded .tree-node-icon {
+    transform: rotate(90deg);
+}
+.tree-node-btn.leaf .tree-node-icon {
+    transform: none;
+}
+.tree-node-title {
+    font-weight: 500;
+    flex: 1;
+}
+.tree-node-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+/* ── Node body (expanded content) ──────────────────────────── */
+.tree-node-body {
+    margin-left: 26px;
+    margin-top: 8px;
+}
+.tree-node-detail {
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid var(--success);
+    animation: treeSlideIn 0.25s ease;
+}
+.tree-branch-desc {
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+@keyframes treeSlideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.tree-node-description {
+    color: #d0d0d0;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+.tree-node-actions {
+    margin-top: 0.75rem;
+}
+
+/* ── Examples ──────────────────────────────────────────────── */
+.tree-node-examples {
+    margin-top: 1rem;
+}
+.tree-examples-title {
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.tree-example-track {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    border-left: 3px solid rgba(78, 204, 163, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tree-track-title {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 0.88rem;
+}
+.tree-track-artist {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+.tree-track-year {
+    color: #666;
+    font-size: 0.78rem;
+    margin-left: auto;
+}
+
+/* ── Children container ────────────────────────────────────── */
+.tree-children {
+    margin-top: 4px;
+}
+
+/* ── Ungrouped section ─────────────────────────────────────── */
+.tree-ungrouped-section {
+    margin-top: 2rem;
+}
+.tree-ungrouped-header {
+    margin-bottom: 0.75rem;
+}
+.tree-ungrouped-toggle {
+    width: 100%;
+    text-align: left;
+    background: rgba(233, 69, 96, 0.08);
+    border: 1px solid rgba(233, 69, 96, 0.2);
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+.tree-ungrouped-toggle:hover {
+    background: rgba(233, 69, 96, 0.15);
+    border-color: rgba(233, 69, 96, 0.35);
+}
+.tree-ungrouped-toggle.expanded .tree-node-icon {
+    transform: rotate(90deg);
+}
+.tree-ungrouped-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    padding-left: 2rem;
+}
+.tree-ungrouped-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+.tree-ungrouped-table th {
+    text-align: left;
+    padding: 6px 10px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+.tree-ungrouped-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text);
+}
+.tree-ungrouped-comment {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .trees-grid {
+        grid-template-columns: 1fr;
+    }
+    .tree-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

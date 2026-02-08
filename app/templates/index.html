@@ -14,6 +14,7 @@
     <nav id="tab-bar" class="tab-bar hidden">
         <button class="tab-btn active" data-tab="tagger">Tagger</button>
         <button class="tab-btn" data-tab="workshop">Playlist Workshop</button>
+        <button class="tab-btn" data-tab="tree">Collection Tree</button>
     </nav>
 </header>
 
@@ -112,6 +113,42 @@
         </section>
 
     </div>
+
+    <!-- ═══ Tab: Collection Tree ═══ -->
+    <div id="tab-tree" class="tab-content hidden">
+
+        <!-- Build state: shown when no tree exists -->
+        <div id="tree-build-section">
+            <div class="tree-intro">
+                <h2>Music Collection Tree</h2>
+                <p>Build an interactive map of the musical history and influence represented by your collection. The tree reveals the distinct evolutionary paths, scenes, and movements in the music you love.</p>
+                <button id="tree-build-btn" class="btn btn-primary btn-lg">Build Collection Tree</button>
+            </div>
+            <!-- Progress: shown during build -->
+            <div id="tree-progress" class="tree-progress hidden">
+                <div class="tree-progress-header">
+                    <h3 id="tree-progress-phase">Analyzing collection...</h3>
+                    <button id="tree-stop-btn" class="btn btn-danger btn-sm">Stop</button>
+                </div>
+                <div class="tree-progress-bar-container">
+                    <div id="tree-progress-bar" class="tree-progress-bar"></div>
+                </div>
+                <p id="tree-progress-detail" class="tree-progress-detail"></p>
+            </div>
+        </div>
+
+        <!-- Tree view: shown when tree exists -->
+        <div id="tree-view-section" class="hidden">
+            <div id="tree-header" class="tree-header"></div>
+            <div class="tree-toolbar">
+                <button id="tree-create-all-btn" class="btn btn-primary btn-sm">Create All Playlists</button>
+                <button id="tree-rebuild-btn" class="btn btn-secondary btn-sm">Rebuild Tree</button>
+            </div>
+            <div id="tree-grid" class="trees-grid"></div>
+            <div id="tree-ungrouped" class="tree-ungrouped-section"></div>
+        </div>
+
+    </div>
 </main>
 
 <!-- Settings Modal -->
@@ -162,5 +199,6 @@
 
 <script src="/static/app.js"></script>
 <script src="/static/workshop.js"></script>
+<script src="/static/tree.js"></script>
 </body>
 </html>

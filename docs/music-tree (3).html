@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Collection Tree</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #b0b0b0;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #b0b0b0;
+            margin-top: 5px;
+        }
+
+        .trees-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .tree-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tree-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .tree-title {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            color: #667eea;
+        }
+
+        .tree-subtitle {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
+
+        .tree-content {
+            margin-left: 0;
+        }
+
+        .node {
+            margin-bottom: 12px;
+        }
+
+        .node-button {
+            width: 100%;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .node-button:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateX(5px);
+        }
+
+        .node-button.expanded {
+            background: rgba(102, 126, 234, 0.15);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .node-icon {
+            font-size: 1.2em;
+            min-width: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .node-button.expanded .node-icon {
+            transform: rotate(90deg);
+        }
+
+        .node-title {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .node-count {
+            font-size: 0.85em;
+            color: #b0b0b0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .node-content {
+            margin-left: 32px;
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .node-description {
+            color: #d0d0d0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .node-examples {
+            margin-top: 20px;
+        }
+
+        .examples-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-track {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .track-title {
+            font-weight: 500;
+            color: #e0e0e0;
+            margin-bottom: 4px;
+        }
+
+        .track-artist {
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+
+        .track-year {
+            color: #888;
+            font-size: 0.85em;
+            margin-left: 8px;
+        }
+
+        .children {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .trees-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Data structure for the music trees
+        const musicTrees = [
+            {
+                id: 'hiphop',
+                title: 'Hip-Hop Lineage',
+                subtitle: '~850 tracks spanning four decades',
+                estimatedTracks: '850',
+                children: [
+                    {
+                        id: 'golden-age',
+                        title: 'Golden Age Hip-Hop (1986-1996)',
+                        count: '~150',
+                        description: 'The creative zenith of hip-hop where innovation exploded across the US. Sample-based production reached new heights with dusty breaks, jazz loops, and soul chops. Lyricism became a competitive art form with complex rhyme schemes and social commentary. The SP-1200 and Akai MPC defined the sonic aesthetic - thick drums, warm basslines, and gritty textures.',
+                        examples: [
+                            { title: 'The Message', artist: 'Grandmaster Flash & The Furious Five', year: 1982 },
+                            { title: 'Paid in Full', artist: 'Eric B. & Rakim', year: 1987 },
+                            { title: 'It Takes a Nation of Millions', artist: 'Public Enemy', year: 1988 }
+                        ],
+                        children: [
+                            {
+                                id: 'east-coast-boom-bap',
+                                title: 'East Coast Boom-Bap',
+                                count: '~80',
+                                description: 'The quintessential New York sound: hard-hitting drums, dusty soul samples, and intricate lyricism. Defined by producers like DJ Premier, Pete Rock, and RZA. The aesthetic emphasized raw street authenticity, jazz-influenced loops, and lyrical complexity.',
+                                examples: [
+                                    { title: 'NY State of Mind', artist: 'Nas', year: 1994 },
+                                    { title: 'Mass Appeal', artist: 'Gang Starr', year: 1994 },
+                                    { title: 'C.R.E.A.M.', artist: 'Wu-Tang Clan', year: 1993 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'premier-era',
+                                        title: 'DJ Premier/Gang Starr Era',
+                                        count: '~25',
+                                        description: 'DJ Premier perfected boom-bap: chopped jazz loops, scratched hooks, and head-nodding drums. Gang Starr, Jeru the Damaja, and Group Home. Monotone delivery meets complex wordplay.',
+                                        examples: [
+                                            { title: 'Mass Appeal', artist: 'Gang Starr', year: 1994 },
+                                            { title: 'Come Clean', artist: 'Jeru the Damaja', year: 1994 },
+                                            { title: 'Full Clip', artist: 'Gang Starr', year: 1999 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'pete-rock-era',
+                                        title: 'Pete Rock/Soul Samples Era',
+                                        count: '~25',
+                                        description: 'Pete Rock brought warmth and soul. Horn stabs, soulful loops, and mellow vibes. Pete Rock & CL Smooth, Nas (Illmatic), and early Mobb Deep.',
+                                        examples: [
+                                            { title: 'They Reminisce Over You', artist: 'Pete Rock & CL Smooth', year: 1992 },
+                                            { title: 'The World Is Yours', artist: 'Nas', year: 1994 },
+                                            { title: 'Shook Ones Pt. II', artist: 'Mobb Deep', year: 1995 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'wu-tang-era',
+                                        title: 'Wu-Tang Clan/RZA Production',
+                                        count: '~30',
+                                        description: 'RZA\'s grimy, minimalist production. Kung-fu samples, dusty drums, eerie melodies. Wu-Tang Clan and affiliates created a universe.',
+                                        examples: [
+                                            { title: 'C.R.E.A.M.', artist: 'Wu-Tang Clan', year: 1993 },
+                                            { title: 'Protect Ya Neck', artist: 'Wu-Tang Clan', year: 1993 },
+                                            { title: 'Liquid Swords', artist: 'GZA', year: 1995 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'west-coast-gfunk',
+                                title: 'West Coast G-Funk',
+                                count: '~40',
+                                description: 'California\'s signature sound built on Parliament-Funkadelic samples, whining Moog synthesizers, and smooth basslines. Dr. Dre pioneered this style with Death Row Records, creating sun-soaked gangster narratives over melodic funk grooves. Slower tempos and thick low-end defined the West Coast aesthetic.',
+                                examples: [
+                                    { title: 'Nuthin\' but a \'G\' Thang', artist: 'Dr. Dre feat. Snoop Dogg', year: 1992 },
+                                    { title: 'Regulate', artist: 'Warren G & Nate Dogg', year: 1994 },
+                                    { title: 'California Love', artist: '2Pac feat. Dr. Dre', year: 1995 }
+                                ]
+                            },
+                            {
+                                id: 'native-tongues',
+                                title: 'Native Tongues Collective',
+                                count: '~30',
+                                description: 'Afrocentric consciousness meets playful creativity. Groups like De La Soul, A Tribe Called Quest, and Jungle Brothers rejected gangster narratives for bohemian intellectualism, jazz-fusion samples, and positive messaging. Production featured eclectic sampling, live instrumentation, and innovative arrangements.',
+                                examples: [
+                                    { title: 'Buddy', artist: 'De La Soul', year: 1989 },
+                                    { title: 'Scenario', artist: 'A Tribe Called Quest', year: 1991 },
+                                    { title: 'Award Tour', artist: 'A Tribe Called Quest', year: 1993 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'southern-hiphop',
+                        title: 'Southern Hip-Hop Movement',
+                        count: '~120',
+                        description: 'The South\'s answer to coastal dominance. OutKast, UGK, and Goodie Mob brought regional authenticity with live instrumentation, slower tempos, and distinct drawl. Production incorporated crunk drums, bass-heavy 808s, and soul samples. This laid groundwork for trap and contemporary hip-hop\'s southern dominance.',
+                        examples: [
+                            { title: 'Southernplayalisticadillacmuzik', artist: 'OutKast', year: 1994 },
+                            { title: 'Int\'l Players Anthem', artist: 'UGK feat. OutKast', year: 2007 },
+                            { title: 'Cell Therapy', artist: 'Goodie Mob', year: 1995 }
+                        ],
+                        children: [
+                            {
+                                id: 'dirty-south',
+                                title: 'Dirty South/Early Southern (1990s)',
+                                count: '~35',
+                                description: 'OutKast, UGK, Goodie Mob, and 8Ball & MJG established Southern credibility. Slower tempos, live instrumentation, and regional pride. "The South got something to say."',
+                                examples: [
+                                    { title: 'Southernplayalisticadillacmuzik', artist: 'OutKast', year: 1994 },
+                                    { title: 'Pocket Full of Stones', artist: 'UGK', year: 1992 },
+                                    { title: 'Cell Therapy', artist: 'Goodie Mob', year: 1995 }
+                                ]
+                            },
+                            {
+                                id: 'crunk',
+                                title: 'Crunk Era',
+                                count: '~40',
+                                description: 'Memphis and Atlanta\'s aggressive, club-oriented sound. Lil Jon pioneered the aesthetic: screaming ad-libs, repetitive chants, thunderous 808s, and minimal melodic elements. Designed for maximum energy in strip clubs and parties.',
+                                examples: [
+                                    { title: 'Get Low', artist: 'Lil Jon & The East Side Boyz', year: 2003 },
+                                    { title: 'Yeah!', artist: 'Usher feat. Lil Jon & Ludacris', year: 2004 },
+                                    { title: 'Knuck If You Buck', artist: 'Crime Mob', year: 2004 }
+                                ]
+                            },
+                            {
+                                id: 'trap',
+                                title: 'Trap Music',
+                                count: '~45',
+                                description: 'Atlanta\'s definitive contribution to modern hip-hop. Pioneered by T.I., Jeezy, and Gucci Mane, then exploded globally. Sonic signature: rolling hi-hats, booming 808 bass, dark synth melodies, and lyrical focus on street economics. Now the dominant sound worldwide.',
+                                examples: [
+                                    { title: '24\'s', artist: 'T.I.', year: 2003 },
+                                    { title: 'Trap House', artist: 'Gucci Mane', year: 2005 },
+                                    { title: 'March Madness', artist: 'Future', year: 2015 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'uk-hiphop',
+                        title: 'UK Hip-Hop',
+                        count: '~50',
+                        description: 'Britain developed its own hip-hop identity distinct from American styles. Early pioneers like Roots Manuva and The Streets brought British accents, UK slang, and local narratives. Production drew from jungle, grime, and UK garage, creating a uniquely British sound that influenced grime\'s emergence.',
+                        examples: [
+                            { title: 'Witness (1 Hope)', artist: 'Roots Manuva', year: 2001 },
+                            { title: 'Has It Come to This?', artist: 'The Streets', year: 2001 },
+                            { title: 'Fix Up, Look Sharp', artist: 'Dizzee Rascal', year: 2003 }
+                        ]
+                    },
+                    {
+                        id: 'conscious-alternative',
+                        title: 'Conscious & Alternative Hip-Hop',
+                        count: '~90',
+                        description: 'Artists pushing hip-hop\'s boundaries intellectually and sonically. From Common and Talib Kweli\'s socially aware lyricism to MF DOOM\'s abstract wordplay and Kanye\'s genre-blending production. This branch valued artistic innovation over commercial formulas.',
+                        examples: [
+                            { title: 'Respiration', artist: 'Black Star', year: 1998 },
+                            { title: 'The Light', artist: 'Common', year: 2000 },
+                            { title: 'All Caps', artist: 'MF DOOM', year: 2004 }
+                        ],
+                        children: [
+                            {
+                                id: 'conscious-rap',
+                                title: 'Conscious/Backpack Rap',
+                                count: '~40',
+                                description: 'Socially aware, politically engaged hip-hop. Common, Talib Kweli, Mos Def, and The Roots. Intelligence and substance over materialism. Rawkus Records era.',
+                                examples: [
+                                    { title: 'The Light', artist: 'Common', year: 2000 },
+                                    { title: 'Definition', artist: 'Black Star', year: 1998 },
+                                    { title: 'You Got Me', artist: 'The Roots', year: 1999 }
+                                ]
+                            },
+                            {
+                                id: 'underground-hiphop',
+                                title: 'Underground/Abstract Hip-Hop',
+                                count: '~30',
+                                description: 'Experimental, non-commercial hip-hop. MF DOOM, Aesop Rock, and Madlib. Complex wordplay, abstract production, rejection of mainstream trends.',
+                                examples: [
+                                    { title: 'All Caps', artist: 'MF DOOM', year: 2004 },
+                                    { title: 'Daylight', artist: 'Aesop Rock', year: 2001 },
+                                    { title: 'Accordion', artist: 'Madvillain', year: 2004 }
+                                ]
+                            },
+                            {
+                                id: 'kanye-era',
+                                title: 'Kanye/Soul Sample Renaissance',
+                                count: '~20',
+                                description: 'Early 2000s Kanye West brought soulful, chipmunk-voiced samples back to mainstream. Just Blaze and Kanye redefined hip-hop production.',
+                                examples: [
+                                    { title: 'Through the Wire', artist: 'Kanye West', year: 2003 },
+                                    { title: 'Jesus Walks', artist: 'Kanye West', year: 2004 },
+                                    { title: 'Touch the Sky', artist: 'Kanye West', year: 2005 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'modern-hiphop',
+                        title: 'Contemporary Hip-Hop (2010s-Present)',
+                        count: '~440',
+                        description: 'Hip-hop\'s streaming era: melodic trap, emo-rap, drill, and experimental sounds dominate. Auto-tune became standard, 808s got even heavier, and genre boundaries dissolved. Artists like Drake, Travis Scott, and Kendrick Lamar achieved unprecedented mainstream success while pushing creative boundaries.',
+                        examples: [
+                            { title: 'DNA', artist: 'Kendrick Lamar', year: 2017 },
+                            { title: 'Sicko Mode', artist: 'Travis Scott', year: 2018 },
+                            { title: 'Life Is Good', artist: 'Future feat. Drake', year: 2020 }
+                        ],
+                        children: [
+                            {
+                                id: 'melodic-trap',
+                                title: 'Melodic Trap/SoundCloud Era',
+                                count: '~100',
+                                description: 'Auto-tune singing over trap beats. Future pioneered it, then Lil Uzi Vert, Playboi Carti, and Juice WRLD took over. SoundCloud became the launching pad. Emo lyrics, catchy melodies, 808-heavy production.',
+                                examples: [
+                                    { title: 'XO Tour Llif3', artist: 'Lil Uzi Vert', year: 2017 },
+                                    { title: 'Magnolia', artist: 'Playboi Carti', year: 2017 },
+                                    { title: 'Lucid Dreams', artist: 'Juice WRLD', year: 2018 }
+                                ]
+                            },
+                            {
+                                id: 'drill',
+                                title: 'Drill Music',
+                                count: '~50',
+                                description: 'Dark, aggressive trap from Chicago and Brooklyn. Chief Keef started it, Pop Smoke and UK drill artists globalized it. Sliding 808s, ominous piano, nihilistic lyrics.',
+                                examples: [
+                                    { title: 'Love Sosa', artist: 'Chief Keef', year: 2012 },
+                                    { title: 'Dior', artist: 'Pop Smoke', year: 2019 },
+                                    { title: 'Welcome to the Party', artist: 'Pop Smoke', year: 2019 }
+                                ]
+                            },
+                            {
+                                id: 'artsy-rap',
+                                title: 'Artistic/Experimental Rap',
+                                count: '~60',
+                                description: 'Kendrick Lamar, Tyler the Creator, and Earl Sweatshirt pushed boundaries. Jazz influences, conceptual albums, and artistic ambition. Hip-hop as high art.',
+                                examples: [
+                                    { title: 'Alright', artist: 'Kendrick Lamar', year: 2015 },
+                                    { title: 'EARFQUAKE', artist: 'Tyler, The Creator', year: 2019 },
+                                    { title: 'Chum', artist: 'Earl Sweatshirt', year: 2012 }
+                                ]
+                            },
+                            {
+                                id: 'drake-ovo',
+                                title: 'Drake/OVO Sound',
+                                count: '~50',
+                                description: 'Drake defined 2010s hip-hop: singing and rapping, moody introspection, Toronto sound. PartyNextDoor and The Weeknd extended the aesthetic.',
+                                examples: [
+                                    { title: 'Hold On, We\'re Going Home', artist: 'Drake', year: 2013 },
+                                    { title: 'Hotline Bling', artist: 'Drake', year: 2015 },
+                                    { title: 'God\'s Plan', artist: 'Drake', year: 2018 }
+                                ]
+                            },
+                            {
+                                id: 'psychedelic-trap',
+                                title: 'Psychedelic/Rage Rap',
+                                count: '~50',
+                                description: 'Travis Scott pioneered the sound: atmospheric, festival-ready, psychedelic trap. Distorted bass, reverb-soaked vocals, epic production.',
+                                examples: [
+                                    { title: 'Antidote', artist: 'Travis Scott', year: 2015 },
+                                    { title: 'Sicko Mode', artist: 'Travis Scott', year: 2018 },
+                                    { title: 'Sky', artist: 'Playboi Carti', year: 2020 }
+                                ]
+                            },
+                            {
+                                id: 'modern-gangsta',
+                                title: 'Modern Street Rap',
+                                count: '~50',
+                                description: 'Contemporary street narratives. Griselda, NBA Youngboy, and Roddy Ricch. Traditional rap values meet modern production.',
+                                examples: [
+                                    { title: 'The Box', artist: 'Roddy Ricch', year: 2019 },
+                                    { title: 'Dr. Birds', artist: 'Griselda', year: 2020 },
+                                    { title: 'Outside Today', artist: 'NBA YoungBoy', year: 2018 }
+                                ]
+                            },
+                            {
+                                id: 'female-rap-wave',
+                                title: 'Contemporary Female Rap',
+                                count: '~40',
+                                description: 'Cardi B, Megan Thee Stallion, and Doja Cat dominated. Confident, sexual, commercially successful. New wave of female empowerment.',
+                                examples: [
+                                    { title: 'Bodak Yellow', artist: 'Cardi B', year: 2017 },
+                                    { title: 'Savage', artist: 'Megan Thee Stallion', year: 2020 },
+                                    { title: 'Say So', artist: 'Doja Cat', year: 2019 }
+                                ]
+                            },
+                            {
+                                id: 'uk-rap',
+                                title: 'UK Rap/Grime Evolution',
+                                count: '~40',
+                                description: 'British rap evolved beyond grime. Skepta, Dave, and Stormzy brought UK accents to global stages. Road rap, afroswing influences.',
+                                examples: [
+                                    { title: 'Shutdown', artist: 'Skepta', year: 2015 },
+                                    { title: 'Location', artist: 'Dave feat. Burna Boy', year: 2019 },
+                                    { title: 'Vossi Bop', artist: 'Stormzy', year: 2019 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'house',
+                title: 'House Music Evolution',
+                subtitle: '~800+ tracks from Chicago to the world',
+                estimatedTracks: '800+',
+                children: [
+                    {
+                        id: 'chicago-house',
+                        title: 'Chicago House Origins (1980s)',
+                        count: '~60',
+                        description: 'Where it all began. Frankie Knuckles, Ron Hardy, and Marshall Jefferson created house music at The Warehouse and Music Box. Four-on-the-floor kick drums, synthesized basslines, drum machine claps, disco samples, and Roland TB-303 acid squelches. Raw, functional dance music that changed culture forever.',
+                        examples: [
+                            { title: 'Your Love', artist: 'Frankie Knuckles', year: 1984 },
+                            { title: 'Move Your Body', artist: 'Marshall Jefferson', year: 1986 },
+                            { title: 'Can You Feel It', artist: 'Mr. Fingers', year: 1986 }
+                        ],
+                        children: [
+                            {
+                                id: 'warehouse-era',
+                                title: 'Warehouse/Godfather House',
+                                count: '~25',
+                                description: 'Frankie Knuckles at The Warehouse created the template. Disco edits, drum machines, and reel-to-reel magic. The original house sound before it had a name.',
+                                examples: [
+                                    { title: 'Your Love', artist: 'Frankie Knuckles', year: 1984 },
+                                    { title: 'Baby Wants to Ride', artist: 'Frankie Knuckles', year: 1987 },
+                                    { title: 'Tears', artist: 'Frankie Knuckles', year: 1989 }
+                                ]
+                            },
+                            {
+                                id: 'acid-house',
+                                title: 'Acid House',
+                                count: '~35',
+                                description: 'Defined by the squelchy, psychedelic sounds of the Roland TB-303 bass synthesizer. Phuture\'s "Acid Tracks" sparked a movement. The sound traveled to UK raves and Ibiza, becoming synonymous with late-80s underground culture and the Second Summer of Love.',
+                                examples: [
+                                    { title: 'Acid Tracks', artist: 'Phuture', year: 1987 },
+                                    { title: 'We Call It Acieed', artist: 'D Mob', year: 1988 },
+                                    { title: 'Voodoo Ray', artist: 'A Guy Called Gerald', year: 1988 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'deep-house',
+                        title: 'Deep House',
+                        count: '~90',
+                        description: 'Sophisticated and soulful. Emerged from Chicago\'s more melodic producers like Larry Heard (Mr. Fingers). Jazz chords, warm basslines, subtle strings, atmospheric pads, and emphasis on groove over intensity. Perfect for intimate club moments and sunrise sessions.',
+                        examples: [
+                            { title: 'Mystery of Love', artist: 'Mr. Fingers', year: 1985 },
+                            { title: 'The Pressure', artist: 'Sounds of Blackness', year: 1991 },
+                            { title: 'Finally', artist: 'Kings of Tomorrow feat. Julie McKnight', year: 2000 }
+                        ],
+                        children: [
+                            {
+                                id: 'classic-deep-house',
+                                title: 'Classic Deep House (1980s-90s)',
+                                count: '~40',
+                                description: 'Larry Heard (Mr. Fingers) defined the sound. Lush chords, jazzy samples, soulful vocals. Kerri Chandler and Moodymann continued the tradition.',
+                                examples: [
+                                    { title: 'Mystery of Love', artist: 'Mr. Fingers', year: 1985 },
+                                    { title: 'Can You Feel It', artist: 'Mr. Fingers', year: 1986 },
+                                    { title: 'Bar-A-Thym', artist: 'Kerri Chandler', year: 1992 }
+                                ]
+                            },
+                            {
+                                id: 'soulful-deep-house',
+                                title: 'Soulful/Vocal Deep House',
+                                count: '~30',
+                                description: 'Deep house with prominent vocals and gospel influences. Kings of Tomorrow, Blaze, and Dennis Ferrer. Peak-time emotion for sophisticated dancefloors.',
+                                examples: [
+                                    { title: 'Finally', artist: 'Kings of Tomorrow', year: 2000 },
+                                    { title: 'Lovelee Dae', artist: 'Blaze', year: 1997 },
+                                    { title: 'Sandcastles', artist: 'Dennis Ferrer', year: 2008 }
+                                ]
+                            },
+                            {
+                                id: 'modern-deep-house',
+                                title: 'Modern Deep House',
+                                count: '~20',
+                                description: 'Contemporary deep house from 2010s onwards. Disclosure, Duke Dumont, and Lane 8. Cleaner production, crossover appeal, but retaining deep house DNA.',
+                                examples: [
+                                    { title: 'Latch', artist: 'Disclosure', year: 2012 },
+                                    { title: 'Ocean Drive', artist: 'Duke Dumont', year: 2015 },
+                                    { title: 'Fingerprints', artist: 'Lane 8', year: 2015 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'tech-house',
+                        title: 'Tech House',
+                        count: '~280',
+                        description: 'The bridge between house\'s groove and techno\'s mechanical precision. Minimalist arrangements, crisp percussion, rolling basslines, and hypnotic loops. Became the dominant sound in Ibiza and European club culture. Artists like Green Velvet and Carl Cox championed the style.',
+                        examples: [
+                            { title: 'Flash', artist: 'Green Velvet', year: 1995 },
+                            { title: 'Speak It Out', artist: 'Slam', year: 1996 },
+                            { title: 'Cola', artist: 'CamelPhat & Elderbrook', year: 2017 }
+                        ],
+                        children: [
+                            {
+                                id: 'tech-house-90s',
+                                title: '90s Tech House Origins',
+                                count: '~60',
+                                description: 'Where it all started - UK and Detroit producers merging house warmth with techno\'s edge. Green Velvet, Mr. C, and X-Press 2 pioneered the sound. Raw, jacking grooves with mechanical precision. Studio 303, Relief Records era.',
+                                examples: [
+                                    { title: 'Answering Machine', artist: 'Mr. C', year: 1995 },
+                                    { title: 'Percolator', artist: 'Cajmere', year: 1992 },
+                                    { title: 'Lazy', artist: 'X-Press 2', year: 2002 }
+                                ]
+                            },
+                            {
+                                id: 'minimal-tech-house',
+                                title: 'Minimal Tech House',
+                                count: '~50',
+                                description: 'Stripped-back, hypnotic grooves focusing on subtle changes and micro-movements. Less melodic content, more emphasis on percussion and texture. Influenced by minimal techno but retains house\'s swing. Perfect for deep listening and marathon sets.',
+                                examples: [
+                                    { title: 'Fabric', artist: 'Damian Lazarus', year: 2005 },
+                                    { title: 'Talking', artist: 'Martinez', year: 2006 },
+                                    { title: 'Bells', artist: 'Solee', year: 2008 }
+                                ]
+                            },
+                            {
+                                id: 'ibiza-tech-house',
+                                title: 'Ibiza/Peak-Time Tech House',
+                                count: '~80',
+                                description: 'Sun-drenched, peak-hour energy for White Isle terraces. Vocal hooks, uplifting builds, and festival-ready energy while maintaining underground credibility. CamelPhat, Solardo, and Fisher brought this sound to global stages. 2015-present dominance.',
+                                examples: [
+                                    { title: 'Cola', artist: 'CamelPhat & Elderbrook', year: 2017 },
+                                    { title: 'Losing It', artist: 'Fisher', year: 2018 },
+                                    { title: 'Tribesmen', artist: 'Solardo', year: 2017 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'camelphat-era',
+                                        title: 'CamelPhat/Vocal Tech House',
+                                        count: '~40',
+                                        description: 'Vocal hooks over driving tech house. CamelPhat\'s "Cola" defined the sound. Emotional, peak-time, radio-friendly without losing underground credibility.',
+                                        examples: [
+                                            { title: 'Cola', artist: 'CamelPhat & Elderbrook', year: 2017 },
+                                            { title: 'Breathe', artist: 'CamelPhat & Cristoph', year: 2018 },
+                                            { title: 'Panic Room', artist: 'CamelPhat & Au/Ra', year: 2018 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'festival-tech',
+                                        title: 'Festival/Big Room Tech',
+                                        count: '~40',
+                                        description: 'Tech house designed for massive crowds. Fisher, Chris Lake, and Solardo. Jackin\' grooves, crowd-pleasing energy, main stage vibes.',
+                                        examples: [
+                                            { title: 'Losing It', artist: 'Fisher', year: 2018 },
+                                            { title: 'Operator', artist: 'Chris Lake', year: 2018 },
+                                            { title: 'Be Somebody', artist: 'Fisher & Chris Lake', year: 2018 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'uk-tech-house',
+                                title: 'UK Underground Tech House',
+                                count: '~50',
+                                description: 'British take on tech house - darker, groovier, with garage and grime influences. Jamie Jones, Hot Since 82, and Eats Everything represent the sound. Labels like Hot Creations and Crosstown Rebels define the aesthetic.',
+                                examples: [
+                                    { title: 'Hungry for the Power', artist: 'Azari & III', year: 2011 },
+                                    { title: 'Bring the Lights Down', artist: 'Hot Since 82', year: 2013 },
+                                    { title: 'Entrance Song', artist: 'The Black Madonna', year: 2016 }
+                                ]
+                            },
+                            {
+                                id: 'latin-tech-house',
+                                title: 'Latin-Influenced Tech House',
+                                count: '~40',
+                                description: 'Tech house infused with Latin percussion, Spanish vocals, and Afro-Latin grooves. Artists like Nic Fanciulli and Dennis Cruz bring heat. Popular in Miami, Barcelona, and South American club circuits.',
+                                examples: [
+                                    { title: 'Mamacita', artist: 'Dennis Cruz', year: 2019 },
+                                    { title: 'Changó', artist: 'Hector Couto', year: 2016 },
+                                    { title: 'La Candela', artist: 'Paco Osuna', year: 2015 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'progressive-house',
+                        title: 'Progressive House',
+                        count: '~60',
+                        description: 'Epic buildups, layered melodies, and emotional peaks. Emerged in early 90s UK with acts like The Orb and Leftfield, then exploded globally in the 2000s. Less focused on loops, more on journey and crescendo. Influenced trance and became festival anthem template.',
+                        examples: [
+                            { title: 'Papua New Guinea', artist: 'The Future Sound of London', year: 1991 },
+                            { title: 'One', artist: 'Swedish House Mafia', year: 2010 },
+                            { title: 'Opus', artist: 'Eric Prydz', year: 2016 }
+                        ],
+                        children: [
+                            {
+                                id: 'uk-progressive',
+                                title: 'UK Progressive (Early 90s)',
+                                count: '~20',
+                                description: 'Leftfield, The Orb, and Underworld created progressive house in UK warehouses. Experimental, dubby, cerebral. Long tracks, epic journeys.',
+                                examples: [
+                                    { title: 'Papua New Guinea', artist: 'The Future Sound of London', year: 1991 },
+                                    { title: 'Born Slippy', artist: 'Underworld', year: 1995 },
+                                    { title: 'Phat Planet', artist: 'Leftfield', year: 1999 }
+                                ]
+                            },
+                            {
+                                id: 'epic-progressive',
+                                title: 'Epic/Festival Progressive',
+                                count: '~40',
+                                description: 'Swedish House Mafia, Eric Prydz, and Deadmau5 brought progressive to stadiums. Massive buildups, emotional drops, hands-in-the-air moments.',
+                                examples: [
+                                    { title: 'One', artist: 'Swedish House Mafia', year: 2010 },
+                                    { title: 'Opus', artist: 'Eric Prydz', year: 2016 },
+                                    { title: 'Strobe', artist: 'Deadmau5', year: 2009 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'afro-house',
+                        title: 'Afro House',
+                        count: '~70',
+                        description: 'House music infused with African percussion, tribal rhythms, and organic instrumentation. South African producers led the charge with labels like Black Coffee\'s Soulistic Music. Combines deep house sophistication with polyrhythmic drums and call-and-response vocals.',
+                        examples: [
+                            { title: 'We Dance Again', artist: 'Black Coffee feat. Nakhane Toure', year: 2016 },
+                            { title: 'Superman', artist: 'Black Coffee feat. Bucie', year: 2016 },
+                            { title: 'Stimela', artist: 'Black Coffee', year: 2010 }
+                        ],
+                        children: [
+                            {
+                                id: 'sa-house',
+                                title: 'South African House',
+                                count: '~40',
+                                description: 'Black Coffee, Culoe De Song, and DJ Shimza defined SA house. Deep, percussive, soulful. Township roots meet global sophistication.',
+                                examples: [
+                                    { title: 'We Dance Again', artist: 'Black Coffee', year: 2016 },
+                                    { title: 'Webaba', artist: 'Black Coffee', year: 2015 },
+                                    { title: 'Exodus', artist: 'Culoe De Song', year: 2012 }
+                                ]
+                            },
+                            {
+                                id: 'west-african-house',
+                                title: 'West African/Afro Tech',
+                                count: '~30',
+                                description: 'Nigerian and Ghanaian producers blending afrobeats with house. More uptempo, festival-ready. Amapiano influences creeping in.',
+                                examples: [
+                                    { title: 'Ye', artist: 'Burna Boy', year: 2018 },
+                                    { title: 'Gqom', artist: 'Distruction Boyz', year: 2017 },
+                                    { title: 'Jerusalema', artist: 'Master KG', year: 2019 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'electro-house',
+                        title: 'Electro House',
+                        count: '~110',
+                        description: 'Aggressive, big-room sound that dominated 2000s-2010s EDM. Heavy synthesizer riffs, distorted basslines, build-drop structure, and high energy. Artists like Deadmau5, Justice, and Swedish House Mafia brought house to stadiums and festival main stages.',
+                        examples: [
+                            { title: 'Ghosts \'n\' Stuff', artist: 'Deadmau5', year: 2008 },
+                            { title: 'D.A.N.C.E.', artist: 'Justice', year: 2007 },
+                            { title: 'Greyhound', artist: 'Swedish House Mafia', year: 2012 }
+                        ],
+                        children: [
+                            {
+                                id: 'french-electro',
+                                title: 'French Electro House',
+                                count: '~35',
+                                description: 'Ed Banger Records defined the aesthetic. Justice, Boys Noize, and SebastiAn brought punk attitude to house music. Crunchy, distorted, and dripping with analog warmth. The sound of Paris after-parties.',
+                                examples: [
+                                    { title: 'Waters of Nazareth', artist: 'Justice', year: 2006 },
+                                    { title: 'Stress', artist: 'Justice', year: 2008 },
+                                    { title: 'Let Me In', artist: 'Boys Noize', year: 2007 }
+                                ]
+                            },
+                            {
+                                id: 'big-room',
+                                title: 'Big Room House',
+                                count: '~40',
+                                description: 'Festival main stage anthems. Swedish House Mafia, Alesso, and Hardwell perfected the formula: minimal verses, massive builds, euphoric drops. Designed for 50,000 people jumping in unison.',
+                                examples: [
+                                    { title: 'Greyhound', artist: 'Swedish House Mafia', year: 2012 },
+                                    { title: 'Animals', artist: 'Martin Garrix', year: 2013 },
+                                    { title: 'Spaceman', artist: 'Hardwell', year: 2012 }
+                                ]
+                            },
+                            {
+                                id: 'complextro',
+                                title: 'Complextro/Fidget House',
+                                count: '~35',
+                                description: 'Glitchy, maximalist electro house. Porter Robinson and Wolfgang Gartner pushed production complexity with intricate sound design, rapid changes, and video game aesthetics. ADD-inducing in the best way.',
+                                examples: [
+                                    { title: 'Say My Name', artist: 'Porter Robinson', year: 2010 },
+                                    { title: 'Illmerica', artist: 'Wolfgang Gartner', year: 2009 },
+                                    { title: 'Internet Friends', artist: 'Knife Party', year: 2011 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'bass-house',
+                        title: 'Bass House',
+                        count: '~40',
+                        description: 'UK bass music meets house. Wobbly basslines, grime influences, skippy percussion. Emerged from UK garage and dubstep evolution. Artists like Tchami and AC Slater defined the sound with heavy low-end and festival-ready energy.',
+                        examples: [
+                            { title: 'Promesses', artist: 'Tchami feat. Kaleem Taylor', year: 2014 },
+                            { title: 'Jack Got Jacked', artist: 'AC Slater', year: 2015 },
+                            { title: 'Make Those Move', artist: 'I.GOT.U', year: 2013 }
+                        ]
+                    },
+                    {
+                        id: 'nu-disco',
+                        title: 'Nu-Disco',
+                        count: '~90',
+                        description: 'Modern reimagining of disco\'s sophistication. Live instrumentation, funk grooves, lush strings, and vocoders meet contemporary production. Artists like Daft Punk, Chromeo, and Lindstrøm brought disco back with fresh perspective.',
+                        examples: [
+                            { title: 'One More Time', artist: 'Daft Punk', year: 2000 },
+                            { title: 'Fancy Footwork', artist: 'Chromeo', year: 2007 },
+                            { title: 'Where You Go I Go Too', artist: 'Lindstrøm', year: 2008 }
+                        ],
+                        children: [
+                            {
+                                id: 'filter-disco',
+                                title: 'French Touch/Filter Disco',
+                                count: '~40',
+                                description: 'Daft Punk, Cassius, and Stardust pioneered the French Touch: heavily filtered samples, funky basslines, and robot vocals. The sound that made disco cool again in the late 90s/early 2000s.',
+                                examples: [
+                                    { title: 'Around the World', artist: 'Daft Punk', year: 1997 },
+                                    { title: 'Music Sounds Better With You', artist: 'Stardust', year: 1998 },
+                                    { title: '1999', artist: 'Cassius', year: 1999 }
+                                ]
+                            },
+                            {
+                                id: 'space-disco',
+                                title: 'Space Disco/Cosmic',
+                                count: '~30',
+                                description: 'Scandinavian producers like Lindstrøm and Todd Terje created sprawling, psychedelic disco. Long tracks, lush synthesizers, and cosmic atmospheres. Balearic vibes for sophisticated dancefloors.',
+                                examples: [
+                                    { title: 'Inspector Norse', artist: 'Todd Terje', year: 2012 },
+                                    { title: 'Where You Go I Go Too', artist: 'Lindstrøm', year: 2008 },
+                                    { title: 'Ragysh', artist: 'Prins Thomas', year: 2008 }
+                                ]
+                            },
+                            {
+                                id: 'funk-disco-revival',
+                                title: 'Funk/Boogie Revival',
+                                count: '~20',
+                                description: 'Artists like Chromeo and Breakbot brought 80s funk-disco aesthetics back. Talkbox vocals, slap bass, and retro synthesizers with modern production polish.',
+                                examples: [
+                                    { title: 'Fancy Footwork', artist: 'Chromeo', year: 2007 },
+                                    { title: 'Baby I\'m Yours', artist: 'Breakbot', year: 2010 },
+                                    { title: 'Get Lucky', artist: 'Daft Punk feat. Pharrell', year: 2013 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'funk-soul-rnb',
+                title: 'Funk, Soul & R&B Heritage',
+                subtitle: '~700 tracks of Black American musical genius',
+                estimatedTracks: '700',
+                children: [
+                    {
+                        id: 'classic-funk',
+                        title: 'Classic Funk (1960s-1980s)',
+                        count: '~200',
+                        description: 'The foundation: syncopated bass, tight horn sections, rhythmic guitar, and emphasis on "the one." James Brown invented it, Parliament-Funkadelic took it to space, and The Meters perfected the pocket. This is the DNA of modern groove music.',
+                        examples: [
+                            { title: 'Give Up the Funk', artist: 'Parliament', year: 1975 },
+                            { title: 'Cissy Strut', artist: 'The Meters', year: 1969 },
+                            { title: 'Super Bad', artist: 'James Brown', year: 1970 }
+                        ],
+                        children: [
+                            {
+                                id: 'james-brown-era',
+                                title: 'James Brown & The Funk Foundation (1960s-70s)',
+                                count: '~50',
+                                description: 'The Godfather of Soul invented funk. "The one" became sacred, horns became punchy rhythmic weapons, and bass became the lead instrument. The JB\'s, Bootsy Collins, and Maceo Parker created the blueprint. Raw, sweaty, and utterly essential.',
+                                examples: [
+                                    { title: 'Cold Sweat', artist: 'James Brown', year: 1967 },
+                                    { title: 'Give It Up or Turnit a Loose', artist: 'James Brown', year: 1969 },
+                                    { title: 'Get Up (I Feel Like Being a) Sex Machine', artist: 'James Brown', year: 1970 }
+                                ]
+                            },
+                            {
+                                id: 'pfunk',
+                                title: 'P-Funk Universe',
+                                count: '~50',
+                                description: 'George Clinton\'s psychedelic funk empire. Parliament\'s horn-driven disco-funk and Funkadelic\'s guitar-heavy rock-funk created a mythology mixing sci-fi, Afrofuturism, and uncut funk. The ultimate party music with social commentary.',
+                                examples: [
+                                    { title: 'Flash Light', artist: 'Parliament', year: 1977 },
+                                    { title: 'One Nation Under a Groove', artist: 'Funkadelic', year: 1978 },
+                                    { title: 'Atomic Dog', artist: 'George Clinton', year: 1982 }
+                                ]
+                            },
+                            {
+                                id: 'jazz-funk',
+                                title: 'Jazz-Funk Fusion',
+                                count: '~70',
+                                description: 'Where jazz improvisation met funk\'s groove. Herbie Hancock, Roy Ayers, and The Headhunters blended complex arrangements with danceable rhythms. Electric pianos, synthesizers, and sophisticated chord progressions over funky basslines.',
+                                examples: [
+                                    { title: 'Chameleon', artist: 'Herbie Hancock', year: 1973 },
+                                    { title: 'Everybody Loves the Sunshine', artist: 'Roy Ayers', year: 1976 },
+                                    { title: 'Knucklehead', artist: 'Grover Washington Jr.', year: 1975 }
+                                ]
+                            },
+                            {
+                                id: 'new-orleans-funk',
+                                title: 'New Orleans Funk',
+                                count: '~30',
+                                description: 'The Meters defined the New Orleans sound - stripped down, impossibly tight, swampy groove. Second-line rhythms meet funk minimalism. Art Neville, Leo Nocentelli, and the Neville Brothers carried the tradition. Essential DNA for hip-hop producers.',
+                                examples: [
+                                    { title: 'Cissy Strut', artist: 'The Meters', year: 1969 },
+                                    { title: 'Fire on the Bayou', artist: 'The Meters', year: 1975 },
+                                    { title: 'Hey Pocky A-Way', artist: 'The Meters', year: 1974 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'classic-soul',
+                        title: 'Soul Music (1960s-1970s)',
+                        count: '~150',
+                        description: 'Gospel passion meets secular themes. Motown\'s polished pop-soul, Stax\'s gritty Memphis sound, and Philly soul\'s lush orchestration. Voices like Aretha Franklin, Marvin Gaye, and Al Green defined an era and influenced everything after.',
+                        examples: [
+                            { title: 'Respect', artist: 'Aretha Franklin', year: 1967 },
+                            { title: 'What\'s Going On', artist: 'Marvin Gaye', year: 1971 },
+                            { title: 'Let\'s Stay Together', artist: 'Al Green', year: 1971 }
+                        ],
+                        children: [
+                            {
+                                id: 'motown-soul',
+                                title: 'Motown Sound',
+                                count: '~60',
+                                description: 'Berry Gordy\'s Detroit hit factory. The Funk Brothers created the groove, Smokey Robinson wrote the poetry, and artists like The Supremes, Marvin Gaye, and Stevie Wonder delivered crossover magic. Polished, sophisticated, and universally appealing.',
+                                examples: [
+                                    { title: 'My Girl', artist: 'The Temptations', year: 1964 },
+                                    { title: 'Ain\'t No Mountain High Enough', artist: 'Marvin Gaye & Tammi Terrell', year: 1967 },
+                                    { title: 'Superstition', artist: 'Stevie Wonder', year: 1972 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'classic-motown',
+                                        title: 'Classic Motown (1960s)',
+                                        count: '~35',
+                                        description: 'The golden era: The Supremes, The Temptations, The Four Tops, and Marvin Gaye. Pop perfection with soul roots.',
+                                        examples: [
+                                            { title: 'My Girl', artist: 'The Temptations', year: 1964 },
+                                            { title: 'Baby Love', artist: 'The Supremes', year: 1964 },
+                                            { title: 'Reach Out I\'ll Be There', artist: 'Four Tops', year: 1966 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'psychedelic-soul',
+                                        title: 'Psychedelic Soul Era (1970s)',
+                                        count: '~25',
+                                        description: 'Motown evolved: Marvin Gaye\'s What\'s Going On and Stevie Wonder\'s classic period. More conscious, experimental, and artistic.',
+                                        examples: [
+                                            { title: 'What\'s Going On', artist: 'Marvin Gaye', year: 1971 },
+                                            { title: 'Superstition', artist: 'Stevie Wonder', year: 1972 },
+                                            { title: 'Living for the City', artist: 'Stevie Wonder', year: 1973 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'stax-memphis-soul',
+                                title: 'Stax/Memphis Soul',
+                                count: '~50',
+                                description: 'Raw, gritty Southern soul from Memphis. Booker T. & the M.G.\'s laid down the groove, the Memphis Horns punctuated it. Otis Redding, Sam & Dave, and Isaac Hayes brought emotional intensity. Less polish than Motown, more church and sweat.',
+                                examples: [
+                                    { title: 'Try a Little Tenderness', artist: 'Otis Redding', year: 1966 },
+                                    { title: 'Soul Man', artist: 'Sam & Dave', year: 1967 },
+                                    { title: 'Theme from Shaft', artist: 'Isaac Hayes', year: 1971 }
+                                ]
+                            },
+                            {
+                                id: 'philly-soul',
+                                title: 'Philadelphia Soul',
+                                count: '~40',
+                                description: 'Lush orchestration meets disco\'s four-on-the-floor. Gamble & Huff\'s MTSB (Philadelphia International) sound: sweeping strings, sophisticated arrangements, and smooth vocals. The O\'Jays, Harold Melvin & The Blue Notes, and Teddy Pendergrass defined 70s sophistication.',
+                                examples: [
+                                    { title: 'Love Train', artist: 'The O\'Jays', year: 1972 },
+                                    { title: 'If You Don\'t Know Me by Now', artist: 'Harold Melvin & The Blue Notes', year: 1972 },
+                                    { title: 'Love T.K.O.', artist: 'Teddy Pendergrass', year: 1980 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'classic-rnb',
+                        title: 'Classic R&B (1980s-1990s)',
+                        count: '~120',
+                        description: 'Rhythm and blues evolved with drum machines, synthesizers, and New Jack Swing. Janet Jackson, Bobby Brown, and Babyface brought funk to radio-friendly formats. Production became as important as vocal performance.',
+                        examples: [
+                            { title: 'Rhythm Nation', artist: 'Janet Jackson', year: 1989 },
+                            { title: 'My Prerogative', artist: 'Bobby Brown', year: 1988 },
+                            { title: 'End of the Road', artist: 'Boyz II Men', year: 1991 }
+                        ],
+                        children: [
+                            {
+                                id: 'new-jack-swing',
+                                title: 'New Jack Swing Era',
+                                count: '~60',
+                                description: 'Teddy Riley fused hip-hop beats with R&B melodies. Swingbeat grooves, synthesized production, and street credibility. Janet Jackson, Guy, and Bobby Brown dominated late 80s/early 90s. The sound of urban radio before hip-hop took over.',
+                                examples: [
+                                    { title: 'My Prerogative', artist: 'Bobby Brown', year: 1988 },
+                                    { title: 'Groove Me', artist: 'Guy', year: 1988 },
+                                    { title: 'Escapade', artist: 'Janet Jackson', year: 1989 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'teddy-riley-production',
+                                        title: 'Teddy Riley Production',
+                                        count: '~30',
+                                        description: 'Teddy Riley invented the sound. Guy, Blackstreet, and productions for Michael Jackson. Hip-hop drums meet R&B hooks.',
+                                        examples: [
+                                            { title: 'Groove Me', artist: 'Guy', year: 1988 },
+                                            { title: 'No Diggity', artist: 'Blackstreet', year: 1996 },
+                                            { title: 'Remember the Time', artist: 'Michael Jackson', year: 1992 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'janet-babyface',
+                                        title: 'Janet Jackson/Babyface Era',
+                                        count: '~30',
+                                        description: 'Jimmy Jam & Terry Lewis produced Janet Jackson, Babyface brought smooth sophistication. Polished new jack swing for crossover success.',
+                                        examples: [
+                                            { title: 'Rhythm Nation', artist: 'Janet Jackson', year: 1989 },
+                                            { title: 'Whip Appeal', artist: 'Babyface', year: 1989 },
+                                            { title: 'If', artist: 'Janet Jackson', year: 1993 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'quiet-storm',
+                                title: 'Quiet Storm R&B',
+                                count: '~60',
+                                description: 'Smooth, sensual slow jams for late-night radio. Anita Baker, Luther Vandross, and Babyface perfected the art of sophisticated romance. Lush production, adult themes, and vocal excellence over programmed beats.',
+                                examples: [
+                                    { title: 'Sweet Love', artist: 'Anita Baker', year: 1986 },
+                                    { title: 'Never Too Much', artist: 'Luther Vandross', year: 1981 },
+                                    { title: 'Whip Appeal', artist: 'Babyface', year: 1989 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'classic-quiet-storm',
+                                        title: 'Classic Quiet Storm (1980s)',
+                                        count: '~35',
+                                        description: 'Anita Baker and Luther Vandross defined sophisticated R&B. Jazz influences, vocal excellence, and romantic sophistication.',
+                                        examples: [
+                                            { title: 'Sweet Love', artist: 'Anita Baker', year: 1986 },
+                                            { title: 'Never Too Much', artist: 'Luther Vandross', year: 1981 },
+                                            { title: 'Giving You the Best That I Got', artist: 'Anita Baker', year: 1988 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'adult-rnb',
+                                        title: 'Adult Contemporary R&B',
+                                        count: '~25',
+                                        description: 'Sophisticated R&B for grown folks. Sade, Maxwell, and Toni Braxton. Timeless, elegant, and sensual.',
+                                        examples: [
+                                            { title: 'Smooth Operator', artist: 'Sade', year: 1984 },
+                                            { title: 'Ascension', artist: 'Maxwell', year: 1996 },
+                                            { title: 'Un-Break My Heart', artist: 'Toni Braxton', year: 1996 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'neo-soul',
+                        title: 'Neo-Soul Movement',
+                        count: '~80',
+                        description: 'Late 90s renaissance led by Erykah Badu, D\'Angelo, and The Roots. Return to organic instrumentation, conscious lyricism, and jazz/hip-hop influences. Rejected commercial R&B\'s polish for raw authenticity and musical sophistication.',
+                        examples: [
+                            { title: 'On & On', artist: 'Erykah Badu', year: 1997 },
+                            { title: 'Brown Sugar', artist: 'D\'Angelo', year: 1995 },
+                            { title: 'You Got Me', artist: 'The Roots feat. Erykah Badu', year: 1999 }
+                        ]
+                    },
+                    {
+                        id: 'contemporary-rnb',
+                        title: 'Contemporary R&B (2000s-Present)',
+                        count: '~150',
+                        description: 'Modern R&B absorbed hip-hop, electronic production, and alternative influences. Artists like Frank Ocean, The Weeknd, and SZA blur genre lines with atmospheric production, vulnerable lyrics, and experimental structures.',
+                        examples: [
+                            { title: 'Thinkin Bout You', artist: 'Frank Ocean', year: 2012 },
+                            { title: 'The Hills', artist: 'The Weeknd', year: 2015 },
+                            { title: 'The Weekend', artist: 'SZA', year: 2017 }
+                        ],
+                        children: [
+                            {
+                                id: 'alternative-rnb',
+                                title: 'Alternative R&B',
+                                count: '~70',
+                                description: 'Experimental, genre-blurring R&B. Frank Ocean, FKA twigs, and Miguel rejected traditional structures for atmospheric, introspective soundscapes. Indie sensibilities meet R&B vocals over electronic/ambient production.',
+                                examples: [
+                                    { title: 'Thinkin Bout You', artist: 'Frank Ocean', year: 2012 },
+                                    { title: 'Two Weeks', artist: 'FKA twigs', year: 2014 },
+                                    { title: 'Adorn', artist: 'Miguel', year: 2012 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'frank-ocean-era',
+                                        title: 'Frank Ocean/Channel Orange Era',
+                                        count: '~35',
+                                        description: 'Frank Ocean redefined R&B. Introspective lyrics, unconventional song structures, lush production. Indie credibility meets mainstream success.',
+                                        examples: [
+                                            { title: 'Thinkin Bout You', artist: 'Frank Ocean', year: 2012 },
+                                            { title: 'Pyramids', artist: 'Frank Ocean', year: 2012 },
+                                            { title: 'Nikes', artist: 'Frank Ocean', year: 2016 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'experimental-rnb',
+                                        title: 'Experimental/Art R&B',
+                                        count: '~35',
+                                        description: 'FKA twigs, Kelela, and Solange pushed boundaries. Electronic production, avant-garde aesthetics, challenging structures.',
+                                        examples: [
+                                            { title: 'Two Weeks', artist: 'FKA twigs', year: 2014 },
+                                            { title: 'LMK', artist: 'Kelela', year: 2017 },
+                                            { title: 'Cranes in the Sky', artist: 'Solange', year: 2016 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'dark-rnb',
+                                title: 'Dark/Moody R&B',
+                                count: '~50',
+                                description: 'Nocturnal, atmospheric R&B. The Weeknd pioneered the sound - drugs, sex, and existential dread over minimalist production. PARTYNEXTDOOR and Bryson Tiller continued the aesthetic. Perfect for 3am drives.',
+                                examples: [
+                                    { title: 'Wicked Games', artist: 'The Weeknd', year: 2011 },
+                                    { title: 'Recognize', artist: 'PARTYNEXTDOOR', year: 2014 },
+                                    { title: 'Don\'t', artist: 'Bryson Tiller', year: 2015 }
+                                ]
+                            },
+                            {
+                                id: 'trap-soul',
+                                title: 'Trap Soul/Melodic R&B',
+                                count: '~30',
+                                description: 'R&B vocals over trap production. Bryson Tiller named the subgenre. 808 bass, hi-hat rolls, and sung-rap hybrids. Summer Walker and 6LACK represent the sound - emotionally vulnerable, rhythmically hard.',
+                                examples: [
+                                    { title: 'Don\'t', artist: 'Bryson Tiller', year: 2015 },
+                                    { title: 'PRBLMS', artist: '6LACK', year: 2016 },
+                                    { title: 'Girls Need Love', artist: 'Summer Walker', year: 2019 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'uk-bass',
+                title: 'UK Sound System Culture',
+                subtitle: '~220 tracks from jungle to grime',
+                estimatedTracks: '220',
+                children: [
+                    {
+                        id: 'jungle-dnb',
+                        title: 'Jungle & Drum & Bass',
+                        count: '~75',
+                        description: 'Born from UK rave culture\'s Amen break experiments. Jungle brought breakbeats, reggae bass, ragga vocals, and 160-170 BPM energy. Evolved into drum & bass - more refined, darker, technical. Artists like Goldie and Roni Size brought it mainstream.',
+                        examples: [
+                            { title: 'Inner City Life', artist: 'Goldie', year: 1995 },
+                            { title: 'Brown Paper Bag', artist: 'Roni Size / Reprazent', year: 1997 },
+                            { title: 'The Nine', artist: 'Bad Company', year: 1998 }
+                        ],
+                        children: [
+                            {
+                                id: 'jungle-ragga',
+                                title: 'Jungle/Ragga Jungle',
+                                count: '~25',
+                                description: 'The original sound: chopped Amen breaks, deep reggae bass, and ragga MC vocals. General Levy, Shy FX, and UK Apache defined early 90s rave energy. Raw, rude, and rebellious.',
+                                examples: [
+                                    { title: 'Original Nuttah', artist: 'Shy FX & UK Apache', year: 1994 },
+                                    { title: 'Incredible', artist: 'General Levy', year: 1994 },
+                                    { title: 'Super Sharp Shooter', artist: 'DJ Zinc', year: 1995 }
+                                ]
+                            },
+                            {
+                                id: 'intelligent-dnb',
+                                title: 'Intelligent/Liquid DnB',
+                                count: '~30',
+                                description: 'Sophisticated, melodic drum & bass. LTJ Bukem, Goldie, and Good Looking Records brought jazz influences, atmospheric pads, and soulful vocals. Perfect for headphone sessions and sunrise sets.',
+                                examples: [
+                                    { title: 'Inner City Life', artist: 'Goldie', year: 1995 },
+                                    { title: 'Music', artist: 'LTJ Bukem', year: 1993 },
+                                    { title: 'Brown Paper Bag', artist: 'Roni Size / Reprazent', year: 1997 }
+                                ]
+                            },
+                            {
+                                id: 'neurofunk-techstep',
+                                title: 'Neurofunk/Techstep',
+                                count: '~20',
+                                description: 'Dark, mechanical, dystopian drum & bass. Ed Rush, Optical, and Bad Company UK pioneered the sound. Sci-fi atmospheres, heavy bass, and relentless energy.',
+                                examples: [
+                                    { title: 'The Nine', artist: 'Bad Company', year: 1998 },
+                                    { title: 'Wormhole', artist: 'Ed Rush & Optical', year: 1998 },
+                                    { title: 'Valley of the Shadows', artist: 'Origin Unknown', year: 1993 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'uk-garage',
+                        title: 'UK Garage',
+                        count: '~70',
+                        description: 'Speed garage and 2-step rhythms dominated late 90s/early 2000s UK. Syncopated drums, shuffling hi-hats, R&B vocals, and sub-bass. The Artful Dodger, MJ Cole, and Craig David brought it to pop charts. Foundation for dubstep and grime.',
+                        examples: [
+                            { title: 'Re-Rewind', artist: 'The Artful Dodger feat. Craig David', year: 1999 },
+                            { title: 'Sincere', artist: 'MJ Cole', year: 2000 },
+                            { title: 'Flowers', artist: 'Sweet Female Attitude', year: 2000 }
+                        ],
+                        children: [
+                            {
+                                id: 'speed-garage',
+                                title: 'Speed Garage',
+                                count: '~20',
+                                description: 'Faster, bassier house music. UK producers sped up US garage, added sub-bass, and created the blueprint. Todd Edwards\' cut-up vocal style influenced everyone from Daft Punk to Burial.',
+                                examples: [
+                                    { title: 'RipGroove', artist: 'Double 99', year: 1997 },
+                                    { title: 'Dooms Night', artist: 'Azzido Da Bass', year: 1999 },
+                                    { title: 'Face', artist: 'Todd Edwards', year: 1997 }
+                                ]
+                            },
+                            {
+                                id: '2step-garage',
+                                title: '2-Step Garage',
+                                count: '~50',
+                                description: 'Syncopated, skippy rhythms that defined turn-of-millennium UK clubs. MJ Cole\'s sophisticated production, Artful Dodger\'s pop hooks, and Craig David\'s crossover appeal. R&B vocals over bass-heavy, broken beat patterns.',
+                                examples: [
+                                    { title: 'Re-Rewind', artist: 'The Artful Dodger feat. Craig David', year: 1999 },
+                                    { title: 'Sincere', artist: 'MJ Cole', year: 2000 },
+                                    { title: '21 Seconds', artist: 'So Solid Crew', year: 2001 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'grime',
+                        title: 'Grime',
+                        count: '~45',
+                        description: 'East London\'s raw, aggressive response to UK garage. 140 BPM, sparse production, aggressive MCs, and distinctly British attitude. Dizzee Rascal, Wiley, and Skepta created a sound that reflected tower block life and UK youth culture.',
+                        examples: [
+                            { title: 'I Luv U', artist: 'Dizzee Rascal', year: 2003 },
+                            { title: 'Wot Do U Call It?', artist: 'Wiley', year: 2004 },
+                            { title: 'Shutdown', artist: 'Skepta', year: 2015 }
+                        ]
+                    },
+                    {
+                        id: 'dubstep',
+                        title: 'Dubstep',
+                        count: '~50',
+                        description: 'South London\'s dark, bass-heavy sound. Half-time rhythms around 140 BPM, sub-bass emphasis, and spacious production. Early pioneers like Burial and Skream created moody atmospheres. Later "brostep" brought aggressive wobble bass to stadiums.',
+                        examples: [
+                            { title: 'Midnight Request Line', artist: 'Skream', year: 2005 },
+                            { title: 'Archangel', artist: 'Burial', year: 2007 },
+                            { title: 'Scary Monsters and Nice Sprites', artist: 'Skrillex', year: 2010 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'techno',
+                title: 'Techno & Electronic',
+                subtitle: '~400 tracks of machine soul',
+                estimatedTracks: '400',
+                children: [
+                    {
+                        id: 'detroit-techno',
+                        title: 'Detroit Techno',
+                        count: '~80',
+                        description: 'The Belleville Three (Juan Atkins, Derrick May, Kevin Saunderson) created techno by fusing Kraftwerk\'s futurism with Black American music traditions. Emotional machine music reflecting Detroit\'s industrial landscape. Roland TR-909 drums, synthesizer melodies, and soulful depth.',
+                        examples: [
+                            { title: 'Strings of Life', artist: 'Derrick May', year: 1987 },
+                            { title: 'No UFO\'s', artist: 'Juan Atkins', year: 1985 },
+                            { title: 'Good Life', artist: 'Inner City', year: 1988 }
+                        ],
+                        children: [
+                            {
+                                id: 'first-wave-detroit',
+                                title: 'First Wave Detroit (1985-1990)',
+                                count: '~35',
+                                description: 'The original trio: Juan Atkins (Model 500), Derrick May (Rhythim Is Rhythim), Kevin Saunderson (Inner City). Pioneering the sound - futuristic yet soulful, mechanical yet emotional.',
+                                examples: [
+                                    { title: 'No UFO\'s', artist: 'Model 500', year: 1985 },
+                                    { title: 'Strings of Life', artist: 'Rhythim Is Rhythim', year: 1987 },
+                                    { title: 'Big Fun', artist: 'Inner City', year: 1988 }
+                                ]
+                            },
+                            {
+                                id: 'second-wave-detroit',
+                                title: 'Second Wave Detroit (1990s)',
+                                count: '~45',
+                                description: 'Carl Craig, Underground Resistance, and Jeff Mills deepened techno\'s complexity. More aggressive, more experimental, more conceptual. Detroit\'s response to European commercialization.',
+                                examples: [
+                                    { title: 'Bug in the Bass Bin', artist: 'Carl Craig', year: 1992 },
+                                    { title: 'The Punisher', artist: 'Underground Resistance', year: 1991 },
+                                    { title: 'The Bells', artist: 'Jeff Mills', year: 1997 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'berlin-techno',
+                        title: 'Berlin Techno',
+                        count: '~90',
+                        description: 'Post-wall Berlin\'s industrial sound. Dark, hypnotic, minimal, and relentless. Clubs like Berghain and Tresor created marathon-session aesthetics. Artists like Jeff Mills, Marcel Dettmann, and Ben Klock perfected the punishing 4/4 groove.',
+                        examples: [
+                            { title: 'The Bells', artist: 'Jeff Mills', year: 1997 },
+                            { title: 'Dawning', artist: 'Marcel Dettmann', year: 2010 },
+                            { title: 'Subzero', artist: 'Ben Klock', year: 2009 }
+                        ],
+                        children: [
+                            {
+                                id: 'tresor-sound',
+                                title: 'Tresor/Hard Techno',
+                                count: '~30',
+                                description: 'Industrial, raw techno from the legendary Tresor club in a former bank vault. Jeff Mills, Robert Hood, and Underground Resistance brought Detroit\'s intensity to Berlin\'s concrete bunkers.',
+                                examples: [
+                                    { title: 'The Bells', artist: 'Jeff Mills', year: 1997 },
+                                    { title: 'Minimal Nation', artist: 'Robert Hood', year: 1994 },
+                                    { title: 'Jupiter Jazz', artist: 'Underground Resistance', year: 1992 }
+                                ]
+                            },
+                            {
+                                id: 'berghain-sound',
+                                title: 'Berghain/Modern Berlin',
+                                count: '~40',
+                                description: 'Contemporary Berlin techno. Ben Klock, Marcel Dettmann, and Âme define the Ostgut Ton sound. Deep, driving, hypnotic. Built for 12-hour sets and Sunday morning introspection.',
+                                examples: [
+                                    { title: 'Subzero', artist: 'Ben Klock', year: 2009 },
+                                    { title: 'Dawning', artist: 'Marcel Dettmann', year: 2010 },
+                                    { title: 'Rej', artist: 'Âme', year: 2011 }
+                                ]
+                            },
+                            {
+                                id: 'schranz',
+                                title: 'Schranz/Hard Trance Techno',
+                                count: '~20',
+                                description: 'Aggressive, pounding techno with trance influences. Chris Liebing and Sven Väth pushed BPMs higher and energy harder. Festival main room chaos.',
+                                examples: [
+                                    { title: 'American Madness', artist: 'Chris Liebing', year: 1999 },
+                                    { title: 'L\'Esperanza', artist: 'Sven Väth', year: 1993 },
+                                    { title: 'Ayla', artist: 'Ayla', year: 1997 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'minimal-techno',
+                        title: 'Minimal Techno',
+                        count: '~110',
+                        description: 'Less is more. Stripped-down arrangements emphasizing subtle changes, micro-rhythms, and hypnotic repetition. Richie Hawtin and Ricardo Villalobos pioneered the sound. Perfect for focused, meditative dancefloor experiences.',
+                        examples: [
+                            { title: 'Spastik', artist: 'Plastikman', year: 1993 },
+                            { title: 'Dexter', artist: 'Ricardo Villalobos', year: 2003 },
+                            { title: 'Bells', artist: 'Villalobos', year: 2006 }
+                        ],
+                        children: [
+                            {
+                                id: 'plastikman-era',
+                                title: 'Plastikman/Canadian Minimal',
+                                count: '~35',
+                                description: 'Richie Hawtin\'s Plastikman project defined 90s minimal. Acid lines, sparse arrangements, and psychedelic journeys. Plus 8 and M_nus labels spread the gospel.',
+                                examples: [
+                                    { title: 'Spastik', artist: 'Plastikman', year: 1993 },
+                                    { title: 'Plastique', artist: 'Plastikman', year: 1994 },
+                                    { title: 'Consuming', artist: 'Plastikman', year: 1998 }
+                                ]
+                            },
+                            {
+                                id: 'microhouse',
+                                title: 'Microhouse/Glitch Minimal',
+                                count: '~40',
+                                description: 'Clicks, cuts, and microscopic detail. Kompakt label defined the sound. Matias Aguayo, Wolfgang Voigt, and The Field created warm, textural minimal with glitchy percussion.',
+                                examples: [
+                                    { title: 'From Here We Go Sublime', artist: 'The Field', year: 2007 },
+                                    { title: 'Geräusch', artist: 'Sascha Funke', year: 2004 },
+                                    { title: 'Alcachofa', artist: 'Ricardo Villalobos', year: 2003 }
+                                ]
+                            },
+                            {
+                                id: 'romanian-minimal',
+                                title: 'Romanian Minimal',
+                                count: '~35',
+                                description: 'Eastern European take on minimal. Petre Inspirescu, Raresh, and Ricardo Villalobos (Chilean-German but Romania-inspired). Organic, groovy, playful. Less clinical than German minimal.',
+                                examples: [
+                                    { title: 'Fabric', artist: 'Petre Inspirescu', year: 2007 },
+                                    { title: 'MIDI', artist: 'Raresh', year: 2008 },
+                                    { title: 'Dexter', artist: 'Ricardo Villalobos', year: 2003 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ambient-idm',
+                        title: 'Ambient & IDM',
+                        count: '~70',
+                        description: 'Intelligent Dance Music that challenges conventional structures. Aphex Twin, Autechre, and Boards of Canada created complex, emotive electronic music for headphone listening. Blending ambient textures with intricate programming.',
+                        examples: [
+                            { title: 'Xtal', artist: 'Aphex Twin', year: 1992 },
+                            { title: 'Roygbiv', artist: 'Boards of Canada', year: 1998 },
+                            { title: 'Eutow', artist: 'Autechre', year: 1994 }
+                        ],
+                        children: [
+                            {
+                                id: 'ambient-techno',
+                                title: 'Ambient Techno',
+                                count: '~25',
+                                description: 'Where ambient atmospheres meet techno\'s pulse. The Orb, Aphex Twin\'s Selected Ambient Works, and early Warp Records. Beatless or with subtle rhythms, designed for chill-out rooms and home listening.',
+                                examples: [
+                                    { title: 'Xtal', artist: 'Aphex Twin', year: 1992 },
+                                    { title: 'Little Fluffy Clouds', artist: 'The Orb', year: 1990 },
+                                    { title: 'Energy Flash', artist: 'Joey Beltram', year: 1990 }
+                                ]
+                            },
+                            {
+                                id: 'idm-proper',
+                                title: 'IDM/Braindance',
+                                count: '~25',
+                                description: 'Complex rhythms, experimental structures, emotional depth. Autechre, Squarepusher, and µ-Ziq pushed electronic music\'s boundaries. Too weird for the club, too rhythmic for ambient.',
+                                examples: [
+                                    { title: 'Eutow', artist: 'Autechre', year: 1994 },
+                                    { title: 'Come On My Selector', artist: 'Squarepusher', year: 1997 },
+                                    { title: 'Hasty Boom Alert', artist: 'µ-Ziq', year: 1997 }
+                                ]
+                            },
+                            {
+                                id: 'nostalgic-idm',
+                                title: 'Nostalgic/Downtempo IDM',
+                                count: '~20',
+                                description: 'Boards of Canada defined the aesthetic: VHS nostalgia, childhood memories, deteriorating tape sounds. Warm analog synthesis meets melancholic melody.',
+                                examples: [
+                                    { title: 'Roygbiv', artist: 'Boards of Canada', year: 1998 },
+                                    { title: 'Dayvan Cowboy', artist: 'Boards of Canada', year: 2005 },
+                                    { title: 'Olson', artist: 'Boards of Canada', year: 2002 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'electro',
+                        title: 'Electro & Electroclash',
+                        count: '~50',
+                        description: 'Electro emerged from Afrika Bambaataa\'s "Planet Rock," fusing hip-hop with Kraftwerk. TR-808 drums and vocoder vocals. 2000s electroclash revival brought punk attitude with retro-futuristic synths via artists like Miss Kittin and Peaches.',
+                        examples: [
+                            { title: 'Planet Rock', artist: 'Afrika Bambaataa', year: 1982 },
+                            { title: 'Frank Sinatra', artist: 'Miss Kittin & The Hacker', year: 2001 },
+                            { title: 'Fuck the Pain Away', artist: 'Peaches', year: 2000 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'disco',
+                title: 'Disco Heritage',
+                subtitle: '~220 tracks of pure joy',
+                estimatedTracks: '220',
+                children: [
+                    {
+                        id: 'early-disco',
+                        title: 'Early Disco (1973-1976)',
+                        count: '~60',
+                        description: 'Disco\'s underground beginnings. David Mancuso\'s Loft parties, Larry Levan at Paradise Garage, and Nicky Siano at Gallery. Raw, soulful, and liberating. Strings, horns, and groove before the mainstream explosion.',
+                        examples: [
+                            { title: 'Love\'s Theme', artist: 'Love Unlimited Orchestra', year: 1973 },
+                            { title: 'Rock Your Baby', artist: 'George McCrae', year: 1974 },
+                            { title: 'The Hustle', artist: 'Van McCoy', year: 1975 }
+                        ]
+                    },
+                    {
+                        id: 'classic-disco',
+                        title: 'Peak Disco Era (1977-1979)',
+                        count: '~100',
+                        description: 'Disco conquered the world. Saturday Night Fever soundtrack went diamond. Giorgio Moroder\'s synthesizers met Chic\'s sophistication. Studio 54 defined nightlife. Four-on-the-floor liberation music at its zenith.',
+                        examples: [
+                            { title: 'I Feel Love', artist: 'Donna Summer', year: 1977 },
+                            { title: 'Le Freak', artist: 'Chic', year: 1978 },
+                            { title: 'Last Dance', artist: 'Donna Summer', year: 1978 }
+                        ],
+                        children: [
+                            {
+                                id: 'giorgio-moroder',
+                                title: 'Giorgio Moroder/Euro Disco',
+                                count: '~35',
+                                description: 'Giorgio Moroder revolutionized dance music with synthesizers. Donna Summer\'s "I Feel Love" was the future. Electronic, futuristic, hypnotic.',
+                                examples: [
+                                    { title: 'I Feel Love', artist: 'Donna Summer', year: 1977 },
+                                    { title: 'Chase', artist: 'Giorgio Moroder', year: 1978 },
+                                    { title: 'Hot Stuff', artist: 'Donna Summer', year: 1979 }
+                                ]
+                            },
+                            {
+                                id: 'chic-sophisticated',
+                                title: 'Chic/Sophisticated Disco',
+                                count: '~35',
+                                description: 'Chic brought sophistication: Bernard Edwards\' bass, Nile Rodgers\' guitar, and impeccable production. Influenced everyone from Queen to Daft Punk.',
+                                examples: [
+                                    { title: 'Le Freak', artist: 'Chic', year: 1978 },
+                                    { title: 'Good Times', artist: 'Chic', year: 1979 },
+                                    { title: 'I Want Your Love', artist: 'Chic', year: 1978 }
+                                ]
+                            },
+                            {
+                                id: 'saturday-night-fever',
+                                title: 'Saturday Night Fever/Bee Gees Era',
+                                count: '~30',
+                                description: 'The Bee Gees and Saturday Night Fever brought disco to mainstream. Falsetto vocals, orchestral arrangements, pop perfection.',
+                                examples: [
+                                    { title: 'Stayin\' Alive', artist: 'Bee Gees', year: 1977 },
+                                    { title: 'Night Fever', artist: 'Bee Gees', year: 1977 },
+                                    { title: 'More Than a Woman', artist: 'Bee Gees', year: 1977 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'post-disco',
+                        title: 'Post-Disco & Boogie (1980-1984)',
+                        count: '~60',
+                        description: 'After disco\'s "death," it evolved into boogie - stripped-down, synth-heavy funk for intimate dancefloors. Drum machines replaced live bands, but the groove remained. This sound directly birthed house music in Chicago.',
+                        examples: [
+                            { title: 'Let the Music Play', artist: 'Shannon', year: 1983 },
+                            { title: 'I Can\'t Go for That', artist: 'Hall & Oates', year: 1981 },
+                            { title: 'Juicy Fruit', artist: 'Mtume', year: 1983 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'reggae-dancehall',
+                title: 'Reggae & Dancehall',
+                subtitle: '~220 tracks from Jamaica to the world',
+                estimatedTracks: '220',
+                children: [
+                    {
+                        id: 'roots-reggae',
+                        title: 'Roots Reggae',
+                        count: '~80',
+                        description: 'Rastafarian consciousness meets riddim. Bob Marley, Peter Tosh, and Burning Spear brought Jamaican music global with messages of liberation, spirituality, and resistance. One-drop rhythm, militant basslines, and socially conscious lyrics.',
+                        examples: [
+                            { title: 'Redemption Song', artist: 'Bob Marley', year: 1980 },
+                            { title: 'Legalize It', artist: 'Peter Tosh', year: 1976 },
+                            { title: 'Marcus Garvey', artist: 'Burning Spear', year: 1975 }
+                        ],
+                        children: [
+                            {
+                                id: 'classic-roots',
+                                title: 'Classic Roots (1970s)',
+                                count: '~50',
+                                description: 'The golden era. Bob Marley & The Wailers, Burning Spear, and Culture created timeless anthems. Studio One and Channel One riddims, consciousness lyrics, and international appeal.',
+                                examples: [
+                                    { title: 'No Woman, No Cry', artist: 'Bob Marley & The Wailers', year: 1974 },
+                                    { title: 'Marcus Garvey', artist: 'Burning Spear', year: 1975 },
+                                    { title: 'Two Sevens Clash', artist: 'Culture', year: 1977 }
+                                ],
+                                children: [
+                                    {
+                                        id: 'wailers-era',
+                                        title: 'Bob Marley & The Wailers',
+                                        count: '~25',
+                                        description: 'Global ambassadors of reggae. Bob Marley, Peter Tosh, and Bunny Wailer. Tuff Gong/Island Records crossover success.',
+                                        examples: [
+                                            { title: 'No Woman, No Cry', artist: 'Bob Marley', year: 1974 },
+                                            { title: 'Exodus', artist: 'Bob Marley', year: 1977 },
+                                            { title: 'Redemption Song', artist: 'Bob Marley', year: 1980 }
+                                        ]
+                                    },
+                                    {
+                                        id: 'roots-warriors',
+                                        title: 'Roots Warriors',
+                                        count: '~25',
+                                        description: 'Burning Spear, Culture, and The Mighty Diamonds. Deeper roots, more militant, less compromise. Pure consciousness.',
+                                        examples: [
+                                            { title: 'Marcus Garvey', artist: 'Burning Spear', year: 1975 },
+                                            { title: 'Two Sevens Clash', artist: 'Culture', year: 1977 },
+                                            { title: 'Right Time', artist: 'The Mighty Diamonds', year: 1976 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'rockers-sound',
+                                title: 'Rockers Era',
+                                count: '~30',
+                                description: 'More aggressive, militant roots from late 70s. Sly & Robbie\'s revolutionary drumming, dread bass, and political fire. The sound of Jamaican independence consciousness.',
+                                examples: [
+                                    { title: 'Right Time', artist: 'The Mighty Diamonds', year: 1976 },
+                                    { title: 'War Ina Babylon', artist: 'Max Romeo', year: 1976 },
+                                    { title: 'Police & Thieves', artist: 'Junior Murvin', year: 1977 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'dub',
+                        title: 'Dub',
+                        count: '~50',
+                        description: 'Reggae deconstructed. King Tubby and Lee "Scratch" Perry pioneered studio-as-instrument: stripping vocals, emphasizing bass/drums, adding reverb, delay, and effects. This sonic experimentation influenced electronic music worldwide.',
+                        examples: [
+                            { title: 'King Tubby Meets Rockers Uptown', artist: 'Augustus Pablo', year: 1976 },
+                            { title: 'Police & Thieves', artist: 'Lee "Scratch" Perry', year: 1977 },
+                            { title: 'Disco Dub', artist: 'Scientist', year: 1981 }
+                        ]
+                    },
+                    {
+                        id: 'dancehall',
+                        title: 'Dancehall',
+                        count: '~90',
+                        description: 'Digital reggae for the 80s and beyond. Drum machines replaced live bands, lyrics got earthier, and tempo increased. Shabba Ranks, Beenie Man, and Bounty Killer brought sound system culture to international charts. Foundation for reggaeton and modern pop.',
+                        examples: [
+                            { title: 'Murder She Wrote', artist: 'Chaka Demus & Pliers', year: 1992 },
+                            { title: 'Who Am I', artist: 'Beenie Man', year: 1998 },
+                            { title: 'Pon de Replay', artist: 'Rihanna', year: 2005 }
+                        ],
+                        children: [
+                            {
+                                id: 'digital-dancehall',
+                                title: 'Digital Dancehall (1985-1995)',
+                                count: '~35',
+                                description: 'King Jammy\'s "Sleng Teng" started the digital revolution. Casio keyboards, drum machines, and dub effects replaced live bands. Yellowman, Shabba Ranks, and Super Cat dominated.',
+                                examples: [
+                                    { title: 'Under Mi Sleng Teng', artist: 'Wayne Smith', year: 1985 },
+                                    { title: 'Mr. Loverman', artist: 'Shabba Ranks', year: 1992 },
+                                    { title: 'Ghetto Red Hot', artist: 'Super Cat', year: 1992 }
+                                ]
+                            },
+                            {
+                                id: '90s-dancehall',
+                                title: '90s Dancehall Crossover',
+                                count: '~30',
+                                description: 'Dancehall went pop. Chaka Demus & Pliers, Beenie Man, and Sean Paul brought Jamaican sound to global charts. Smoother production, catchy hooks, crossover appeal.',
+                                examples: [
+                                    { title: 'Murder She Wrote', artist: 'Chaka Demus & Pliers', year: 1992 },
+                                    { title: 'Who Am I', artist: 'Beenie Man', year: 1998 },
+                                    { title: 'Get Busy', artist: 'Sean Paul', year: 2002 }
+                                ]
+                            },
+                            {
+                                id: 'modern-dancehall',
+                                title: 'Modern Dancehall (2010s-Present)',
+                                count: '~25',
+                                description: 'Contemporary dancehall infused with trap, Afrobeats, and pop. Vybz Kartel, Popcaan, and Kranium represent the new wave. Digital production meets global influences.',
+                                examples: [
+                                    { title: 'Fever', artist: 'Vybz Kartel', year: 2016 },
+                                    { title: 'Pon de Floor', artist: 'Major Lazer', year: 2009 },
+                                    { title: 'Nobody Has to Know', artist: 'Kranium', year: 2013 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'rock-alternative',
+                title: 'Rock & Alternative',
+                subtitle: '~300 tracks of guitar-driven rebellion',
+                estimatedTracks: '300',
+                children: [
+                    {
+                        id: 'post-punk-new-wave',
+                        title: 'Post-Punk & New Wave',
+                        count: '~140',
+                        description: 'Punk\'s art school aftermath. Joy Division\'s gloom, Talking Heads\' funk-punk, and New Order\'s dance-rock redefined what rock could be. Angular guitars, synthesizers, and introspective lyrics replaced punk\'s raw aggression with experimental sophistication.',
+                        examples: [
+                            { title: 'Love Will Tear Us Apart', artist: 'Joy Division', year: 1980 },
+                            { title: 'Once in a Lifetime', artist: 'Talking Heads', year: 1980 },
+                            { title: 'Blue Monday', artist: 'New Order', year: 1983 }
+                        ],
+                        children: [
+                            {
+                                id: 'dark-post-punk',
+                                title: 'Dark Post-Punk/Gothic',
+                                count: '~40',
+                                description: 'Joy Division, Bauhaus, and Siouxsie defined the dark side. Brooding basslines, atmospheric guitars, existential dread. Gothic rock emerged from this.',
+                                examples: [
+                                    { title: 'Love Will Tear Us Apart', artist: 'Joy Division', year: 1980 },
+                                    { title: 'Bela Lugosi\'s Dead', artist: 'Bauhaus', year: 1979 },
+                                    { title: 'Hong Kong Garden', artist: 'Siouxsie and the Banshees', year: 1978 }
+                                ]
+                            },
+                            {
+                                id: 'art-funk-punk',
+                                title: 'Art-Funk/Dance-Punk',
+                                count: '~35',
+                                description: 'Talking Heads, Gang of Four, and ESG brought funk rhythms to punk attitude. Danceable, intellectual, politically engaged.',
+                                examples: [
+                                    { title: 'Once in a Lifetime', artist: 'Talking Heads', year: 1980 },
+                                    { title: 'Damaged Goods', artist: 'Gang of Four', year: 1978 },
+                                    { title: 'Moody', artist: 'ESG', year: 1981 }
+                                ]
+                            },
+                            {
+                                id: 'synth-new-wave',
+                                title: 'Synth-Pop/New Wave',
+                                count: '~45',
+                                description: 'Synthesizers took over. Depeche Mode, New Order, and The Human League. Electronic, catchy, bridging underground and pop.',
+                                examples: [
+                                    { title: 'Blue Monday', artist: 'New Order', year: 1983 },
+                                    { title: 'Don\'t You Want Me', artist: 'The Human League', year: 1981 },
+                                    { title: 'Just Can\'t Get Enough', artist: 'Depeche Mode', year: 1981 }
+                                ]
+                            },
+                            {
+                                id: 'jangly-pop',
+                                title: 'Jangly Pop/College Rock',
+                                count: '~20',
+                                description: 'The Smiths, R.E.M., and The Cure\'s poppier side. Jangly guitars, literate lyrics, radio-friendly but left-of-center.',
+                                examples: [
+                                    { title: 'How Soon Is Now?', artist: 'The Smiths', year: 1984 },
+                                    { title: 'Radio Free Europe', artist: 'R.E.M.', year: 1983 },
+                                    { title: 'Just Like Heaven', artist: 'The Cure', year: 1987 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'alternative-indie',
+                        title: 'Alternative & Indie Rock',
+                        count: '~100',
+                        description: 'College radio anthems and underground success. From Sonic Youth\'s noise-rock to Pavement\'s lo-fi slacker rock. 90s grunge brought alternative to mainstream, but indie ethos persisted. Raw authenticity over commercial polish.',
+                        examples: [
+                            { title: 'Teen Age Riot', artist: 'Sonic Youth', year: 1988 },
+                            { title: 'Cut Your Hair', artist: 'Pavement', year: 1994 },
+                            { title: 'Smells Like Teen Spirit', artist: 'Nirvana', year: 1991 }
+                        ],
+                        children: [
+                            {
+                                id: 'noise-rock',
+                                title: 'Noise Rock/No Wave',
+                                count: '~25',
+                                description: 'Sonic Youth, The Jesus and Mary Chain, and Pixies. Distortion, feedback, and unconventional song structures. Art school meets aggression.',
+                                examples: [
+                                    { title: 'Teen Age Riot', artist: 'Sonic Youth', year: 1988 },
+                                    { title: 'Just Like Honey', artist: 'The Jesus and Mary Chain', year: 1985 },
+                                    { title: 'Where Is My Mind?', artist: 'Pixies', year: 1988 }
+                                ]
+                            },
+                            {
+                                id: 'grunge',
+                                title: 'Grunge',
+                                count: '~30',
+                                description: 'Seattle\'s explosion. Nirvana, Pearl Jam, and Soundgarden brought alternative to mainstream. Heavy, raw, emotionally direct.',
+                                examples: [
+                                    { title: 'Smells Like Teen Spirit', artist: 'Nirvana', year: 1991 },
+                                    { title: 'Alive', artist: 'Pearl Jam', year: 1991 },
+                                    { title: 'Black Hole Sun', artist: 'Soundgarden', year: 1994 }
+                                ]
+                            },
+                            {
+                                id: 'lo-fi-indie',
+                                title: 'Lo-Fi/Slacker Rock',
+                                count: '~25',
+                                description: 'Pavement, Guided by Voices, and Sebadoh. DIY aesthetics, ironic detachment, brilliant songwriting beneath the fuzz.',
+                                examples: [
+                                    { title: 'Cut Your Hair', artist: 'Pavement', year: 1994 },
+                                    { title: 'Gold Soundz', artist: 'Pavement', year: 1994 },
+                                    { title: 'My Valuable Hunting Knife', artist: 'Guided by Voices', year: 1994 }
+                                ]
+                            },
+                            {
+                                id: 'britpop',
+                                title: 'Britpop',
+                                count: '~20',
+                                description: 'UK\'s response to grunge. Oasis, Blur, and Pulp. Melodic, working-class pride, Beatles-influenced. Optimistic where grunge was nihilistic.',
+                                examples: [
+                                    { title: 'Wonderwall', artist: 'Oasis', year: 1995 },
+                                    { title: 'Song 2', artist: 'Blur', year: 1997 },
+                                    { title: 'Common People', artist: 'Pulp', year: 1995 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'classic-rock',
+                        title: 'Classic Rock',
+                        count: '~60',
+                        description: 'Blues-based rock that defined the 60s-70s. Guitar heroes, stadium anthems, and album-oriented artistry. Led Zeppelin, The Rolling Stones, and Pink Floyd created music that still resonates across generations.',
+                        examples: [
+                            { title: 'Stairway to Heaven', artist: 'Led Zeppelin', year: 1971 },
+                            { title: 'Gimme Shelter', artist: 'The Rolling Stones', year: 1969 },
+                            { title: 'Comfortably Numb', artist: 'Pink Floyd', year: 1979 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'jazz',
+                title: 'Jazz Lineage',
+                subtitle: '~150 tracks of American innovation',
+                estimatedTracks: '150',
+                children: [
+                    {
+                        id: 'bebop-hardbop',
+                        title: 'Bebop & Hard Bop',
+                        count: '~50',
+                        description: 'Fast tempos, complex harmonies, and virtuosic improvisation. Charlie Parker and Dizzy Gillespie revolutionized jazz in the 40s. Hard bop added soul and blues back to bebop\'s complexity with Art Blakey and Horace Silver.',
+                        examples: [
+                            { title: 'Ko-Ko', artist: 'Charlie Parker', year: 1945 },
+                            { title: 'A Night in Tunisia', artist: 'Dizzy Gillespie', year: 1946 },
+                            { title: 'Moanin\'', artist: 'Art Blakey & The Jazz Messengers', year: 1958 }
+                        ]
+                    },
+                    {
+                        id: 'modal-jazz',
+                        title: 'Modal Jazz',
+                        count: '~40',
+                        description: 'Miles Davis freed jazz from chord changes with Kind of Blue. Modal improvisation over scales instead of complex progressions. Created spacious, meditative soundscapes that influenced everything from rock to electronic music.',
+                        examples: [
+                            { title: 'So What', artist: 'Miles Davis', year: 1959 },
+                            { title: 'My Favorite Things', artist: 'John Coltrane', year: 1961 },
+                            { title: 'Maiden Voyage', artist: 'Herbie Hancock', year: 1965 }
+                        ]
+                    },
+                    {
+                        id: 'fusion',
+                        title: 'Jazz Fusion',
+                        count: '~60',
+                        description: 'Jazz meets rock, funk, and electric instruments. Miles Davis\' Bitches Brew opened the floodgates. Weather Report, Mahavishnu Orchestra, and Return to Forever brought technical virtuosity and cosmic energy to wider audiences.',
+                        examples: [
+                            { title: 'Birdland', artist: 'Weather Report', year: 1977 },
+                            { title: 'Spain', artist: 'Chick Corea', year: 1972 },
+                            { title: 'Chameleon', artist: 'Herbie Hancock', year: 1973 }
+                        ],
+                        children: [
+                            {
+                                id: 'early-fusion',
+                                title: 'Electric Miles Era (1969-1975)',
+                                count: '~25',
+                                description: 'Miles Davis went electric and changed everything. Bitches Brew, In a Silent Way, and On the Corner. Rock energy, funk grooves, free-form improvisation. Players: Herbie Hancock, John McLaughlin, Weather Report members.',
+                                examples: [
+                                    { title: 'Pharaoh\'s Dance', artist: 'Miles Davis', year: 1970 },
+                                    { title: 'In a Silent Way', artist: 'Miles Davis', year: 1969 },
+                                    { title: 'Sivad', artist: 'Miles Davis', year: 1972 }
+                                ]
+                            },
+                            {
+                                id: 'cosmic-fusion',
+                                title: 'Cosmic/Spiritual Fusion',
+                                count: '~20',
+                                description: 'Mahavishnu Orchestra, Return to Forever, and Weather Report took fusion into progressive, spiritual territories. Complex time signatures, virtuosic soloing, and Eastern influences.',
+                                examples: [
+                                    { title: 'Birds of Fire', artist: 'Mahavishnu Orchestra', year: 1973 },
+                                    { title: 'Spain', artist: 'Chick Corea', year: 1972 },
+                                    { title: 'Teen Town', artist: 'Weather Report', year: 1977 }
+                                ]
+                            },
+                            {
+                                id: 'smooth-fusion',
+                                title: 'Smooth Jazz/Radio Fusion',
+                                count: '~15',
+                                description: 'More accessible fusion that dominated 80s jazz radio. George Benson, Grover Washington Jr., and later Spyro Gyra. Less challenging, more groove-oriented.',
+                                examples: [
+                                    { title: 'Breezin\'', artist: 'George Benson', year: 1976 },
+                                    { title: 'Winelight', artist: 'Grover Washington Jr.', year: 1980 },
+                                    { title: 'Morning Dance', artist: 'Spyro Gyra', year: 1979 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'latin-world',
+                title: 'Latin & World Music',
+                subtitle: '~150 tracks of global rhythms',
+                estimatedTracks: '150',
+                children: [
+                    {
+                        id: 'afrobeat',
+                        title: 'Afrobeat',
+                        count: '~60',
+                        description: 'Fela Kuti\'s revolutionary fusion of West African rhythms, jazz, funk, and militant politics. Extended jams with polyrhythmic percussion, horn sections, and call-and-response vocals. Influenced everything from hip-hop to house music.',
+                        examples: [
+                            { title: 'Water No Get Enemy', artist: 'Fela Kuti', year: 1975 },
+                            { title: 'Zombie', artist: 'Fela Kuti', year: 1976 },
+                            { title: 'Shakara', artist: 'Fela Kuti', year: 1972 }
+                        ],
+                        children: [
+                            {
+                                id: 'classic-afrobeat',
+                                title: 'Classic Afrobeat (1970s-80s)',
+                                count: '~40',
+                                description: 'Fela Kuti and Tony Allen defined the sound in Lagos. Extended grooves, political fire, and musical sophistication. Africa 70 and Egypt 80 were the backing bands. Revolutionary music for revolutionary times.',
+                                examples: [
+                                    { title: 'Water No Get Enemy', artist: 'Fela Kuti', year: 1975 },
+                                    { title: 'Zombie', artist: 'Fela Kuti', year: 1976 },
+                                    { title: 'Progress', artist: 'Tony Allen', year: 1977 }
+                                ]
+                            },
+                            {
+                                id: 'modern-afrobeat',
+                                title: 'Modern Afrobeat Revival',
+                                count: '~20',
+                                description: 'Contemporary artists carrying the torch. Antibalas, Seun Kuti, and Femi Kuti keep the tradition alive while incorporating hip-hop and electronic elements. Brooklyn and Lagos connected.',
+                                examples: [
+                                    { title: 'Dirty Money', artist: 'Seun Kuti & Egypt 80', year: 2011 },
+                                    { title: 'Who No Know Go Know', artist: 'Antibalas', year: 2012 },
+                                    { title: 'One People One World', artist: 'Femi Kuti', year: 1998 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'brazilian',
+                        title: 'Brazilian Music',
+                        count: '~50',
+                        description: 'From bossa nova\'s sophisticated cool to MPB\'s political poetry. Samba rhythms underpin it all. João Gilberto, Tom Jobim, and Gilberto Gil created timeless music blending African, Portuguese, and indigenous influences.',
+                        examples: [
+                            { title: 'The Girl from Ipanema', artist: 'Stan Getz & João Gilberto', year: 1964 },
+                            { title: 'Águas de Março', artist: 'Elis Regina & Tom Jobim', year: 1974 },
+                            { title: 'Aquele Abraço', artist: 'Gilberto Gil', year: 1969 }
+                        ]
+                    },
+                    {
+                        id: 'latin-dance',
+                        title: 'Latin Dance Music',
+                        count: '~40',
+                        description: 'Salsa, reggaeton, and Latin house bringing Caribbean and Latin American rhythms to global dancefloors. Clave patterns, dembow riddims, and infectious energy. From Fania All-Stars to Bad Bunny.',
+                        examples: [
+                            { title: 'Aguanile', artist: 'Héctor Lavoe', year: 1973 },
+                            { title: 'Gasolina', artist: 'Daddy Yankee', year: 2004 },
+                            { title: 'Safaera', artist: 'Bad Bunny', year: 2020 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'global-sounds',
+                title: 'Global Sounds by Origin',
+                subtitle: 'Music organized by country and region',
+                estimatedTracks: '6000+',
+                children: [
+                    {
+                        id: 'us-sounds',
+                        title: 'United States',
+                        count: '~2500',
+                        description: 'The birthplace of blues, jazz, soul, funk, hip-hop, house, and techno. From Mississippi Delta to Detroit\'s factories, from Harlem to South Central LA. American music is the foundation of modern popular music, synthesizing African, European, and indigenous traditions into revolutionary new forms.',
+                        examples: [
+                            { title: 'What\'s Going On', artist: 'Marvin Gaye', year: 1971 },
+                            { title: 'Rapper\'s Delight', artist: 'Sugarhill Gang', year: 1979 },
+                            { title: 'Your Love', artist: 'Frankie Knuckles', year: 1984 }
+                        ]
+                    },
+                    {
+                        id: 'uk-sounds',
+                        title: 'United Kingdom',
+                        count: '~1200',
+                        description: 'From The Beatles\' invasion to punk\'s revolution, from post-punk experimentalism to rave culture. UK created: UK garage, drum & bass, grime, dubstep, and acid house. Sound system culture, pirate radio, and working-class creativity define British music\'s global impact.',
+                        examples: [
+                            { title: 'Blue Monday', artist: 'New Order', year: 1983 },
+                            { title: 'Inner City Life', artist: 'Goldie', year: 1995 },
+                            { title: 'Shutdown', artist: 'Skepta', year: 2015 }
+                        ]
+                    },
+                    {
+                        id: 'jamaica-sounds',
+                        title: 'Jamaica',
+                        count: '~120',
+                        description: 'Tiny island, massive influence. Jamaica gave the world reggae, dub, dancehall, and sound system culture. From ska\'s birth in the 60s through Bob Marley\'s global message to dancehall\'s digital revolution. Jamaican bass culture influences everything from hip-hop to dubstep.',
+                        examples: [
+                            { title: 'One Love', artist: 'Bob Marley', year: 1977 },
+                            { title: 'King Tubby Meets Rockers Uptown', artist: 'Augustus Pablo', year: 1976 },
+                            { title: 'Murder She Wrote', artist: 'Chaka Demus & Pliers', year: 1992 }
+                        ]
+                    },
+                    {
+                        id: 'germany-sounds',
+                        title: 'Germany',
+                        count: '~220',
+                        description: 'Kraftwerk pioneered electronic music, post-wall Berlin became techno\'s spiritual home. From Krautrock\'s experimentation to minimal techno\'s precision. Berghain, Tresor, and Kompakt Records define contemporary club culture. Industrial heritage meets futuristic vision.',
+                        examples: [
+                            { title: 'Autobahn', artist: 'Kraftwerk', year: 1974 },
+                            { title: 'The Bells', artist: 'Jeff Mills', year: 1997 },
+                            { title: 'Spastik', artist: 'Plastikman', year: 1993 }
+                        ]
+                    },
+                    {
+                        id: 'france-sounds',
+                        title: 'France',
+                        count: '~110',
+                        description: 'French Touch revolutionized house music. Daft Punk, Air, and Justice brought Gallic sophistication to electronic music. From yé-yé pop to filter disco, French chanson to Ed Banger Records. Paris underground meets mainstream crossover.',
+                        examples: [
+                            { title: 'Around the World', artist: 'Daft Punk', year: 1997 },
+                            { title: 'Sexy Boy', artist: 'Air', year: 1998 },
+                            { title: 'D.A.N.C.E.', artist: 'Justice', year: 2007 }
+                        ]
+                    },
+                    {
+                        id: 'brazil-sounds',
+                        title: 'Brazil',
+                        count: '~100',
+                        description: 'Bossa nova\'s cool sophistication, samba\'s infectious rhythm, MPB\'s poetic resistance, and baile funk\'s street energy. Rio, São Paulo, and Salvador created a musical universe blending African diaspora, Portuguese colonialism, and indigenous traditions into something entirely new.',
+                        examples: [
+                            { title: 'The Girl from Ipanema', artist: 'Stan Getz & João Gilberto', year: 1964 },
+                            { title: 'Mas Que Nada', artist: 'Sérgio Mendes', year: 1966 },
+                            { title: 'Aquele Abraço', artist: 'Gilberto Gil', year: 1969 }
+                        ]
+                    },
+                    {
+                        id: 'australia-sounds',
+                        title: 'Australia',
+                        count: '~75',
+                        description: 'From 70s pub rock to electronic innovation. The Avalanches pioneered plunderphonics, Flume defined future bass, and Australian house producers brought Southern Hemisphere warmth to global clubs. Melbourne and Sydney\'s thriving underground scenes.',
+                        examples: [
+                            { title: 'Since I Left You', artist: 'The Avalanches', year: 2000 },
+                            { title: 'Never Be Like You', artist: 'Flume', year: 2016 },
+                            { title: 'Innerbloom', artist: 'RÜFÜS DU SOL', year: 2016 }
+                        ]
+                    },
+                    {
+                        id: 'italy-sounds',
+                        title: 'Italy',
+                        count: '~40',
+                        description: 'Italo disco defined the 80s electronic aesthetic. Giorgio Moroder (technically German-Italian) revolutionized dance music. From cosmic disco to contemporary producers like Tale of Us. Mediterranean warmth meets electronic sophistication.',
+                        examples: [
+                            { title: 'I Feel Love', artist: 'Donna Summer (Giorgio Moroder)', year: 1977 },
+                            { title: 'Masterpiece', artist: 'Gazebo', year: 1982 },
+                            { title: 'Another Day', artist: 'Tale of Us', year: 2015 }
+                        ]
+                    },
+                    {
+                        id: 'netherlands-sounds',
+                        title: 'Netherlands',
+                        count: '~40',
+                        description: 'Amsterdam\'s club culture and Dutch DJs dominate electronic music. From gabber\'s hardcore intensity to progressive house and trance. Tiësto, Armin van Buuren, and Martin Garrix represent different eras of Dutch electronic excellence.',
+                        examples: [
+                            { title: 'Adagio for Strings', artist: 'Tiësto', year: 2005 },
+                            { title: 'Animals', artist: 'Martin Garrix', year: 2013 },
+                            { title: 'Shivers', artist: 'Armin van Buuren', year: 2005 }
+                        ]
+                    },
+                    {
+                        id: 'belgium-sounds',
+                        title: 'Belgium',
+                        count: '~35',
+                        description: 'New beat, techno, and trance. Belgium\'s rave culture bridged European electronic movements. From R&S Records to contemporary techno. Brussels and Ghent\'s underground scenes punch above their weight.',
+                        examples: [
+                            { title: 'Pump Up the Jam', artist: 'Technotronic', year: 1989 },
+                            { title: 'The Age of Love', artist: 'Age of Love', year: 1990 },
+                            { title: 'Jaguar', artist: 'DJ Rolando', year: 1999 }
+                        ]
+                    },
+                    {
+                        id: 'canada-sounds',
+                        title: 'Canada',
+                        count: '~35',
+                        description: 'Toronto\'s Drake revolutionized hip-hop and R&B. Montreal\'s indie scene and electronic producers. From Neil Young to Richie Hawtin, Leonard Cohen to The Weeknd. Canadian music balances American influence with European sophistication.',
+                        examples: [
+                            { title: 'Spastik', artist: 'Plastikman (Richie Hawtin)', year: 1993 },
+                            { title: 'Hotline Bling', artist: 'Drake', year: 2015 },
+                            { title: 'Heart of Glass', artist: 'Arcade Fire', year: 2013 }
+                        ]
+                    },
+                    {
+                        id: 'sweden-sounds',
+                        title: 'Sweden',
+                        count: '~30',
+                        description: 'Pop perfection and electronic innovation. From ABBA to Swedish House Mafia, Max Martin\'s songwriting empire to The Knife\'s art-pop. Stockholm produces hit-makers and underground experimentalists in equal measure.',
+                        examples: [
+                            { title: 'One', artist: 'Swedish House Mafia', year: 2010 },
+                            { title: 'Dancing On My Own', artist: 'Robyn', year: 2010 },
+                            { title: 'Heartbeats', artist: 'The Knife', year: 2002 }
+                        ]
+                    },
+                    {
+                        id: 'switzerland-sounds',
+                        title: 'Switzerland',
+                        count: '~30',
+                        description: 'Alpine electronica and experimental sounds. Young Gods pioneered industrial, Yello created quirky synthpop. Contemporary Swiss producers blend precision with innovation.',
+                        examples: [
+                            { title: 'Oh Yeah', artist: 'Yello', year: 1985 },
+                            { title: 'L\'Amour', artist: 'Young Gods', year: 1987 },
+                            { title: 'Envoy', artist: 'Yello', year: 1983 }
+                        ]
+                    },
+                    {
+                        id: 'japan-sounds',
+                        title: 'Japan',
+                        count: '~20',
+                        description: 'City pop, Shibuya-kei, and experimental electronica. Yellow Magic Orchestra pioneered electronic music. Contemporary J-pop production techniques influence global pop. Tokyo\'s underground scenes blend tradition with futurism.',
+                        examples: [
+                            { title: 'Plastic Love', artist: 'Mariya Takeuchi', year: 1984 },
+                            { title: 'Rydeen', artist: 'Yellow Magic Orchestra', year: 1979 },
+                            { title: 'Computer Love', artist: 'Kraftwerk (influenced YMO)', year: 1981 }
+                        ]
+                    },
+                    {
+                        id: 'new-zealand-sounds',
+                        title: 'New Zealand',
+                        count: '~20',
+                        description: 'Flying Nun Records\' jangly indie rock, Dunedin sound, and contemporary electronic producers. Small nation, distinctive voice. DIY ethos meets Pacific isolation.',
+                        examples: [
+                            { title: 'Death and the Maiden', artist: 'The Verlaines', year: 1983 },
+                            { title: 'Tally Ho!', artist: 'The Clean', year: 1981 },
+                            { title: 'Bloom', artist: 'L.A.B.', year: 2019 }
+                        ]
+                    },
+                    {
+                        id: 'spain-sounds',
+                        title: 'Spain',
+                        count: '~15',
+                        description: 'Balearic beats from Ibiza, flamenco fusion, and Barcelona\'s electronic scene. DJ Alfredo defined Balearic house. Spain\'s club culture bridges Mediterranean traditions with global sounds.',
+                        examples: [
+                            { title: 'Ritmo de la Noche', artist: 'Mystic', year: 1990 },
+                            { title: 'Suavemente', artist: 'Elvis Crespo', year: 1998 },
+                            { title: 'Otro Trago', artist: 'Sech', year: 2019 }
+                        ]
+                    },
+                    {
+                        id: 'norway-sounds',
+                        title: 'Norway',
+                        count: '~15',
+                        description: 'Space disco pioneers like Todd Terje and Lindstrøm. Black metal\'s frozen landscapes. Nu-jazz innovation. Nordic cool meets electronic warmth.',
+                        examples: [
+                            { title: 'Inspector Norse', artist: 'Todd Terje', year: 2012 },
+                            { title: 'Where You Go I Go Too', artist: 'Lindstrøm', year: 2008 },
+                            { title: 'Swing Star', artist: 'Röyksopp', year: 2001 }
+                        ]
+                    },
+                    {
+                        id: 'south-africa-sounds',
+                        title: 'South Africa',
+                        count: '~15',
+                        description: 'House music capital of Africa. Black Coffee\'s sophisticated deep house, amapiano\'s township energy, and kwaito\'s post-apartheid celebration. Johannesburg and Cape Town export global sounds rooted in local rhythms.',
+                        examples: [
+                            { title: 'We Dance Again', artist: 'Black Coffee', year: 2016 },
+                            { title: 'Jerusalema', artist: 'Master KG', year: 2019 },
+                            { title: 'Makhe', artist: 'Kabza De Small', year: 2019 }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Tree Node Component
+        function TreeNode({ node, level = 0 }) {
+            const [isExpanded, setIsExpanded] = useState(false);
+
+            return (
+                <div className="node">
+                    <button 
+                        className={`node-button ${isExpanded ? 'expanded' : ''}`}
+                        onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                        <span className="node-icon">{node.children ? '▶' : '○'}</span>
+                        <span className="node-title">{node.title}</span>
+                        {node.count && <span className="node-count">{node.count}</span>}
+                    </button>
+                    
+                    {isExpanded && (
+                        <div className="node-content">
+                            <div className="node-description">{node.description}</div>
+                            
+                            {node.examples && (
+                                <div className="node-examples">
+                                    <div className="examples-title">Representative Tracks</div>
+                                    {node.examples.map((track, idx) => (
+                                        <div key={idx} className="example-track">
+                                            <div className="track-title">{track.title}</div>
+                                            <div className="track-artist">
+                                                {track.artist}
+                                                <span className="track-year">({track.year})</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            
+                            {node.children && (
+                                <div className="children">
+                                    {node.children.map(child => (
+                                        <TreeNode key={child.id} node={child} level={level + 1} />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Main Tree Container Component
+        function TreeContainer({ tree }) {
+            return (
+                <div className="tree-container">
+                    <div className="tree-header">
+                        <h2 className="tree-title">{tree.title}</h2>
+                        <p className="tree-subtitle">{tree.subtitle}</p>
+                    </div>
+                    <div className="tree-content">
+                        {tree.children.map(node => (
+                            <TreeNode key={node.id} node={node} />
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>Music Collection Tree</h1>
+                        <p>An interactive map of musical history and influence</p>
+                        <div className="stats">
+                            <div className="stat">
+                                <div className="stat-number">~6,300</div>
+                                <div className="stat-label">Total Tracks</div>
+                            </div>
+                            <div className="stat">
+                                <div className="stat-number">10</div>
+                                <div className="stat-label">Major Lineages</div>
+                            </div>
+                            <div className="stat">
+                                <div className="stat-number">20-60</div>
+                                <div className="stat-label">Tracks per Grouping</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="trees-grid">
+                        {musicTrees.map(tree => (
+                            <TreeContainer key={tree.id} tree={tree} />
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

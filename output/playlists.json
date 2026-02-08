@@ -210,5 +210,121 @@
     "source": "llm",
     "created_at": "2026-02-07T02:24:10.634694+00:00",
     "updated_at": "2026-02-07T02:24:10.634740+00:00"
+  },
+  "c6ef8a8f": {
+    "id": "c6ef8a8f",
+    "name": "Nu-Disco Renaissance: 2010s Revival",
+    "description": "Modern producers reimagining disco, funk, and house through contemporary production. Euphoric, groovy, and dancefloor-ready with vintage soul.",
+    "filters": {
+      "descriptors": [
+        "lush strings",
+        "punchy horns",
+        "groovy bassline",
+        "call-",
+        "-response vocals"
+      ],
+      "era": [
+        "early 2010s",
+        "mid 2010s",
+        "late 2010s"
+      ],
+      "genres": [
+        "Nu-Disco",
+        "Indie Dance",
+        "House",
+        "Disco",
+        "Funk"
+      ],
+      "mood": [
+        "celebratory dancefloor euphoria",
+        "glamorous dancefloor euphoria",
+        "euphoric peak-time dancefloor energy"
+      ]
+    },
+    "track_ids": [
+      2,
+      1204,
+      2429,
+      5169,
+      727,
+      1311,
+      5910,
+      3522,
+      149,
+      857,
+      4453,
+      6093,
+      276,
+      1860,
+      3046,
+      4382,
+      1242,
+      2218,
+      4352,
+      480,
+      1426,
+      6143,
+      5681,
+      1644,
+      1
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T10:29:39.792285+00:00",
+    "updated_at": "2026-02-08T10:29:39.792335+00:00"
+  },
+  "6432b7ea": {
+    "id": "6432b7ea",
+    "name": "Graveyard Blues & Voodoo Vibes",
+    "description": "Dark, narrative-driven blues with macabre storytelling and raw, primitive production. From the swamps to the speakeasies, these tracks channel the ghost of early recorded music with gravelly vocals and acoustic swagger.",
+    "filters": {
+      "bpm_max": 95,
+      "bpm_min": 60,
+      "descriptors": [
+        "gravelly vocals",
+        "acoustic guitar",
+        "lo-fi",
+        "raw",
+        "organic",
+        "vintage",
+        "stripped-back"
+      ],
+      "genres": [
+        "Blues",
+        "Downtempo",
+        "Folk",
+        "Americana",
+        "Gospel Blues"
+      ]
+    },
+    "track_ids": [
+      1559,
+      1566,
+      329,
+      243,
+      4859,
+      4152,
+      5594,
+      1055,
+      2335,
+      5287,
+      3044,
+      4246,
+      585,
+      570,
+      2899,
+      2328,
+      5650,
+      4622,
+      634,
+      2001,
+      622,
+      2330,
+      545,
+      506,
+      1810
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T10:35:35.663849+00:00",
+    "updated_at": "2026-02-08T10:35:35.663876+00:00"
   }
 }

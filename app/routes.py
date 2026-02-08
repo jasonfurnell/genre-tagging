@@ -26,6 +26,10 @@ from app.playlist import (
     generate_seed_suggestions, generate_intersection_suggestions,
     rerank_tracks, export_m3u, export_csv,
 )
+from app.tree import (
+    build_collection_tree, load_tree, save_tree, delete_tree as delete_tree_file,
+    find_node,
+)
 
 api = Blueprint("api", __name__)
 
@@ -39,6 +43,11 @@ _state = {
     "stop_flag": threading.Event(),
     "progress_listeners": [],   # list of queue.Queue for SSE
     "_analysis_cache": None,     # cached analysis data for workshop
+    # Collection Tree
+    "tree": None,
+    "tree_thread": None,
+    "tree_stop_flag": threading.Event(),
+    "tree_progress_listeners": [],
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
@@ -835,3 +844,220 @@ def workshop_export_csv(playlist_id):
 
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name=f"{name}.csv")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Collection Tree endpoints
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _tree_broadcast(data):
+    import queue
+    dead = []
+    for q in _state["tree_progress_listeners"]:
+        try:
+            q.put_nowait(data)
+        except queue.Full:
+            dead.append(q)
+    for q in dead:
+        _state["tree_progress_listeners"].remove(q)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/tree
+# ---------------------------------------------------------------------------
+@api.route("/api/tree")
+def get_tree():
+    tree = _state.get("tree")
+    if tree is None:
+        tree = load_tree()
+        if tree:
+            _state["tree"] = tree
+    if tree is None:
+        return jsonify({"tree": None})
+    return jsonify({"tree": tree})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/tree/build
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/build", methods=["POST"])
+def tree_build():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    # Check if already building
+    t = _state.get("tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Tree build already in progress"}), 409
+
+    _state["tree_stop_flag"].clear()
+    _state["tree"] = None
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            tree = build_collection_tree(
+                df=df,
+                client=client,
+                model=model,
+                provider=provider,
+                delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["tree_stop_flag"],
+            )
+            _state["tree"] = tree
+            _tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Tree build failed")
+            _tree_broadcast({"event": "error", "phase": "error",
+                             "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True}), 202
+
+
+# ---------------------------------------------------------------------------
+# GET /api/tree/progress  (SSE)
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/progress")
+def tree_progress():
+    import queue
+    q = queue.Queue(maxsize=100)
+    _state["tree_progress_listeners"].append(q)
+
+    def stream():
+        try:
+            while True:
+                try:
+                    data = q.get(timeout=30)
+                except queue.Empty:
+                    yield ":\n\n"  # keep-alive
+                    continue
+                yield f"data: {json.dumps(data)}\n\n"
+                if data.get("event") in ("done", "error", "stopped"):
+                    break
+        finally:
+            if q in _state["tree_progress_listeners"]:
+                _state["tree_progress_listeners"].remove(q)
+
+    return Response(stream(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/tree/stop
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/stop", methods=["POST"])
+def tree_stop():
+    _state["tree_stop_flag"].set()
+    return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# GET /api/tree/ungrouped
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/ungrouped")
+def tree_ungrouped():
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    ungrouped_ids = tree.get("ungrouped_track_ids", [])
+    tracks = _tracks_from_ids(df, ungrouped_ids)
+    return jsonify({"count": len(tracks), "tracks": tracks})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/tree/create-playlist
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/create-playlist", methods=["POST"])
+def tree_create_playlist():
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    data = request.get_json()
+    node_id = data.get("node_id")
+    if not node_id:
+        return jsonify({"error": "node_id is required"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    playlist = create_playlist(
+        name=node.get("title", "Untitled"),
+        description=node.get("description", ""),
+        filters=node.get("filters", {}),
+        track_ids=node.get("track_ids", []),
+        source="tree",
+    )
+    return jsonify({"playlist": playlist}), 201
+
+
+# ---------------------------------------------------------------------------
+# POST /api/tree/create-all-playlists
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/create-all-playlists", methods=["POST"])
+def tree_create_all_playlists():
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    # Collect all leaf nodes
+    leaves = []
+    for lineage in tree.get("lineages", []):
+        _collect_tree_leaves(lineage, leaves)
+
+    created = []
+    for leaf in leaves:
+        playlist = create_playlist(
+            name=leaf.get("title", "Untitled"),
+            description=leaf.get("description", ""),
+            filters=leaf.get("filters", {}),
+            track_ids=leaf.get("track_ids", []),
+            source="tree",
+        )
+        created.append(playlist)
+
+    return jsonify({"playlists": created, "count": len(created)}), 201
+
+
+def _collect_tree_leaves(node, result):
+    """Recursively collect leaf nodes from a tree node."""
+    if node.get("is_leaf") or not node.get("children"):
+        result.append(node)
+    else:
+        for child in node["children"]:
+            _collect_tree_leaves(child, result)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /api/tree
+# ---------------------------------------------------------------------------
+@api.route("/api/tree", methods=["DELETE"])
+def tree_delete():
+    _state["tree"] = None
+    deleted = delete_tree_file()
+    return jsonify({"deleted": deleted})
