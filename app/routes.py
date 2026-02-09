@@ -5,6 +5,8 @@ import os
 import subprocess
 import threading
 import time
+import urllib.parse
+import urllib.request
 
 import pandas as pd
 from flask import Blueprint, request, jsonify, Response, send_file
@@ -48,6 +50,7 @@ _state = {
     "tree_thread": None,
     "tree_stop_flag": threading.Event(),
     "tree_progress_listeners": [],
+    "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
@@ -162,6 +165,7 @@ def upload():
     _state["df"] = df
     _state["original_filename"] = file.filename
     _state["_analysis_cache"] = None
+    _state["_preview_cache"] = {}
 
     return jsonify(_summary())
 
@@ -993,9 +997,14 @@ def tree_ungrouped():
 # ---------------------------------------------------------------------------
 @api.route("/api/tree/create-playlist", methods=["POST"])
 def tree_create_playlist():
+    """Create a Workshop playlist from a tree leaf using smart-create (LLM rerank)."""
     tree = _state.get("tree") or load_tree()
     if not tree:
         return jsonify({"error": "No tree built"}), 404
+
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
 
     data = request.get_json()
     node_id = data.get("node_id")
@@ -1006,14 +1015,41 @@ def tree_create_playlist():
     if not node:
         return jsonify({"error": f"Node '{node_id}' not found"}), 404
 
-    playlist = create_playlist(
-        name=node.get("title", "Untitled"),
-        description=node.get("description", ""),
-        filters=node.get("filters", {}),
-        track_ids=node.get("track_ids", []),
-        source="tree",
-    )
-    return jsonify({"playlist": playlist}), 201
+    track_ids = node.get("track_ids", [])
+    name = node.get("title", "Untitled")
+    description = node.get("description", "")
+    filters = node.get("filters", {})
+
+    # Smart-create: LLM reranks to pick best 25 in playback order
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    target_count = min(25, len(track_ids))
+
+    # Build candidate list from the node's assigned tracks
+    valid_ids = [tid for tid in track_ids if tid in df.index]
+    candidates = _tracks_from_ids(df, valid_ids[:80])  # cap at 80 for LLM context
+
+    method = "direct"
+    final_ids = valid_ids
+
+    if candidates and len(candidates) > 5:
+        try:
+            result = rerank_tracks(
+                candidates, name, description,
+                client, model, provider, target_count,
+            )
+            reranked_ids = [t["id"] for t in result["tracks"]]
+            final_ids = [tid for tid in reranked_ids if tid in df.index]
+            method = "smart"
+        except Exception:
+            logging.exception("LLM rerank failed for tree leaf, using direct track list")
+            final_ids = valid_ids[:target_count]
+            method = "scored_fallback"
+
+    playlist = create_playlist(name, description, filters, final_ids, "tree")
+    return jsonify({"playlist": playlist, "method": method}), 201
 
 
 # ---------------------------------------------------------------------------
@@ -1061,3 +1097,57 @@ def tree_delete():
     _state["tree"] = None
     deleted = delete_tree_file()
     return jsonify({"deleted": deleted})
+
+
+# ---------------------------------------------------------------------------
+# GET /api/preview — Deezer 30-second track preview
+# ---------------------------------------------------------------------------
+@api.route("/api/preview")
+def get_preview():
+    artist = request.args.get("artist", "").strip()
+    title = request.args.get("title", "").strip()
+    if not artist or not title:
+        return jsonify({"error": "artist and title are required"}), 400
+
+    cache_key = f"{artist.lower()}||{title.lower()}"
+    cached = _state["_preview_cache"].get(cache_key)
+    if cached is not None:
+        return jsonify(cached)
+
+    query = urllib.parse.quote(f"{artist} {title}")
+    url = f"https://api.deezer.com/search?q={query}&limit=5"
+    result = {"preview_url": None, "found": False}
+
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        tracks = data.get("data", [])
+        if tracks:
+            best = None
+            a_low, t_low = artist.lower(), title.lower()
+            for t in tracks:
+                d_artist = (t.get("artist", {}).get("name") or "").lower()
+                d_title = (t.get("title") or "").lower()
+                if (a_low in d_artist or d_artist in a_low) and \
+                   (t_low in d_title or d_title in t_low):
+                    best = t
+                    break
+            if best is None:
+                best = tracks[0]
+
+            preview = best.get("preview", "")
+            if preview:
+                result = {
+                    "preview_url": preview,
+                    "found": True,
+                    "deezer_title": best.get("title", ""),
+                    "deezer_artist": best.get("artist", {}).get("name", ""),
+                }
+    except Exception:
+        logging.exception("Deezer search failed for %s - %s", artist, title)
+        return jsonify(result)
+
+    _state["_preview_cache"][cache_key] = result
+    return jsonify(result)

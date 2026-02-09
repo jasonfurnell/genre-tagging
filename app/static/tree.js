@@ -282,6 +282,7 @@ function renderNodeContent(node, bodyEl, depth) {
                 <div class="tree-examples-title">Example Tracks</div>`;
             for (const ex of node.examples) {
                 html += `<div class="tree-example-track">
+                    <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
                     <span class="tree-track-title">${esc(ex.title)}</span>
                     <span class="tree-track-artist">${esc(ex.artist)}</span>
                     ${ex.year ? `<span class="tree-track-year">${ex.year}</span>` : ""}
@@ -298,6 +299,14 @@ function renderNodeContent(node, bodyEl, depth) {
         </div>`;
         html += `</div>`;
         bodyEl.innerHTML = html;
+
+        // Wire preview buttons
+        bodyEl.querySelectorAll(".btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            });
+        });
 
         // Wire up create button
         const createBtn = bodyEl.querySelector(".tree-create-pl-btn");
@@ -382,11 +391,12 @@ function renderUngroupedTracks(tracks) {
 
     let html = `<table class="tree-ungrouped-table">
         <thead><tr>
-            <th>Title</th><th>Artist</th><th>BPM</th><th>Year</th><th>Comment</th>
+            <th></th><th>Title</th><th>Artist</th><th>BPM</th><th>Year</th><th>Comment</th>
         </tr></thead><tbody>`;
 
     for (const t of tracks) {
         html += `<tr>
+            <td><button class="btn-preview" data-artist="${esc(t.artist || "")}" data-title="${esc(t.title || "")}" title="Play 30s preview">\u25B6</button></td>
             <td>${esc(t.title || "")}</td>
             <td>${esc(t.artist || "")}</td>
             <td>${t.bpm || ""}</td>
@@ -396,13 +406,21 @@ function renderUngroupedTracks(tracks) {
     }
     html += `</tbody></table>`;
     body.innerHTML = html;
+
+    // Wire preview buttons
+    body.querySelectorAll(".btn-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+        });
+    });
 }
 
 // ── Playlist Creation ───────────────────────────────────────
 
 async function createPlaylistFromLeaf(nodeId, btn) {
     btn.disabled = true;
-    btn.textContent = "Creating...";
+    btn.textContent = "Curating with AI...";
 
     try {
         const res = await fetch("/api/tree/create-playlist", {
@@ -413,7 +431,8 @@ async function createPlaylistFromLeaf(nodeId, btn) {
         const data = await res.json();
         if (res.ok) {
             createdPlaylistNodeIds.add(nodeId);
-            btn.textContent = "Playlist Created";
+            const method = data.method === "smart" ? " (AI curated)" : "";
+            btn.textContent = "Playlist Created" + method;
             btn.classList.remove("btn-primary");
             btn.classList.add("btn-secondary");
         } else {

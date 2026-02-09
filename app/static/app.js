@@ -28,6 +28,95 @@ let treeInitialized = false;
 const genreChart = $("#genre-chart");
 const TOP_N_GENRES = 8;
 
+// ── Preview Audio Player ─────────────────────────────────────
+const previewAudio = new Audio();
+previewAudio.volume = 0.7;
+let currentPreviewTrackKey = null;
+
+previewAudio.addEventListener("ended", () => {
+    resetAllPreviewButtons();
+    currentPreviewTrackKey = null;
+});
+previewAudio.addEventListener("error", () => {
+    resetAllPreviewButtons();
+    currentPreviewTrackKey = null;
+});
+
+function makePreviewKey(artist, title) {
+    return `${(artist || "").toLowerCase()}||${(title || "").toLowerCase()}`;
+}
+
+async function togglePreview(artist, title, buttonEl) {
+    const key = makePreviewKey(artist, title);
+
+    // Same track playing → pause
+    if (currentPreviewTrackKey === key && !previewAudio.paused) {
+        previewAudio.pause();
+        setPreviewButtonState(buttonEl, "idle");
+        currentPreviewTrackKey = null;
+        return;
+    }
+
+    // Stop any current playback
+    if (!previewAudio.paused) previewAudio.pause();
+    resetAllPreviewButtons();
+
+    setPreviewButtonState(buttonEl, "loading");
+
+    try {
+        const params = new URLSearchParams({ artist, title });
+        const res = await fetch(`/api/preview?${params}`);
+        const data = await res.json();
+
+        if (!data.found || !data.preview_url) {
+            setPreviewButtonState(buttonEl, "unavailable");
+            return;
+        }
+
+        previewAudio.src = data.preview_url;
+        currentPreviewTrackKey = key;
+        setPreviewButtonState(buttonEl, "playing");
+        previewAudio.play();
+    } catch (err) {
+        console.error("Preview fetch failed:", err);
+        setPreviewButtonState(buttonEl, "idle");
+    }
+}
+
+function setPreviewButtonState(btn, state) {
+    if (!btn) return;
+    btn.classList.remove("preview-loading", "preview-playing", "preview-unavailable");
+    btn.disabled = false;
+    switch (state) {
+        case "loading":
+            btn.classList.add("preview-loading");
+            btn.innerHTML = "\u25CC";
+            btn.title = "Loading\u2026";
+            btn.disabled = true;
+            break;
+        case "playing":
+            btn.classList.add("preview-playing");
+            btn.innerHTML = "\u2586\u2586";
+            btn.title = "Pause preview";
+            break;
+        case "unavailable":
+            btn.classList.add("preview-unavailable");
+            btn.innerHTML = "\u266B";
+            btn.title = "Preview not available";
+            btn.disabled = true;
+            break;
+        default:
+            btn.innerHTML = "\u25B6";
+            btn.title = "Play 30s preview";
+    }
+}
+
+function resetAllPreviewButtons() {
+    document.querySelectorAll(".btn-preview.preview-playing").forEach(btn => {
+        setPreviewButtonState(btn, "idle");
+    });
+}
+
 // ── AG Grid Setup ────────────────────────────────────────────
 
 const theme = agGrid.themeQuartz.withPart(agGrid.colorSchemeDarkBlue).withParams({
@@ -48,10 +137,17 @@ class ActionsCellRenderer {
         this.eGui = document.createElement("div");
         this.eGui.style.display = "flex";
         this.eGui.style.gap = "4px";
+        this.eGui.style.alignItems = "center";
         this.eGui.innerHTML = `
+            <button class="btn-preview" title="Play 30s preview">\u25B6</button>
             <button class="btn btn-sm btn-secondary btn-retag">Re-tag</button>
             <button class="btn btn-sm btn-secondary btn-clear">Clear</button>
         `;
+        const previewBtn = this.eGui.querySelector(".btn-preview");
+        previewBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(params.data.artist, params.data.title, previewBtn);
+        });
         this.eGui.querySelector(".btn-retag").addEventListener("click", (e) => {
             e.stopPropagation();
             retagTrack(params.data.id);
@@ -85,7 +181,7 @@ const columnDefs = [
     {
         headerName: "Actions",
         cellRenderer: ActionsCellRenderer,
-        width: 145,
+        width: 185,
         resizable: false,
         sortable: false,
         suppressMovable: true,

@@ -658,13 +658,14 @@ function renderScoredSearchResults(resultTracks, isSorted) {
             <thead>
                 <tr>
                     <th class="ws-seed-col"><input type="checkbox" id="ws-seed-toggle-all" title="Toggle all as seeds"></th>
-                    <th>#</th>${th("Score","score")}${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
+                    <th></th><th>#</th>${th("Score","score")}${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
                 </tr>
             </thead>
             <tbody>
                 ${showing.map((t, i) => `
                     <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
                         <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
+                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td class="ws-score-cell">${renderScoreBadge(t.score || 0)}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
@@ -684,6 +685,14 @@ function renderScoredSearchResults(resultTracks, isSorted) {
     // Wire sort headers
     container.querySelectorAll(".ws-sortable").forEach(hdr => {
         hdr.addEventListener("click", () => handleSearchSort(hdr.dataset.sortCol));
+    });
+
+    // Wire preview buttons
+    container.querySelectorAll(".btn-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+        });
     });
 
     // Wire add-all button
@@ -774,13 +783,14 @@ function renderSearchResults(resultTracks, isSorted) {
             <thead>
                 <tr>
                     <th class="ws-seed-col"><input type="checkbox" id="ws-seed-toggle-all" title="Toggle all as seeds"></th>
-                    <th>#</th>${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
+                    <th></th><th>#</th>${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th>
                 </tr>
             </thead>
             <tbody>
                 ${showing.map((t, i) => `
                     <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
                         <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
+                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                         <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -799,6 +809,14 @@ function renderSearchResults(resultTracks, isSorted) {
     // Wire sort headers
     container.querySelectorAll(".ws-sortable").forEach(hdr => {
         hdr.addEventListener("click", () => handleSearchSort(hdr.dataset.sortCol));
+    });
+
+    // Wire preview buttons
+    container.querySelectorAll(".btn-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+        });
     });
 
     // Wire add-all button
@@ -926,12 +944,13 @@ function renderRerankedResults(tracks, flowNotes) {
         <table class="ws-results-table">
             <thead>
                 <tr>
-                    <th>#</th><th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Year</th><th>AI Reason</th><th></th>
+                    <th></th><th>#</th><th>Title</th><th>Artist</th><th>BPM</th><th>Key</th><th>Year</th><th>AI Reason</th><th></th>
                 </tr>
             </thead>
             <tbody>
                 ${tracks.map((t, i) => `
                     <tr>
+                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                         <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -945,6 +964,14 @@ function renderRerankedResults(tracks, flowNotes) {
             </tbody>
         </table>
     `;
+
+    // Wire preview buttons
+    container.querySelectorAll(".btn-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+        });
+    });
 
     // Wire add-all and per-track add buttons
     document.getElementById("ws-btn-add-all").addEventListener("click", () => {
@@ -1102,11 +1129,12 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
         ${playlistTracks.length > 0 ? `
             <table class="ws-pl-tracks">
                 <thead>
-                    <tr><th>#</th>${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th></tr>
+                    <tr><th></th><th>#</th>${th("Title","title")}${th("Artist","artist")}${th("BPM","bpm")}${th("Key","key")}${th("Year","year")}${th("Comment","comment")}<th></th></tr>
                 </thead>
                 <tbody>
                     ${playlistTracks.map((t, i) => `
                         <tr data-tid="${t.id}">
+                            <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                             <td>${i + 1}</td>
                             <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                             <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -1125,6 +1153,14 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
     // Wire sort headers
     detail.querySelectorAll(".ws-sortable").forEach(hdr => {
         hdr.addEventListener("click", () => handlePlaylistSort(hdr.dataset.sortCol));
+    });
+
+    // Wire preview buttons
+    detail.querySelectorAll(".btn-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+        });
     });
 
     // Name edit

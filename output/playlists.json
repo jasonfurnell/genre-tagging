@@ -326,5 +326,569 @@
     "source": "llm",
     "created_at": "2026-02-08T10:35:35.663849+00:00",
     "updated_at": "2026-02-08T10:35:35.663876+00:00"
+  },
+  "6bc2a6dd": {
+    "id": "6bc2a6dd",
+    "name": "Trap Brass: Modern Club Heat",
+    "description": "Contemporary trap and bass-heavy hip-hop with aggressive horns and chest-rattling low end. The evolution of party rap energy into the 2010s and beyond.",
+    "filters": {
+      "bpm_max": 145,
+      "bpm_min": 100,
+      "descriptors": [
+        "booming bass",
+        "punchy brass stabs",
+        "punchy horns",
+        "aggressive synth stabs",
+        "808 bass"
+      ],
+      "era": [
+        "late 2000s",
+        "early 2010s",
+        "mid 2010s",
+        "late 2010s"
+      ],
+      "genres": [
+        "Hip-Hop",
+        "Trap",
+        "Bass House",
+        "Club Rap"
+      ],
+      "mood": [
+        "high-energy party atmosphere demanding crowd interaction",
+        "celebratory dancefloor euphoria",
+        "peak-time festival energy"
+      ]
+    },
+    "track_ids": [
+      681,
+      2245,
+      87,
+      1079,
+      6241,
+      4243,
+      2494,
+      1912,
+      929,
+      1405,
+      124,
+      463,
+      1418,
+      672,
+      4835,
+      1703,
+      1720,
+      1636,
+      1698,
+      865,
+      739,
+      4752,
+      3759,
+      1522,
+      4431
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T11:46:26.977099+00:00",
+    "updated_at": "2026-02-08T11:46:26.977153+00:00"
+  },
+  "f83c1129": {
+    "id": "f83c1129",
+    "name": "Lovers Rock Sanctuary: British Basement Romance",
+    "description": "In 1970s Britain, Caribbean youth created their own sonic refuge\u2014smoother than roots, sweeter than commercial reggae, intimate enough for slow dances in church hall blues dances. Lovers Rock became the sound of British-born generations finding their own voice between cultures, with Janet Kay's \u00abSilly Games\u00bb as its coronation anthem. These tracks trade militant consciousness for romantic vulnerability, swapping dub's echo chambers for close-mic'd pillow talk over liquid basslines. Dennis Brown provides Kingston credibility, UB40 brings Birmingham's multiracial reality, while Susan Cadogan and Dawn Penn bridge eras with sultry authority. This is soundsystem music for couples rather than crowds, where the bass still throbs but the message shifts from revolution to devotion, from protest to pillow talk\u2014yet it's no less essential to understanding reggae's diaspora story, proof that sweetness can be just as radical as militancy when it offers Black British youth permission to be tender.",
+    "filters": {
+      "genres": [
+        "Lovers Rock",
+        "Reggae",
+        "Romantic Reggae",
+        "Reggae Ballad"
+      ],
+      "location": [
+        "UK",
+        "Jamaica",
+        "London",
+        "Kingston",
+        "Jamaica/UK influence",
+        "Jamaica-influenced",
+        "Jamaica/UK"
+      ],
+      "descriptors": [
+        "warm bassline",
+        "laid-back groove",
+        "steady one-drop rhythm",
+        "laid-back riddim",
+        "warm analog production",
+        "liquid bassline",
+        "silky vocals"
+      ],
+      "mood": [
+        "romantic soundsystem vibes",
+        "intimate dancehall romance with crossover appeal",
+        "intimate soundsystem sweetness"
+      ]
+    },
+    "track_ids": [
+      4116,
+      5038,
+      6286,
+      3994,
+      2268,
+      648,
+      4062,
+      3169,
+      3468,
+      2748,
+      5022,
+      786,
+      2766,
+      2538,
+      1016,
+      2769,
+      3008,
+      4233,
+      4389,
+      4705,
+      5210,
+      2784,
+      5795,
+      3035,
+      2549
+    ],
+    "source": "tree",
+    "created_at": "2026-02-08T11:54:19.655558+00:00",
+    "updated_at": "2026-02-08T11:54:19.655571+00:00"
+  },
+  "3244faea": {
+    "id": "3244faea",
+    "name": "Borderless Transmissions: Avant-Pop Mutations & Global Crossfade",
+    "description": "Here's where the genre boundaries dissolve entirely\u2014a micro-cluster of sonic outliers that prove dance music's most interesting moments happen at the margins. Lafawndah's fractured avant-garde pop sits alongside Lord Shorty's Trinidadian groovy soca, while Depeche Mode gets the Brian Eno treatment and French experimentalist Gautier Vizioz soundtracks neon-lit nocturnal drives. This is the wild perimeter of the dancefloor, where Caribbean carnival energy, European art-school deconstruction, and trip-hop moodiness collide without apology. These five tracks represent the wormholes connecting distant scenes\u2014proof that in the digital age, a producer in Trinidad and an artist in Paris might be having the same fever dream about what rhythm means. It's cerebral but never precious, experimental but always embodied. Think of it as the comedown room that accidentally became the most interesting space in the warehouse.",
+    "filters": {
+      "genres": [
+        "Art Pop",
+        "Experimental Pop",
+        "Electro-Punk",
+        "Cold Wave",
+        "Ambient",
+        "Electronica",
+        "Soca",
+        "Groovy Soca",
+        "Synthwave",
+        "EBM",
+        "Dark Electronic",
+        "Alternative Dance",
+        "Dark Disco"
+      ],
+      "era": [
+        "early 2010s",
+        "late 2000s",
+        "early 80s post-punk era",
+        "late 70s reissue",
+        "early 80s reissue",
+        "likely 1990s or 2010s remix"
+      ],
+      "descriptors": [
+        "distorted vocals",
+        "organic percussion",
+        "hypnotic bassline",
+        "robotic vocoder vocals"
+      ],
+      "mood": [
+        "shadowy european warehouse tension",
+        "cerebral after-hours atmosphere with industrial undertones",
+        "shadowy warehouse intensity meets kinky underground rave energy",
+        "introspective comedown room soundscapes"
+      ]
+    },
+    "track_ids": [
+      1025,
+      4630,
+      1068,
+      3545,
+      743
+    ],
+    "source": "tree",
+    "created_at": "2026-02-08T12:00:14.671944+00:00",
+    "updated_at": "2026-02-08T12:00:14.672016+00:00"
+  },
+  "cc8b09a2": {
+    "id": "cc8b09a2",
+    "name": "UK Mutations: Afroswing, Grime, and the Post-Genre Landscape",
+    "description": "This is what happens when UK producers stop respecting genre boundaries\u2014when grime's aggression meets afrobeats' groove, when experimental R&B gets deconstructed through garage's lens, when Four Tet remixes pop stars and somehow makes it work. The UK's musical melting pot reached critical mass in the late 2010s, producing a generation of artists who grew up with pirate radio, YouTube algorithm suggestions, and Notting Hill Carnival all informing their sound equally. Idris Elba linking with Kah-Lo for afro-fusion bangers, Dizzee Rascal's grime blueprint still influencing new waves, Stormzy's crossover success proving street music can dominate charts without compromising\u2014it's all part of the same ecosystem. Notice how Kelly Lee Owens and Tirzah bring experimental electronic sensibilities to pop structures, while producers like Mura Masa apply UK bass production techniques to indie vocals. This is genre as suggestion rather than rule, where a basement grime set and a festival main stage can feature the same tracks just rinsed differently. Essential listening for understanding how UK music became the world's most exciting laboratory for cross-pollination.",
+    "filters": {
+      "genres": [
+        "Bass House",
+        "Grime",
+        "UK Rap",
+        "Afrobeats",
+        "Future Bass",
+        "Electronic",
+        "Electronic Dance",
+        "Experimental R&B",
+        "Darkwave",
+        "Techno"
+      ],
+      "descriptors": [
+        "pitched vocal chops",
+        "shuffling breakbeats",
+        "crisp percussion",
+        "pulsing bassline"
+      ],
+      "mood": [
+        "chest-out club anthem celebrating success",
+        "high-energy warehouse raves",
+        "northern club chaos",
+        "moody after-hours warehouse energy",
+        "brooding late-night introspection",
+        "introspective late-night listening with idm sensibility"
+      ]
+    },
+    "track_ids": [
+      3152,
+      2849,
+      1254,
+      2272,
+      3339,
+      5872,
+      1514,
+      4791,
+      1842,
+      4347,
+      1505,
+      1139,
+      5432,
+      1522,
+      2198,
+      5531,
+      4309,
+      2202,
+      1841,
+      507,
+      5853,
+      443,
+      4715,
+      5103
+    ],
+    "source": "tree",
+    "created_at": "2026-02-08T12:01:31.998818+00:00",
+    "updated_at": "2026-02-08T12:01:31.998858+00:00"
+  },
+  "7b40728b": {
+    "id": "7b40728b",
+    "name": "Afro-Diasporic Exchange: Where UK Rap Meets Continental Rhythms",
+    "description": "This is contemporary Black music operating across continents with fluid ease\u2014a sound where London's rap intellectualism, Lagos' hypnotic percussion patterns, and North American swagger create something entirely new. Little Simz orchestrates Afro-fusion hip-hop with Obongjayar and Moonchild Sanelly, building bridges between British lyricism and African rhythmic complexity. Charlotte Adig\u00e9ry brings Belgian art-pop sensibilities to the conversation, her quirky vocal delivery and avant-garde production twists reflecting Europe's increasingly diverse club culture. Meanwhile, Saweetie and Megan Thee Stallion represent the confident, bass-heavy Southern rap tradition that's become global pop currency. What's fascinating here isn't just the geographical spread\u2014it's how these artists are reconfiguring the hip-hop template entirely, incorporating log drums, skippy percussion, and polyrhythmic layers that acknowledge Africa as hip-hop's ancestral home. This is the sound of the diaspora in conversation with itself, creating club anthems and introspective moments that refuse to be confined by national borders or genre expectations.",
+    "filters": {
+      "genres": [
+        "Afrobeats",
+        "Afro-fusion",
+        "Hip-Hop",
+        "Art Pop",
+        "Electropop",
+        "Electro-Pop"
+      ],
+      "location": [
+        "Belgium",
+        "London",
+        "UK",
+        "Internet/Global"
+      ],
+      "mood": [
+        "dark intercontinental fusion energy",
+        "contemporary british-african creative renaissance",
+        "sun-drenched rooftop sessions with introspective energy"
+      ],
+      "descriptors": [
+        "rolling bassline",
+        "groovy bassline",
+        "crisp percussion",
+        "playful vocal chops"
+      ]
+    },
+    "track_ids": [
+      6213,
+      5867,
+      4029,
+      1236,
+      4344,
+      5547,
+      6287,
+      1198,
+      3353,
+      3380,
+      5708,
+      1741,
+      4718,
+      3301,
+      4803,
+      2860,
+      5933,
+      4864,
+      3412,
+      4350,
+      3459,
+      4581,
+      2218,
+      6193,
+      5644
+    ],
+    "source": "tree",
+    "created_at": "2026-02-08T12:02:22.310613+00:00",
+    "updated_at": "2026-02-08T12:02:22.310640+00:00"
+  },
+  "7ff52829": {
+    "id": "7ff52829",
+    "name": "Belgian Bass: Warehouse Distortion",
+    "description": "Raw, distorted electro energy channeling Soulwax's signature warehouse intensity. Gritty bass, punchy kicks, and relentless grooves for peak-time underground moments.",
+    "filters": {
+      "bpm_max": 110,
+      "bpm_min": 98,
+      "descriptors": [
+        "punchy bassline",
+        "distorted synth stabs",
+        "punchy kicks",
+        "punchy drums",
+        "aggressive synth stabs"
+      ],
+      "era": [
+        "late 2000s",
+        "2010s",
+        "late 2010s",
+        "early 2010s"
+      ],
+      "genres": [
+        "Electro House",
+        "Electroclash",
+        "Fidget House",
+        "Nu-Disco",
+        "Acid House"
+      ],
+      "mood": [
+        "sweaty warehouse energy",
+        "sweaty underground warehouse energy",
+        "warehouse afterhours intensity",
+        "peak-time warehouse energy",
+        "underground warehouse energy"
+      ]
+    },
+    "track_ids": [
+      270,
+      5619,
+      271,
+      424,
+      5691,
+      3040,
+      6065,
+      3145,
+      6128,
+      480,
+      4825,
+      6040,
+      282,
+      3135,
+      1855,
+      464,
+      1870,
+      4719,
+      3142,
+      3136,
+      990,
+      2969,
+      1786,
+      3313,
+      1890
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T12:10:12.249517+00:00",
+    "updated_at": "2026-02-08T12:10:12.249533+00:00"
+  },
+  "4de745f1": {
+    "id": "4de745f1",
+    "name": "Soul - Rhodes & Reflections",
+    "description": "Late-night introspection powered by warm electric piano, hushed vocals, and sophisticated orchestration. The sound of soul at its most contemplative and romantically vulnerable.",
+    "filters": {
+      "bpm_max": 90,
+      "bpm_min": 60,
+      "descriptors": [
+        "Rhodes",
+        "piano",
+        "warm",
+        "lush",
+        "intimate",
+        "sultry",
+        "sophisticated",
+        "orchestr"
+      ],
+      "era": [
+        "early 1970s",
+        "mid-70s",
+        "late 70s",
+        "early 70s",
+        "early 80s"
+      ],
+      "genres": [
+        "Soul",
+        "Jazz-Soul",
+        "Neo-Soul",
+        "Jazz-Funk",
+        "R&B"
+      ],
+      "location": [
+        "USA",
+        "US",
+        "Philadelphia",
+        "New York"
+      ],
+      "mood": [
+        "introspect",
+        "late-night",
+        "romantic",
+        "sophisticated"
+      ]
+    },
+    "track_ids": [
+      970,
+      2185,
+      1935,
+      2504,
+      2039,
+      4159,
+      2548,
+      2164,
+      3176,
+      5812,
+      2121,
+      5455,
+      2663,
+      5583,
+      2180,
+      4169,
+      1370,
+      2491,
+      6288,
+      1657,
+      4242,
+      128,
+      1619,
+      2675,
+      183
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T12:14:17.654907+00:00",
+    "updated_at": "2026-02-08T12:15:28.072357+00:00"
+  },
+  "57e0b73d": {
+    "id": "57e0b73d",
+    "name": "Native Tongues Chronicles",
+    "description": "Pure golden era jazz rap from the early 90s NYC renaissance. Smooth upright bass, dusty breaks, and conscious lyricism that defined the alternative hip-hop movement.",
+    "filters": {
+      "bpm_max": 110,
+      "bpm_min": 85,
+      "descriptors": [
+        "upright bass",
+        "drum breaks",
+        "laid-back",
+        "conversational flow",
+        "jazz samples"
+      ],
+      "era": [
+        "early 90s",
+        "early 1990s"
+      ],
+      "genres": [
+        "Jazz Rap",
+        "Hip-Hop",
+        "Golden Age Rap",
+        "Boom Bap",
+        "Golden Age Boom Bap"
+      ],
+      "location": [
+        "New York",
+        "NYC",
+        "US East Coast"
+      ]
+    },
+    "track_ids": [
+      335,
+      2275,
+      5076,
+      2235,
+      67,
+      5272,
+      2412,
+      6137,
+      5092,
+      2243,
+      2544,
+      1921,
+      2248,
+      2256,
+      1544,
+      2409,
+      2414,
+      2493,
+      2485,
+      2294,
+      1368,
+      2284,
+      4264,
+      1547,
+      2306
+    ],
+    "source": "llm",
+    "created_at": "2026-02-08T22:45:59.346657+00:00",
+    "updated_at": "2026-02-08T22:45:59.346685+00:00"
+  },
+  "1d34d13e": {
+    "id": "1d34d13e",
+    "name": "Native Tongues Manifesto: Jazz Rap Consciousness",
+    "description": "Before hip-hop became an empire, there was a movement that believed rap could be conscious, funky, and intellectually curious all at once. The Native Tongues collective\u2014A Tribe Called Quest, De La Soul, Jungle Brothers, Black Sheep\u2014forged an alternative to gangsta rap's rising dominance, sampling jazz with reverence and spitting philosophy with humor. This is boom-bap at its most sophisticated: Q-Tip's buttery bass lines on 'Excursions,' the dusty warmth of KMD's 'Peachfuzz,' Digable Planets' spoken-word cool. The SP-1200 and E-mu samplers gave these tracks their grainy texture, while the producers' crate-digging revealed deep connections between hip-hop and jazz's improvisational spirit. These weren't just beats\u2014they were arguments for hip-hop as art, for sampling as scholarship, for the cipher as sacred space. By 1993, this sound represented hip-hop's conscience, the road not taken before the Chronic and Wu-Tang shifted the paradigm. But its influence echoes through every conscious rapper and jazz-sampling producer who came after.",
+    "filters": {
+      "era": [
+        "late 80s",
+        "early 90s",
+        "mid-90s"
+      ],
+      "genres": [
+        "Golden Age Rap",
+        "Golden Age Boom Bap",
+        "Boom Bap",
+        "Jazz Rap",
+        "Golden Era Boom Bap"
+      ],
+      "descriptors": [
+        "crisp breakbeats",
+        "jazzy samples",
+        "call-",
+        "-response vocals",
+        "laid-back boom-bap drums"
+      ],
+      "mood": [
+        "feel-good native tongues positivity",
+        "golden era native tongues consciousness"
+      ]
+    },
+    "track_ids": [
+      335,
+      2243,
+      2519,
+      5076,
+      1921,
+      1544,
+      2270,
+      353,
+      2565,
+      6138,
+      250,
+      2400,
+      336,
+      2493,
+      353,
+      2294,
+      5672,
+      1380,
+      2270,
+      335,
+      2294
+    ],
+    "source": "tree",
+    "created_at": "2026-02-08T22:47:26.141991+00:00",
+    "updated_at": "2026-02-08T22:47:26.142011+00:00"
   }
 }

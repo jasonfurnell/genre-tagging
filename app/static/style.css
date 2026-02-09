@@ -1171,3 +1171,57 @@ tr.ws-seed-selected {
         gap: 0.75rem;
     }
 }
+
+/* ── Preview Button ────────────────────────────────────────── */
+.btn-preview {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    padding: 0;
+    border: 1px solid rgba(78, 204, 163, 0.3);
+    border-radius: 50%;
+    background: rgba(78, 204, 163, 0.1);
+    color: var(--success);
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+.btn-preview:hover:not(:disabled) {
+    background: rgba(78, 204, 163, 0.25);
+    border-color: var(--success);
+    transform: scale(1.1);
+}
+.btn-preview:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+.btn-preview.preview-playing {
+    background: var(--success);
+    color: var(--bg);
+    border-color: var(--success);
+    animation: previewPulse 1.5s ease-in-out infinite;
+}
+.btn-preview.preview-loading {
+    animation: previewSpin 0.8s linear infinite;
+    border-color: var(--success);
+}
+.btn-preview.preview-unavailable {
+    border-color: var(--border);
+    color: var(--text-muted);
+    background: transparent;
+}
+
+@keyframes previewPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(78, 204, 163, 0.3); }
+    50% { box-shadow: 0 0 0 4px rgba(78, 204, 163, 0); }
+}
+
+@keyframes previewSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
