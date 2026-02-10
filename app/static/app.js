@@ -110,7 +110,8 @@ function startPlayAll(examplesContainer) {
     resetAllPreviewButtons();
     currentPreviewTrackKey = null;
 
-    const trackEls = examplesContainer.querySelectorAll(".tree-example-track");
+    let trackEls = examplesContainer.querySelectorAll(".tree-example-track");
+    if (trackEls.length === 0) trackEls = examplesContainer.querySelectorAll("tr[data-tid]");
     if (trackEls.length === 0) return;
 
     const tracks = [];
@@ -128,7 +129,7 @@ function startPlayAll(examplesContainer) {
     playAllState.containerEl = examplesContainer;
 
     // Update button text
-    const playAllBtn = examplesContainer.querySelector(".tree-play-all-btn");
+    const playAllBtn = examplesContainer.querySelector(".tree-play-all-btn, .play-all-btn");
     if (playAllBtn) {
         playAllBtn.textContent = "Stop";
         playAllBtn.classList.add("play-all-playing");
@@ -144,7 +145,7 @@ function stopPlayAll() {
         playAllState.tracks[playAllState.index].trackEl.classList.remove("play-all-active");
     }
     // Reset button text
-    const playAllBtn = playAllState.containerEl?.querySelector(".tree-play-all-btn");
+    const playAllBtn = playAllState.containerEl?.querySelector(".tree-play-all-btn, .play-all-btn");
     if (playAllBtn) {
         playAllBtn.textContent = "Play All";
         playAllBtn.classList.remove("play-all-playing");

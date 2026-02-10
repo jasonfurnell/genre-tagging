@@ -1157,7 +1157,8 @@ tr.ws-seed-selected {
     text-transform: none;
     letter-spacing: 0;
 }
-.tree-play-all-btn.play-all-playing {
+.tree-play-all-btn.play-all-playing,
+.play-all-btn.play-all-playing {
     background: var(--success);
     border-color: var(--success);
     color: var(--bg);
@@ -1173,7 +1174,8 @@ tr.ws-seed-selected {
     gap: 8px;
     transition: background 0.2s, border-color 0.2s;
 }
-.tree-example-track.play-all-active {
+.tree-example-track.play-all-active,
+.ws-pl-tracks tr.play-all-active {
     background: rgba(78, 204, 163, 0.12);
     border-left-color: var(--success);
 }

@@ -1521,6 +1521,7 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
         </div>
         ${playlist.description ? `<p class="ws-pl-description">${escapeHtml(playlist.description)}</p>` : ""}
         <div class="ws-pl-actions">
+            ${playlistTracks.length > 0 ? '<button class="btn btn-secondary btn-sm play-all-btn">Play All</button>' : ''}
             <button class="btn btn-secondary btn-sm" id="ws-pl-export-m3u">Export M3U8 (Lexicon)</button>
             <button class="btn btn-secondary btn-sm" id="ws-pl-export-csv">Export CSV</button>
             <button class="btn btn-danger btn-sm" id="ws-pl-delete">Delete</button>
@@ -1548,6 +1549,13 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
             </table>
         ` : '<p class="ws-placeholder">No tracks in this playlist yet. Use Search or Suggestions to add tracks.</p>'}
     `;
+
+    // Wire Play All button
+    const playAllBtn = detail.querySelector(".play-all-btn");
+    if (playAllBtn) {
+        const table = detail.querySelector(".ws-pl-tracks");
+        if (table) playAllBtn.addEventListener("click", () => startPlayAll(table));
+    }
 
     // Wire sort headers
     detail.querySelectorAll(".ws-sortable").forEach(hdr => {
