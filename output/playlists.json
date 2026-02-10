@@ -1846,5 +1846,70 @@
     "source": "llm",
     "created_at": "2026-02-10T12:59:18.452591+00:00",
     "updated_at": "2026-02-10T12:59:18.452632+00:00"
+  },
+  "cea76530": {
+    "id": "cea76530",
+    "name": "Rio Bossa Nova Sophistication: Zona Sul Studio Elegance 1970-1973",
+    "description": "The continuation of bossa nova's golden age in Rio's Zona Sul neighborhood studios, where artists refined the classic Jo\u00e3o Gilberto template with increasingly lush orchestral arrangements. This strand represents the smooth, sophisticated side of early 70s Brazilian music\u2014intimate vocal delivery over gentle acoustic guitar, enriched by string sections that elevated the coffeehouse intimacy of 1960s bossa into full lounge sophistication. These tracks maintained the genre's romantic melancholy while expanding its sonic palette for the new decade.",
+    "filters": {
+      "genres": [
+        "Bossa Nova",
+        "MPB",
+        "Brazilian Jazz",
+        "Samba-Jazz"
+      ],
+      "era": [
+        "late 1960s",
+        "early 70s",
+        "early 1970s"
+      ],
+      "location": [
+        "Brazil",
+        "Rio de Janeiro"
+      ],
+      "descriptors": [
+        "gentle acoustic guitar",
+        "warm acoustic guitar",
+        "lush string arrangements",
+        "intimate vocal delivery",
+        "lush orchestration"
+      ],
+      "mood": [
+        "sophisticated brazilian lounge atmosphere",
+        "sophisticated rio lounge atmosphere",
+        "melancholic coffeehouse introspection",
+        "intimate late-night lounge sophistication"
+      ]
+    },
+    "track_ids": [
+      3229,
+      5581,
+      3272,
+      3247,
+      3277,
+      5108,
+      3270,
+      3286,
+      5492,
+      3283,
+      3260,
+      3255,
+      3291,
+      3245,
+      3266,
+      5587,
+      5808,
+      1355,
+      617,
+      3115,
+      3111,
+      4292,
+      2750,
+      3258,
+      3222
+    ],
+    "source": "scene-tree",
+    "created_at": "2026-02-10T13:12:35.555606+00:00",
+    "updated_at": "2026-02-10T13:12:35.555621+00:00"
   }
 }
