@@ -232,6 +232,12 @@ function renderTreeGrid() {
                         title="Download all tracks as M3U8 playlist">
                     Download M3U8 (${lineage.track_count} tracks)
                 </button>
+                <button class="btn btn-sm btn-primary tree-create-lineage-pl-btn"
+                        data-node-id="${lineage.id}"
+                        ${createdPlaylistNodeIds.has(lineage.id) ? "disabled" : ""}
+                        title="Create a Workshop playlist from this lineage">
+                    ${createdPlaylistNodeIds.has(lineage.id) ? "Playlist Created" : "Create Playlist"}
+                </button>
             </div>
             <div class="tree-content" id="tree-lineage-${lineage.id}"></div>
         `;
@@ -250,6 +256,14 @@ function renderTreeGrid() {
         if (dlBtn) {
             dlBtn.addEventListener("click", () => {
                 window.location = `/api/tree/node/${lineage.id}/export/m3u`;
+            });
+        }
+
+        // Wire create playlist button
+        const plBtn = card.querySelector(".tree-create-lineage-pl-btn");
+        if (plBtn && !createdPlaylistNodeIds.has(lineage.id)) {
+            plBtn.addEventListener("click", () => {
+                createPlaylistFromLeaf(lineage.id, plBtn);
             });
         }
 
