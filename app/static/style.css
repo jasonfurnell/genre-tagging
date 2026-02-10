@@ -1054,6 +1054,13 @@ tr.ws-seed-selected {
 .tree-node-actions {
     margin-top: 0.75rem;
 }
+.tree-lineage-actions {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+.tree-lineage-examples {
+    margin-bottom: 0;
+}
 
 /* ── Examples ──────────────────────────────────────────────── */
 .tree-node-examples {

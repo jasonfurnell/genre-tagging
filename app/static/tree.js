@@ -203,15 +203,55 @@ function renderTreeGrid() {
     for (const lineage of treeData.lineages) {
         const card = document.createElement("div");
         card.className = "tree-container";
+
+        let examplesHtml = "";
+        if (lineage.examples && lineage.examples.length > 0) {
+            examplesHtml = `<div class="tree-node-examples tree-lineage-examples">
+                <div class="tree-examples-title">Exemplar Tracks</div>`;
+            for (const ex of lineage.examples) {
+                examplesHtml += `<div class="tree-example-track">
+                    <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
+                    <span class="tree-track-title">${esc(ex.title)}</span>
+                    <span class="tree-track-artist">${esc(ex.artist)}</span>
+                    ${ex.year ? `<span class="tree-track-year">${ex.year}</span>` : ""}
+                </div>`;
+            }
+            examplesHtml += `</div>`;
+        }
+
         card.innerHTML = `
             <div class="tree-card-header">
                 <h3 class="tree-title">${esc(lineage.title)}</h3>
                 <p class="tree-subtitle">${esc(lineage.subtitle || `${lineage.track_count} tracks`)}</p>
             </div>
             <div class="tree-card-desc">${esc(lineage.description)}</div>
+            ${examplesHtml}
+            <div class="tree-lineage-actions">
+                <button class="btn btn-sm btn-secondary tree-download-m3u-btn"
+                        data-node-id="${lineage.id}"
+                        title="Download all tracks as M3U8 playlist">
+                    Download M3U8 (${lineage.track_count} tracks)
+                </button>
+            </div>
             <div class="tree-content" id="tree-lineage-${lineage.id}"></div>
         `;
         grid.appendChild(card);
+
+        // Wire preview buttons
+        card.querySelectorAll(".tree-lineage-examples .btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            });
+        });
+
+        // Wire download button
+        const dlBtn = card.querySelector(".tree-download-m3u-btn");
+        if (dlBtn) {
+            dlBtn.addEventListener("click", () => {
+                window.location = `/api/tree/node/${lineage.id}/export/m3u`;
+            });
+        }
 
         const contentEl = card.querySelector(`#tree-lineage-${lineage.id}`);
         renderChildren(lineage.children || [], contentEl, 0);

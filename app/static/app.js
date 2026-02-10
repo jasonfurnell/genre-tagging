@@ -515,3 +515,18 @@ $$(".tab-btn").forEach(btn => {
 
 // ── Initialize grid on page load ────────────────────────────
 initGrid();
+
+// ── Auto-restore last session on refresh ────────────────────
+(async function tryRestore() {
+    try {
+        const res = await fetch("/api/restore");
+        const data = await res.json();
+        if (res.ok && data.total > 0) {
+            updateSummary(data);
+            await loadTracks();
+            toolbar.classList.remove("hidden");
+            summary.classList.remove("hidden");
+            $("#tab-bar").classList.remove("hidden");
+        }
+    } catch (_) { /* no autosave available */ }
+})();

@@ -312,6 +312,25 @@ Return a JSON array:
 }}]"""
 
 
+_LINEAGE_EXAMPLES_PROMPT = """For each lineage below, choose 3 tracks that best exemplify
+and represent the entire lineage. Pick tracks that a knowledgeable listener would instantly
+recognise as quintessential to that musical family tree — iconic, genre-defining, or
+perfectly representative of the lineage's core identity.
+
+Lineages:
+{lineages_json}
+
+Return a JSON array:
+[{{
+  "id": "the-lineage-id",
+  "examples": [
+    {{"title": "Track Title", "artist": "Artist Name", "year": 2001}},
+    {{"title": "Track Title", "artist": "Artist Name", "year": 1995}},
+    {{"title": "Track Title", "artist": "Artist Name", "year": 2008}}
+  ]
+}}]"""
+
+
 # ---------------------------------------------------------------------------
 # Pipeline steps
 # ---------------------------------------------------------------------------
@@ -362,6 +381,90 @@ def _llm_finalize_leaves(nodes_json, client, model, provider):
     prompt = _LEAF_PROMPT.format(nodes_json=nodes_json)
     raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
     return _extract_json(raw)
+
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_pick_lineage_examples(lineages_json, client, model, provider):
+    prompt = _LINEAGE_EXAMPLES_PROMPT.format(lineages_json=lineages_json)
+    raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
+    return _extract_json(raw)
+
+
+def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
+                                progress, should_stop):
+    """Pick 3 exemplar tracks for each lineage (algorithmic shortlist → LLM pick)."""
+    import time
+
+    lineages_for_llm = []
+    shortlists = {}  # lineage_id -> [(tid, score), ...]
+
+    for lineage in lineages:
+        if should_stop():
+            return
+        filters = lineage.get("filters", {})
+        track_ids = lineage.get("track_ids", [])
+        valid_ids = [tid for tid in track_ids if tid in df.index]
+        if not valid_ids:
+            continue
+
+        # Stage 1: scored_search for top 50 from this lineage's tracks
+        df_subset = df.loc[valid_ids]
+        results = scored_search(df_subset, filters, min_score=0.01, max_results=50)
+
+        candidates = []
+        fallback_examples = []
+        for idx, score, _ in results[:50]:
+            row = df.loc[idx]
+            track = {
+                "title": str(row.get("title", "?")),
+                "artist": str(row.get("artist", "?")),
+                "year": int(row["year"]) if pd.notna(row.get("year")) else None,
+                "comment": str(row.get("comment", ""))[:150],
+            }
+            candidates.append(track)
+            if len(fallback_examples) < 3:
+                fallback_examples.append({
+                    "title": track["title"],
+                    "artist": track["artist"],
+                    "year": track["year"],
+                })
+
+        shortlists[lineage["id"]] = fallback_examples
+
+        if candidates:
+            lineages_for_llm.append({
+                "id": lineage["id"],
+                "title": lineage["title"],
+                "description": lineage.get("description", ""),
+                "candidates": candidates,
+            })
+
+    if not lineages_for_llm:
+        return
+
+    # Stage 2: LLM picks 3 exemplars from each lineage's shortlist
+    progress("lineage_examples", "Selecting exemplar tracks for lineages...", 96)
+    try:
+        results = _llm_pick_lineage_examples(
+            json.dumps(lineages_for_llm, indent=2),
+            client, model, provider,
+        )
+        if delay > 0:
+            time.sleep(delay)
+
+        result_map = {r["id"]: r for r in results}
+        for lineage in lineages:
+            res = result_map.get(lineage["id"])
+            if res and res.get("examples"):
+                lineage["examples"] = res["examples"][:3]
+            elif lineage["id"] in shortlists:
+                lineage["examples"] = shortlists[lineage["id"]]
+    except Exception:
+        logger.exception("Failed to pick lineage examples via LLM, using algorithmic fallback")
+        for lineage in lineages:
+            if lineage["id"] in shortlists:
+                lineage["examples"] = shortlists[lineage["id"]]
 
 
 # ---------------------------------------------------------------------------
@@ -501,6 +604,11 @@ def build_collection_tree(df, client, model, provider, delay,
         progress("finalizing_leaves", "Writing leaf node descriptions...", 80)
         _finalize_all_leaves(lineages, df, client, model, provider, delay,
                              progress, should_stop)
+
+    # --- Phase 6b: Pick lineage example tracks ---
+    if not should_stop():
+        _finalize_lineage_examples(lineages, df, client, model, provider, delay,
+                                    progress, should_stop)
 
     # --- Phase 7: Collect final ungrouped ---
     assigned_in_leaves = set()
@@ -648,6 +756,11 @@ def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
         progress("finalizing_leaves", "Finalizing new leaf nodes...", 75)
         _finalize_all_leaves(new_lineages, df, client, model, provider, delay,
                              progress, should_stop)
+
+    # --- Phase 5b: Pick lineage example tracks ---
+    if not should_stop():
+        _finalize_lineage_examples(new_lineages, df, client, model, provider, delay,
+                                    progress, should_stop)
 
     # --- Phase 6: Merge into existing tree ---
     progress("merging", "Merging new lineages into collection tree...", 92)

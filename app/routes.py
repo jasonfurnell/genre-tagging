@@ -59,6 +59,9 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 _OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output")
 
 
+_LAST_UPLOAD_META = os.path.join(_OUTPUT_DIR, ".last_upload.json")
+
+
 def _autosave():
     """Write the current DataFrame to output/<original>_autosave.csv."""
     try:
@@ -71,6 +74,19 @@ def _autosave():
         df.to_csv(os.path.join(_OUTPUT_DIR, name), index=False)
     except Exception:
         pass  # never let a save failure interrupt tagging
+
+
+def _save_last_upload_meta():
+    """Remember which file was last uploaded so we can restore on refresh."""
+    try:
+        original = _state.get("original_filename")
+        if not original:
+            return
+        os.makedirs(_OUTPUT_DIR, exist_ok=True)
+        with open(_LAST_UPLOAD_META, "w") as f:
+            json.dump({"original_filename": original}, f)
+    except Exception:
+        pass
 
 
 _caffeinate_proc = None
@@ -168,7 +184,51 @@ def upload():
     _state["_analysis_cache"] = None
     _state["_preview_cache"] = {}
 
+    # Persist autosave + metadata so refresh can restore
+    _autosave()
+    _save_last_upload_meta()
+
     return jsonify(_summary())
+
+
+# ---------------------------------------------------------------------------
+# GET /api/restore  — reload last autosave on page refresh
+# ---------------------------------------------------------------------------
+@api.route("/api/restore")
+def restore():
+    # Already loaded in memory — just return summary
+    if _state["df"] is not None:
+        return jsonify(_summary())
+
+    # Try to load from autosave on disk
+    try:
+        with open(_LAST_UPLOAD_META) as f:
+            meta = json.load(f)
+        original = meta.get("original_filename", "")
+        autosave = original.rsplit(".", 1)[0] + "_autosave.csv"
+        path = os.path.join(_OUTPUT_DIR, autosave)
+        if not os.path.exists(path):
+            return jsonify({"restored": False})
+
+        df = pd.read_csv(path)
+        missing = [c for c in ("title", "artist") if c not in df.columns]
+        if missing:
+            return jsonify({"restored": False})
+
+        if "comment" not in df.columns:
+            df["comment"] = ""
+
+        _state["df"] = df
+        _state["original_filename"] = original
+        _state["_analysis_cache"] = None
+        _state["_preview_cache"] = {}
+
+        result = _summary()
+        result["restored"] = True
+        result["filename"] = original
+        return jsonify(result)
+    except Exception:
+        return jsonify({"restored": False})
 
 
 # ---------------------------------------------------------------------------
@@ -1149,6 +1209,46 @@ def _collect_tree_leaves(node, result):
     else:
         for child in node["children"]:
             _collect_tree_leaves(child, result)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/tree/node/<node_id>/export/m3u
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/node/<node_id>/export/m3u")
+def tree_node_export_m3u(node_id):
+    """Export any tree node's tracks as .m3u8 (works for lineages, branches, leaves)."""
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    track_ids = node.get("track_ids", [])
+    title = node.get("title", "Untitled")
+
+    lines = ["#EXTM3U", f"#PLAYLIST:{title}"]
+    for tid in track_ids:
+        if tid not in df.index:
+            continue
+        row = df.loc[tid]
+        artist = str(row.get("artist", "Unknown"))
+        track_title = str(row.get("title", "Unknown"))
+        location = str(row.get("location", ""))
+        lines.append(f"#EXTINF:-1,{artist} - {track_title}")
+        if location and location != "nan":
+            lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    name = title.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{name}.m3u8")
 
 
 # ---------------------------------------------------------------------------
