@@ -1748,16 +1748,75 @@ def get_preview():
                 best = tracks[0]
 
             preview = best.get("preview", "")
+            cover = best.get("album", {}).get("cover_small", "")
             if preview:
                 result = {
                     "preview_url": preview,
                     "found": True,
                     "deezer_title": best.get("title", ""),
                     "deezer_artist": best.get("artist", {}).get("name", ""),
+                    "cover_url": cover,
                 }
+            elif cover:
+                result = {**result, "cover_url": cover}
     except Exception:
         logging.exception("Deezer search failed for %s - %s", artist, title)
         return jsonify(result)
 
     _state["_preview_cache"][cache_key] = result
     return jsonify(result)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/artwork — Lightweight album cover lookup (reuses preview cache)
+# ---------------------------------------------------------------------------
+@api.route("/api/artwork")
+def get_artwork():
+    artist = request.args.get("artist", "").strip()
+    title = request.args.get("title", "").strip()
+    if not artist or not title:
+        return jsonify({"cover_url": None, "found": False}), 400
+
+    cache_key = f"{artist.lower()}||{title.lower()}"
+    cached = _state["_preview_cache"].get(cache_key)
+    if cached is not None:
+        return jsonify({"cover_url": cached.get("cover_url", ""), "found": bool(cached.get("cover_url"))})
+
+    query = urllib.parse.quote(f"{artist} {title}")
+    url = f"https://api.deezer.com/search?q={query}&limit=5"
+    result = {"preview_url": None, "found": False, "cover_url": ""}
+
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        tracks = data.get("data", [])
+        if tracks:
+            best = None
+            a_low, t_low = artist.lower(), title.lower()
+            for t in tracks:
+                d_artist = (t.get("artist", {}).get("name") or "").lower()
+                d_title = (t.get("title") or "").lower()
+                if (a_low in d_artist or d_artist in a_low) and \
+                   (t_low in d_title or d_title in t_low):
+                    best = t
+                    break
+            if best is None:
+                best = tracks[0]
+
+            preview = best.get("preview", "")
+            cover = best.get("album", {}).get("cover_small", "")
+            result = {
+                "preview_url": preview if preview else None,
+                "found": bool(preview),
+                "deezer_title": best.get("title", ""),
+                "deezer_artist": best.get("artist", {}).get("name", ""),
+                "cover_url": cover,
+            }
+    except Exception:
+        logging.exception("Deezer artwork lookup failed for %s - %s", artist, title)
+        return jsonify({"cover_url": "", "found": False})
+
+    _state["_preview_cache"][cache_key] = result
+    return jsonify({"cover_url": result.get("cover_url", ""), "found": bool(result.get("cover_url"))})

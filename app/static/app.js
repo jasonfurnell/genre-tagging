@@ -117,6 +117,46 @@ function resetAllPreviewButtons() {
     });
 }
 
+// ── Album Artwork Loader ────────────────────────────────────
+const artworkCache = new Map();          // "artist||title" -> url | ""
+const artworkQueue = [];
+let artworkActive = 0;
+const ARTWORK_MAX_CONCURRENT = 4;
+
+function loadArtwork(artist, title, imgEl) {
+    if (!artist || !title || !imgEl) return;
+    const key = `${artist.toLowerCase()}||${title.toLowerCase()}`;
+    if (artworkCache.has(key)) {
+        const url = artworkCache.get(key);
+        if (url) { imgEl.src = url; imgEl.classList.add("artwork-loaded"); }
+        return;
+    }
+    artworkQueue.push({ artist, title, imgEl, key });
+    drainArtworkQueue();
+}
+
+function drainArtworkQueue() {
+    while (artworkActive < ARTWORK_MAX_CONCURRENT && artworkQueue.length > 0) {
+        const job = artworkQueue.shift();
+        if (artworkCache.has(job.key)) {
+            const url = artworkCache.get(job.key);
+            if (url) { job.imgEl.src = url; job.imgEl.classList.add("artwork-loaded"); }
+            continue;
+        }
+        artworkActive++;
+        const params = new URLSearchParams({ artist: job.artist, title: job.title });
+        fetch(`/api/artwork?${params}`)
+            .then(r => r.json())
+            .then(data => {
+                const url = data.cover_url || "";
+                artworkCache.set(job.key, url);
+                if (url && job.imgEl) { job.imgEl.src = url; job.imgEl.classList.add("artwork-loaded"); }
+            })
+            .catch(() => artworkCache.set(job.key, ""))
+            .finally(() => { artworkActive--; drainArtworkQueue(); });
+    }
+}
+
 // ── AG Grid Setup ────────────────────────────────────────────
 
 const theme = agGrid.themeQuartz.withPart(agGrid.colorSchemeDarkBlue).withParams({
@@ -139,10 +179,13 @@ class ActionsCellRenderer {
         this.eGui.style.gap = "4px";
         this.eGui.style.alignItems = "center";
         this.eGui.innerHTML = `
+            <img class="track-artwork" alt="">
             <button class="btn-preview" title="Play 30s preview">\u25B6</button>
             <button class="btn btn-sm btn-secondary btn-retag">Re-tag</button>
             <button class="btn btn-sm btn-secondary btn-clear">Clear</button>
         `;
+        const artworkImg = this.eGui.querySelector(".track-artwork");
+        loadArtwork(params.data.artist, params.data.title, artworkImg);
         const previewBtn = this.eGui.querySelector(".btn-preview");
         previewBtn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -181,7 +224,7 @@ const columnDefs = [
     {
         headerName: "Actions",
         cellRenderer: ActionsCellRenderer,
-        width: 185,
+        width: 220,
         resizable: false,
         sortable: false,
         suppressMovable: true,
@@ -192,6 +235,7 @@ const gridOptions = {
     theme: theme,
     columnDefs: columnDefs,
     rowData: [],
+    rowHeight: 64,
     domLayout: "autoHeight",
     getRowId: (params) => String(params.data.id),
     defaultColDef: {

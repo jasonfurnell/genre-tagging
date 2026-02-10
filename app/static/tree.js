@@ -323,6 +323,7 @@ function renderTreeGrid() {
                 <div class="tree-examples-title">Exemplar Tracks</div>`;
             for (const ex of lineage.examples) {
                 examplesHtml += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
                     <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
                     <span class="tree-track-title">${esc(ex.title)}</span>
                     <span class="tree-track-artist">${esc(ex.artist)}</span>
@@ -362,6 +363,10 @@ function renderTreeGrid() {
                 e.stopPropagation();
                 togglePreview(btn.dataset.artist, btn.dataset.title, btn);
             });
+        });
+        // Load artwork
+        card.querySelectorAll(".tree-lineage-examples .track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
         });
 
         // Wire download button
@@ -449,6 +454,7 @@ function renderNodeContent(node, bodyEl, depth) {
                 <div class="tree-examples-title">Exemplar Tracks</div>`;
             for (const ex of node.examples) {
                 html += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
                     <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
                     <span class="tree-track-title">${esc(ex.title)}</span>
                     <span class="tree-track-artist">${esc(ex.artist)}</span>
@@ -474,6 +480,10 @@ function renderNodeContent(node, bodyEl, depth) {
                 togglePreview(btn.dataset.artist, btn.dataset.title, btn);
             });
         });
+        // Load artwork
+        bodyEl.querySelectorAll(".track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
+        });
 
         // Wire up create button
         const createBtn = bodyEl.querySelector(".tree-create-pl-btn");
@@ -495,6 +505,7 @@ function renderNodeContent(node, bodyEl, depth) {
                 <div class="tree-examples-title">Exemplar Tracks</div>`;
             for (const ex of node.examples) {
                 branchHtml += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
                     <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
                     <span class="tree-track-title">${esc(ex.title)}</span>
                     <span class="tree-track-artist">${esc(ex.artist)}</span>
@@ -526,6 +537,10 @@ function renderNodeContent(node, bodyEl, depth) {
                 e.stopPropagation();
                 togglePreview(btn.dataset.artist, btn.dataset.title, btn);
             });
+        });
+        // Load artwork
+        wrapper.querySelectorAll(".track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
         });
 
         // Wire download button
@@ -632,7 +647,7 @@ function renderUngroupedTracks(tracks) {
 
     for (const t of tracks) {
         html += `<tr>
-            <td><button class="btn-preview" data-artist="${esc(t.artist || "")}" data-title="${esc(t.title || "")}" title="Play 30s preview">\u25B6</button></td>
+            <td class="ws-preview-cell"><img class="track-artwork" data-artist="${esc(t.artist || "")}" data-title="${esc(t.title || "")}" alt=""><button class="btn-preview" data-artist="${esc(t.artist || "")}" data-title="${esc(t.title || "")}" title="Play 30s preview">\u25B6</button></td>
             <td>${esc(t.title || "")}</td>
             <td>${esc(t.artist || "")}</td>
             <td>${t.bpm || ""}</td>
@@ -649,6 +664,10 @@ function renderUngroupedTracks(tracks) {
             e.stopPropagation();
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
+    });
+    // Load artwork
+    body.querySelectorAll(".track-artwork").forEach(img => {
+        loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 }
 

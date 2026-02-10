@@ -1223,6 +1223,33 @@ tr.ws-seed-selected {
     }
 }
 
+/* ── Album Artwork Thumbnail ──────────────────────────────── */
+.track-artwork {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.track-artwork.artwork-loaded {
+    opacity: 1;
+}
+.ws-preview-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+.tree-example-track .track-artwork {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+}
+
 /* ── Preview Button ────────────────────────────────────────── */
 .btn-preview {
     width: 26px;

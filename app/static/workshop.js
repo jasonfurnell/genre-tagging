@@ -665,7 +665,7 @@ function renderScoredSearchResults(resultTracks, isSorted) {
                 ${showing.map((t, i) => `
                     <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
                         <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
-                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
+                        <td class="ws-preview-cell"><img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt=""><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td class="ws-score-cell">${renderScoreBadge(t.score || 0)}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
@@ -693,6 +693,10 @@ function renderScoredSearchResults(resultTracks, isSorted) {
             e.stopPropagation();
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
+    });
+    // Load artwork
+    container.querySelectorAll(".track-artwork").forEach(img => {
+        loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
     // Wire add-all button
@@ -790,7 +794,7 @@ function renderSearchResults(resultTracks, isSorted) {
                 ${showing.map((t, i) => `
                     <tr class="${wsSelectedSeeds.has(t.id) ? "ws-seed-selected" : ""}">
                         <td class="ws-seed-col"><input type="checkbox" class="ws-seed-cb" data-seed-id="${t.id}" ${wsSelectedSeeds.has(t.id) ? "checked" : ""}></td>
-                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
+                        <td class="ws-preview-cell"><img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt=""><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                         <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -817,6 +821,10 @@ function renderSearchResults(resultTracks, isSorted) {
             e.stopPropagation();
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
+    });
+    // Load artwork
+    container.querySelectorAll(".track-artwork").forEach(img => {
+        loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
     // Wire add-all button
@@ -950,7 +958,7 @@ function renderRerankedResults(tracks, flowNotes) {
             <tbody>
                 ${tracks.map((t, i) => `
                     <tr>
-                        <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
+                        <td class="ws-preview-cell"><img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt=""><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                         <td>${i + 1}</td>
                         <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                         <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -971,6 +979,10 @@ function renderRerankedResults(tracks, flowNotes) {
             e.stopPropagation();
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
+    });
+    // Load artwork
+    container.querySelectorAll(".track-artwork").forEach(img => {
+        loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
     // Wire add-all and per-track add buttons
@@ -1134,7 +1146,7 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
                 <tbody>
                     ${playlistTracks.map((t, i) => `
                         <tr data-tid="${t.id}">
-                            <td><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
+                            <td class="ws-preview-cell"><img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt=""><button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button></td>
                             <td>${i + 1}</td>
                             <td title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</td>
                             <td title="${escapeHtml(t.artist)}">${escapeHtml(t.artist)}</td>
@@ -1161,6 +1173,10 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
             e.stopPropagation();
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
+    });
+    // Load artwork
+    detail.querySelectorAll(".track-artwork").forEach(img => {
+        loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
     // Name edit
