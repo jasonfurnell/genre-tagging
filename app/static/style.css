@@ -1133,6 +1133,13 @@ tr.ws-seed-selected {
     margin-top: 0.5rem;
     padding-left: 2rem;
 }
+.tree-ungrouped-actions {
+    margin-top: 0.75rem;
+    padding-left: 2rem;
+}
+.tree-ungrouped-actions + .tree-progress {
+    margin: 0.75rem 0 0 2rem;
+}
 .tree-ungrouped-table {
     width: 100%;
     border-collapse: collapse;

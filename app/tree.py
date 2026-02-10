@@ -523,6 +523,149 @@ def build_collection_tree(df, client, model, provider, delay,
     return tree
 
 
+# ---------------------------------------------------------------------------
+# Expand tree from ungrouped tracks
+# ---------------------------------------------------------------------------
+
+def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
+                                progress_cb=None, stop_flag=None):
+    """Create new lineage(s) from the ungrouped tracks and merge into the existing tree.
+
+    Runs a mini version of the full build pipeline on only the ungrouped tracks.
+    Existing lineages and leaf playlists are not modified.
+    """
+    import time
+
+    parse_all_comments(df)
+
+    ungrouped_ids = tree.get("ungrouped_track_ids", [])
+    valid_ids = [tid for tid in ungrouped_ids if tid in df.index]
+    if not valid_ids:
+        if progress_cb:
+            progress_cb("complete", "No valid ungrouped tracks to process.", 100)
+        return tree
+
+    df_ungrouped = df.loc[valid_ids]
+
+    def progress(phase, detail, pct):
+        if progress_cb:
+            progress_cb(phase, detail, pct)
+
+    def should_stop():
+        return stop_flag and stop_flag.is_set()
+
+    def pause():
+        if delay > 0:
+            time.sleep(delay)
+
+    # --- Phase 1: Analyse ungrouped landscape ---
+    progress("analyzing", "Analyzing ungrouped track landscape...", 2)
+    landscape = (
+        "NOTE: These are tracks that did not fit into the main collection lineages. "
+        "They may represent niche areas, crossover material, or outlier styles.\n\n"
+        + build_mini_landscape(df_ungrouped)
+    )
+
+    if should_stop():
+        progress("stopped", "Stopped.", 0)
+        return tree
+
+    # --- Phase 2: Identify new lineages ---
+    progress("lineages", "Identifying new lineages from ungrouped tracks...", 5)
+    lineage_defs = _llm_identify_lineages(landscape, client, model, provider)
+    pause()
+
+    if not lineage_defs:
+        progress("complete", "No new lineages could be identified.", 100)
+        return tree
+
+    progress("lineages", f"Found {len(lineage_defs)} new lineages", 10)
+
+    if should_stop():
+        progress("stopped", "Stopped.", 0)
+        return tree
+
+    # --- Phase 3: Assign ungrouped tracks to new lineages ---
+    progress("assigning", "Assigning ungrouped tracks to new lineages...", 12)
+    assignments, still_ungrouped = assign_tracks_to_branches(
+        df_ungrouped, lineage_defs, min_score=0.05
+    )
+
+    new_lineages = []
+    for lin_def in lineage_defs:
+        tids = assignments.get(lin_def["id"], [])
+        if not tids:
+            continue  # skip empty lineages
+        node = _build_node(lin_def, tids, depth=0)
+        node["subtitle"] = lin_def.get("subtitle", f"~{len(tids)} tracks")
+        node["is_leaf"] = False
+        new_lineages.append(node)
+
+    if not new_lineages:
+        progress("complete", "No tracks matched the new lineages.", 100)
+        return tree
+
+    assigned_count = sum(len(n["track_ids"]) for n in new_lineages)
+    progress("assigning",
+             f"Assigned {assigned_count}/{len(valid_ids)} ungrouped tracks",
+             15)
+
+    # --- Phase 4: Recursive branch building ---
+    total_lineages = len(new_lineages)
+    base_pct = 15
+    branch_pct_range = 60  # 15% -> 75%
+
+    all_sub_ungrouped = list(still_ungrouped)
+
+    for li, lineage in enumerate(new_lineages):
+        if should_stop():
+            break
+
+        lineage_pct_start = base_pct + (li / total_lineages) * branch_pct_range
+        lineage_pct_end = base_pct + ((li + 1) / total_lineages) * branch_pct_range
+
+        progress("primary_branches",
+                 f"Building branches for {lineage['title']}...",
+                 int(lineage_pct_start))
+
+        _subdivide_node(
+            node=lineage,
+            df=df,
+            client=client,
+            model=model,
+            provider=provider,
+            delay=delay,
+            depth=1,
+            progress_cb=progress_cb,
+            stop_flag=stop_flag,
+            pct_start=lineage_pct_start,
+            pct_end=lineage_pct_end,
+            all_ungrouped=all_sub_ungrouped,
+        )
+
+    # --- Phase 5: Finalize leaf nodes ---
+    if not should_stop():
+        progress("finalizing_leaves", "Finalizing new leaf nodes...", 75)
+        _finalize_all_leaves(new_lineages, df, client, model, provider, delay,
+                             progress, should_stop)
+
+    # --- Phase 6: Merge into existing tree ---
+    progress("merging", "Merging new lineages into collection tree...", 92)
+
+    new_assigned = set()
+    _collect_leaf_track_ids(new_lineages, new_assigned)
+
+    remaining_ungrouped = [tid for tid in ungrouped_ids if tid not in new_assigned]
+
+    tree["lineages"].extend(_clean_nodes(new_lineages))
+    tree["ungrouped_track_ids"] = remaining_ungrouped
+    tree["assigned_tracks"] = tree["total_tracks"] - len(remaining_ungrouped)
+
+    save_tree(tree)
+    progress("complete", "New lineages added to tree!", 100)
+    return tree
+
+
 def _subdivide_node(node, df, client, model, provider, delay, depth,
                     progress_cb, stop_flag, pct_start, pct_end, all_ungrouped):
     """Recursively subdivide a node if it has too many tracks."""

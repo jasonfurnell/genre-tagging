@@ -341,6 +341,14 @@ function renderUngrouped() {
         return;
     }
 
+    const expandBtnHtml = ungroupedIds.length >= 20
+        ? `<div class="tree-ungrouped-actions">
+               <button id="tree-expand-ungrouped-btn" class="btn btn-primary btn-sm"${treeBuilding ? " disabled" : ""}>
+                   Create Lineages from Ungrouped
+               </button>
+           </div>`
+        : "";
+
     section.innerHTML = `
         <div class="tree-ungrouped-header">
             <button class="tree-ungrouped-toggle" id="tree-ungrouped-toggle">
@@ -349,11 +357,17 @@ function renderUngrouped() {
                 <span class="tree-node-count">${ungroupedIds.length} tracks</span>
             </button>
             <p class="tree-ungrouped-hint">Tracks that didn't fit neatly into any branch. These may represent niche areas worth exploring.</p>
+            ${expandBtnHtml}
         </div>
         <div id="tree-ungrouped-body" class="hidden">
             <p class="tree-ungrouped-loading">Loading tracks...</p>
         </div>
     `;
+
+    const expandBtn = _t("#tree-expand-ungrouped-btn");
+    if (expandBtn) {
+        expandBtn.addEventListener("click", startExpandUngrouped);
+    }
 
     let ungroupedLoaded = false;
     _t("#tree-ungrouped-toggle").addEventListener("click", async () => {
@@ -414,6 +428,112 @@ function renderUngroupedTracks(tracks) {
             togglePreview(btn.dataset.artist, btn.dataset.title, btn);
         });
     });
+}
+
+// ── Expand Ungrouped ─────────────────────────────────────────
+
+async function startExpandUngrouped() {
+    const btn = _t("#tree-expand-ungrouped-btn");
+    btn.disabled = true;
+    btn.textContent = "Analyzing ungrouped tracks...";
+
+    // Insert inline progress bar after the actions div
+    const progressEl = document.createElement("div");
+    progressEl.id = "tree-expand-progress";
+    progressEl.className = "tree-progress";
+    progressEl.innerHTML = `
+        <div class="tree-progress-header">
+            <h3 id="tree-expand-phase">Analyzing ungrouped tracks...</h3>
+            <button class="btn btn-danger btn-sm" onclick="stopTreeBuild()">Stop</button>
+        </div>
+        <div class="tree-progress-bar-container">
+            <div id="tree-expand-bar" class="tree-progress-bar"></div>
+        </div>
+        <p id="tree-expand-detail" class="tree-progress-detail"></p>
+    `;
+    btn.parentElement.insertAdjacentElement("afterend", progressEl);
+
+    try {
+        const res = await fetch("/api/tree/expand-ungrouped", { method: "POST" });
+        const data = await res.json();
+        if (!res.ok) {
+            alert(data.error || "Failed to start");
+            btn.disabled = false;
+            btn.textContent = "Create Lineages from Ungrouped";
+            progressEl.remove();
+            return;
+        }
+    } catch (e) {
+        alert("Failed: " + e.message);
+        btn.disabled = false;
+        btn.textContent = "Create Lineages from Ungrouped";
+        progressEl.remove();
+        return;
+    }
+
+    treeBuilding = true;
+    treeEventSource = new EventSource("/api/tree/progress");
+    treeEventSource.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        if (msg.event === "progress") {
+            updateExpandProgress(msg.phase, msg.detail, msg.percent);
+        }
+        if (msg.event === "done") {
+            finishExpandUngrouped();
+        }
+        if (msg.event === "error") {
+            alert("Error: " + (msg.detail || "Unknown error"));
+            finishExpandUngrouped();
+        }
+        if (msg.event === "stopped") {
+            finishExpandUngrouped();
+        }
+    };
+    treeEventSource.onerror = () => {
+        finishExpandUngrouped();
+    };
+}
+
+function updateExpandProgress(phase, detail, percent) {
+    const phaseLabels = {
+        "analyzing": "Analyzing Ungrouped Tracks",
+        "lineages": "Identifying New Lineages",
+        "assigning": "Assigning Tracks",
+        "primary_branches": "Building Primary Branches",
+        "secondary_branches": "Building Secondary Branches",
+        "tertiary_branches": "Building Tertiary Branches",
+        "finalizing_leaves": "Finalizing Leaf Nodes",
+        "merging": "Merging into Tree",
+        "complete": "Complete!",
+    };
+    const phaseEl = _t("#tree-expand-phase");
+    const detailEl = _t("#tree-expand-detail");
+    const barEl = _t("#tree-expand-bar");
+    if (phaseEl) phaseEl.textContent = phaseLabels[phase] || phase;
+    if (detailEl) detailEl.textContent = detail || "";
+    if (barEl) barEl.style.width = (percent || 0) + "%";
+}
+
+async function finishExpandUngrouped() {
+    if (treeEventSource) {
+        treeEventSource.close();
+        treeEventSource = null;
+    }
+    treeBuilding = false;
+
+    const progressEl = _t("#tree-expand-progress");
+    if (progressEl) progressEl.remove();
+
+    try {
+        const res = await fetch("/api/tree");
+        const data = await res.json();
+        if (data.tree) {
+            treeData = data.tree;
+            showTreeView();
+        }
+    } catch (e) {
+        console.error("Failed to reload tree:", e);
+    }
 }
 
 // ── Playlist Creation ───────────────────────────────────────

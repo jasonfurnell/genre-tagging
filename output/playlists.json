@@ -890,5 +890,616 @@
     "source": "tree",
     "created_at": "2026-02-08T22:47:26.141991+00:00",
     "updated_at": "2026-02-08T22:47:26.142011+00:00"
+  },
+  "483ec0d3": {
+    "id": "483ec0d3",
+    "name": "German Electro: Berlin N\u00e4chte: Minimal Techno",
+    "description": "Deep, hypnotic minimal techno straight from the heart of Germany's underground club scene. Stripped-back grooves and cerebral soundscapes for warehouse afterhours.",
+    "filters": {
+      "bpm_max": 130,
+      "bpm_min": 120,
+      "descriptors": [
+        "hypnotic loops",
+        "stripped-back percussion",
+        "stripped-back groove",
+        "hypnotic percussion",
+        "hypnotic bassline",
+        "pulsing bassline"
+      ],
+      "genres": [
+        "Minimal Techno",
+        "Techno",
+        "Minimal Tech House",
+        "Dub Techno",
+        "Microhouse"
+      ],
+      "location": [
+        "Germany",
+        "Berlin",
+        "Detroit-influenced"
+      ],
+      "mood": [
+        "peak-time underground warehouse energy",
+        "cerebral late-night warehouse atmosphere",
+        "underground afterhours warehouse energy",
+        "cerebral after-hours introspection"
+      ]
+    },
+    "track_ids": [
+      5631,
+      1286,
+      4918,
+      1524,
+      421,
+      3670,
+      3681,
+      2982,
+      3792,
+      3801,
+      3708,
+      3686,
+      3588,
+      3836,
+      3859,
+      3851,
+      3678,
+      3700,
+      3715,
+      3711,
+      3684,
+      3576,
+      1501,
+      720,
+      733
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T10:40:58.186969+00:00",
+    "updated_at": "2026-02-09T10:54:15.975184+00:00"
+  },
+  "60d1d673": {
+    "id": "60d1d673",
+    "name": "German Electro: Cold Wave Europa: Franco-Germanic Pulse",
+    "description": "European-focused darkwave, cold wave, and electro-punk spanning France, Germany, and UK scenes. Raw analog textures meet driving rhythms in a cross-continental underground aesthetic.",
+    "filters": {
+      "descriptors": [
+        "analog",
+        "distorted",
+        "raw",
+        "driving",
+        "cold",
+        "pulsing bassline",
+        "confrontational"
+      ],
+      "era": [
+        "late 2010s",
+        "early 2010s",
+        "mid 2010s",
+        "2010s",
+        "early 2020s",
+        "late 80s",
+        "early 80s"
+      ],
+      "genres": [
+        "Electro",
+        "Electro-Punk",
+        "New Wave",
+        "Post-Punk",
+        "Synth-pop",
+        "Darkwave",
+        "Cold Wave",
+        "Minimal Techno"
+      ],
+      "location": [
+        "France",
+        "Germany",
+        "UK",
+        "Europe",
+        "London",
+        "Berlin"
+      ]
+    },
+    "track_ids": [
+      5838,
+      6062,
+      1807,
+      4099,
+      1001,
+      1372,
+      2988,
+      3322,
+      1002,
+      3798,
+      57,
+      995,
+      422,
+      1022,
+      345,
+      2352,
+      1136,
+      3521,
+      1201,
+      3053,
+      5276,
+      19,
+      2638,
+      608,
+      2646
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T10:47:55.656041+00:00",
+    "updated_at": "2026-02-09T10:54:05.596139+00:00"
+  },
+  "56537dc4": {
+    "id": "56537dc4",
+    "name": "German Electro: Icy Synth Dreams: New Wave Nostalgia",
+    "description": "A journey through the cold, elegant soundscapes of early 80s New Wave and Synth-pop. Robotic vocals, icy synthesizers, and melancholic basslines define this moody, art-school aesthetic.",
+    "filters": {
+      "bpm_max": 125,
+      "bpm_min": 105,
+      "descriptors": [
+        "icy synthesizers",
+        "robotic vocals",
+        "melancholic bassline",
+        "sparse electronic drums",
+        "synth melodies",
+        "drum machine"
+      ],
+      "era": [
+        "early 80s",
+        "early 1980s",
+        "mid-80s"
+      ],
+      "genres": [
+        "New Wave",
+        "Synth-pop",
+        "Post-Punk"
+      ],
+      "location": [
+        "UK",
+        "Europe"
+      ]
+    },
+    "track_ids": [
+      22,
+      2641,
+      5935,
+      2638,
+      633,
+      2668,
+      5378,
+      21,
+      4118,
+      2692,
+      5930,
+      28,
+      26,
+      1333,
+      2646,
+      2674,
+      556,
+      34,
+      2657,
+      19,
+      5880,
+      5177,
+      150,
+      199,
+      504
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T10:51:46.878171+00:00",
+    "updated_at": "2026-02-09T10:53:58.874401+00:00"
+  },
+  "47a2aa48": {
+    "id": "47a2aa48",
+    "name": "German Electro: Modern Retro Wave: Nu-Disco Revival",
+    "description": "Contemporary producers channel 80s New Wave elegance through Nu-Disco and Indie Dance. Synth-driven grooves with a modern production sheen that honors the Visage aesthetic.",
+    "filters": {
+      "bpm_max": 120,
+      "bpm_min": 108,
+      "descriptors": [
+        "synth melodies",
+        "driving drum machine",
+        "hypnotic arpeggios",
+        "groovy bassline",
+        "lush synth",
+        "retro"
+      ],
+      "era": [
+        "late 2010s",
+        "early 2010s",
+        "mid 2010s",
+        "early 2020s",
+        "2020s"
+      ],
+      "genres": [
+        "Nu-Disco",
+        "Indie Dance",
+        "Synth-pop",
+        "House",
+        "Electro-Funk"
+      ]
+    },
+    "track_ids": [
+      1169,
+      1,
+      790,
+      3045,
+      480,
+      5691,
+      3477,
+      6143,
+      396,
+      1203,
+      1311,
+      5910,
+      5681,
+      133,
+      440,
+      3522,
+      4084,
+      458,
+      1092,
+      4327,
+      1860,
+      1159,
+      4647,
+      6093,
+      4372
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T10:52:52.001454+00:00",
+    "updated_at": "2026-02-09T10:53:53.591350+00:00"
+  },
+  "98c5d187": {
+    "id": "98c5d187",
+    "name": "German Electro: Berlin Bass Chaos",
+    "description": "Aggressive, glitchy European electro madness for peak-time warehouse destruction. Distorted synths, broken beats, and unhinged bass wobbles from the underground.",
+    "filters": {
+      "bpm_max": 130,
+      "bpm_min": 110,
+      "descriptors": [
+        "aggressive synth stabs",
+        "distorted bass",
+        "glitchy percussion",
+        "punchy kicks"
+      ],
+      "era": [
+        "late 2000s",
+        "early 2010s",
+        "mid 2010s"
+      ],
+      "genres": [
+        "Electro House",
+        "Fidget House",
+        "Glitch Hop",
+        "Bass House",
+        "G-House"
+      ],
+      "location": [
+        "Germany",
+        "Berlin",
+        "Europe",
+        "UK"
+      ]
+    },
+    "track_ids": [
+      6065,
+      5840,
+      4939,
+      896,
+      282,
+      3964,
+      3955,
+      2906,
+      6040,
+      6281,
+      3143,
+      1498,
+      913,
+      1870,
+      1494,
+      1480,
+      1489,
+      2764,
+      1513,
+      4348,
+      3142,
+      1868,
+      4719,
+      137,
+      1866
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T10:56:21.984516+00:00",
+    "updated_at": "2026-02-09T10:57:04.780464+00:00"
+  },
+  "8d09f9d1": {
+    "id": "8d09f9d1",
+    "name": "German Electro: Synth Mechanics",
+    "description": "Cold precision meets dancefloor energy. German electronic innovators from the 80s crafting stark, sequenced grooves with industrial charm and pop sensibility.",
+    "filters": {
+      "bpm_max": 130,
+      "bpm_min": 105,
+      "descriptors": [
+        "analog sequences",
+        "sequenced bass",
+        "punchy bass",
+        "mechanical drums",
+        "stark analog"
+      ],
+      "era": [
+        "mid-80s",
+        "late 80s",
+        "early 80s"
+      ],
+      "genres": [
+        "Electronic",
+        "Synth-Funk",
+        "Minimal Synth",
+        "Electro-Funk",
+        "New Wave",
+        "Synth-pop"
+      ],
+      "location": [
+        "Germany",
+        "Europe"
+      ]
+    },
+    "track_ids": [
+      2388,
+      5567,
+      4355,
+      1900,
+      5669,
+      2641,
+      21,
+      26,
+      35,
+      2646,
+      4118,
+      556,
+      879,
+      2657,
+      34,
+      2479,
+      1581,
+      755,
+      2213,
+      5451,
+      2311,
+      4080,
+      5930,
+      5880,
+      6199
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T11:02:51.847878+00:00",
+    "updated_at": "2026-02-09T11:03:05.597455+00:00"
+  },
+  "ece92b5f": {
+    "id": "ece92b5f",
+    "name": "German Electro: Cinematic Synth Groove",
+    "description": "High-energy synth funk with cinematic swagger and infectious hooks. Punchy, melodic electronic grooves built for action and dancefloor movement.",
+    "filters": {
+      "bpm_max": 128,
+      "bpm_min": 110,
+      "descriptors": [
+        "punchy brass stabs",
+        "infectious",
+        "sequenced bass",
+        "melodic hooks",
+        "punchy bass grooves",
+        "playful melodic"
+      ],
+      "era": [
+        "mid-80s",
+        "late 80s"
+      ],
+      "genres": [
+        "Synth-Funk",
+        "Electro-Funk",
+        "Electronic",
+        "Funk",
+        "Synth-pop"
+      ]
+    },
+    "track_ids": [
+      2639,
+      879,
+      4369,
+      2213,
+      1207,
+      1581,
+      308,
+      5498,
+      755,
+      2521,
+      6029,
+      6011,
+      4912,
+      292,
+      2016,
+      493,
+      749,
+      4080,
+      2196,
+      15,
+      1900,
+      3367,
+      5374,
+      2470,
+      962
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T11:04:28.031425+00:00",
+    "updated_at": "2026-02-09T11:05:38.232549+00:00"
+  },
+  "635bddf5": {
+    "id": "635bddf5",
+    "name": "German Electro: Balearic Mutations: Electronic Eccentrics & Sunset Deviations",
+    "description": "Here's where the dance music narrative gets delightfully weird\u2014the stuff that never quite fit the genre tags but somehow defines the spaces between them. Yello's Swiss art-pop precision collides with Wolf M\u00fcller's sun-drenched Balearic mysticism, while Modeselektor drags glitch aesthetics through Berlin's bass-heavy underground. This is the soundtrack to those DJ sets where someone drops a leftfield curveball and the whole room recalibrates. Notice the temporal range: mid-'80s electro-pop experiments sitting comfortably next to 2010s downtempo explorations, all united by a refusal to color inside the lines. It's the sound of Ibiza's sunset strip meeting German art schools, of French touch producers getting playful with Ian Pooley, of Kraftwerk's clinical futurism still casting shadows decades later. Essential listening for anyone who thinks dance music peaked when it stopped taking itself so seriously\u2014or when it started taking itself way too seriously as art. Either way, this is the stuff that reminds you electronic music can be fun, strange, and profound all at once.",
+    "filters": {
+      "genres": [
+        "Electronic",
+        "Electronica",
+        "Balearic Beat",
+        "Dub Techno",
+        "Electro-Pop",
+        "Tech House",
+        "Glitch/Electronica",
+        "Organic Downtempo",
+        "Downtempo/Experimental",
+        "UK Bass-influenced"
+      ],
+      "descriptors": [
+        "organic percussion"
+      ],
+      "mood": [
+        "sun-drenched mediterranean chill-out rooms",
+        "sun-drenched balearic paradise vibes",
+        "sophisticated lounge atmosphere with swiss precision engineering",
+        "playful avant-garde experimentation meets dancefloor functionality",
+        "introspective experimental electronic collaboration"
+      ]
+    },
+    "track_ids": [
+      5448,
+      4937,
+      5029,
+      1036,
+      3151,
+      6282,
+      1858,
+      5430,
+      56,
+      5444,
+      227
+    ],
+    "source": "tree",
+    "created_at": "2026-02-09T11:06:54.254931+00:00",
+    "updated_at": "2026-02-09T11:08:41.850906+00:00"
+  },
+  "8b939363": {
+    "id": "8b939363",
+    "name": "German Electro: Stripped-Back Warehouse Hypnosis",
+    "description": "Deep into the night, where minimal tech house and tech house grooves lock into hypnotic, rolling patterns. European underground energy that's all about the subtle details and stripped-back sophistication.",
+    "filters": {
+      "bpm_max": 125,
+      "bpm_min": 115,
+      "descriptors": [
+        "rolling bassline",
+        "hypnotic loops",
+        "stripped-back groove",
+        "crisp percussion",
+        "hypnotic percussion",
+        "stripped-back percussion"
+      ],
+      "era": [
+        "late 2010s",
+        "early 2020s",
+        "2020s"
+      ],
+      "genres": [
+        "Tech House",
+        "Minimal Tech House",
+        "Minimal Techno"
+      ],
+      "location": [
+        "Germany",
+        "Netherlands",
+        "Eastern Europe",
+        "Europe"
+      ]
+    },
+    "track_ids": [
+      2825,
+      6247,
+      2824,
+      984,
+      3383,
+      3658,
+      3006,
+      6292,
+      129,
+      6068,
+      421,
+      4655,
+      1478,
+      461,
+      3675,
+      376,
+      4930,
+      2968,
+      3332,
+      3678,
+      1197,
+      5026,
+      2513,
+      2965,
+      1229
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T11:14:08.601261+00:00",
+    "updated_at": "2026-02-09T11:16:00.272820+00:00"
+  },
+  "de46dc5c": {
+    "id": "de46dc5c",
+    "name": "German Electro: Hypnotic Warehouse: Minimal Grooves",
+    "description": "Stripped-back tech house and minimal techno built for late-night warehouse sessions. Hypnotic basslines and crisp percussion drive the underground energy.",
+    "filters": {
+      "bpm_max": 128,
+      "bpm_min": 115,
+      "descriptors": [
+        "hypnotic bassline",
+        "crisp percussion",
+        "stripped-back percussion",
+        "stripped-back arrangement",
+        "hypnotic loops"
+      ],
+      "genres": [
+        "Tech House",
+        "Minimal Tech House",
+        "Minimal Techno",
+        "Deep House"
+      ],
+      "mood": [
+        "late-night underground warehouse energy",
+        "peak-time underground warehouse energy",
+        "underground warehouse energy",
+        "warehouse afterhours intensity",
+        "underground warehouse afterhours vibe"
+      ]
+    },
+    "track_ids": [
+      3383,
+      2824,
+      453,
+      3006,
+      3662,
+      129,
+      4907,
+      421,
+      4996,
+      1354,
+      376,
+      389,
+      3680,
+      2968,
+      3996,
+      6030,
+      4919,
+      3678,
+      714,
+      6078,
+      5026,
+      1229,
+      1882,
+      3466,
+      3349
+    ],
+    "source": "llm",
+    "created_at": "2026-02-09T11:32:35.476370+00:00",
+    "updated_at": "2026-02-09T11:32:52.700086+00:00"
   }
 }

@@ -29,7 +29,8 @@ from app.playlist import (
     rerank_tracks, export_m3u, export_csv,
 )
 from app.tree import (
-    build_collection_tree, load_tree, save_tree, delete_tree as delete_tree_file,
+    build_collection_tree, expand_tree_from_ungrouped,
+    load_tree, save_tree, delete_tree as delete_tree_file,
     find_node,
 )
 
@@ -972,6 +973,67 @@ def tree_progress():
 def tree_stop():
     _state["tree_stop_flag"].set()
     return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/tree/expand-ungrouped
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/expand-ungrouped", methods=["POST"])
+def tree_expand_ungrouped():
+    """Create new lineage(s) from ungrouped tracks and merge into the tree."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    ungrouped = tree.get("ungrouped_track_ids", [])
+    if not ungrouped:
+        return jsonify({"error": "No ungrouped tracks to process"}), 400
+
+    # Check if already building
+    t = _state.get("tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Tree operation already in progress"}), 409
+
+    _state["tree_stop_flag"].clear()
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            updated_tree = expand_tree_from_ungrouped(
+                tree=tree, df=df, client=client, model=model,
+                provider=provider, delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["tree_stop_flag"],
+            )
+            _state["tree"] = updated_tree
+            _tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Expand ungrouped failed")
+            _tree_broadcast({"event": "error", "phase": "error",
+                             "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True, "ungrouped_count": len(ungrouped)}), 202
 
 
 # ---------------------------------------------------------------------------
