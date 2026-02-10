@@ -816,6 +816,43 @@ tr.ws-seed-selected {
    Collection Tree Tab
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── Tree type selector toggle ────────────────────────────── */
+.tree-type-selector {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 4px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--border);
+}
+.tree-type-btn {
+    flex: 1;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+.tree-type-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+}
+.tree-type-btn.active {
+    background: rgba(78, 204, 163, 0.2);
+    color: var(--success);
+    font-weight: 600;
+}
+
 /* ── Intro / Build section ─────────────────────────────────── */
 .tree-intro {
     text-align: center;

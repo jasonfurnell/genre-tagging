@@ -1,13 +1,52 @@
 /* ── Collection Tree — Frontend ───────────────────────────── */
 
+// Current tree type
+let currentTreeType = "genre";
+
+// Per-type state
+const treeState = {
+    genre: {
+        data: null,
+        expandedNodes: new Set(),
+        createdPlaylistNodeIds: new Set(),
+        apiPrefix: "/api/tree",
+    },
+    scene: {
+        data: null,
+        expandedNodes: new Set(),
+        createdPlaylistNodeIds: new Set(),
+        apiPrefix: "/api/scene-tree",
+    },
+};
+
+// Active aliases (swapped on type switch)
 let treeData = null;
 let expandedNodes = new Set();
+let createdPlaylistNodeIds = new Set();
+
 let treeBuilding = false;
 let treeEventSource = null;
-let createdPlaylistNodeIds = new Set(); // track which leaves have been saved
+
+// Tree type display metadata
+const TREE_TYPE_INFO = {
+    genre: {
+        title: "Genre Tree",
+        description: "Build an interactive map of the musical lineages and evolutionary paths in your collection. Organises by genre family trees — broad traditions that branch into sub-genres and movements.",
+        buildLabel: "Build Genre Tree",
+    },
+    scene: {
+        title: "Scene Explorer",
+        description: "Map your collection by musical scenes — cohesive cultural moments anchored to specific places and times. Discover the geographic and temporal movements that shaped the music you love.",
+        buildLabel: "Build Scene Tree",
+    },
+};
 
 // DOM refs (lazy, tab may not exist yet)
 function _t(sel) { return document.querySelector(sel); }
+
+function apiUrl(path) {
+    return treeState[currentTreeType].apiPrefix + (path || "");
+}
 
 // ── Init ────────────────────────────────────────────────────
 
@@ -18,12 +57,78 @@ async function initTree() {
     _t("#tree-create-all-btn").addEventListener("click", createAllPlaylists);
     _t("#tree-rebuild-btn").addEventListener("click", rebuildTree);
 
-    // Check for existing tree
+    // Wire tree type selector
+    document.querySelectorAll(".tree-type-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            switchTreeType(btn.dataset.treeType);
+        });
+    });
+
+    // Load the default (genre) tree
     try {
-        const res = await fetch("/api/tree");
+        const res = await fetch(apiUrl());
         const data = await res.json();
         if (data.tree) {
             treeData = data.tree;
+            treeState.genre.data = data.tree;
+            showTreeView();
+        }
+    } catch (e) {
+        console.error("Failed to load tree:", e);
+    }
+}
+
+// ── Tree Type Switching ─────────────────────────────────────
+
+function switchTreeType(type) {
+    if (type === currentTreeType) return;
+
+    // Save current state back
+    treeState[currentTreeType].data = treeData;
+    treeState[currentTreeType].expandedNodes = expandedNodes;
+    treeState[currentTreeType].createdPlaylistNodeIds = createdPlaylistNodeIds;
+
+    // Switch
+    currentTreeType = type;
+    treeData = treeState[type].data;
+    expandedNodes = treeState[type].expandedNodes;
+    createdPlaylistNodeIds = treeState[type].createdPlaylistNodeIds;
+
+    // Update selector buttons
+    document.querySelectorAll(".tree-type-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.treeType === type);
+    });
+
+    // Update intro text
+    const info = TREE_TYPE_INFO[type];
+    const titleEl = _t("#tree-intro-title");
+    const descEl = _t("#tree-intro-desc");
+    if (titleEl) titleEl.textContent = info.title;
+    if (descEl) descEl.textContent = info.description;
+    _t("#tree-build-btn").textContent = info.buildLabel;
+
+    // Show the right view
+    if (treeData) {
+        showTreeView();
+    } else {
+        // Try loading from server
+        loadTreeForType(type);
+    }
+}
+
+async function loadTreeForType(type) {
+    // Reset to build state while we check
+    _t("#tree-view-section").classList.add("hidden");
+    _t("#tree-build-section").style.display = "";
+    _t("#tree-build-btn").disabled = false;
+    _t("#tree-progress").classList.add("hidden");
+
+    try {
+        const res = await fetch(treeState[type].apiPrefix);
+        const data = await res.json();
+        if (data.tree) {
+            treeData = data.tree;
+            treeState[type].data = data.tree;
             showTreeView();
         }
     } catch (e) {
@@ -42,7 +147,7 @@ async function startTreeBuild() {
     treeBuilding = true;
 
     try {
-        const res = await fetch("/api/tree/build", { method: "POST" });
+        const res = await fetch(apiUrl("/build"), { method: "POST" });
         const data = await res.json();
         if (!res.ok) {
             alert(data.error || "Failed to start build");
@@ -60,7 +165,7 @@ async function startTreeBuild() {
     }
 
     // Connect to SSE progress stream
-    treeEventSource = new EventSource("/api/tree/progress");
+    treeEventSource = new EventSource(apiUrl("/progress"));
     treeEventSource.onmessage = (e) => {
         const msg = JSON.parse(e.data);
 
@@ -95,6 +200,7 @@ function updateBuildProgress(phase, detail, percent) {
         "secondary_branches": "Building Secondary Branches",
         "tertiary_branches": "Building Tertiary Branches",
         "finalizing_leaves": "Finalizing Leaf Nodes",
+        "lineage_examples": "Selecting Exemplar Tracks",
         "complete": "Complete!",
     };
     _t("#tree-progress-phase").textContent = phaseLabels[phase] || phase;
@@ -111,10 +217,11 @@ async function finishTreeBuild() {
 
     // Load the tree
     try {
-        const res = await fetch("/api/tree");
+        const res = await fetch(apiUrl());
         const data = await res.json();
         if (data.tree) {
             treeData = data.tree;
+            treeState[currentTreeType].data = data.tree;
             showTreeView();
         } else {
             // No tree built (error or stopped early)
@@ -129,20 +236,22 @@ async function finishTreeBuild() {
 
 async function stopTreeBuild() {
     try {
-        await fetch("/api/tree/stop", { method: "POST" });
+        await fetch(apiUrl("/stop"), { method: "POST" });
     } catch (e) {
         console.error("Failed to stop build:", e);
     }
 }
 
 async function rebuildTree() {
-    if (!confirm("Delete the current tree and rebuild from scratch?")) return;
+    const typeName = TREE_TYPE_INFO[currentTreeType].title;
+    if (!confirm(`Delete the current ${typeName} and rebuild from scratch?`)) return;
     try {
-        await fetch("/api/tree", { method: "DELETE" });
+        await fetch(apiUrl(), { method: "DELETE" });
     } catch (e) { /* ignore */ }
     treeData = null;
     expandedNodes.clear();
     createdPlaylistNodeIds.clear();
+    treeState[currentTreeType].data = null;
     _t("#tree-view-section").classList.add("hidden");
     _t("#tree-build-section").style.display = "";
     _t("#tree-build-btn").disabled = false;
@@ -169,6 +278,8 @@ function renderTreeHeader() {
         ? ""
         : `<span class="tree-stat-badge tree-stat-warning">${tree.status}</span>`;
 
+    const typeLabel = currentTreeType === "scene" ? "Scenes" : "Lineages";
+
     _t("#tree-header").innerHTML = `
         <div class="tree-stats">
             <div class="tree-stat">
@@ -177,7 +288,7 @@ function renderTreeHeader() {
             </div>
             <div class="tree-stat">
                 <span class="tree-stat-number">${tree.lineages.length}</span>
-                <span class="tree-stat-label">Lineages</span>
+                <span class="tree-stat-label">${typeLabel}</span>
             </div>
             <div class="tree-stat">
                 <span class="tree-stat-number">${leafCount}</span>
@@ -255,7 +366,7 @@ function renderTreeGrid() {
         const dlBtn = card.querySelector(".tree-download-m3u-btn");
         if (dlBtn) {
             dlBtn.addEventListener("click", () => {
-                window.location = `/api/tree/node/${lineage.id}/export/m3u`;
+                window.location = apiUrl(`/node/${lineage.id}/export/m3u`);
             });
         }
 
@@ -436,7 +547,7 @@ function renderUngrouped() {
             if (!ungroupedLoaded) {
                 ungroupedLoaded = true;
                 try {
-                    const res = await fetch("/api/tree/ungrouped");
+                    const res = await fetch(apiUrl("/ungrouped"));
                     const data = await res.json();
                     renderUngroupedTracks(data.tracks || []);
                 } catch (e) {
@@ -508,7 +619,7 @@ async function startExpandUngrouped() {
     btn.parentElement.insertAdjacentElement("afterend", progressEl);
 
     try {
-        const res = await fetch("/api/tree/expand-ungrouped", { method: "POST" });
+        const res = await fetch(apiUrl("/expand-ungrouped"), { method: "POST" });
         const data = await res.json();
         if (!res.ok) {
             alert(data.error || "Failed to start");
@@ -526,7 +637,7 @@ async function startExpandUngrouped() {
     }
 
     treeBuilding = true;
-    treeEventSource = new EventSource("/api/tree/progress");
+    treeEventSource = new EventSource(apiUrl("/progress"));
     treeEventSource.onmessage = (e) => {
         const msg = JSON.parse(e.data);
         if (msg.event === "progress") {
@@ -579,10 +690,11 @@ async function finishExpandUngrouped() {
     if (progressEl) progressEl.remove();
 
     try {
-        const res = await fetch("/api/tree");
+        const res = await fetch(apiUrl());
         const data = await res.json();
         if (data.tree) {
             treeData = data.tree;
+            treeState[currentTreeType].data = data.tree;
             showTreeView();
         }
     } catch (e) {
@@ -597,7 +709,7 @@ async function createPlaylistFromLeaf(nodeId, btn) {
     btn.textContent = "Curating with AI...";
 
     try {
-        const res = await fetch("/api/tree/create-playlist", {
+        const res = await fetch(apiUrl("/create-playlist"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ node_id: nodeId }),
@@ -630,7 +742,7 @@ async function createAllPlaylists() {
     btn.textContent = "Creating...";
 
     try {
-        const res = await fetch("/api/tree/create-all-playlists", { method: "POST" });
+        const res = await fetch(apiUrl("/create-all-playlists"), { method: "POST" });
         const data = await res.json();
         if (res.ok) {
             btn.textContent = `${data.count} Playlists Created`;

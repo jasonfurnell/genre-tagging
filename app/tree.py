@@ -26,25 +26,28 @@ _TREE_FILE = os.path.join(
 )
 
 
-def save_tree(tree):
-    os.makedirs(os.path.dirname(_TREE_FILE), exist_ok=True)
-    with open(_TREE_FILE, "w") as f:
+def save_tree(tree, file_path=None):
+    fp = file_path or _TREE_FILE
+    os.makedirs(os.path.dirname(fp), exist_ok=True)
+    with open(fp, "w") as f:
         json.dump(tree, f, indent=2)
 
 
-def load_tree():
-    if os.path.exists(_TREE_FILE):
+def load_tree(file_path=None):
+    fp = file_path or _TREE_FILE
+    if os.path.exists(fp):
         try:
-            with open(_TREE_FILE) as f:
+            with open(fp) as f:
                 return json.load(f)
         except Exception:
             return None
     return None
 
 
-def delete_tree():
-    if os.path.exists(_TREE_FILE):
-        os.remove(_TREE_FILE)
+def delete_tree(file_path=None):
+    fp = file_path or _TREE_FILE
+    if os.path.exists(fp):
+        os.remove(fp)
         return True
     return False
 
@@ -332,16 +335,146 @@ Return a JSON array:
 
 
 # ---------------------------------------------------------------------------
+# Scene Tree prompts — scene-based organisation (place + era)
+# ---------------------------------------------------------------------------
+
+_SCENE_SYSTEM_PROMPT = (
+    "You are a music historian and cultural geographer with encyclopedic knowledge "
+    "of how music scenes develop in specific places and times. You understand the "
+    "interplay between location, era, community, and sound that creates distinct "
+    "musical movements. You think in terms of scenes — cohesive cultural moments "
+    "anchored to geography and time — not broad genre categories.\n\n"
+    "You must respond with valid JSON only. No markdown, no code fences, no "
+    "additional text before or after the JSON."
+)
+
+_SCENE_LINEAGE_PROMPT = """Here is a summary of a music collection:
+
+{landscape}
+
+Identify 10-15 distinct Musical Scenes and Movements represented in this collection.
+Each scene should be anchored to a specific geographic location AND time period,
+representing a cohesive cultural moment (e.g., "Chicago House Origins 1984-1992",
+"Berlin Minimal Techno 2000-2008", "UK Garage to Dubstep 1997-2004",
+"Detroit Techno First Wave 1985-1993", "Kingston Dub & Roots 1970-1980").
+
+Rules:
+- Identify 10-15 scenes depending on collection diversity
+- Each scene MUST be anchored to a specific place AND era
+- Scenes should represent cohesive cultural moments, not broad genre categories
+- A scene can span 3-15 years of a particular movement
+- Smaller is better: prefer specific movements over umbrella terms
+- Each scene should represent at least ~15 tracks from the collection
+- Order by era (earliest first)
+- Think like a music journalist writing about specific movements, not a Wikipedia editor categorizing genres
+
+{filter_help}
+
+Return a JSON array:
+[{{
+  "id": "kebab-case-id",
+  "title": "Place + Movement + Era Title",
+  "subtitle": "~N tracks spanning X",
+  "description": "2-3 sentences about this scene: where it happened, when, who drove it, what it sounded like, and why it mattered.",
+  "filters": {{ "genres": [...], "era": [...], "location": [...], "mood": [...], "descriptors": [...] }}
+}}]"""
+
+_SCENE_BRANCH_PROMPT = """Within the "{title}" scene, there are {track_count} tracks:
+
+{mini_landscape}
+
+Subdivide this scene into {target_count} distinct phases, sub-scenes, or stylistic
+strands — whichever best captures the natural evolution within this movement.
+
+Rules:
+- Each sub-scene should ideally contain 15-60 tracks
+- Titles should reference specific micro-eras, venues, labels, or stylistic shifts
+  e.g., "Warehouse Era: Raw Jacking Tracks 1985-1988" not just "Early House"
+- Descriptions should evoke the time and place — name key artists, venues, labels
+- Sub-scenes should cover the full scope of tracks in this scene
+- Order chronologically when possible
+
+{filter_help}
+
+Return a JSON array:
+[{{
+  "id": "kebab-case-id",
+  "title": "Evocative Sub-scene Title",
+  "description": "Rich 2-3 sentence description with cultural and geographic context...",
+  "filters": {{ "genres": [...], "era": [...], "location": [...], "mood": [...], "descriptors": [...] }}
+}}]"""
+
+_SCENE_SUBDIVIDE_PROMPT = """Within "{title}", there are {track_count} tracks:
+
+{mini_landscape}
+
+This sub-scene needs further subdivision into {target_count} micro-movements or
+stylistic clusters.
+
+Rules:
+- Each cluster should ideally contain 15-40 tracks
+- Focus on what makes each cluster sonically or culturally distinct
+- Evocative titles that a music enthusiast would recognise
+- Cover the full range of tracks
+
+{filter_help}
+
+Return a JSON array:
+[{{
+  "id": "kebab-case-id",
+  "title": "Evocative Micro-movement Title",
+  "description": "Rich 2-3 sentence description...",
+  "filters": {{ "genres": [...], "era": [...], "location": [...], "mood": [...], "descriptors": [...] }}
+}}]"""
+
+
+# ---------------------------------------------------------------------------
+# Tree profiles — prompt sets + thresholds per tree type
+# ---------------------------------------------------------------------------
+
+TREE_PROFILES = {
+    "genre": {
+        "system_prompt": _TREE_SYSTEM_PROMPT,
+        "lineage_prompt": _LINEAGE_PROMPT,
+        "branch_prompt": _BRANCH_PROMPT,
+        "subdivide_prompt": _SUBDIVIDE_PROMPT,
+        "leaf_prompt": _LEAF_PROMPT,
+        "examples_prompt": _LINEAGE_EXAMPLES_PROMPT,
+        "subdivision_threshold": 50,
+        "max_depth": 4,
+        "leaf_batch_size": 5,
+        "file": _TREE_FILE,
+    },
+    "scene": {
+        "system_prompt": _SCENE_SYSTEM_PROMPT,
+        "lineage_prompt": _SCENE_LINEAGE_PROMPT,
+        "branch_prompt": _SCENE_BRANCH_PROMPT,
+        "subdivide_prompt": _SCENE_SUBDIVIDE_PROMPT,
+        "leaf_prompt": _LEAF_PROMPT,
+        "examples_prompt": _LINEAGE_EXAMPLES_PROMPT,
+        "subdivision_threshold": 40,
+        "max_depth": 4,
+        "leaf_batch_size": 5,
+        "file": os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "output", "scene_tree.json",
+        ),
+    },
+}
+
+
+# ---------------------------------------------------------------------------
 # Pipeline steps
 # ---------------------------------------------------------------------------
 
 @retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
        retry=retry_if_exception_type(Exception))
-def _llm_identify_lineages(landscape, client, model, provider):
-    prompt = _LINEAGE_PROMPT.format(
+def _llm_identify_lineages(landscape, client, model, provider, profile=None):
+    profile = profile or TREE_PROFILES["genre"]
+    prompt = profile["lineage_prompt"].format(
         landscape=landscape, filter_help=_FILTER_FIELDS_HELP
     )
-    raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
+    raw = _call_llm(client, model, provider, profile["system_prompt"], prompt)
     lineages = _extract_json(raw)
     # Validate
     for lin in lineages:
@@ -356,8 +489,10 @@ def _llm_identify_lineages(landscape, client, model, provider):
 @retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
        retry=retry_if_exception_type(Exception))
 def _llm_generate_branches(title, track_count, mini_landscape, target_count,
-                            client, model, provider, is_primary=True):
-    template = _BRANCH_PROMPT if is_primary else _SUBDIVIDE_PROMPT
+                            client, model, provider, is_primary=True,
+                            profile=None):
+    profile = profile or TREE_PROFILES["genre"]
+    template = profile["branch_prompt"] if is_primary else profile["subdivide_prompt"]
     prompt = template.format(
         title=title,
         track_count=track_count,
@@ -365,7 +500,7 @@ def _llm_generate_branches(title, track_count, mini_landscape, target_count,
         target_count=target_count,
         filter_help=_FILTER_FIELDS_HELP,
     )
-    raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
+    raw = _call_llm(client, model, provider, profile["system_prompt"], prompt)
     branches = _extract_json(raw)
     for b in branches:
         b.setdefault("id", str(uuid.uuid4())[:8])
@@ -377,22 +512,25 @@ def _llm_generate_branches(title, track_count, mini_landscape, target_count,
 
 @retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
        retry=retry_if_exception_type(Exception))
-def _llm_finalize_leaves(nodes_json, client, model, provider):
-    prompt = _LEAF_PROMPT.format(nodes_json=nodes_json)
-    raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
+def _llm_finalize_leaves(nodes_json, client, model, provider, profile=None):
+    profile = profile or TREE_PROFILES["genre"]
+    prompt = profile["leaf_prompt"].format(nodes_json=nodes_json)
+    raw = _call_llm(client, model, provider, profile["system_prompt"], prompt)
     return _extract_json(raw)
 
 
 @retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
        retry=retry_if_exception_type(Exception))
-def _llm_pick_lineage_examples(lineages_json, client, model, provider):
-    prompt = _LINEAGE_EXAMPLES_PROMPT.format(lineages_json=lineages_json)
-    raw = _call_llm(client, model, provider, _TREE_SYSTEM_PROMPT, prompt)
+def _llm_pick_lineage_examples(lineages_json, client, model, provider,
+                                profile=None):
+    profile = profile or TREE_PROFILES["genre"]
+    prompt = profile["examples_prompt"].format(lineages_json=lineages_json)
+    raw = _call_llm(client, model, provider, profile["system_prompt"], prompt)
     return _extract_json(raw)
 
 
 def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
-                                progress, should_stop):
+                                progress, should_stop, profile=None):
     """Pick 3 exemplar tracks for each lineage (algorithmic shortlist → LLM pick)."""
     import time
 
@@ -448,7 +586,7 @@ def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
     try:
         results = _llm_pick_lineage_examples(
             json.dumps(lineages_for_llm, indent=2),
-            client, model, provider,
+            client, model, provider, profile=profile,
         )
         if delay > 0:
             time.sleep(delay)
@@ -506,7 +644,7 @@ def _build_node(branch_def, track_ids, depth):
 
 
 def build_collection_tree(df, client, model, provider, delay,
-                          progress_cb=None, stop_flag=None):
+                          progress_cb=None, stop_flag=None, tree_type="genre"):
     """Build the full collection tree. Main orchestrator.
 
     Args:
@@ -517,10 +655,12 @@ def build_collection_tree(df, client, model, provider, delay,
         delay: seconds between LLM calls
         progress_cb: callable(phase, detail, percent) for SSE updates
         stop_flag: threading.Event to check for graceful stop
+        tree_type: "genre" or "scene"
 
     Returns:
         tree dict
     """
+    profile = TREE_PROFILES[tree_type]
     import time
 
     parse_all_comments(df)
@@ -545,7 +685,8 @@ def build_collection_tree(df, client, model, provider, delay,
     if should_stop():
         return _make_partial_tree(total_tracks, [], [], "stopped")
 
-    lineage_defs = _llm_identify_lineages(landscape, client, model, provider)
+    lineage_defs = _llm_identify_lineages(landscape, client, model, provider,
+                                           profile=profile)
     pause()
 
     progress("lineages", f"Found {len(lineage_defs)} lineages", 10)
@@ -597,18 +738,19 @@ def build_collection_tree(df, client, model, provider, delay,
             pct_start=lineage_pct_start,
             pct_end=lineage_pct_end,
             all_ungrouped=all_ungrouped,
+            profile=profile,
         )
 
     # --- Phase 6: Finalize leaf nodes ---
     if not should_stop():
         progress("finalizing_leaves", "Writing leaf node descriptions...", 80)
         _finalize_all_leaves(lineages, df, client, model, provider, delay,
-                             progress, should_stop)
+                             progress, should_stop, profile=profile)
 
     # --- Phase 6b: Pick lineage example tracks ---
     if not should_stop():
         _finalize_lineage_examples(lineages, df, client, model, provider, delay,
-                                    progress, should_stop)
+                                    progress, should_stop, profile=profile)
 
     # --- Phase 7: Collect final ungrouped ---
     assigned_in_leaves = set()
@@ -618,6 +760,7 @@ def build_collection_tree(df, client, model, provider, delay,
     # Build tree
     tree = {
         "id": str(uuid.uuid4())[:8],
+        "tree_type": tree_type,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "total_tracks": total_tracks,
         "assigned_tracks": total_tracks - len(final_ungrouped),
@@ -626,7 +769,7 @@ def build_collection_tree(df, client, model, provider, delay,
         "status": "stopped" if should_stop() else "complete",
     }
 
-    save_tree(tree)
+    save_tree(tree, file_path=profile["file"])
     progress("complete", "Collection tree built!", 100)
     return tree
 
@@ -636,12 +779,14 @@ def build_collection_tree(df, client, model, provider, delay,
 # ---------------------------------------------------------------------------
 
 def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
-                                progress_cb=None, stop_flag=None):
+                                progress_cb=None, stop_flag=None,
+                                tree_type="genre"):
     """Create new lineage(s) from the ungrouped tracks and merge into the existing tree.
 
     Runs a mini version of the full build pipeline on only the ungrouped tracks.
     Existing lineages and leaf playlists are not modified.
     """
+    profile = TREE_PROFILES[tree_type]
     import time
 
     parse_all_comments(df)
@@ -680,7 +825,8 @@ def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
 
     # --- Phase 2: Identify new lineages ---
     progress("lineages", "Identifying new lineages from ungrouped tracks...", 5)
-    lineage_defs = _llm_identify_lineages(landscape, client, model, provider)
+    lineage_defs = _llm_identify_lineages(landscape, client, model, provider,
+                                           profile=profile)
     pause()
 
     if not lineage_defs:
@@ -749,18 +895,19 @@ def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
             pct_start=lineage_pct_start,
             pct_end=lineage_pct_end,
             all_ungrouped=all_sub_ungrouped,
+            profile=profile,
         )
 
     # --- Phase 5: Finalize leaf nodes ---
     if not should_stop():
         progress("finalizing_leaves", "Finalizing new leaf nodes...", 75)
         _finalize_all_leaves(new_lineages, df, client, model, provider, delay,
-                             progress, should_stop)
+                             progress, should_stop, profile=profile)
 
     # --- Phase 5b: Pick lineage example tracks ---
     if not should_stop():
         _finalize_lineage_examples(new_lineages, df, client, model, provider, delay,
-                                    progress, should_stop)
+                                    progress, should_stop, profile=profile)
 
     # --- Phase 6: Merge into existing tree ---
     progress("merging", "Merging new lineages into collection tree...", 92)
@@ -774,15 +921,17 @@ def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
     tree["ungrouped_track_ids"] = remaining_ungrouped
     tree["assigned_tracks"] = tree["total_tracks"] - len(remaining_ungrouped)
 
-    save_tree(tree)
+    save_tree(tree, file_path=profile["file"])
     progress("complete", "New lineages added to tree!", 100)
     return tree
 
 
 def _subdivide_node(node, df, client, model, provider, delay, depth,
-                    progress_cb, stop_flag, pct_start, pct_end, all_ungrouped):
+                    progress_cb, stop_flag, pct_start, pct_end, all_ungrouped,
+                    profile=None):
     """Recursively subdivide a node if it has too many tracks."""
     import time
+    profile = profile or TREE_PROFILES["genre"]
 
     if stop_flag and stop_flag.is_set():
         return
@@ -791,7 +940,7 @@ def _subdivide_node(node, df, client, model, provider, delay, depth,
     track_count = len(track_ids)
 
     # Don't subdivide small groups or at max depth
-    if track_count <= SUBDIVISION_THRESHOLD or depth >= MAX_DEPTH:
+    if track_count <= profile["subdivision_threshold"] or depth >= profile["max_depth"]:
         node["is_leaf"] = True
         return
 
@@ -817,6 +966,7 @@ def _subdivide_node(node, df, client, model, provider, delay, depth,
             model=model,
             provider=provider,
             is_primary=(depth == 1),
+            profile=profile,
         )
         if delay > 0:
             time.sleep(delay)
@@ -871,13 +1021,15 @@ def _subdivide_node(node, df, client, model, provider, delay, depth,
             pct_start=child_pct_start,
             pct_end=child_pct_end,
             all_ungrouped=all_ungrouped,
+            profile=profile,
         )
 
 
 def _finalize_all_leaves(lineages, df, client, model, provider, delay,
-                          progress, should_stop):
+                          progress, should_stop, profile=None):
     """Batch-finalize leaf nodes with rich descriptions and examples."""
     import time
+    profile = profile or TREE_PROFILES["genre"]
 
     leaves = []
     _collect_leaves(lineages, leaves)
@@ -887,14 +1039,15 @@ def _finalize_all_leaves(lineages, df, client, model, provider, delay,
         return
 
     # Process in batches
-    for batch_start in range(0, total, LEAF_BATCH_SIZE):
+    batch_size = profile["leaf_batch_size"]
+    for batch_start in range(0, total, batch_size):
         if should_stop():
             break
 
-        batch = leaves[batch_start:batch_start + LEAF_BATCH_SIZE]
+        batch = leaves[batch_start:batch_start + batch_size]
         batch_pct = 80 + int((batch_start / total) * 15)
         progress("finalizing_leaves",
-                 f"Finalizing leaves {batch_start + 1}-{min(batch_start + LEAF_BATCH_SIZE, total)} of {total}...",
+                 f"Finalizing leaves {batch_start + 1}-{min(batch_start + batch_size, total)} of {total}...",
                  batch_pct)
 
         # Build node summaries for the LLM
@@ -920,7 +1073,7 @@ def _finalize_all_leaves(lineages, df, client, model, provider, delay,
         try:
             finalized = _llm_finalize_leaves(
                 json.dumps(nodes_for_llm, indent=2),
-                client, model, provider,
+                client, model, provider, profile=profile,
             )
             if delay > 0:
                 time.sleep(delay)

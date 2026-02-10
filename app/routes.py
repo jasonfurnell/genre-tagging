@@ -31,7 +31,7 @@ from app.playlist import (
 from app.tree import (
     build_collection_tree, expand_tree_from_ungrouped,
     load_tree, save_tree, delete_tree as delete_tree_file,
-    find_node,
+    find_node, TREE_PROFILES,
 )
 
 api = Blueprint("api", __name__)
@@ -46,11 +46,16 @@ _state = {
     "stop_flag": threading.Event(),
     "progress_listeners": [],   # list of queue.Queue for SSE
     "_analysis_cache": None,     # cached analysis data for workshop
-    # Collection Tree
+    # Collection Tree (Genre)
     "tree": None,
     "tree_thread": None,
     "tree_stop_flag": threading.Event(),
     "tree_progress_listeners": [],
+    # Scene Tree
+    "scene_tree": None,
+    "scene_tree_thread": None,
+    "scene_tree_stop_flag": threading.Event(),
+    "scene_tree_progress_listeners": [],
     "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
 }
 
@@ -915,16 +920,16 @@ def workshop_export_csv(playlist_id):
 # Collection Tree endpoints
 # ═══════════════════════════════════════════════════════════════════════════
 
-def _tree_broadcast(data):
+def _tree_broadcast(data, listeners_key="tree_progress_listeners"):
     import queue
     dead = []
-    for q in _state["tree_progress_listeners"]:
+    for q in _state[listeners_key]:
         try:
             q.put_nowait(data)
         except queue.Full:
             dead.append(q)
     for q in dead:
-        _state["tree_progress_listeners"].remove(q)
+        _state[listeners_key].remove(q)
 
 
 # ---------------------------------------------------------------------------
@@ -1258,6 +1263,336 @@ def tree_node_export_m3u(node_id):
 def tree_delete():
     _state["tree"] = None
     deleted = delete_tree_file()
+    return jsonify({"deleted": deleted})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Scene Tree endpoints (mirrors genre tree with scene-specific state/profile)
+# ═══════════════════════════════════════════════════════════════════════════
+
+_SCENE_PROFILE = TREE_PROFILES["scene"]
+
+
+def _scene_tree_broadcast(data):
+    _tree_broadcast(data, listeners_key="scene_tree_progress_listeners")
+
+
+# ---------------------------------------------------------------------------
+# GET /api/scene-tree
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree")
+def get_scene_tree():
+    tree = _state.get("scene_tree")
+    if tree is None:
+        tree = load_tree(file_path=_SCENE_PROFILE["file"])
+        if tree:
+            _state["scene_tree"] = tree
+    if tree is None:
+        return jsonify({"tree": None})
+    return jsonify({"tree": tree})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/build
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/build", methods=["POST"])
+def scene_tree_build():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    t = _state.get("scene_tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Scene tree build already in progress"}), 409
+
+    _state["scene_tree_stop_flag"].clear()
+    _state["scene_tree"] = None
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _scene_tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            tree = build_collection_tree(
+                df=df,
+                client=client,
+                model=model,
+                provider=provider,
+                delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["scene_tree_stop_flag"],
+                tree_type="scene",
+            )
+            _state["scene_tree"] = tree
+            _scene_tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Scene tree build failed")
+            _scene_tree_broadcast({"event": "error", "phase": "error",
+                                   "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["scene_tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True}), 202
+
+
+# ---------------------------------------------------------------------------
+# GET /api/scene-tree/progress  (SSE)
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/progress")
+def scene_tree_progress():
+    import queue
+    q = queue.Queue(maxsize=100)
+    _state["scene_tree_progress_listeners"].append(q)
+
+    def stream():
+        try:
+            while True:
+                try:
+                    data = q.get(timeout=30)
+                except queue.Empty:
+                    yield ":\n\n"
+                    continue
+                yield f"data: {json.dumps(data)}\n\n"
+                if data.get("event") in ("done", "error", "stopped"):
+                    break
+        finally:
+            if q in _state["scene_tree_progress_listeners"]:
+                _state["scene_tree_progress_listeners"].remove(q)
+
+    return Response(stream(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/stop
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/stop", methods=["POST"])
+def scene_tree_stop():
+    _state["scene_tree_stop_flag"].set()
+    return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/expand-ungrouped
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/expand-ungrouped", methods=["POST"])
+def scene_tree_expand_ungrouped():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    ungrouped = tree.get("ungrouped_track_ids", [])
+    if not ungrouped:
+        return jsonify({"error": "No ungrouped tracks to process"}), 400
+
+    t = _state.get("scene_tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Scene tree operation already in progress"}), 409
+
+    _state["scene_tree_stop_flag"].clear()
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _scene_tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            updated_tree = expand_tree_from_ungrouped(
+                tree=tree, df=df, client=client, model=model,
+                provider=provider, delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["scene_tree_stop_flag"],
+                tree_type="scene",
+            )
+            _state["scene_tree"] = updated_tree
+            _scene_tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Scene tree expand ungrouped failed")
+            _scene_tree_broadcast({"event": "error", "phase": "error",
+                                   "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["scene_tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True, "ungrouped_count": len(ungrouped)}), 202
+
+
+# ---------------------------------------------------------------------------
+# GET /api/scene-tree/ungrouped
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/ungrouped")
+def scene_tree_ungrouped():
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    ungrouped_ids = tree.get("ungrouped_track_ids", [])
+    tracks = _tracks_from_ids(df, ungrouped_ids)
+    return jsonify({"count": len(tracks), "tracks": tracks})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/create-playlist
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/create-playlist", methods=["POST"])
+def scene_tree_create_playlist():
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    data = request.get_json()
+    node_id = data.get("node_id")
+    if not node_id:
+        return jsonify({"error": "node_id is required"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    track_ids = node.get("track_ids", [])
+    name = node.get("title", "Untitled")
+    description = node.get("description", "")
+    filters = node.get("filters", {})
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    target_count = min(25, len(track_ids))
+
+    valid_ids = [tid for tid in track_ids if tid in df.index]
+    candidates = _tracks_from_ids(df, valid_ids[:80])
+
+    method = "direct"
+    final_ids = valid_ids
+
+    if candidates and len(candidates) > 5:
+        try:
+            result = rerank_tracks(
+                candidates, name, description,
+                client, model, provider, target_count,
+            )
+            reranked_ids = [t["id"] for t in result["tracks"]]
+            final_ids = [tid for tid in reranked_ids if tid in df.index]
+            method = "smart"
+        except Exception:
+            logging.exception("LLM rerank failed for scene tree leaf")
+            final_ids = valid_ids[:target_count]
+            method = "scored_fallback"
+
+    playlist = create_playlist(name, description, filters, final_ids, "scene-tree")
+    return jsonify({"playlist": playlist, "method": method}), 201
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/create-all-playlists
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/create-all-playlists", methods=["POST"])
+def scene_tree_create_all_playlists():
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    leaves = []
+    for lineage in tree.get("lineages", []):
+        _collect_tree_leaves(lineage, leaves)
+
+    created = []
+    for leaf in leaves:
+        playlist = create_playlist(
+            name=leaf.get("title", "Untitled"),
+            description=leaf.get("description", ""),
+            filters=leaf.get("filters", {}),
+            track_ids=leaf.get("track_ids", []),
+            source="scene-tree",
+        )
+        created.append(playlist)
+
+    return jsonify({"playlists": created, "count": len(created)}), 201
+
+
+# ---------------------------------------------------------------------------
+# GET /api/scene-tree/node/<node_id>/export/m3u
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/node/<node_id>/export/m3u")
+def scene_tree_node_export_m3u(node_id):
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    track_ids = node.get("track_ids", [])
+    title = node.get("title", "Untitled")
+
+    lines = ["#EXTM3U", f"#PLAYLIST:{title}"]
+    for tid in track_ids:
+        if tid not in df.index:
+            continue
+        row = df.loc[tid]
+        artist = str(row.get("artist", "Unknown"))
+        track_title = str(row.get("title", "Unknown"))
+        location = str(row.get("location", ""))
+        lines.append(f"#EXTINF:-1,{artist} - {track_title}")
+        if location and location != "nan":
+            lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    name = title.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{name}.m3u8")
+
+
+# ---------------------------------------------------------------------------
+# DELETE /api/scene-tree
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree", methods=["DELETE"])
+def scene_tree_delete():
+    _state["scene_tree"] = None
+    deleted = delete_tree_file(file_path=_SCENE_PROFILE["file"])
     return jsonify({"deleted": deleted})
 
 
