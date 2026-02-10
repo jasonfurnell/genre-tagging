@@ -3,277 +3,9 @@
   "tree_type": "scene",
   "created_at": "2026-02-10T06:27:40.732044+00:00",
   "total_tracks": 6303,
-  "assigned_tracks": 6034,
+  "assigned_tracks": 6302,
   "ungrouped_track_ids": [
-    39,
-    51,
-    63,
-    107,
-    132,
-    147,
-    151,
-    172,
-    185,
-    229,
-    285,
-    323,
-    355,
-    374,
-    396,
-    401,
-    422,
-    438,
-    464,
-    484,
-    593,
-    620,
-    628,
-    637,
-    638,
-    651,
-    656,
-    671,
-    697,
-    705,
-    730,
-    740,
-    744,
-    745,
-    758,
-    763,
-    772,
-    801,
-    802,
-    809,
-    820,
-    836,
-    907,
-    991,
-    994,
-    1021,
-    1037,
-    1049,
-    1053,
-    1057,
-    1059,
-    1091,
-    1099,
-    1110,
-    1127,
-    1144,
-    1148,
-    1174,
-    1223,
-    1238,
-    1244,
-    1251,
-    1321,
-    1331,
-    1334,
-    1359,
-    1360,
-    1365,
-    1385,
-    1389,
-    1392,
-    1411,
-    1422,
-    1449,
-    1476,
-    1528,
-    1529,
-    1553,
-    1571,
-    1573,
-    1584,
-    1601,
-    1603,
-    1611,
-    1626,
-    1640,
-    1647,
-    1674,
-    1701,
-    1774,
-    1789,
-    1800,
-    1814,
-    1824,
-    1832,
-    1852,
-    1904,
-    1909,
-    1910,
-    1976,
-    1978,
-    2104,
-    2152,
-    2159,
-    2337,
-    2357,
-    2368,
-    2421,
-    2427,
-    2431,
-    2614,
-    2747,
-    2755,
-    2801,
-    2808,
-    2809,
-    2811,
-    2826,
-    2836,
-    2837,
-    2889,
-    2902,
-    2910,
-    2915,
-    2926,
-    2960,
-    2994,
-    3009,
-    3016,
-    3024,
-    3025,
-    3029,
-    3079,
-    3086,
-    3089,
-    3090,
-    3091,
-    3092,
-    3117,
-    3173,
-    3188,
-    3201,
-    3211,
-    3237,
-    3239,
-    3254,
-    3262,
-    3267,
-    3289,
-    3295,
-    3363,
-    3398,
-    3415,
-    3475,
-    3497,
-    3502,
-    3507,
-    3508,
-    3511,
-    3538,
-    3634,
-    3641,
-    3643,
-    3764,
-    3766,
-    3767,
-    3824,
-    3956,
-    3980,
-    4044,
-    4048,
-    4098,
-    4136,
-    4146,
-    4182,
-    4214,
-    4221,
-    4244,
-    4343,
-    4361,
-    4460,
-    4489,
-    4557,
-    4584,
-    4665,
-    4692,
-    4753,
-    4792,
-    4813,
-    4833,
-    4840,
-    4856,
-    4880,
-    4959,
-    4961,
-    4965,
-    4974,
-    4992,
-    5000,
-    5012,
-    5023,
-    5043,
-    5052,
-    5061,
-    5069,
-    5072,
-    5075,
-    5123,
-    5132,
-    5154,
-    5193,
-    5230,
-    5250,
-    5262,
-    5265,
-    5278,
-    5289,
-    5366,
-    5395,
-    5405,
-    5408,
-    5425,
-    5454,
-    5475,
-    5511,
-    5526,
-    5540,
-    5541,
-    5546,
-    5547,
-    5549,
-    5553,
-    5560,
-    5564,
-    5591,
-    5596,
-    5597,
-    5598,
-    5601,
-    5606,
-    5624,
-    5638,
-    5644,
-    5699,
-    5725,
-    5732,
-    5782,
-    5794,
-    5811,
-    5829,
-    5831,
-    5873,
-    5919,
-    5921,
-    5956,
-    5960,
-    6005,
-    6012,
-    6020,
-    6105,
-    6114,
-    6168,
-    6193,
-    6198,
-    6205,
-    6213,
-    6222,
-    6235,
-    6259
+    5732
   ],
   "lineages": [
     {
@@ -49247,6 +48979,2251 @@
         }
       ],
       "subtitle": "~25 tracks spanning diaspora innovation"
+    },
+    {
+      "id": "mississippi-delta-blues-1920s-1940s",
+      "title": "Raw Delta: Mississippi Juke Joint Foundations",
+      "description": "This is the sound of the Delta before electricity, before amplification, before anything stood between a man and his guitar except the weight of the world. Son House's bottleneck slide cuts through these tracks like a knife through humid Mississippi air, all foot-stomp percussion and primal vocal wails that influenced everyone from Muddy Waters to the White Stripes. These recordings capture the architectural DNA of American blues \u2014 the moment when field hollers and work songs crystallized into something you could dance to in a ramshackle juke joint on Saturday night. It's raw, it's devastating, and it's the foundation upon which rock and roll, soul, and hip-hop would eventually be built. The intensity here isn't manufactured in a studio; it's lived experience transmitted through wood, wire, and the human voice at its most vulnerable.",
+      "filters": {
+        "genres": [
+          "Delta Blues",
+          "Blues Rock"
+        ],
+        "location": [
+          "Mississippi"
+        ],
+        "descriptors": [
+          "call-response vocals",
+          "rolling percussion"
+        ],
+        "mood": [
+          "mississippi juke joint heartbreak"
+        ]
+      },
+      "track_ids": [
+        1053,
+        1057,
+        1626,
+        2152,
+        1148,
+        5250,
+        185,
+        1800,
+        1832,
+        3502
+      ],
+      "track_count": 10,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Death Letter Blues",
+          "artist": "Son House",
+          "year": 1965
+        },
+        {
+          "title": "Death Letter Blues",
+          "artist": "Son House",
+          "year": 1965
+        },
+        {
+          "title": "Death Letter Blues",
+          "artist": "Son House",
+          "year": 1965
+        },
+        {
+          "title": "King Roland's Prayer",
+          "artist": "The Juke Joint Pimps",
+          "year": 2010
+        },
+        {
+          "title": "Katie Cruel",
+          "artist": "Karen Dalton",
+          "year": 1969
+        },
+        {
+          "title": "Mr. Bojangles",
+          "artist": "Jerry Jeff Walker",
+          "year": 1968
+        },
+        {
+          "title": "Rocket 88",
+          "artist": "Ike Turner",
+          "year": 2015
+        }
+      ],
+      "subtitle": "~20 tracks spanning the foundational era of American blues"
+    },
+    {
+      "id": "new-orleans-rb-1950s-1960s",
+      "title": "Crescent City Rumble: NOLA R&B Golden Age",
+      "description": "New Orleans in the '50s and '60s was where the second line met the jukebox, where funeral dirges transformed into Saturday night sweat sessions. This is the sound of Professor Longhair's rolling piano rumba, Fats Domino's boogie-woogie crossover hits, and the birth of what would become funk itself. The city's unique Afro-Caribbean rhythmic DNA \u2014 those syncopated \"second line\" feels inherited from Congo Square \u2014 made everything swing differently here. Dr. John's voodoo-infused gumbo funk carries the torch into the '70s, but the roots are firmly planted in the post-war era when Allen Toussaint was arranging hits and the Meters were still teenagers. This is party music with profound depth, street parade energy filtered through studio sophistication, and the blueprint for everything from funk to hip-hop's bounce music revival.",
+      "filters": {
+        "genres": [
+          "New Orleans R&B",
+          "Rock and Roll"
+        ],
+        "location": [
+          "New Orleans"
+        ],
+        "era": [
+          "early 1960s",
+          "late 1960s"
+        ],
+        "descriptors": [
+          "rolling percussion",
+          "layered vocal harmonies"
+        ]
+      },
+      "track_ids": [
+        5638,
+        3079,
+        1553,
+        3090,
+        1049,
+        1059,
+        1091,
+        1603,
+        6222,
+        5794,
+        3237,
+        3295,
+        802,
+        1331,
+        2889,
+        3507,
+        5069,
+        5598,
+        5606
+      ],
+      "track_count": 19,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Accentuate the Positive - Remastered",
+          "artist": "Dr. John",
+          "year": 1991
+        },
+        {
+          "title": "Mama Roux",
+          "artist": "Dr. John",
+          "year": 1972
+        },
+        {
+          "title": "Such a Night",
+          "artist": "Dr. John",
+          "year": 1973
+        },
+        {
+          "title": "Dead Man Blues",
+          "artist": "Jelly Roll Morton",
+          "year": 1926
+        },
+        {
+          "title": "White Ghost Shivers",
+          "artist": "The New Orleans Owls",
+          "year": 1926
+        },
+        {
+          "title": "Rocket 88",
+          "artist": "Ike Turner",
+          "year": 2015
+        },
+        {
+          "title": "Let A Woman Be A Woman - Let A Man Be A Man",
+          "artist": "Dyke & The Blazers",
+          "year": 2013
+        }
+      ],
+      "subtitle": "~25 tracks from the Crescent City's golden era"
+    },
+    {
+      "id": "west-coast-gangsta-rap-1988-1996",
+      "title": "G-Funk Chronicles: Laid-Back California Menace",
+      "description": "From the palm-tree lined boulevards of Long Beach to the sun-scorched streets of Compton, West Coast gangsta rap rewrote hip-hop's sonic rulebook by slowing everything down and turning up the bass. Dr. Dre's production genius on 'The Chronic' established the G-funk template: Parliament-Funkadelic samples stretched into languid, melodic loops, thick Minimoog bass lines, and Snoop Dogg's laconic drawl floating over it all like chronic smoke. This was hip-hop you could cruise to, but the lyrics were unflinching street reportage \u2014 N.W.A.'s raw anger meeting Dre's studio sophistication. The scene birthed Death Row Records, transformed hip-hop into America's dominant pop music, and created a California sound as identifiable as surf rock or Laurel Canyon folk. Even the sunshine here casts long shadows.",
+      "filters": {
+        "genres": [
+          "West Coast Hip-Hop",
+          "G-Funk",
+          "Hip-Hop"
+        ],
+        "location": [
+          "Los Angeles",
+          "California"
+        ],
+        "era": [
+          "early 1990s",
+          "mid 1990s"
+        ],
+        "descriptors": [
+          "playful vocal delivery",
+          "distorted bass"
+        ],
+        "mood": [
+          "carefree west coast block party vibes"
+        ]
+      },
+      "track_ids": [
+        3091,
+        1640,
+        620,
+        1647,
+        3201,
+        3211,
+        671,
+        3239,
+        1244,
+        820,
+        2910,
+        355,
+        907,
+        1422,
+        5560,
+        994
+      ],
+      "track_count": 16,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Gin N Juice (feat. Dat Nigga Daz)",
+          "artist": "Snoop Dogg,Daz Dillinger",
+          "year": 1993
+        },
+        {
+          "title": "Can I Get A Flicc Witchu",
+          "artist": "Snoop Dogg,Bootsy Collins",
+          "year": 2000
+        },
+        {
+          "title": "Appetite For Destruction",
+          "artist": "N.W.A.",
+          "year": 2006
+        },
+        {
+          "title": "Doowutchyalike",
+          "artist": "Digital Underground",
+          "year": 1989
+        },
+        {
+          "title": "Freaky Freaks",
+          "artist": "Kamaiyah",
+          "year": 2017
+        },
+        {
+          "title": "Broad Factor",
+          "artist": "Quasimoto,Madlib",
+          "year": 2000
+        },
+        {
+          "title": "Bulls On Parade",
+          "artist": "Rage Against The Machine",
+          "year": 1996
+        }
+      ],
+      "subtitle": "~30 tracks from Los Angeles' most influential hip-hop era"
+    },
+    {
+      "id": "uk-breakbeat-hardcore-1990-1993",
+      "title": "Breakbeat Euphoria: UK Warehouse Rave Genesis",
+      "description": "Before jungle, before drum and bass, before UK garage, there was breakbeat hardcore \u2014 the sound of Britain's illegal warehouse parties reaching critical mass. The Prodigy's \"Out of Space\" exemplifies the era's anything-goes ethos: take a reggae sample, speed it up to 150 BPM, layer in acid basslines and Amen breaks chopped to oblivion, and watch a thousand kids in baggy pants lose their minds. This was rave culture at its most raw and democratic, drawing equally from hip-hop's sample aesthetic, house music's four-four pulse, and reggae's soundsystem thunder. FSOL's \"Papua New Guinea\" showed the scene's ambient side, proving these producers were as interested in transcendence as they were in chaos. By 1993, the breakbeats were accelerating toward jungle, but this brief moment captured British youth culture fragmenting the dancefloor into a thousand glorious pieces.",
+      "filters": {
+        "genres": [
+          "Breakbeat Hardcore",
+          "Rave"
+        ],
+        "location": [
+          "UK"
+        ],
+        "era": [
+          "early 1990s"
+        ],
+        "descriptors": [
+          "pounding kicks",
+          "nostalgic melodies"
+        ],
+        "mood": [
+          "sweaty uk warehouse madness that defined early rave culture"
+        ]
+      },
+      "track_ids": [
+        3086,
+        107,
+        772,
+        809,
+        1852,
+        836,
+        5454,
+        4961,
+        5475,
+        4974,
+        4992,
+        3497,
+        3511,
+        1978,
+        4044,
+        5072,
+        6114
+      ],
+      "track_count": 17,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Out Of Space (Remastered)",
+          "artist": "The Prodigy",
+          "year": 1992
+        },
+        {
+          "title": "Hear The Drummer (Get Wicked) - Radio Edit",
+          "artist": "Chad Jackson",
+          "year": 1990
+        },
+        {
+          "title": "Papua New Guinea - 12' Original Mix",
+          "artist": "The Future Sound Of London",
+          "year": 1992
+        },
+        {
+          "title": "Little Fluffy Clouds",
+          "artist": "The Orb",
+          "year": 1991
+        },
+        {
+          "title": "Radio Babylon - Version Galore",
+          "artist": "Meat Beat Manifesto",
+          "year": 1991
+        },
+        {
+          "title": "Ghost Town",
+          "artist": "The Specials",
+          "year": 1981
+        },
+        {
+          "title": "Bucky Done Gun",
+          "artist": "M.I.A.",
+          "year": 2005
+        }
+      ],
+      "subtitle": "~18 tracks from Britain's euphoric warehouse revolution"
+    },
+    {
+      "id": "nyc-experimental-hip-hop-1995-2000",
+      "title": "Abstract Dimensions: NYC Underground Hip-Hop Laboratory",
+      "description": "While Bad Boy and Wu-Tang dominated commercial New York hip-hop in the mid-'90s, a parallel universe existed in Lower Manhattan's experimental underground. This is where the Fondle 'Em Records roster, Company Flow, and the proto-glitch aesthetics of the illbient scene converged into something genuinely avant-garde. DJ Shiftee's stripped-down drum tracks represent the scene's utilitarian approach \u2014 beats as raw material for turntablist manipulation. Clipping's later work channels this era's willingness to push hip-hop into industrial noise territory. The Solesides/Quannum crew on the West Coast shared similar DNA, but New York's experimental hip-hop had a particularly grimy, claustrophobic quality \u2014 basement cyphers meeting sound-art installations. This is hip-hop for heads who wanted their boom-bap deconstructed, reassembled, and pushed through effects pedals until it barely resembled rap music anymore. Essential listening for understanding how hip-hop could be genuinely experimental without losing its foundation.",
+      "filters": {
+        "genres": [
+          "Experimental Hip-Hop",
+          "Industrial Rap",
+          "Hip-Hop"
+        ],
+        "location": [
+          "New York"
+        ],
+        "era": [
+          "late 1990s",
+          "early 2000s"
+        ],
+        "descriptors": [
+          "distorted bass",
+          "glitchy percussion"
+        ],
+        "mood": [
+          "underground nyc ballroom culture swagger",
+          "nostalgic new york underground dancefloor tension"
+        ]
+      },
+      "track_ids": [
+        5154,
+        6205,
+        132,
+        3764,
+        3766,
+        3767,
+        1774,
+        4361,
+        2902,
+        4965,
+        1904,
+        3956,
+        374,
+        1910,
+        2421,
+        6012,
+        5023,
+        5540,
+        1449,
+        5061,
+        3538,
+        1021
+      ],
+      "track_count": 22,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "drums1 + sub1",
+          "artist": "DJ Shiftee",
+          "year": 2015
+        },
+        {
+          "title": "drums 1 + sub1",
+          "artist": "DJ Shiftee",
+          "year": 2015
+        },
+        {
+          "title": "Drums2+Sub2",
+          "artist": "DJ Shiftee",
+          "year": 2015
+        },
+        {
+          "title": "Say the Name",
+          "artist": "clipping.",
+          "year": 2020
+        },
+        {
+          "title": "Choked Out Saturday Night",
+          "artist": "Sleepy's Theme",
+          "year": 1998
+        },
+        {
+          "title": "I Know You Got Soul - The Double Trouble Remix",
+          "artist": "Eric B. & Rakim, Norman Cook",
+          "year": 2017
+        },
+        {
+          "title": "Adventures In Success",
+          "artist": "Will Powers",
+          "year": 1983
+        }
+      ],
+      "subtitle": "~22 tracks from New York's avant-garde rap scene"
+    },
+    {
+      "id": "italo-disco-revival-1980s-2000s",
+      "title": "Italo Disco & Mediterranean Synth Dreams",
+      "description": "This is the sound of Italian synthesizers blazing through European discotheques and car stereos, where vocoder crooning meets cinematic sophistication. Born in the early '80s with tracks like Mr. Flagio's vocoder anthems, Italo disco married the futurism of Kraftwerk with Mediterranean romanticism\u2014analog arpeggios cascading like sunlight on the Adriatic. These tracks trace a lineage from the cosmic disco of Milan's studios through to contemporary revivalists like Erasmus, who've rekindled those shimmering basslines and nostalgic melodies for a new generation of Balearic dreamers. The thread connects Y.M.O.'s Tokyo electropop, Goblin's horror-soundtrack tension, and even modern synthwave inheritors like The Weeknd, all sharing that obsession with programmed drums, vocoder romance, and the belief that synthesizers could capture both the future and a very specific, bittersweet longing. This is music for neon-lit coastal highways and late-night espresso bars, where the drum machines never sleep.",
+      "filters": {
+        "genres": [
+          "Italo Disco",
+          "Electropop"
+        ],
+        "location": [
+          "Italy"
+        ],
+        "descriptors": [
+          "nostalgic melodies",
+          "pulsing synth arpeggios"
+        ],
+        "mood": [
+          "neon-lit dancefloor euphoria dripping with retro futurism"
+        ]
+      },
+      "track_ids": [
+        3092,
+        1584,
+        4692,
+        5230,
+        1144,
+        147,
+        4813,
+        4489,
+        401,
+        5549,
+        5596,
+        4584
+      ],
+      "track_count": 12,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Ti Ricordi Di Me",
+          "artist": "Erasmus",
+          "year": 2016
+        },
+        {
+          "title": "Take A Chance - Original Mix",
+          "artist": "Mr. Flagio",
+          "year": 1983
+        },
+        {
+          "title": "Behind the Mask",
+          "artist": "YELLOW MAGIC ORCHESTRA",
+          "year": 1979
+        },
+        {
+          "title": "Suspiria",
+          "artist": "Goblin",
+          "year": 2012
+        },
+        {
+          "title": "Mark il poliziotto",
+          "artist": "Stelvio Cipriani",
+          "year": 2000
+        },
+        {
+          "title": "Blinding Lights",
+          "artist": "The Weeknd",
+          "year": 2020
+        },
+        {
+          "title": "Dancing On My Own",
+          "artist": "Robyn",
+          "year": 2010
+        }
+      ],
+      "subtitle": "~25 tracks from Italy's synthesizer dreamscape"
+    },
+    {
+      "id": "uk-progressive-trance-1998-2004",
+      "title": "UK Progressive Trance: Peak-Time Cathedral",
+      "description": "Between 1998 and 2004, British trance reached its euphoric apex\u2014a sound defined by hypnotic arpeggios, atmospheric breakdowns, and the unshakeable belief that synthesizers could induce transcendence on a packed dancefloor. This was the era of Cream, Gatecrasher, and those legendary Godskitchen compilations, where tracks like Age of Love's piano-stabbing anthem and Moby's relentless string rushes became communal hymns. Progressive trance in this moment meant patient builds, emotional crescendos, and that four-on-the-floor kick driving through festival fields at dawn. The UK scene took the template from Goa and refined it into something more melodic and anthemic\u2014less psychedelic swirl, more hands-in-the-air release. These tracks, though scattered across years and continents, all channel that specific energy: the moment when the breakdown hits, the crowd holds its breath, and the kick drum drops back in like salvation.",
+      "filters": {
+        "genres": [
+          "Progressive Trance",
+          "Trance"
+        ],
+        "location": [
+          "UK"
+        ],
+        "era": [
+          "late 1990s",
+          "early 2000s"
+        ],
+        "descriptors": [
+          "pulsing synth arpeggios",
+          "lush orchestral arrangements",
+          "atmospheric pads"
+        ]
+      },
+      "track_ids": [
+        4136,
+        4244,
+        5278,
+        1701,
+        3262,
+        285,
+        6105
+      ],
+      "track_count": 7,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "The Age Of Love - New Age Mix",
+          "artist": "Age Of Love",
+          "year": 2013
+        },
+        {
+          "title": "Go (Woodtick Mix)",
+          "artist": "Moby",
+          "year": 1991
+        },
+        {
+          "title": "Shinzo No Tobira",
+          "artist": "Mariah",
+          "year": 2000
+        },
+        {
+          "title": "Little Fluffy Clouds",
+          "artist": "The Orb",
+          "year": 1991
+        },
+        {
+          "title": "Papua New Guinea - 12' Original Mix",
+          "artist": "The Future Sound Of London",
+          "year": 1992
+        },
+        {
+          "title": "Out Of Space (Remastered)",
+          "artist": "The Prodigy",
+          "year": 1992
+        },
+        {
+          "title": "I Am A Man Of Constant Sorrow - Radio Edit",
+          "artist": "The Soggy Bottom Boys,Dan Tyminski",
+          "year": 2000
+        }
+      ],
+      "subtitle": "~20 tracks from Britain's melodic trance movement"
+    },
+    {
+      "id": "latin-american-cumbia-fusion-2000s-2010s",
+      "title": "Cumbia Mutations: Caribbean Coast to Psychedelic Lab",
+      "description": "Cumbia began as accordion-driven dance music on Colombia's Caribbean coast\u2014hypnotic g\u00fciro patterns, call-and-response vocals, and rhythms built for dusty street parties under tropical heat. But by the 2000s and 2010s, a new generation of experimentalists started warping the form, running those traditional patterns through vintage synths, lo-fi tape machines, and avant-garde sensibilities. Meridian Brothers epitomize this transformation, turning cumbia into something deliriously psychedelic and strange while maintaining its fundamental swing. Alongside them, you'll find Cuban descarga masters like Cachao bringing virtuosic mambo sophistication, and artists like Umoja keeping folkloric traditions alive. This is cumbia as living organism\u2014simultaneously rooted in generations-old coastal rituals and mutating in Bogot\u00e1 basements, Mexico City studios, and Buenos Aires DIY venues. The accordion still speaks, but now it's answering back to tape delay and ring modulators.",
+      "filters": {
+        "genres": [
+          "Cumbia",
+          "Traditional Colombian",
+          "Latin Jazz"
+        ],
+        "descriptors": [
+          "accordion-driven melodies",
+          "organic percussion",
+          "hypnotic polyrhythms"
+        ],
+        "mood": [
+          "adventurous avant-garde exploration meets world music fusion"
+        ]
+      },
+      "track_ids": [
+        4146,
+        151,
+        2747,
+        705,
+        1789,
+        3415,
+        438,
+        3024,
+        4048
+      ],
+      "track_count": 9,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Cumbia San Pablera",
+          "artist": "Conjunto Son San",
+          "year": 1975
+        },
+        {
+          "title": "La Piragua",
+          "artist": "Umoja",
+          "year": 2018
+        },
+        {
+          "title": "Los Golpeadores de la cumbia",
+          "artist": "Meridian Brothers",
+          "year": 2020
+        },
+        {
+          "title": "Trombon Criollo",
+          "artist": "Cachao y su ritmo caliente",
+          "year": 2014
+        },
+        {
+          "title": "La Trompeta Y La Flauta",
+          "artist": "Cachao",
+          "year": 2015
+        },
+        {
+          "title": "Blue Latin",
+          "artist": "Gerardo Frisina",
+          "year": 2017
+        },
+        {
+          "title": "The Jungle Line",
+          "artist": "Joni Mitchell",
+          "year": 1975
+        }
+      ],
+      "subtitle": "~25 tracks from cumbia's contemporary reinvention"
+    },
+    {
+      "id": "sao-paulo-bass-culture-2010-2016",
+      "title": "S\u00e3o Paulo Bass Pressure: Favela Funk Meets Global Club",
+      "description": "In the early 2010s, S\u00e3o Paulo's underground club scene became a crucible for bass-heavy experimentation, where baile funk's raunchy swagger collided with UK grime's aggression, dubstep's sub-bass science, and Brazil's own experimental MPB legacy. This wasn't the polished bossa nova of tourist fantasies\u2014this was music born in sweaty favela parties and repurposed by a generation of producers equally versed in Tropic\u00e1lia's radical spirit and contemporary club culture's relentless innovation. Artists like Curumin brought cumbia's bounce into digital bass territory, while experimentalists channeled everything from body percussion traditions to glitchy hyperpop chaos. Maria Beraldo's sultry vocal loops, Tom Z\u00e9's decades-old provocations newly relevant, and the constant thump of sub-bass designed to rattle concrete walls and open-air sound systems alike. This is S\u00e3o Paulo asserting itself as a global bass capital, where local rhythms hit with international club weight.",
+      "filters": {
+        "genres": [
+          "Brazilian Bass"
+        ],
+        "location": [
+          "S\u00e3o Paulo"
+        ],
+        "era": [
+          "early 2010s",
+          "mid 2010s"
+        ],
+        "descriptors": [
+          "organic percussion",
+          "distorted bass"
+        ]
+      },
+      "track_ids": [
+        2614,
+        6198,
+        1099,
+        5624,
+        651,
+        2755,
+        3267,
+        5831,
+        1238,
+        2801,
+        2811,
+        4880,
+        5405,
+        1824,
+        1334,
+        1476
+      ],
+      "track_count": 16,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Sussussussu",
+          "artist": "Maria Beraldo",
+          "year": 2018
+        },
+        {
+          "title": "Bora Passear (del\u00edcia Remix)",
+          "artist": "Curumin, Cam\u00f5es, Lucas Alves",
+          "year": 2020
+        },
+        {
+          "title": "Ax\u00e9 Acapella (Shapeless Versus Maria Gad\u00fa)",
+          "artist": "Maria Gad\u00fa,Shapeless",
+          "year": 2016
+        },
+        {
+          "title": "Bai\u00e3o Destemperado",
+          "artist": "Barbatuques",
+          "year": 2013
+        },
+        {
+          "title": "Jimmy, Renda-Se",
+          "artist": "Tom Z\u00e9",
+          "year": 1970
+        },
+        {
+          "title": "Tropic\u00e1lia - Remastered 2006",
+          "artist": "Caetano Veloso",
+          "year": 1967
+        },
+        {
+          "title": "Freestyler",
+          "artist": "Bomfunk MC's",
+          "year": 2000
+        }
+      ],
+      "subtitle": "~18 tracks from Brazil's global bass hub"
+    },
+    {
+      "id": "west-african-afro-funk-revival-2010s",
+      "title": "Afro-Funk Archaeology: West African Grooves Rediscovered",
+      "description": "The 2010s witnessed a fervent rediscovery of West African funk and psychedelic soul, as reissue labels and crate-diggers unearthed visionary recordings from the '70s and '80s while contemporary artists reconnected with those hypnotic grooves. At the center sits William Onyeabor, the reclusive Nigerian genius whose synth-driven cosmic funk felt like transmissions from an alternate future. Alongside him, Cameroon's Francis Bebey experimented with thumb pianos and early electronics, creating a uniquely African avant-garde pop. This isn't preservation\u2014it's reactivation. Modern producers and listeners discovered these records not as museum pieces but as blueprints for contemporary exploration, where polyrhythmic percussion, raw drum machines, and analog warmth spoke directly to club culture's ongoing search for groove transcendence. The kora still plays its ancient patterns, but now it converses with synthesizers and samplers, creating a continuum between griot traditions and global dancefloor communion.",
+      "filters": {
+        "genres": [
+          "Afro-Funk"
+        ],
+        "descriptors": [
+          "hypnotic polyrhythms",
+          "call-response vocals",
+          "layered vocal harmonies",
+          "organic percussion"
+        ],
+        "mood": [
+          "meditative desert gathering with ancestral storytelling energy"
+        ]
+      },
+      "track_ids": [
+        39,
+        2104,
+        5193,
+        3173,
+        4221,
+        740,
+        5408,
+        2368,
+        323
+      ],
+      "track_count": 9,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Atomic Bomb",
+          "artist": "William Onyeabor",
+          "year": 2013
+        },
+        {
+          "title": "Fleur tropicale",
+          "artist": "Francis Bebey",
+          "year": 2012
+        },
+        {
+          "title": "The Coffee Cola Song",
+          "artist": "Francis Bebey",
+          "year": 1977
+        },
+        {
+          "title": "Bani",
+          "artist": "Susso",
+          "year": 2019
+        },
+        {
+          "title": "Jungle Fever",
+          "artist": "The Chakachas",
+          "year": 1997
+        },
+        {
+          "title": "Bird's Lament",
+          "artist": "Moondog",
+          "year": 1997
+        },
+        {
+          "title": "Mulato Bamba",
+          "artist": "Leal Brito,Odete,Sandoval Dias,Ze Menezes",
+          "year": 1978
+        }
+      ],
+      "subtitle": "~20 tracks reviving 1970s African grooves"
+    },
+    {
+      "id": "south-african-gqom-2014-2019",
+      "title": "Durban After Dark: The Gqom Explosion",
+      "description": "Born in the townships of Durban around 2014, gqom is South Africa's darkest, most hypnotic dance mutation \u2014 a stripped-down, bass-heavy sound built from minimal synth stabs, broken beats, and sub-bass pressure that rattles ribcages. While the world was fixated on EDM's glittery excess, Durban's youth were crafting something rawer and more urgent in bedroom studios, creating tracks for taxi sound systems and underground parties that would eventually infiltrate global club culture. This is music that thrives in the shadows: repetitive, trancelike, almost threatening in its intensity, yet undeniably infectious. The scene exploded from local phenomenon to international intrigue when producers like Rudeboyz, Distruction Boyz, and Cruel Boyz started getting attention from adventurous European labels and DJs. By 2016-2017, gqom had become the sound of a new South African confidence, influencing everything from UK grime to experimental club music worldwide. These tracks capture that moment when Durban's after-hours energy became impossible to ignore.",
+      "filters": {
+        "genres": [
+          "Gqom",
+          "Minimal Gqom"
+        ],
+        "location": [
+          "South Africa"
+        ],
+        "era": [
+          "mid 2010s",
+          "late 2010s"
+        ],
+        "descriptors": [
+          "pounding kicks",
+          "distorted bass"
+        ]
+      },
+      "track_ids": [
+        6235,
+        730,
+        745,
+        1360,
+        1389,
+        1909,
+        5043,
+        991
+      ],
+      "track_count": 8,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Umboweti - Original Mix",
+          "artist": "Umoja",
+          "year": 2016
+        },
+        {
+          "title": "Nomalizo",
+          "artist": "Letta Mbulu",
+          "year": 1976
+        },
+        {
+          "title": "Sizwile",
+          "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
+          "year": 2020
+        },
+        {
+          "title": "Muanapoto",
+          "artist": "Tshegue",
+          "year": 2017
+        },
+        {
+          "title": "U KNOW ME",
+          "artist": "COBRAH",
+          "year": 2019
+        },
+        {
+          "title": "Kong",
+          "artist": "Ranga",
+          "year": 2019
+        },
+        {
+          "title": "On The Run - Edit",
+          "artist": "Tony Allen & Jeff Mills",
+          "year": 2018
+        }
+      ],
+      "subtitle": "~20 tracks from South Africa's revolutionary street sound"
+    },
+    {
+      "id": "future-bass-explosion-2014-2018",
+      "title": "Future Bass Euphoria: SoundCloud's Festival Takeover",
+      "description": "Between 2014 and 2018, future bass became the emotional center of gravity for a generation raised on internet music culture \u2014 a sound characterized by lush supersaws, aggressive sidechain compression, pitched vocal chops, and chord progressions designed to trigger maximum feelings. What started as experimentation by producers like Flume, Cashmere Cat, and Wave Racer quickly became the dominant aesthetic of festival main stages and SoundCloud feeds worldwide. This wasn't just EDM's next evolution; it was a complete stylistic overhaul that prioritized melodic sophistication and emotional resonance over the big-room bombast that preceded it. The scene was truly global and genre-agnostic: Japanese producers blended it with trap, Latin American artists fused it with cumbia and dembow, UK grime artists borrowed its shimmer. By 2016, future bass had colonized everything from pop radio to video game soundtracks, creating a shared musical language for bedroom producers from Manila to Manchester. These tracks capture that moment when internet-native production techniques and festival-ready emotion merged into something genuinely new \u2014 overly sincere, occasionally saccharine, but undeniably powerful when it hit right.",
+      "filters": {
+        "genres": [
+          "Future Bass",
+          "Electropop"
+        ],
+        "era": [
+          "mid 2010s",
+          "late 2010s"
+        ],
+        "descriptors": [
+          "lush orchestral arrangements",
+          "atmospheric pads",
+          "nostalgic melodies"
+        ]
+      },
+      "track_ids": [
+        3641,
+        4665,
+        1611,
+        4753,
+        5265,
+        4856,
+        1814,
+        3363,
+        3398,
+        4959,
+        1411,
+        5000,
+        396,
+        3980,
+        3475,
+        5526,
+        464
+      ],
+      "track_count": 17,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Sideways",
+          "artist": "lau.ra,Secaina",
+          "year": 2020
+        },
+        {
+          "title": "Hold On to Me",
+          "artist": "Joey G ii, Klein Zage",
+          "year": 2020
+        },
+        {
+          "title": "Dansu",
+          "artist": "Aili, Transistorcake",
+          "year": 2020
+        },
+        {
+          "title": "Kingdom",
+          "artist": "Neekeetone,Oddkut",
+          "year": 2023
+        },
+        {
+          "title": "BB (BODYBAG)",
+          "artist": "slowthai",
+          "year": 2019
+        },
+        {
+          "title": "Pua",
+          "artist": "Dengue Dengue Dengue,Penya",
+          "year": 2018
+        },
+        {
+          "title": "Work It - Soulwax Remix",
+          "artist": "Marie Davidson,Soulwax",
+          "year": 2018
+        }
+      ],
+      "subtitle": "~25 tracks from electronic music's melodic maximalism"
+    },
+    {
+      "id": "ambient-experimental-electronica-2015-2020",
+      "title": "Cinematic Drift: Post-Club Ambient Textures",
+      "description": "As the 2010s progressed, a particular strand of ambient and downtempo electronic music emerged that rejected both new age placidity and academic experimentalism in favor of something more cinematic and emotionally direct. These are soundscapes built for introspection but engineered with club music's production values \u2014 pristine sound design, carefully sculpted bass frequencies, and an understanding of dynamics learned from years of peak-time programming. From Hans Zimmer's dystopian Blade Runner synth-scapes to Yello's Swiss precision electronica, from bedroom producers crafting intimate comedown music to South American artists blending indigenous instruments with digital processing, this collection maps the territory where ambient music became both more emotionally articulate and more technically sophisticated. This is music for empty airports, post-party reflection, late-night drives through cities that never quite sleep. It's the sound of producers who grew up on dance music but found themselves increasingly drawn to negative space, to restraint, to the power of a single sustained note properly placed. By 2018-2020, this aesthetic had become its own scene, with labels, festivals, and listening sessions dedicated to music that prioritized mood and texture over rhythm and release.",
+      "filters": {
+        "genres": [
+          "Ambient",
+          "Cinematic Electronica",
+          "Organic Downtempo"
+        ],
+        "era": [
+          "late 2010s",
+          "2020s"
+        ],
+        "descriptors": [
+          "atmospheric pads",
+          "lush orchestral arrangements"
+        ],
+        "mood": [
+          "futuristic noir aesthetic meets immersive sci-fi storytelling",
+          "transcendent desert soundscape meets contemporary african electronica"
+        ]
+      },
+      "track_ids": [
+        5644,
+        6193,
+        3634,
+        3643,
+        63,
+        5699,
+        6213,
+        1110,
+        172,
+        4792,
+        744,
+        4343,
+        5395,
+        1321,
+        2357,
+        1359,
+        5541,
+        5546,
+        5547,
+        5553,
+        5075
+      ],
+      "track_count": 21,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Blade Runner",
+          "artist": "Hans Zimmer,Benjamin Wallfisch",
+          "year": 2017
+        },
+        {
+          "title": "Distant Solution - 2010",
+          "artist": "Yello",
+          "year": 2021
+        },
+        {
+          "title": "D4 Angels Pad",
+          "artist": "DEMI",
+          "year": 2018
+        },
+        {
+          "title": "C5 LouderBells",
+          "artist": "DEMI",
+          "year": 2018
+        },
+        {
+          "title": "Tzantza - Simple Symmetry Remix",
+          "artist": "Nicola Cruz,Simple Symmetry",
+          "year": 2017
+        },
+        {
+          "title": "Sister",
+          "artist": "Ulla Straus",
+          "year": 2020
+        },
+        {
+          "title": "Part VI - Into Eternity",
+          "artist": "Carlos Ni\u00f1o,Miguel Atwood-Ferguson",
+          "year": 2020
+        }
+      ],
+      "subtitle": "~22 tracks from electronic music's introspective turn"
+    },
+    {
+      "id": "kingston-ska-origins-1964-1967",
+      "title": "Kingston Ska & Rocksteady Origins 1964-1967",
+      "description": "This is where it all started \u2014 the Kingston studios of the mid-60s where ska's infectious upstroke rhythm began its slow, sensual shift into rocksteady. You can hear Jamaica finding its voice in these tracks, the horn sections punching through like tropical sunlight, the offbeat guitar skank that would define decades of music to come. The Ethiopians' 'Train to Skaville' captures that pivotal moment when the tempo dropped and the groove deepened, laying the foundation for reggae while keeping ska's joyous energy intact. These are the sounds that poured out of Studio One and Federal Records, raw and immediate, before the world knew what to call them \u2014 just Jamaican kids with instruments, inventing the future of popular music in suffocating recording booths during the island's independence fever.",
+      "filters": {
+        "genres": [
+          "Ska",
+          "Early Jamaican Ska"
+        ],
+        "era": [
+          "late 60s"
+        ],
+        "location": [
+          "Jamaica"
+        ],
+        "descriptors": [
+          "call-",
+          "-response vocals"
+        ]
+      },
+      "track_ids": [
+        4182,
+        628,
+        5289,
+        3289
+      ],
+      "track_count": 4,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Train to Skaville",
+          "artist": "The Ethiopians",
+          "year": 1966
+        },
+        {
+          "title": "Simmer Down",
+          "artist": "The Wailers",
+          "year": 1964
+        },
+        {
+          "title": "Al Capone",
+          "artist": "Prince Buster",
+          "year": 1965
+        },
+        {
+          "title": "Carry Go Bring Come",
+          "artist": "Justin Hinds & The Dominoes",
+          "year": 1964
+        },
+        {
+          "title": "54-46 That's My Number",
+          "artist": "Toots & The Maytals",
+          "year": 1967
+        },
+        {
+          "title": "The Tide Is High",
+          "artist": "The Paragons",
+          "year": 1967
+        },
+        {
+          "title": "Rocksteady",
+          "artist": "Alton Ellis",
+          "year": 1967
+        }
+      ],
+      "subtitle": "~15 tracks spanning Jamaica's foundational studio era"
+    },
+    {
+      "id": "ohio-art-punk-manifesto-1977-1980",
+      "title": "Rubber City Devolution: Ohio Art-Punk 1977-1980",
+      "description": "While New York and London grabbed headlines, something stranger was brewing in the Rust Belt. Akron, Ohio became ground zero for art-punk's most conceptually radical experiments, with DEVO leading the charge from their basement rehearsal spaces and Kent State practice rooms. This wasn't just three-chord rebellion \u2014 it was a full-on deconstruction of rock music's DNA, filtered through plastic consumer culture, B-movie sci-fi, and genuine post-industrial alienation. The angular guitars sound nervous, the rhythms spastic and mechanical, the vocals detached and robotic. DEVO's 'S.I.B.' epitomizes the scene's paranoid brilliance: frenetic, claustrophobic, and unnervingly prescient about technology's grip on humanity. These bands treated punk as a conceptual art project, complete with manifestos, matching uniforms, and a dark sense of humor about American decline.",
+      "filters": {
+        "genres": [
+          "Art Punk",
+          "Punk Rock",
+          "Proto-Punk/Power Pop"
+        ],
+        "era": [
+          "1977"
+        ],
+        "location": [
+          "Ohio"
+        ],
+        "mood": [
+          "dystopian de-evolution manifesto from ohio's art-rock pioneers",
+          "rebellious belgian new wave explosion"
+        ],
+        "descriptors": [
+          "raw vocals",
+          "primal drums"
+        ]
+      },
+      "track_ids": [
+        593,
+        2926,
+        484
+      ],
+      "track_count": 3,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "S.I.B. - Swelling Itching Brain",
+          "artist": "DEVO",
+          "year": 1978
+        },
+        {
+          "title": "Jocko Homo",
+          "artist": "DEVO",
+          "year": 1978
+        },
+        {
+          "title": "Uncontrollable Urge",
+          "artist": "DEVO",
+          "year": 1978
+        },
+        {
+          "title": "Humor Me",
+          "artist": "Pere Ubu",
+          "year": 1978
+        },
+        {
+          "title": "30 Seconds Over Tokyo",
+          "artist": "Pere Ubu",
+          "year": 1975
+        },
+        {
+          "title": "Tin Huey",
+          "artist": "I Could Rule the World If I Could Only Get the Parts",
+          "year": 1979
+        },
+        {
+          "title": "Not Happy",
+          "artist": "The Waitresses",
+          "year": 1982
+        }
+      ],
+      "subtitle": "~18 tracks spanning Akron and Cleveland's new wave explosion"
+    },
+    {
+      "id": "minneapolis-sound-revolution-1982-1987",
+      "title": "Purple Reign: The Minneapolis Sound 1982-1987",
+      "description": "Prince didn't just put Minneapolis on the map \u2014 he rewired the entire circuit board of 80s pop music from his Paisley Park fortress. The Minneapolis Sound was funk stripped to its mechanized essence: LinnDrum machines hitting like pneumatic hammers, synths that buzzed and wailed with raw sexuality, and an obsessive perfectionism that somehow made minimalism feel maximal. 'When Doves Cry' remains the ultimate statement: no bassline, just drums, synths, and Prince's voice oscillating between falsetto vulnerability and primal howl. This was Black music for the MTV generation, but weirder and more uncompromising than anything coming from the coasts. The Twin Cities scene Prince cultivated \u2014 The Time, Jimmy Jam and Terry Lewis, Sheila E. \u2014 created a sound that was simultaneously futuristic and deeply rooted in James Brown and Sly Stone, all filtered through Midwestern cold and studio isolation.",
+      "filters": {
+        "genres": [
+          "Pop-Funk",
+          "Experimental R&B"
+        ],
+        "era": [
+          "1984",
+          "2000s"
+        ],
+        "location": [
+          "Minneapolis"
+        ],
+        "mood": [
+          "minneapolis sound defiance",
+          "minneapolis sound genius crafting revolutionary 80s dancefloor heartbreak",
+          "stripped-down studio session capturing prince's emotive interpretation"
+        ]
+      },
+      "track_ids": [
+        637,
+        758,
+        763,
+        5601
+      ],
+      "track_count": 4,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "When Doves Cry",
+          "artist": "Prince",
+          "year": 1984
+        },
+        {
+          "title": "Kiss",
+          "artist": "Prince",
+          "year": 1986
+        },
+        {
+          "title": "The Glamorous Life",
+          "artist": "Sheila E.",
+          "year": 1984
+        },
+        {
+          "title": "Jungle Love",
+          "artist": "The Time",
+          "year": 1984
+        },
+        {
+          "title": "Cool",
+          "artist": "The Time",
+          "year": 1981
+        },
+        {
+          "title": "Human",
+          "artist": "The Human League",
+          "year": 1986
+        },
+        {
+          "title": "Tender Love",
+          "artist": "Force M.D.'s",
+          "year": 1985
+        }
+      ],
+      "subtitle": "~20 tracks spanning Prince's genre-defying empire"
+    },
+    {
+      "id": "chicago-acid-house-explosion-1985-1989",
+      "title": "303 Salvation: Chicago Acid House 1985-1989",
+      "description": "In the abandoned warehouses and South Side clubs of mid-80s Chicago, a handful of DJs stumbled onto something that would change dance music forever: the Roland TB-303, a failed bass synthesizer that became the squelching, burbling voice of acid house. DJ Pierre, Phuture, Marshall Jefferson \u2014 these were working-class Black kids repurposing cheap equipment into hypnotic, psychedelic soundscapes that made bodies move in new ways. The sound was raw, minimal, relentless: 808 and 909 drum machines locked into four-four euphoria, those liquid 303 basslines sliding around like mercury, and occasional vocal samples shouting affirmation into the void. Tracks like 'Acid Tracks' were never meant to be songs in any traditional sense \u2014 they were tools for DJs, prayers for the dancefloor, invitations to get lost in the repetition. This was the sound of post-industrial America finding transcendence through machines, and it exploded globally, from Manchester to Berlin to Detroit.",
+      "filters": {
+        "genres": [
+          "Acid House",
+          "Electro"
+        ],
+        "era": [
+          "1984",
+          "late 80s"
+        ],
+        "descriptors": [
+          "squelchy 303 basslines",
+          "hypnotic breakbeats"
+        ],
+        "mood": [
+          "sweaty warehouse rave energy",
+          "stripped-back machine funk homage"
+        ]
+      },
+      "track_ids": [
+        4214,
+        229,
+        2836,
+        2837,
+        2960,
+        422,
+        3508
+      ],
+      "track_count": 7,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Acid Tracks",
+          "artist": "Phuture",
+          "year": 1987
+        },
+        {
+          "title": "Move Your Body",
+          "artist": "Marshall Jefferson",
+          "year": 1986
+        },
+        {
+          "title": "Can You Feel It",
+          "artist": "Mr. Fingers",
+          "year": 1986
+        },
+        {
+          "title": "Your Love",
+          "artist": "Frankie Knuckles",
+          "year": 1987
+        },
+        {
+          "title": "Washing Machine",
+          "artist": "Mr. Fingers",
+          "year": 1986
+        },
+        {
+          "title": "Love Can't Turn Around",
+          "artist": "Farley Jackmaster Funk",
+          "year": 1986
+        },
+        {
+          "title": "Time to Jack",
+          "artist": "Chip E.",
+          "year": 1985
+        }
+      ],
+      "subtitle": "~18 tracks spanning the 303 revolution"
+    },
+    {
+      "id": "swiss-underground-garage-1988-1995",
+      "title": "Alpine Primitive: Swiss Underground Garage 1988-1995",
+      "description": "While the world fixated on grunge, Switzerland's underground was brewing its own primitive rebellion. This wasn't slick Neue Deutsche Welle polish \u2014 this was Reverend Beat-Man and his trash-rock apostles bashing out raw, lo-fi garage punk in Bern's basement clubs and Zurich's squatter venues. Drawing equally from 60s garage, rockabilly sleaze, and European art-punk antagonism, the Swiss underground created a sound that was deliberately crude: distorted to hell, recorded on cheap equipment, played with maximum blasphemous energy. Reverend Beat-Man's 'Jesus Christ Twist' epitomizes the scene's provocative primitivism \u2014 it's barely held together, willfully offensive, and utterly alive. This was music that rejected sophistication as a matter of principle, finding liberation in dirt and distortion. Connected to the broader Alpine underground that included labels like Voodoo Rhythm Records, these were bands that chose garage rock as a middle finger to Swiss precision and propriety.",
+      "filters": {
+        "genres": [
+          "Garage Punk",
+          "Trash Rock"
+        ],
+        "location": [
+          "Switzerland"
+        ],
+        "mood": [
+          "sweaty underground dive bar chaos",
+          "swiss underground primitive rock'n'roll chaos"
+        ],
+        "descriptors": [
+          "primal drums",
+          "raw vocals"
+        ]
+      },
+      "track_ids": [
+        1601,
+        656,
+        5873,
+        801,
+        5425
+      ],
+      "track_count": 5,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Jesus Christ Twist",
+          "artist": "Reverend Beat-Man",
+          "year": 2008
+        },
+        {
+          "title": "Gotta Go",
+          "artist": "Lightning Beat-Man",
+          "year": 1995
+        },
+        {
+          "title": "I'm in a Cage",
+          "artist": "The Monsters",
+          "year": 1990
+        },
+        {
+          "title": "Turn On",
+          "artist": "The Monsters",
+          "year": 1986
+        },
+        {
+          "title": "Surfin' Bird",
+          "artist": "Sewer Zombies",
+          "year": 1988
+        },
+        {
+          "title": "Route 66",
+          "artist": "Ash",
+          "year": 1992
+        },
+        {
+          "title": "Trash the Planet",
+          "artist": "Boss Hog Barbarians",
+          "year": 1994
+        }
+      ],
+      "subtitle": "~16 tracks spanning Z\u00fcrich and Bern's primitive revival"
+    },
+    {
+      "id": "latin-house-afro-cuban-fusion-1995-2000",
+      "title": "Mambo Nocturno: Afro-Cuban House Fusion",
+      "description": "When the clave rhythm met the 4/4 pulse, something magical happened in the late-90s dance music underground. This is where New York's Latin heritage collided with house music's hypnotic throb, creating sunset-ready grooves that felt equally at home in Havana's Malec\u00f3n and Manhattan's loft parties. The montuno piano patterns that defined generations of salsa got filtered through TR-909s and deep basslines, while congas and timbales kept their organic fire even as they locked into electronic tempos. Los Van Van's timba energy provided the blueprint, while a new generation of producers added warm, sensual production that made bodies move in ways that transcended language. This is the sound of diaspora culture meeting dancefloor democracy, where traditional orchestration and laptop production weren't opposites but collaborators in creating something timeless and immediate all at once.",
+      "filters": {
+        "genres": [
+          "Latin House",
+          "Afro-Latin"
+        ],
+        "location": [
+          "Cuba",
+          "Miami"
+        ],
+        "era": [
+          "late 90s"
+        ],
+        "descriptors": [
+          "syncopated piano montunos",
+          "polyrhythmic percussion",
+          "hypnotic hand percussion",
+          "rhythmic congas"
+        ],
+        "mood": [
+          "sunset beach club energy with sensual dancefloor heat"
+        ]
+      },
+      "track_ids": [
+        51,
+        6005,
+        2994,
+        5597
+      ],
+      "track_count": 4,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Suave Y Caliente",
+          "artist": "Konk",
+          "year": 2018
+        },
+        {
+          "title": "Que Palo Es Ese",
+          "artist": "Los Van Van",
+          "year": 2012
+        },
+        {
+          "title": "Guajira",
+          "artist": "Yerba Buena",
+          "year": 2003
+        },
+        {
+          "title": "Cuba Libre",
+          "artist": "Aqua",
+          "year": 1997
+        },
+        {
+          "title": "Brinca",
+          "artist": "Cubanismo!",
+          "year": 1996
+        },
+        {
+          "title": "Latin Jam",
+          "artist": "Louie Vega",
+          "year": 1999
+        },
+        {
+          "title": "Sandunguera",
+          "artist": "Africando",
+          "year": 1998
+        }
+      ],
+      "subtitle": "~17 tracks spanning NYC and Miami's tropical dancefloors"
+    },
+    {
+      "id": "glitch-idm-laptop-era-2003-2009",
+      "title": "Laptop Psychosis: Mid-2000s Glitch Abstractions",
+      "description": "In the mid-2000s, a generation of bedroom producers armed with cracked software and too much coffee pushed electronic music into genuinely alien territory. This was the peak of glitch and IDM's most uncompromising era, when artists embraced digital artifacts as aesthetic choices and treated the laptop like a broken instrument worth celebrating. Inspired by Autechre's mathematical chaos and Aphex Twin's gleeful sadism, these tracks fractured rhythm itself into microscopic shards, layered impossible polyrhythms, and built entire compositions from the sounds computers make when they're dying. The Future Sound of London's tribal ambience provided a template, but this generation went further into abstraction\u2014tracks with unpronounceable Unicode titles, samples that glitched into oblivion, and structures that defied conventional listening. This was heady, headphone music for the early internet age, when experimentation felt limitless and accessibility was optional. Not background music\u2014foreground assault.",
+      "filters": {
+        "genres": [
+          "Experimental Electronic",
+          "Glitch/IDM"
+        ],
+        "era": [
+          "late 2000s",
+          "2000s"
+        ],
+        "location": [
+          "Berlin",
+          "London",
+          "Germany"
+        ],
+        "descriptors": [
+          "no bassline"
+        ]
+      },
+      "track_ids": [
+        5829,
+        1392,
+        5511,
+        5012,
+        5564,
+        3016,
+        4557,
+        3025,
+        1528
+      ],
+      "track_count": 9,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Papua New Guinea - 12' Original Mix",
+          "artist": "The Future Sound Of London",
+          "year": 1992
+        },
+        {
+          "title": "Gantz Graf",
+          "artist": "Autechre",
+          "year": 2002
+        },
+        {
+          "title": "Windowlicker",
+          "artist": "Aphex Twin",
+          "year": 1999
+        },
+        {
+          "title": "My Red Hot Car",
+          "artist": "Squarepusher",
+          "year": 2001
+        },
+        {
+          "title": "Tewe",
+          "artist": "Oval",
+          "year": 1995
+        },
+        {
+          "title": "Afx237 v.7",
+          "artist": "Aphex Twin",
+          "year": 2001
+        },
+        {
+          "title": "Clipper",
+          "artist": "Autechre",
+          "year": 2001
+        }
+      ],
+      "subtitle": "~16 tracks spanning Berlin and London's digital deconstruction"
+    },
+    {
+      "id": "reggaeton-mainstream-crossover-2015-2020",
+      "title": "Dembow Empire: Reggaeton's Global Takeover",
+      "description": "Between 2015 and 2020, reggaeton didn't just cross over\u2014it conquered. What started in San Juan's underground parties in the '90s became the dominant sound of global pop, and the dembow riddim became as ubiquitous as the backbeat itself. This was the era when Bad Bunny and J Balvin turned Latin trap into streaming gold, when Cardi B brought Bronx swagger to Caribbean rhythms on 'I Like It,' and when the genre's crisp, modern production\u2014808s hitting like freight trains, crystalline hi-hats, bilingual flows\u2014made it impossible to ignore. The sound evolved beyond its roots, absorbing moombahton's electronic energy and trap's menacing minimalism while maintaining that unmistakable dem-bow-dem-bow-dem pulse. Artists like Elena Rose brought new perspectives to the genre's traditionally male-dominated landscape, while producers stripped the sound down to its most addictive essentials. This wasn't fusion\u2014this was reggaeton taking its rightful place at the center of pop music, dictating terms on its own unapologetic frequencies.",
+      "filters": {
+        "genres": [
+          "Reggaeton"
+        ],
+        "era": [
+          "2010s",
+          "2017",
+          "2020"
+        ],
+        "descriptors": [
+          "thunderous sub-bass",
+          "sultry vocal delivery",
+          "percussion-heavy grooves"
+        ],
+        "mood": [
+          "sensual tension"
+        ]
+      },
+      "track_ids": [
+        6168,
+        6259,
+        1674,
+        1174,
+        4833,
+        2808,
+        6020,
+        1976,
+        5591
+      ],
+      "track_count": 9,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "I Like It",
+          "artist": "Cardi B, Bad Bunny, J Balvin",
+          "year": 2018
+        },
+        {
+          "title": "D\u00e9jala Que Vuelva",
+          "artist": "Piso 21, Manuel Turizo",
+          "year": 2017
+        },
+        {
+          "title": "Mi Gente",
+          "artist": "J Balvin, Willy William",
+          "year": 2017
+        },
+        {
+          "title": "Calma",
+          "artist": "Pedro Cap\u00f3, Farruko",
+          "year": 2018
+        },
+        {
+          "title": "Con Altura",
+          "artist": "Rosal\u00eda, J Balvin",
+          "year": 2019
+        },
+        {
+          "title": "Vete",
+          "artist": "Bad Bunny",
+          "year": 2019
+        },
+        {
+          "title": "Taki Taki",
+          "artist": "DJ Snake, Selena Gomez, Ozuna, Cardi B",
+          "year": 2018
+        }
+      ],
+      "subtitle": "~18 tracks spanning Latin trap's global dominance"
+    },
+    {
+      "id": "hawaiian-slack-key-contemporary-2010s",
+      "title": "Ki Ho'alu Revival: Contemporary Slack-Key Keepers",
+      "description": "Slack-key guitar\u2014ki ho'alu\u2014is Hawaii's gift to fingerstyle guitar, a technique where strings are loosened to open tunings that ring like the islands themselves. In the 2010s, a quiet but determined revival kept this deeply cultural practice alive, with artists like Nohelani Cypriano and collaborations with ensembles like The Rose Ensemble ensuring that traditional repertoire didn't become museum pieces. These recordings capture the intimate magic of slack-key: the percussive thumb keeping time like gentle waves, the fingerpicked melodies that seem to float above the strings, the way a single guitar can sound like an entire gathering. This isn't virtuoso showboating\u2014it's patient, meditative playing that carries centuries of Hawaiian storytelling tradition. Each tuning has a name, a history, a family that passed it down. In an era of hyper-production, these tracks offer something radical: space, breath, and the sound of human hands on steel strings under Pacific skies. Cultural preservation as radical act.",
+      "filters": {
+        "genres": [
+          "Hawaiian Traditional",
+          "Slack-Key Guitar"
+        ],
+        "era": [
+          "2010s",
+          "contemporary revival"
+        ],
+        "location": [
+          "Hawaii"
+        ],
+        "mood": [
+          "infectious carnival energy meets contemporary world music showcase"
+        ]
+      },
+      "track_ids": [
+        3089,
+        3188,
+        5262
+      ],
+      "track_count": 3,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Ku'u Pua i Paoakalani",
+          "artist": "The Rose Ensemble, Kim Sueoka, Jordan Sramek",
+          "year": 2014
+        },
+        {
+          "title": "Lihue",
+          "artist": "Nohelani Cypriano",
+          "year": 2014
+        },
+        {
+          "title": "Makalapua",
+          "artist": "Ledward Kaapana",
+          "year": 2011
+        },
+        {
+          "title": "Whee Ha Swing",
+          "artist": "Cyril Pahinui",
+          "year": 2012
+        },
+        {
+          "title": "Hi'ilawe",
+          "artist": "Keola Beamer",
+          "year": 2010
+        },
+        {
+          "title": "Pua Hone",
+          "artist": "Dennis Kamakahi",
+          "year": 2013
+        },
+        {
+          "title": "Wai O Ke Aniani",
+          "artist": "George Kahumoku Jr.",
+          "year": 2015
+        }
+      ],
+      "subtitle": "~15 tracks spanning modern interpretations of island traditions"
+    },
+    {
+      "id": "southern-soul-louisiana-lineage-1960s-2010s",
+      "title": "Swamp Testament: Deep South Soul Lineage",
+      "description": "Southern soul runs deeper than Memphis and Muscle Shoals\u2014it's a humid, spiritual lineage that stretches from the chitlin' circuit to the mystical swamps of Louisiana. This collection traces that genealogy through the testifying vocals of Sam & Dave and Clarence Carter, where every note carried the weight of the Black church and the Saturday night juke joint in equal measure. But the story gets stranger and more wonderful when Dr. John enters, dragging New Orleans voodoo rituals into the soul tradition with hypnotic hand percussion, swampy Rhodes piano, and chants that felt ancestral. His 'Gris-Gris' album invented psychedelic funk by way of Louisiana mysticism, proving that Southern soul could be as experimental as it was traditional. These tracks share DNA: punchy horn sections, rhythm sections that lock like prayer, and an understanding that groove is a form of possession. This is soul music with dirt under its fingernails and spirits in the room, spanning decades but unified by that humid, unshakeable Southern pulse.",
+      "filters": {
+        "genres": [
+          "Southern Soul",
+          "Gospel/Soul"
+        ],
+        "location": [
+          "Louisiana"
+        ],
+        "descriptors": [
+          "call-",
+          "-response vocals",
+          "soaring vocals"
+        ],
+        "mood": [
+          "heartbreak anthem from the golden era"
+        ]
+      },
+      "track_ids": [
+        638,
+        2337,
+        5921,
+        2427,
+        2431
+      ],
+      "track_count": 5,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "When Something Is Wrong with My Baby",
+          "artist": "Sam & Dave",
+          "year": 1967
+        },
+        {
+          "title": "Snatching It Back",
+          "artist": "Clarence Carter",
+          "year": 1968
+        },
+        {
+          "title": "Gris-Gris Gumbo Ya Ya",
+          "artist": "Dr. John",
+          "year": 1968
+        },
+        {
+          "title": "I Got the Same Old Blues",
+          "artist": "Freddie King",
+          "year": 1970
+        },
+        {
+          "title": "Soul Man",
+          "artist": "Sam & Dave",
+          "year": 1967
+        },
+        {
+          "title": "Right Place Wrong Time",
+          "artist": "Dr. John",
+          "year": 1973
+        },
+        {
+          "title": "Slip Away",
+          "artist": "Clarence Carter",
+          "year": 1968
+        }
+      ],
+      "subtitle": "~16 tracks spanning Gulf Coast R&B traditions"
+    },
+    {
+      "id": "brazilian-percussion-fusion-2010s",
+      "title": "Batucada Moderna: Brazilian Rhythm Explorers 2010s",
+      "description": "This is where Brazilian percussion tradition meets global dancefloor experimentation in the 2010s. At the core sits the virtuosic body percussion ensemble Barbatuques, turning human skin into instruments with their syncopated bai\u00e3o grooves, while Neno Exporta Som channels Afro-Brazilian batuque into sun-scorched Afro-house territory. The throughline is polyrhythm as spiritual technology\u2014whether it's the hypnotic hand drums of R\u00e9union Island's maloya tradition (Michou keeping ancestral ceremonial music alive), Trinidad's conscious rapso poetry riding organic percussion waves (Brother Resistance), or Thornato's sweaty moombahton fusion collapsing Andean cumbia accordion into bass-heavy club ammunition. These aren't museum pieces: they're living traditions getting stretched, chopped, and recombined by artists who understand that Brazilian and Caribbean percussion languages offer infinite rhythmic possibilities. From carnival energy to warehouse intensity, this is rhythm-first music that refuses to sit still, honoring roots while reaching for new ground.",
+      "filters": {
+        "genres": [
+          "Brazilian Percussion"
+        ],
+        "location": [
+          "Brazil"
+        ],
+        "era": [
+          "2010s"
+        ],
+        "descriptors": [
+          "hypnotic hand percussion",
+          "polyrhythmic percussion"
+        ],
+        "mood": [
+          "infectious carnival energy meets contemporary world music showcase"
+        ]
+      },
+      "track_ids": [
+        5123,
+        5725,
+        1127,
+        5811,
+        3254,
+        697,
+        3824,
+        2809,
+        1365,
+        5052,
+        3029,
+        1529
+      ],
+      "track_count": 12,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Bai\u00e3o Destemperado",
+          "artist": "Barbatuques",
+          "year": 2013
+        },
+        {
+          "title": "Deixa a Tristeza",
+          "artist": "Neno Exporta Som",
+          "year": 2016
+        },
+        {
+          "title": "Dancin Shoes Rapso",
+          "artist": "Brother Resistance",
+          "year": 2015
+        },
+        {
+          "title": "Chapinero",
+          "artist": "Thornato",
+          "year": 2014
+        },
+        {
+          "title": "Maloya Ton Tisane",
+          "artist": "Michou",
+          "year": 2017
+        },
+        {
+          "title": "Samba da Ben\u00e7\u00e3o",
+          "artist": "Vinicius de Moraes, Baden Powell",
+          "year": 2013
+        },
+        {
+          "title": "Batucada",
+          "artist": "Gilles Peterson",
+          "year": 2012
+        }
+      ],
+      "subtitle": "~15 tracks spanning S\u00e3o Paulo's experimental edge"
+    },
+    {
+      "id": "prohibition-era-novelty-jazz",
+      "title": "Speakeasy Shadows: Vaudeville Jazz & Novelty Numbers",
+      "description": "Step into the smoky backrooms of Prohibition America, where piano rolls stutter like tommy guns and vocalists deliver lines with vaudevillian winks. This is jazz as theater, jazz as comedy routine, jazz as ghost story told over bathtub gin. The novelty jazz of the late 1920s and early 1930s thrived on gimmickry and showmanship\u2014spooky sound effects, comedic timing, and instrumental acrobatics that made crowds howl with laughter between Charleston steps. Born from the marriage of ragtime's rhythmic mischief and vaudeville's theatrical flair, these tracks capture an era when entertainment meant spectacle, when every piano player was part magician, part comedian. The genre's playful irreverence was a pressure valve for an anxious decade, turning uncertainty into sing-along absurdity. From Rube Bloom's ghostly character sketches to the loungy afterglow of modern jazz crooners channeling that bygone intimacy, this is music that refuses to take itself seriously\u2014and that's precisely its genius.",
+      "filters": {
+        "genres": [
+          "Early Jazz",
+          "Jazz"
+        ],
+        "era": [
+          "late 1920s prohibition era"
+        ],
+        "location": [
+          "American speakeasy entertainment"
+        ],
+        "mood": [
+          "dramatic concert hall showpiece",
+          "dimly-lit speakeasy romance"
+        ],
+        "descriptors": [
+          "playful piano rolls",
+          "theatrical vocal effects",
+          "spooky vaudeville atmosphere",
+          "comedic timing"
+        ]
+      },
+      "track_ids": [
+        1571,
+        3009
+      ],
+      "track_count": 2,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Mysterious Mose",
+          "artist": "Rube Bloom and His Bayou Boys",
+          "year": 1930
+        }
+      ],
+      "subtitle": "~2 tracks spanning speakeasy entertainment"
+    },
+    {
+      "id": "american-folk-revival",
+      "title": "Coffeehouse Mystics: The Folk Revival's Quiet Revolution",
+      "description": "The American Folk Revival wasn't just about acoustic guitars and protest songs\u2014it was about reclaiming intimacy in an electric age, about finding ancient truths in Appalachian modal tunings and Greenwich Village basement clubs. From the late 1950s through the 1970s, a generation of poets, drifters, and truth-seekers plugged into something older than rock and roll: the lonesome cry of traditional ballads, the storytelling power of troubadours, the raw emotional immediacy of voices accompanied by little more than wood and steel strings. Karen Dalton's haunted interpretations carried the weight of centuries, while Joni Mitchell transformed folk's vocabulary into sophisticated jazz-pop tapestries. Even when Fleetwood Mac dressed folk bones in California studio sheen or Stealers Wheel smuggled folk sensibilities onto AM radio, the revival's DNA remained: songs as personal testimony, music as communal meditation, performances as s\u00e9ances with America's musical past. This was the sound of artists who believed songs could change hearts, one coffeehouse at a time.",
+      "filters": {
+        "genres": [
+          "Folk Rock",
+          "Folk",
+          "Appalachian Blues+Folk"
+        ],
+        "era": [
+          "early 1970s"
+        ],
+        "location": [
+          "North America",
+          "American South meets Greenwich Village"
+        ],
+        "mood": [
+          "melancholic coffeehouse intimacy",
+          "feel-good summer radio hit capturing carefree early seventies optimism"
+        ],
+        "descriptors": [
+          "sparse banjo fingerpicking",
+          "haunting vocal delivery",
+          "raw emotional intensity"
+        ]
+      },
+      "track_ids": [
+        5919,
+        5956,
+        1223,
+        5960
+      ],
+      "track_count": 4,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Katie Cruel",
+          "artist": "Karen Dalton",
+          "year": 1969
+        },
+        {
+          "title": "Rhiannon",
+          "artist": "Fleetwood Mac",
+          "year": 1975
+        },
+        {
+          "title": "Stuck In The Middle With You",
+          "artist": "Stealers Wheel",
+          "year": 1992
+        }
+      ],
+      "subtitle": "~3 tracks spanning Greenwich Village to Appalachia"
+    },
+    {
+      "id": "golden-era-caribbean",
+      "title": "Tropical Heat: Golden Age Caribbean Rhythms",
+      "description": "Before salsa conquered New York and reggae rewired London, the Caribbean was already exporting its most valuable resource: rhythm that could make stone walls dance. The golden era of Caribbean music\u2014roughly spanning the 1960s through the 1980s\u2014was a polyrhythmic explosion of merengue's feverish g\u00fcira scratches from Santo Domingo, rumba's sophisticated son montunos from Havana, and samba's infectious joy from Rio's favelas. This was dance music in its purest form, born from African ceremonial drums meeting European brass traditions in the tropical heat, refined in street parties and carnival processions where the only requirement was to move. Johnny Ventura's accordion-driven merengue madness, the hypnotic pulse of traditional percussion ensembles carrying centuries-old ceremonies forward, Os Originais do Samba's feel-good grooves\u2014these sounds represented entire communities celebrating survival, resistance, and the unshakeable belief that life, however hard, demands dancing. This is music that doesn't ask permission; it simply takes over your hips.",
+      "filters": {
+        "genres": [
+          "Merengue",
+          "Afro-Cuban",
+          "Samba"
+        ],
+        "location": [
+          "Dominican Republic"
+        ],
+        "mood": [
+          "nostalgic golden-era caribbean celebration"
+        ],
+        "descriptors": []
+      },
+      "track_ids": [
+        2826,
+        5782,
+        5366
+      ],
+      "track_count": 3,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Mosaico 1920",
+          "artist": "Johnny Ventura",
+          "year": 2016
+        },
+        {
+          "title": "Bolero",
+          "artist": "Drummers Of The Societe Absolument Guinin",
+          "year": 2017
+        },
+        {
+          "title": "Tenha Fe, Pois Amanha um Lindo Dia Vai Nascer",
+          "artist": "Os Originais Do Samba",
+          "year": 2009
+        }
+      ],
+      "subtitle": "~2 tracks spanning Dominican and Cuban traditions"
+    },
+    {
+      "id": "bay-area-thrash-metal",
+      "title": "Bay Area Thrash: The Garage-to-Arena Apocalypse",
+      "description": "In the early 1980s, the San Francisco Bay Area birthed a sound so aggressive it made punk look polite. Thrash metal was the bastard child of NWOBHM precision and hardcore punk's velocity, forged in Oakland warehouses and San Francisco clubs like the Stone and Ruthie's Inn, where bands like Exodus, Testament, and Metallica developed the genre's signature attack: palm-muted galloping riffs, blistering double-kick drumming, and sociopolitical fury delivered at breakneck tempos. This wasn't LA's glam posturing\u2014this was working-class aggression, skateboard culture intensity, and a middle finger to Reagan-era complacency. By the time Metallica's \"Enter Sandman\" crashed into MTV rotation in 1991, thrash had conquered the world, transforming from an underground cult movement into a stadium-filling juggernaut. The Bay Area scene proved that extreme music could be technically virtuosic, that anger could be articulate, and that the apocalypse, properly soundtracked, could be oddly cathartic.",
+      "filters": {
+        "genres": [
+          "Heavy Metal",
+          "Thrash Metal"
+        ],
+        "era": [
+          "early 90s crossover"
+        ],
+        "location": [
+          "Bay Area"
+        ],
+        "mood": [
+          "stadium-ready nightmare fuel that defined mainstream metal"
+        ],
+        "descriptors": [
+          "menacing strings build to thunderous crescendo"
+        ]
+      },
+      "track_ids": [
+        2915
+      ],
+      "track_count": 1,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Enter Sandman",
+          "artist": "Metallica",
+          "year": 1991
+        }
+      ],
+      "subtitle": "~1 track spanning stadium metal crossover"
+    },
+    {
+      "id": "kinshasa-soukous",
+      "title": "Kinshasa Lightning: Soukous & Congolese Rumba",
+      "description": "In the steaming heart of Central Africa, Kinshasa became the epicenter of a guitar revolution that would electrify dance floors from Brazzaville to Paris. Soukous\u2014derived from the French word \"secouer\" (to shake)\u2014evolved from Congolese rumba's Cuban roots into something unmistakably African: interlocking guitar lines that spiral and dive like tropical birds, percussion that locks tighter than a Basel clock, and vocals that float above the fray with honeyed sophistication. From the 1960s through the 1990s, artists like Tabu Ley Rochereau, Franco, and the OK Jazz orchestra transformed the genre from rumba's elegant foundation into the high-velocity sebene sections that turned every song into a dance floor exorcism. This was music as social glue, as political commentary, as pure kinetic joy\u2014recorded in Kinshasa's studios but broadcast across francophone Africa and its diaspora. The guitars spoke in complete sentences, the rhythm sections were conversations between friends, and every track was an invitation to move until dawn broke over the Congo River.",
+      "filters": {
+        "genres": [
+          "Soukous",
+          "Congolese Rumba+Soukous"
+        ],
+        "era": [
+          "likely 1980s"
+        ],
+        "location": [
+          "Democratic Republic of Congo"
+        ],
+        "mood": [
+          "infectious kinshasa dance floor energy"
+        ],
+        "descriptors": [
+          "crisp sebene guitars",
+          "interlocking percussion",
+          "smooth vocal harmonies"
+        ]
+      },
+      "track_ids": [
+        1385
+      ],
+      "track_count": 1,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Hafi Deo",
+          "artist": "Tabu Ley Rochereau",
+          "year": 1985
+        }
+      ],
+      "subtitle": "~2 tracks spanning dance floor energy"
+    },
+    {
+      "id": "belgian-experimental-african-fusion",
+      "title": "Brussels Meets Kinshasa: Avant-Garde Afro-Electronics",
+      "description": "In the early 1980s, Brussels became an unlikely laboratory for radical sonic experiments when Congolese diaspora artists collided with European avant-garde producers. Zazou Bikaye exemplified this convergence\u2014Hector Zazou's cold wave electronics meeting Bony Bikaye's hypnotic Congolese vocals in stark, ritualistic arrangements that stripped away both the warmth of traditional African music and the aggression of industrial noise, leaving only skeletal polyrhythms and ghostly textures. This wasn't world music crossover or polite fusion; it was a genuine third language, spoken in dimly lit studios funded by adventurous Belgian labels. The scene was small but influential, presaging everything from Massive Attack's dub-noir to contemporary African electronic experimentalists. These tracks sound like ancestral ceremonies broadcast through damaged shortwave radio\u2014devotional, unsettling, and utterly singular.",
+      "filters": {
+        "genres": [
+          "Experimental African Fusion",
+          "Avant-Garde Electro-Tribal+Experimental African Fusion"
+        ],
+        "location": [
+          "Belgium/Congo collaboration"
+        ],
+        "mood": [
+          "cerebral european art scene meets central african tradition"
+        ],
+        "descriptors": [
+          "hypnotic congolese vocals over sparse electronic textures",
+          "ritualistic polyrhythms",
+          "industrial undertones"
+        ]
+      },
+      "track_ids": [
+        1251
+      ],
+      "track_count": 1,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "M'PasiI Ya M'Pamba",
+          "artist": "Zazou Bikaye",
+          "year": 1983
+        }
+      ],
+      "subtitle": "~1 track spanning cerebral collaboration"
+    },
+    {
+      "id": "nyc-dfa-dance-punk",
+      "title": "DFA After Dark: LCD's Manhattan Dancefloor",
+      "description": "Between 2002 and 2012, James Murphy's DFA Records carved out a distinctly New York sound that fused punk's sneer with disco's ecstasy, filtering both through pristine studio craft and boutique analog gear. The Juan Maclean\u2014Murphy's production partner John MacLean stepping front\u2014distilled this aesthetic into pure locomotion: metronomic bass pulses, crystalline synth arpeggios, and yearning vocals that turned dancefloors into confessionals. This wasn't the messy immediacy of early punk-funk; DFA obsessed over every hi-hat placement, every filter sweep, creating dance music for people who'd grown up on post-punk records but still wanted to sweat. The scene centered around Manhattan clubs like Plant Bar and a roster that included !!!, LCD Soundsystem, and Rapture\u2014all chasing that sweet spot where Moroder meets Gang of Four, where four-on-the-floor becomes existential. Narcotic, romantic, impeccably tailored.",
+      "filters": {
+        "genres": [
+          "Dance-Punk"
+        ],
+        "era": [
+          "romantic tension",
+          "2016"
+        ],
+        "location": [
+          "NYC electronic underground"
+        ],
+        "mood": [
+          "romantic tension"
+        ],
+        "descriptors": [
+          "pulsing bass",
+          "shimmering synths",
+          "euphoric hooks"
+        ]
+      },
+      "track_ids": [
+        1037
+      ],
+      "track_count": 1,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Running Back to You",
+          "artist": "The Juan Maclean",
+          "year": 2008
+        }
+      ],
+      "subtitle": "~1 track spanning electronic underground"
+    },
+    {
+      "id": "exotica-easy-listening",
+      "title": "Bachelor Pad Exotica: Jet-Set Lounge Fantasies",
+      "description": "From the Tiki bars of Hollywood to the hi-fi showrooms of suburbia, exotica and space-age bachelor pad music offered postwar America an armchair safari\u2014exotic without leaving the pool deck. Martin Denny, Les Baxter, and Henry Mancini orchestrated lush fantasies of Polynesian nights, Peruvian mysteries, and Roman holidays, all rendered in wide stereo with cocktail shaker precision. Yma Sumac's five-octave acrobatics on tracks like \"Gopher\" turned mambo into alien transmission, while Mancini brought swinging sophistication to film scores that doubled as cocktail hour soundtracks. This was music designed to make your living room feel worldly and your Martini taste imported. The genre died when actual jet travel made fantasy obsolete, but its DNA survives in everything from Stereolab to contemporary neo-exotica revivalists. Close your eyes and you're poolside at a villa that exists only on record sleeves\u2014all bamboo, brass, and beautiful illusion.",
+      "filters": {
+        "genres": [
+          "Easy Listening",
+          "Exotica",
+          "Downtempo Soul",
+          "Jazz-Funk"
+        ],
+        "mood": [
+          "sophisticated cocktail hour elegance",
+          "vintage bachelor pad sophistication meets peruvian mystique",
+          "sun-drenched poolside reflection vibes"
+        ],
+        "descriptors": []
+      },
+      "track_ids": [
+        5132,
+        3117,
+        4840,
+        4460
+      ],
+      "track_count": 4,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "The Tiber Twist",
+          "artist": "Henry Mancini",
+          "year": 1963
+        },
+        {
+          "title": "Gopher",
+          "artist": "Yma Sumac",
+          "year": 1955
+        },
+        {
+          "title": "God Make Me Funky",
+          "artist": "The Headhunters",
+          "year": 1975
+        }
+      ],
+      "subtitle": "~3 tracks spanning bachelor pad sophistication"
+    },
+    {
+      "id": "am-radio-pop-crossover",
+      "title": "AM Gold: Bubblegum Dreams and Baroque Tearjerkers",
+      "description": "Between 1967 and 1973, AM radio was a glorious democracy where orchestral pop ballads, bubblegum confections, and garage rock shared the same three-minute real estate. Canadian acts like Andy Kim and The Stampeders became unlikely hitmakers in this ecosystem, crafting singles that balanced sophisticated arrangements with unabashed catchiness. Kim's \"Resurrection\" wrapped heartbreak in swelling strings and French horns worthy of a film score, while The Stampeders' \"Sweet City Woman\" bounced on acoustic jangle and handclap exuberance\u2014both engineered for maximum dashboard sing-along potential. This was the tail end of Brill Building professionalism colliding with post-Beatles ambition, before FM radio Balkanized audiences into demographic silos. Producers like Jeff Barry and Don Kirshner understood that three minutes could contain both sophistication and sugar rush. Dismissed as disposable at the time, these singles now sound like transmissions from pop music's last innocent summer\u2014earnest, immediate, and engineered to lodge permanently in memory.",
+      "filters": {
+        "genres": [
+          "Pop Rock",
+          "Pop",
+          "Bubblegum Pop+Pop Rock"
+        ],
+        "era": [
+          "1971",
+          "early 1970s"
+        ],
+        "location": [
+          "Canada"
+        ],
+        "mood": [
+          "feel-good summer radio hit capturing carefree early seventies optimism",
+          "heartfelt late-60s am radio tearjerker"
+        ],
+        "descriptors": []
+      },
+      "track_ids": [
+        4098,
+        2159
+      ],
+      "track_count": 2,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Sweet City Woman",
+          "artist": "Stampeders",
+          "year": 1971
+        },
+        {
+          "title": "Resurrection",
+          "artist": "Andy Kim",
+          "year": 1968
+        }
+      ],
+      "subtitle": "~2 tracks spanning feel-good hits"
+    },
+    {
+      "id": "classical-romantic-orchestral",
+      "title": "Romantic Orchestral Drama: Late 19th Century Grandeur",
+      "description": "By the 1870s, orchestral composition had become a vehicle for unrestrained emotional expression and nationalist storytelling. Composers like Edvard Grieg mined folk traditions for melodic material, then amplified them through massive orchestral forces capable of whispers and thunderclaps alike. \"In the Hall of the Mountain King\" from Grieg's Peer Gynt suite exemplifies the era's dramatic flair\u2014a Norwegian folk motif subjected to relentless acceleration and crescendo, building from sinister whisper to overwhelming climax with almost cinematic intensity. This was music for the grand concert halls rising across European capitals, where newly prosperous middle classes could experience the sublime without church or court. The Romantic orchestra became a storytelling machine, capable of painting landscapes, conjuring supernatural dread, and wringing maximum pathos from every string section. These works laid groundwork for film scoring's emotional manipulation while remaining concert hall centerpieces\u2014pieces that still reliably give audiences chills a century and a half later.",
+      "filters": {
+        "genres": [
+          "Classical",
+          "Classical+Romantic Period Orchestral"
+        ],
+        "era": [
+          "1875"
+        ],
+        "location": [
+          "Norway"
+        ],
+        "mood": [
+          "dramatic concert hall showpiece"
+        ],
+        "descriptors": [
+          "menacing strings build to thunderous crescendo"
+        ]
+      },
+      "track_ids": [
+        1573
+      ],
+      "track_count": 1,
+      "is_leaf": true,
+      "children": [],
+      "examples": [
+        {
+          "title": "Peer Gynt, Op. 23: IV. In the Hall of the Mountain King",
+          "artist": "Edvard Grieg,Andrew Davis,Philharmonia Orchestra",
+          "year": 1875
+        }
+      ],
+      "subtitle": "~1 track spanning Norwegian nationalism"
     }
   ],
   "status": "complete"
