@@ -1501,5 +1501,114 @@
     "source": "llm",
     "created_at": "2026-02-09T11:32:35.476370+00:00",
     "updated_at": "2026-02-09T11:32:52.700086+00:00"
+  },
+  "58109ab3": {
+    "id": "58109ab3",
+    "name": "Berlin Minimal Techno 2000-2008",
+    "description": "Post-reunification Berlin became techno's global capital as clubs like Berghain established a aesthetic of hypnotic, minimal techno designed for marathon sessions. Producers stripped techno to its essential elements \u2014 looping rhythms, subtle variations, micro-house textures \u2014 creating cerebral music for serious dancers. This Berlin sound, influenced by Detroit but distinctly European, established the German capital as dance music's most important city while popularizing the warehouse afterhours aesthetic globally.",
+    "filters": {
+      "genres": [
+        "Minimal Techno",
+        "Tech House",
+        "Minimal Tech House",
+        "Dub Techno",
+        "Microhouse"
+      ],
+      "location": [
+        "Germany",
+        "Berlin",
+        "Europe"
+      ],
+      "era": [
+        "early 2000s",
+        "mid 2000s",
+        "late 2000s"
+      ],
+      "mood": [
+        "cerebral late-night warehouse atmosphere",
+        "cerebral after-hours introspection",
+        "dark warehouse afterhours energy",
+        "underground afterhours warehouse energy",
+        "warehouse afterhours intensity"
+      ],
+      "descriptors": [
+        "hypnotic loops",
+        "stripped-back percussion",
+        "stripped-back groove",
+        "pulsing bassline",
+        "hypnotic percussion"
+      ]
+    },
+    "track_ids": [
+      1286,
+      2982,
+      3053,
+      12,
+      2201,
+      429,
+      602,
+      258,
+      1535,
+      1352,
+      1376,
+      720,
+      2824,
+      453,
+      1286,
+      1140,
+      1793,
+      442,
+      1363,
+      1172,
+      1268
+    ],
+    "source": "scene-tree",
+    "created_at": "2026-02-10T10:49:00.780508+00:00",
+    "updated_at": "2026-02-10T10:50:04.619501+00:00"
+  },
+  "a745dd38": {
+    "id": "a745dd38",
+    "name": "Spectral Minimalism: When Microhouse Met Dub's Infinite Space",
+    "description": "This is where minimal techno's clinical precision got lost in the echo chamber and found something stranger, more atmospheric, more emotionally resonant. Stewart Walker's dubbed-out experiments and Matthew Dear's hypnotic vocal manipulations represent microhouse's atmospheric turn \u2014 the moment when the genre stopped being about what you could strip away and started exploring the infinite textures you could discover in the spaces between. These producers treated the studio like dub reggae pioneers treated King Tubby's board: as a time-and-space machine where delays become melodies and reverb becomes rhythm. The result is deeply introspective music that still moves bodies, cerebral explorations that never lose the groove. From Detroit to Berlin, from after-hours warehouses to bedroom headphone sessions, this is the sound of electronic music turning inward, finding vast emotional landscapes in the smallest sonic gestures.",
+    "filters": {
+      "genres": [
+        "Microhouse",
+        "Dub Techno",
+        "Minimal Tech House"
+      ],
+      "descriptors": [
+        "glacial atmospheres",
+        "warm analog textures",
+        "grainy textural layers",
+        "spatial delay fx",
+        "rolling bassline",
+        "stripped-back groove"
+      ],
+      "mood": [
+        "sophisticated afterhours atmosphere",
+        "introspective afterhours experimentation",
+        "intimate afterhours warehouse energy",
+        "intimate afterhours warehouse vibe",
+        "sleek stockholm underground afterhours energy"
+      ]
+    },
+    "track_ids": [
+      3591,
+      4071,
+      1352,
+      3659,
+      4324,
+      3053,
+      3663,
+      389,
+      3599,
+      3715,
+      3851,
+      3466,
+      3699
+    ],
+    "source": "scene-tree",
+    "created_at": "2026-02-10T10:51:43.693015+00:00",
+    "updated_at": "2026-02-10T10:51:43.693027+00:00"
   }
 }

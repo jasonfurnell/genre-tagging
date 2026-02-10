@@ -57,6 +57,7 @@ _state = {
     "scene_tree_stop_flag": threading.Event(),
     "scene_tree_progress_listeners": [],
     "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
+    "_artwork_cache": {},          # "artist||title" -> {cover_url, found}
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
@@ -188,6 +189,7 @@ def upload():
     _state["original_filename"] = file.filename
     _state["_analysis_cache"] = None
     _state["_preview_cache"] = {}
+    _state["_artwork_cache"] = {}
 
     # Persist autosave + metadata so refresh can restore
     _autosave()
@@ -227,6 +229,7 @@ def restore():
         _state["original_filename"] = original
         _state["_analysis_cache"] = None
         _state["_preview_cache"] = {}
+        _state["_artwork_cache"] = {}
 
         result = _summary()
         result["restored"] = True
@@ -1768,7 +1771,7 @@ def get_preview():
 
 
 # ---------------------------------------------------------------------------
-# GET /api/artwork — Lightweight album cover lookup (reuses preview cache)
+# GET /api/artwork — Lightweight album cover lookup (separate cache)
 # ---------------------------------------------------------------------------
 @api.route("/api/artwork")
 def get_artwork():
@@ -1778,13 +1781,13 @@ def get_artwork():
         return jsonify({"cover_url": None, "found": False}), 400
 
     cache_key = f"{artist.lower()}||{title.lower()}"
-    cached = _state["_preview_cache"].get(cache_key)
+    cached = _state["_artwork_cache"].get(cache_key)
     if cached is not None:
-        return jsonify({"cover_url": cached.get("cover_url", ""), "found": bool(cached.get("cover_url"))})
+        return jsonify(cached)
 
     query = urllib.parse.quote(f"{artist} {title}")
     url = f"https://api.deezer.com/search?q={query}&limit=5"
-    result = {"preview_url": None, "found": False, "cover_url": ""}
+    result = {"cover_url": "", "found": False}
 
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
@@ -1805,18 +1808,12 @@ def get_artwork():
             if best is None:
                 best = tracks[0]
 
-            preview = best.get("preview", "")
             cover = best.get("album", {}).get("cover_small", "")
-            result = {
-                "preview_url": preview if preview else None,
-                "found": bool(preview),
-                "deezer_title": best.get("title", ""),
-                "deezer_artist": best.get("artist", {}).get("name", ""),
-                "cover_url": cover,
-            }
+            if cover:
+                result = {"cover_url": cover, "found": True}
     except Exception:
         logging.exception("Deezer artwork lookup failed for %s - %s", artist, title)
-        return jsonify({"cover_url": "", "found": False})
+        return jsonify(result)
 
-    _state["_preview_cache"][cache_key] = result
-    return jsonify({"cover_url": result.get("cover_url", ""), "found": bool(result.get("cover_url"))})
+    _state["_artwork_cache"][cache_key] = result
+    return jsonify(result)
