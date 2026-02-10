@@ -34,6 +34,11 @@ from app.tree import (
     load_tree, save_tree, delete_tree as delete_tree_file,
     find_node, refresh_all_examples, TREE_PROFILES,
 )
+from app.setbuilder import (
+    generate_set, generate_energy_wave, generate_key_wave,
+    auto_fill_vibes, get_vibe_options, select_tracks_for_slot,
+    ENERGY_PRESETS, KEY_PRESETS,
+)
 
 api = Blueprint("api", __name__)
 
@@ -1880,3 +1885,137 @@ def get_artwork():
 
     _state["_artwork_cache"][cache_key] = result
     return jsonify(result)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Set Workshop
+# ═══════════════════════════════════════════════════════════════════════════
+
+@api.route("/api/set-workshop/presets")
+def set_workshop_presets():
+    """Return energy/key presets and vibe options from the collection tree."""
+    tree_type = request.args.get("tree_type", "genre")
+    if tree_type == "scene":
+        tree = _state.get("scene_tree") or load_tree(
+            file_path=TREE_PROFILES["scene"]["file"])
+    else:
+        tree = _state.get("tree") or load_tree()
+
+    vibes = get_vibe_options(tree) if tree else []
+
+    return jsonify({
+        "energy_presets": {k: {"label": v["label"], "description": v["description"]}
+                          for k, v in ENERGY_PRESETS.items()},
+        "key_presets": {k: {"label": v["label"], "description": v["description"]}
+                        for k, v in KEY_PRESETS.items()},
+        "vibe_options": vibes,
+        "tree_available": tree is not None,
+    })
+
+
+@api.route("/api/set-workshop/generate", methods=["POST"])
+def set_workshop_generate():
+    """Generate a complete DJ set."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    tree_type = body.get("tree_type", "genre")
+
+    if tree_type == "scene":
+        tree = _state.get("scene_tree") or load_tree(
+            file_path=TREE_PROFILES["scene"]["file"])
+    else:
+        tree = _state.get("tree") or load_tree()
+
+    if not tree:
+        return jsonify({"error": "No collection tree built. Build one in the Collection Tree tab first."}), 404
+
+    result = generate_set(
+        df=df,
+        tree=tree,
+        tree_type=tree_type,
+        duration_minutes=body.get("duration", 60),
+        energy_preset=body.get("energy_preset", "classic_arc"),
+        key_preset=body.get("key_preset", "harmonic_flow"),
+        start_key=body.get("start_key", "8B"),
+        vibe_assignments=body.get("vibes") or None,
+        bpm_min=body.get("bpm_min", 70),
+        bpm_max=body.get("bpm_max", 140),
+    )
+    return jsonify(result)
+
+
+@api.route("/api/set-workshop/slot-tracks", methods=["POST"])
+def set_workshop_slot_tracks():
+    """Re-fetch candidate tracks for a single slot."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    tree_type = body.get("tree_type", "genre")
+
+    if tree_type == "scene":
+        tree = _state.get("scene_tree") or load_tree(
+            file_path=TREE_PROFILES["scene"]["file"])
+    else:
+        tree = _state.get("tree") or load_tree()
+
+    if not tree:
+        return jsonify({"error": "No collection tree built"}), 404
+
+    tracks = select_tracks_for_slot(
+        df=df,
+        target_bpm=body.get("target_bpm", 100),
+        target_key=body.get("target_key", "8B"),
+        vibe_node_ids=body.get("vibe_node_ids", []),
+        tree=tree,
+        used_track_ids=set(body.get("used_track_ids", [])),
+        key_mode=body.get("key_mode", "harmonic_flow"),
+    )
+    return jsonify({"tracks": tracks})
+
+
+@api.route("/api/set-workshop/energy-wave")
+def set_workshop_energy_wave():
+    """Preview an energy wave for a given preset and slot count."""
+    preset = request.args.get("preset", "classic_arc")
+    num_slots = int(request.args.get("num_slots", 20))
+    bpm_min = float(request.args.get("bpm_min", 70))
+    bpm_max = float(request.args.get("bpm_max", 140))
+
+    wave = generate_energy_wave(preset, num_slots, bpm_min, bpm_max)
+    return jsonify({"wave": [round(v, 1) for v in wave]})
+
+
+@api.route("/api/set-workshop/export-m3u", methods=["POST"])
+def set_workshop_export_m3u():
+    """Export the selected tracks from a set as an M3U playlist."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    slot_selections = body.get("slots", [])
+    set_name = body.get("name", "DJ_Set")
+
+    lines = ["#EXTM3U", f"#PLAYLIST:{set_name}"]
+    for slot in slot_selections:
+        tid = slot.get("track_id")
+        if tid is None or tid not in df.index:
+            continue
+        row = df.loc[tid]
+        artist = str(row.get("artist", "Unknown"))
+        title = str(row.get("title", "Unknown"))
+        location = str(row.get("location", ""))
+        lines.append(f"#EXTINF:-1,{artist} - {title}")
+        if location and location != "nan":
+            lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    safe_name = set_name.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{safe_name}.m3u8")

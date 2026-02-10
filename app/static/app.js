@@ -25,6 +25,7 @@ let genreCounts = {};
 let intersectionsInitialized = false;
 let workshopInitialized = false;
 let treeInitialized = false;
+let setBuilderInitialized = false;
 
 const genreChart = $("#genre-chart");
 const TOP_N_GENRES = 8;
@@ -653,6 +654,10 @@ $$(".tab-btn").forEach(btn => {
         if (target === "tree" && !treeInitialized) {
             treeInitialized = true;
             if (typeof initTree === "function") initTree();
+        }
+        if (target === "setbuilder" && !setBuilderInitialized) {
+            setBuilderInitialized = true;
+            if (typeof initSetBuilder === "function") initSetBuilder();
         }
     });
 });

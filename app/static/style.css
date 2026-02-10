@@ -1361,3 +1361,469 @@ tr.ws-seed-selected {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Set Workshop
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* -- Toolbar ------------------------------------------------------------ */
+.set-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.set-toolbar-left, .set-toolbar-right {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.set-duration-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 3px;
+    border: 1px solid var(--border);
+}
+.set-dur-btn {
+    padding: 5px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.set-dur-btn.active {
+    background: rgba(78,204,163,0.2);
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* -- Placeholder -------------------------------------------------------- */
+.set-placeholder {
+    text-align: center;
+    padding: 3rem 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+.set-placeholder h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--success), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.set-placeholder p { color: var(--text-muted); margin-bottom: 0.5rem; }
+
+/* -- Grid wrapper: horizontal scrolling --------------------------------- */
+.set-grid-wrapper { overflow: visible; }
+.set-grid-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 1rem;
+}
+.set-grid-scroll::-webkit-scrollbar { height: 8px; }
+.set-grid-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
+.set-grid-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* -- Row labels (left column) ------------------------------------------- */
+.set-row-label {
+    width: 44px;
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: right;
+    padding-right: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* -- Vibe area ---------------------------------------------------------- */
+.set-vibe-area {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+.set-vibe-rows {
+    flex: 1;
+    min-width: 0;
+}
+.set-vibe-row {
+    display: flex;
+    gap: 0;
+    position: relative;
+    height: 30px;
+    margin-bottom: 2px;
+}
+.set-vibe-cell {
+    position: absolute;
+    height: 28px;
+}
+.set-vibe-dropdown {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 6px;
+    font-size: 0.7rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.set-vibe-dropdown:focus {
+    border-color: var(--success);
+    outline: none;
+}
+.set-vibe-dropdown option {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* -- Key area ----------------------------------------------------------- */
+.set-key-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.set-key-row {
+    display: flex;
+    gap: 6px;
+}
+.set-key-cell {
+    width: 56px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    padding: 3px 0;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid transparent;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+}
+
+/* -- BPM area ----------------------------------------------------------- */
+.set-bpm-area {
+    display: flex;
+    position: relative;
+    margin-bottom: 4px;
+}
+.set-bpm-axis {
+    width: 44px;
+    position: relative;
+    flex-shrink: 0;
+    height: 550px;  /* 300 grid + 125 padding top + 125 padding bottom */
+}
+.set-bpm-label {
+    position: absolute;
+    right: 6px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    transform: translateY(50%);
+    font-variant-numeric: tabular-nums;
+}
+.set-bpm-label[data-bpm="140"] { top: 125px; }
+.set-bpm-label[data-bpm="120"] { top: 200px; }
+.set-bpm-label[data-bpm="100"] { top: 275px; }
+.set-bpm-label[data-bpm="80"]  { top: 350px; }
+.set-bpm-label[data-bpm="60"]  { top: 425px; }
+
+.set-bpm-grid {
+    flex: 1;
+    position: relative;
+    height: 550px;
+    overflow: visible;
+}
+
+/* BPM gridlines */
+.set-bpm-gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+}
+
+/* Energy wave SVG */
+.set-energy-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.set-energy-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    opacity: 0.6;
+}
+.set-energy-fill {
+    fill: var(--accent);
+    opacity: 0.06;
+}
+
+/* -- Track columns ------------------------------------------------------ */
+.set-columns {
+    display: flex;
+    gap: 6px;
+    position: relative;
+    z-index: 2;
+    height: 100%;
+}
+.set-column {
+    position: relative;
+    width: 56px;
+    flex-shrink: 0;
+    height: 100%;
+}
+.set-slot-stack {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    width: 56px;
+    cursor: ns-resize;
+}
+
+/* Individual track slot */
+.set-track-slot {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    opacity: 0.35;
+    transform: scale(0.90);
+    filter: brightness(0.65);
+    transition: all 0.25s ease;
+    border: 2px solid transparent;
+}
+.set-track-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: rgba(255,255,255,0.05);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+/* Text fallback shown behind the image */
+.set-track-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    color: var(--text-muted);
+    text-align: center;
+    overflow: hidden;
+    line-height: 1.1;
+    padding: 2px;
+    word-break: break-all;
+    background: rgba(255,255,255,0.04);
+}
+.set-track-slot.selected {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+    border-color: var(--success);
+    box-shadow: 0 0 10px rgba(78,204,163,0.4), 0 0 3px rgba(78,204,163,0.2);
+    z-index: 5;
+}
+.set-track-slot:not(.selected):hover {
+    opacity: 0.65;
+    transform: scale(0.95);
+    filter: brightness(0.85);
+}
+
+/* Empty track placeholder */
+.set-track-slot.empty {
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed var(--border);
+    opacity: 0.3;
+}
+
+/* -- Tooltip ------------------------------------------------------------ */
+.set-track-tooltip {
+    display: none;
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.65rem;
+    z-index: 300;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    font-size: 0.75rem;
+    color: var(--text);
+    max-width: 240px;
+    pointer-events: none;
+}
+.set-track-tooltip.visible { display: block; }
+.set-track-tooltip .tt-title { font-weight: 600; margin-bottom: 2px; }
+.set-track-tooltip .tt-artist { color: var(--text-muted); margin-bottom: 4px; }
+.set-track-tooltip .tt-meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+/* -- Preview row -------------------------------------------------------- */
+.set-preview-area {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+.set-preview-row {
+    display: flex;
+    gap: 6px;
+}
+.set-preview-cell {
+    width: 56px;
+    display: flex;
+    justify-content: center;
+}
+
+/* -- Time row ----------------------------------------------------------- */
+.set-time-area {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+.set-time-row {
+    display: flex;
+    gap: 6px;
+}
+.set-time-cell {
+    width: 56px;
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* -- Settings slide-out ------------------------------------------------- */
+.set-settings-panel {
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 320px;
+    height: 100vh;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+}
+.set-settings-panel.open {
+    right: 0;
+}
+.set-settings-inner {
+    padding: 1.25rem;
+}
+.set-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.set-settings-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.set-settings-panel label {
+    display: block;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.set-settings-panel select,
+.set-settings-panel input[type="number"] {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+.set-settings-panel select:focus,
+.set-settings-panel input:focus {
+    border-color: var(--success);
+    outline: none;
+}
+.set-bpm-range {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.set-bpm-range input { width: 80px; }
+.set-range-sep { color: var(--text-muted); }
+.set-settings-actions {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Energy wave preview (small SVG in settings) */
+.set-energy-preview {
+    height: 50px;
+    margin-top: 6px;
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.set-energy-preview svg { width: 100%; height: 100%; }
+.set-energy-preview-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    opacity: 0.7;
+}
+
+/* -- Play-all active highlight ------------------------------------------ */
+.set-column.play-all-active .set-track-slot.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(233,69,96,0.5);
+}
+
+/* -- Overlap indicator -------------------------------------------------- */
+.set-vibe-overlap {
+    background: rgba(233,69,96,0.08);
+    border-left: 2px solid rgba(233,69,96,0.25);
+    border-right: 2px solid rgba(233,69,96,0.25);
+}
