@@ -292,7 +292,7 @@ Return a JSON array:
 
 _LEAF_PROMPT = """Finalize these leaf-node playlists. For each, write a compelling description
 paragraph that a music enthusiast would love to read. Think record-store-clerk-who-knows-
-everything energy. Also select 3 representative example tracks from the provided track lists.
+everything energy. Also select 7 representative example tracks from the provided track lists.
 
 The titles should be evocative and specific, like:
 - "Golden Era NYC: Boom Bap to New Jack"
@@ -315,7 +315,7 @@ Return a JSON array:
 }}]"""
 
 
-_LINEAGE_EXAMPLES_PROMPT = """For each lineage below, choose 3 tracks that best exemplify
+_LINEAGE_EXAMPLES_PROMPT = """For each lineage below, choose 7 tracks that best exemplify
 and represent the entire lineage. Pick tracks that a knowledgeable listener would instantly
 recognise as quintessential to that musical family tree — iconic, genre-defining, or
 perfectly representative of the lineage's core identity.
@@ -531,7 +531,7 @@ def _llm_pick_lineage_examples(lineages_json, client, model, provider,
 
 def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
                                 progress, should_stop, profile=None):
-    """Pick 3 exemplar tracks for each lineage (algorithmic shortlist → LLM pick)."""
+    """Pick 7 exemplar tracks for each lineage (algorithmic shortlist → LLM pick)."""
     import time
 
     lineages_for_llm = []
@@ -561,7 +561,7 @@ def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
                 "comment": str(row.get("comment", ""))[:150],
             }
             candidates.append(track)
-            if len(fallback_examples) < 3:
+            if len(fallback_examples) < 7:
                 fallback_examples.append({
                     "title": track["title"],
                     "artist": track["artist"],
@@ -581,7 +581,7 @@ def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
     if not lineages_for_llm:
         return
 
-    # Stage 2: LLM picks 3 exemplars from each lineage's shortlist
+    # Stage 2: LLM picks 7 exemplars from each lineage's shortlist
     progress("lineage_examples", "Selecting exemplar tracks for lineages...", 96)
     try:
         results = _llm_pick_lineage_examples(
@@ -595,7 +595,7 @@ def _finalize_lineage_examples(lineages, df, client, model, provider, delay,
         for lineage in lineages:
             res = result_map.get(lineage["id"])
             if res and res.get("examples"):
-                lineage["examples"] = res["examples"][:3]
+                lineage["examples"] = res["examples"][:7]
             elif lineage["id"] in shortlists:
                 lineage["examples"] = shortlists[lineage["id"]]
     except Exception:
@@ -751,6 +751,17 @@ def build_collection_tree(df, client, model, provider, delay,
     if not should_stop():
         _finalize_lineage_examples(lineages, df, client, model, provider, delay,
                                     progress, should_stop, profile=profile)
+
+    # --- Phase 6c: Pick branch example tracks ---
+    if not should_stop():
+        branches = []
+        for lineage in lineages:
+            _collect_all_descendants(lineage, branches)
+        branches = [b for b in branches if not b.get("is_leaf") and b.get("children")]
+        if branches:
+            progress("branch_examples", "Selecting exemplar tracks for branches...", 97)
+            _finalize_lineage_examples(branches, df, client, model, provider, delay,
+                                        progress, should_stop, profile=profile)
 
     # --- Phase 7: Collect final ungrouped ---
     assigned_in_leaves = set()
@@ -908,6 +919,17 @@ def expand_tree_from_ungrouped(tree, df, client, model, provider, delay,
     if not should_stop():
         _finalize_lineage_examples(new_lineages, df, client, model, provider, delay,
                                     progress, should_stop, profile=profile)
+
+    # --- Phase 5c: Pick branch example tracks ---
+    if not should_stop():
+        branches = []
+        for lineage in new_lineages:
+            _collect_all_descendants(lineage, branches)
+        branches = [b for b in branches if not b.get("is_leaf") and b.get("children")]
+        if branches:
+            progress("branch_examples", "Selecting exemplar tracks for branches...", 90)
+            _finalize_lineage_examples(branches, df, client, model, provider, delay,
+                                        progress, should_stop, profile=profile)
 
     # --- Phase 6: Merge into existing tree ---
     progress("merging", "Merging new lineages into collection tree...", 92)
@@ -1085,7 +1107,7 @@ def _finalize_all_leaves(lineages, df, client, model, provider, delay,
                 if fin:
                     leaf["title"] = fin.get("title", leaf["title"])
                     leaf["description"] = fin.get("description", leaf["description"])
-                    leaf["examples"] = fin.get("examples", [])[:3]
+                    leaf["examples"] = fin.get("examples", [])[:7]
         except Exception:
             logger.exception("Failed to finalize leaf batch starting at %d", batch_start)
             # Leave existing descriptions in place
@@ -1110,6 +1132,13 @@ def _collect_leaf_track_ids(nodes, result_set):
             _collect_leaf_track_ids(node["children"], result_set)
 
 
+def _collect_all_descendants(node, result):
+    """Recursively collect all descendant nodes."""
+    for child in node.get("children", []):
+        result.append(child)
+        _collect_all_descendants(child, result)
+
+
 def _clean_nodes(nodes):
     """Remove internal fields before persisting."""
     cleaned = []
@@ -1132,6 +1161,121 @@ def _make_partial_tree(total_tracks, lineages, ungrouped, status):
         "lineages": _clean_nodes(lineages),
         "status": status,
     }
+
+
+# ---------------------------------------------------------------------------
+# Refresh exemplar tracks for all nodes in an existing tree
+# ---------------------------------------------------------------------------
+
+def refresh_all_examples(tree, df, client, model, provider, delay,
+                          progress_cb=None, stop_flag=None, tree_type="genre"):
+    """Re-run exemplar track selection for ALL nodes in the tree (7 per node)."""
+    import time
+    profile = TREE_PROFILES[tree_type]
+    parse_all_comments(df)
+
+    def progress(phase, detail, pct):
+        if progress_cb:
+            progress_cb(phase, detail, pct)
+
+    def should_stop():
+        return stop_flag and stop_flag.is_set()
+
+    # Collect ALL nodes in the tree
+    all_nodes = []
+    for lineage in tree.get("lineages", []):
+        all_nodes.append(lineage)
+        _collect_all_descendants(lineage, all_nodes)
+
+    total = len(all_nodes)
+    if total == 0:
+        progress("complete", "No nodes to process.", 100)
+        return tree
+
+    progress("refreshing_examples",
+             f"Refreshing exemplar tracks for {total} nodes...", 2)
+
+    batch_size = 5
+    for batch_start in range(0, total, batch_size):
+        if should_stop():
+            break
+
+        batch = all_nodes[batch_start:batch_start + batch_size]
+        pct = 2 + int((batch_start / total) * 93)
+        progress("refreshing_examples",
+                 f"Processing nodes {batch_start + 1}-"
+                 f"{min(batch_start + batch_size, total)} of {total}...",
+                 pct)
+
+        nodes_for_llm = []
+        shortlists = {}
+
+        for node in batch:
+            filters = node.get("filters", {})
+            track_ids = node.get("track_ids", [])
+            valid_ids = [tid for tid in track_ids if tid in df.index]
+            if not valid_ids:
+                continue
+
+            df_subset = df.loc[valid_ids]
+            results = scored_search(df_subset, filters,
+                                     min_score=0.01, max_results=50)
+
+            candidates = []
+            fallback = []
+            for idx, score, _ in results[:50]:
+                row = df.loc[idx]
+                track = {
+                    "title": str(row.get("title", "?")),
+                    "artist": str(row.get("artist", "?")),
+                    "year": int(row["year"]) if pd.notna(row.get("year")) else None,
+                    "comment": str(row.get("comment", ""))[:150],
+                }
+                candidates.append(track)
+                if len(fallback) < 7:
+                    fallback.append({
+                        "title": track["title"],
+                        "artist": track["artist"],
+                        "year": track["year"],
+                    })
+
+            shortlists[node["id"]] = fallback
+            if candidates:
+                nodes_for_llm.append({
+                    "id": node["id"],
+                    "title": node["title"],
+                    "description": node.get("description", ""),
+                    "candidates": candidates,
+                })
+
+        if not nodes_for_llm:
+            continue
+
+        try:
+            results = _llm_pick_lineage_examples(
+                json.dumps(nodes_for_llm, indent=2),
+                client, model, provider, profile=profile,
+            )
+            if delay > 0:
+                time.sleep(delay)
+
+            result_map = {r["id"]: r for r in results}
+            for node in batch:
+                res = result_map.get(node["id"])
+                if res and res.get("examples"):
+                    node["examples"] = res["examples"][:7]
+                elif node["id"] in shortlists:
+                    node["examples"] = shortlists[node["id"]]
+        except Exception:
+            logger.exception("Failed to refresh examples for batch at %d",
+                             batch_start)
+            for node in batch:
+                if node["id"] in shortlists:
+                    node["examples"] = shortlists[node["id"]]
+
+    save_tree(tree, file_path=profile["file"])
+    progress("complete", f"Exemplar tracks refreshed for {total} nodes!", 100)
+    return tree
 
 
 # ---------------------------------------------------------------------------

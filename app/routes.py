@@ -31,7 +31,7 @@ from app.playlist import (
 from app.tree import (
     build_collection_tree, expand_tree_from_ungrouped,
     load_tree, save_tree, delete_tree as delete_tree_file,
-    find_node, TREE_PROFILES,
+    find_node, refresh_all_examples, TREE_PROFILES,
 )
 
 api = Blueprint("api", __name__)
@@ -1102,6 +1102,62 @@ def tree_expand_ungrouped():
 
 
 # ---------------------------------------------------------------------------
+# POST /api/tree/refresh-examples
+# ---------------------------------------------------------------------------
+@api.route("/api/tree/refresh-examples", methods=["POST"])
+def tree_refresh_examples():
+    """Re-run exemplar track selection for all nodes (extends to 7 per node)."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    tree = _state.get("tree") or load_tree()
+    if not tree:
+        return jsonify({"error": "No tree built"}), 404
+
+    t = _state.get("tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Tree operation already in progress"}), 409
+
+    _state["tree_stop_flag"].clear()
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            updated = refresh_all_examples(
+                tree=tree, df=df, client=client, model=model,
+                provider=provider, delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["tree_stop_flag"],
+            )
+            _state["tree"] = updated
+            _tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Refresh examples failed")
+            _tree_broadcast({"event": "error", "phase": "error",
+                             "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True}), 202
+
+
+# ---------------------------------------------------------------------------
 # GET /api/tree/ungrouped
 # ---------------------------------------------------------------------------
 @api.route("/api/tree/ungrouped")
@@ -1443,6 +1499,63 @@ def scene_tree_expand_ungrouped():
     thread.start()
 
     return jsonify({"started": True, "ungrouped_count": len(ungrouped)}), 202
+
+
+# ---------------------------------------------------------------------------
+# POST /api/scene-tree/refresh-examples
+# ---------------------------------------------------------------------------
+@api.route("/api/scene-tree/refresh-examples", methods=["POST"])
+def scene_tree_refresh_examples():
+    """Re-run exemplar track selection for all scene tree nodes."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    tree = _state.get("scene_tree") or load_tree(file_path=_SCENE_PROFILE["file"])
+    if not tree:
+        return jsonify({"error": "No scene tree built"}), 404
+
+    t = _state.get("scene_tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Scene tree operation already in progress"}), 409
+
+    _state["scene_tree_stop_flag"].clear()
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    delay = config.get("delay_between_requests", 1.5)
+
+    def progress_callback(phase, detail, pct):
+        _scene_tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            updated = refresh_all_examples(
+                tree=tree, df=df, client=client, model=model,
+                provider=provider, delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["scene_tree_stop_flag"],
+                tree_type="scene",
+            )
+            _state["scene_tree"] = updated
+            _scene_tree_broadcast({"event": "done", "phase": "complete", "percent": 100})
+        except Exception as e:
+            logging.exception("Scene tree refresh examples failed")
+            _scene_tree_broadcast({"event": "error", "phase": "error",
+                                   "detail": str(e), "percent": 0})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["scene_tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True}), 202
 
 
 # ---------------------------------------------------------------------------

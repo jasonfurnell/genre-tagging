@@ -201,6 +201,8 @@ function updateBuildProgress(phase, detail, percent) {
         "tertiary_branches": "Building Tertiary Branches",
         "finalizing_leaves": "Finalizing Leaf Nodes",
         "lineage_examples": "Selecting Exemplar Tracks",
+        "branch_examples": "Selecting Branch Exemplars",
+        "refreshing_examples": "Refreshing Exemplar Tracks",
         "complete": "Complete!",
     };
     _t("#tree-progress-phase").textContent = phaseLabels[phase] || phase;
@@ -444,7 +446,7 @@ function renderNodeContent(node, bodyEl, depth) {
         }
         if (node.examples && node.examples.length > 0) {
             html += `<div class="tree-node-examples">
-                <div class="tree-examples-title">Example Tracks</div>`;
+                <div class="tree-examples-title">Exemplar Tracks</div>`;
             for (const ex of node.examples) {
                 html += `<div class="tree-example-track">
                     <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
@@ -482,13 +484,68 @@ function renderNodeContent(node, bodyEl, depth) {
             });
         }
     } else {
-        // Branch content: description + children
+        // Branch content: description + exemplars + actions + children
+        const isCreated = createdPlaylistNodeIds.has(node.id);
+        let branchHtml = '';
         if (node.description) {
-            const descEl = document.createElement("p");
-            descEl.className = "tree-node-description tree-branch-desc";
-            descEl.textContent = node.description;
-            bodyEl.appendChild(descEl);
+            branchHtml += `<p class="tree-node-description tree-branch-desc">${esc(node.description)}</p>`;
         }
+        if (node.examples && node.examples.length > 0) {
+            branchHtml += `<div class="tree-node-examples">
+                <div class="tree-examples-title">Exemplar Tracks</div>`;
+            for (const ex of node.examples) {
+                branchHtml += `<div class="tree-example-track">
+                    <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
+                    <span class="tree-track-title">${esc(ex.title)}</span>
+                    <span class="tree-track-artist">${esc(ex.artist)}</span>
+                    ${ex.year ? `<span class="tree-track-year">${ex.year}</span>` : ""}
+                </div>`;
+            }
+            branchHtml += `</div>`;
+        }
+        branchHtml += `<div class="tree-node-actions">
+            <button class="btn btn-sm btn-secondary tree-download-m3u-btn"
+                    data-node-id="${node.id}"
+                    title="Download all tracks as M3U8 playlist">
+                Download M3U8 (${node.track_count} tracks)
+            </button>
+            <button class="btn btn-sm btn-primary tree-create-pl-btn"
+                    data-node-id="${node.id}"
+                    ${isCreated ? "disabled" : ""}>
+                ${isCreated ? "Playlist Created" : "Create Playlist"}
+            </button>
+        </div>`;
+
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = branchHtml;
+        bodyEl.appendChild(wrapper);
+
+        // Wire preview buttons
+        wrapper.querySelectorAll(".btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            });
+        });
+
+        // Wire download button
+        const dlBtn = wrapper.querySelector(".tree-download-m3u-btn");
+        if (dlBtn) {
+            dlBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                window.location = apiUrl(`/node/${node.id}/export/m3u`);
+            });
+        }
+
+        // Wire create playlist button
+        const plBtn = wrapper.querySelector(".tree-create-pl-btn");
+        if (plBtn && !isCreated) {
+            plBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                createPlaylistFromLeaf(node.id, plBtn);
+            });
+        }
+
         const childContainer = document.createElement("div");
         childContainer.className = "tree-children";
         bodyEl.appendChild(childContainer);
