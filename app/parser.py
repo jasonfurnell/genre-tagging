@@ -172,6 +172,61 @@ def build_genre_cooccurrence(df, top_n=30):
 
 
 # ---------------------------------------------------------------------------
+# Chord diagram data (lineage cross-affinity matrix)
+# ---------------------------------------------------------------------------
+
+def build_chord_data(df, tree, threshold=0.08, max_lineages=12):
+    """Build a chord diagram matrix from tree lineages using scored_search.
+
+    For each lineage, scores all tracks against its filters. Then for each
+    pair (i, j), counts tracks that score >= threshold for BOTH lineages.
+
+    Returns {lineages: [...], matrix: [[int]], threshold, tree_type}.
+    """
+    if "_genre1" not in df.columns:
+        parse_all_comments(df)
+
+    lineages = tree.get("lineages", [])
+    if not lineages:
+        return {"lineages": [], "matrix": [], "threshold": threshold,
+                "tree_type": tree.get("tree_type", "genre")}
+
+    # Sort by track_count descending, take top N
+    sorted_lineages = sorted(lineages, key=lambda l: l.get("track_count", 0),
+                             reverse=True)[:max_lineages]
+
+    # Score all tracks against each lineage
+    n_tracks = len(df)
+    lineage_track_sets = []
+    for lin in sorted_lineages:
+        results = scored_search(df, lin.get("filters", {}),
+                                min_score=threshold, max_results=n_tracks)
+        lineage_track_sets.append({idx for idx, _score, _matched in results})
+
+    # Build NxN matrix
+    n = len(sorted_lineages)
+    matrix = [[0] * n for _ in range(n)]
+    for i in range(n):
+        matrix[i][i] = len(lineage_track_sets[i])
+        for j in range(i + 1, n):
+            shared = len(lineage_track_sets[i] & lineage_track_sets[j])
+            matrix[i][j] = shared
+            matrix[j][i] = shared
+
+    return {
+        "lineages": [
+            {"id": l["id"], "title": l["title"],
+             "track_count": l.get("track_count", 0),
+             "filters": l.get("filters", {})}
+            for l in sorted_lineages
+        ],
+        "matrix": matrix,
+        "threshold": threshold,
+        "tree_type": tree.get("tree_type", "genre"),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Genre landscape summary (for LLM context)
 # ---------------------------------------------------------------------------
 

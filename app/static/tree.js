@@ -320,7 +320,7 @@ function renderTreeGrid() {
         let examplesHtml = "";
         if (lineage.examples && lineage.examples.length > 0) {
             examplesHtml = `<div class="tree-node-examples tree-lineage-examples">
-                <div class="tree-examples-title">Exemplar Tracks</div>`;
+                <div class="tree-examples-title">Exemplar Tracks <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button></div>`;
             for (const ex of lineage.examples) {
                 examplesHtml += `<div class="tree-example-track">
                     <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
@@ -368,6 +368,12 @@ function renderTreeGrid() {
         card.querySelectorAll(".tree-lineage-examples .track-artwork").forEach(img => {
             loadArtwork(img.dataset.artist, img.dataset.title, img);
         });
+        // Wire play-all button
+        const lineageExamples = card.querySelector(".tree-lineage-examples");
+        if (lineageExamples) {
+            const playAllBtn = lineageExamples.querySelector(".tree-play-all-btn");
+            if (playAllBtn) playAllBtn.addEventListener("click", () => startPlayAll(lineageExamples));
+        }
 
         // Wire download button
         const dlBtn = card.querySelector(".tree-download-m3u-btn");
@@ -451,7 +457,7 @@ function renderNodeContent(node, bodyEl, depth) {
         }
         if (node.examples && node.examples.length > 0) {
             html += `<div class="tree-node-examples">
-                <div class="tree-examples-title">Exemplar Tracks</div>`;
+                <div class="tree-examples-title">Exemplar Tracks <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button></div>`;
             for (const ex of node.examples) {
                 html += `<div class="tree-example-track">
                     <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
@@ -484,6 +490,12 @@ function renderNodeContent(node, bodyEl, depth) {
         bodyEl.querySelectorAll(".track-artwork").forEach(img => {
             loadArtwork(img.dataset.artist, img.dataset.title, img);
         });
+        // Wire play-all button
+        const leafExamples = bodyEl.querySelector(".tree-node-examples");
+        if (leafExamples) {
+            const playAllBtn = leafExamples.querySelector(".tree-play-all-btn");
+            if (playAllBtn) playAllBtn.addEventListener("click", () => startPlayAll(leafExamples));
+        }
 
         // Wire up create button
         const createBtn = bodyEl.querySelector(".tree-create-pl-btn");
@@ -502,7 +514,7 @@ function renderNodeContent(node, bodyEl, depth) {
         }
         if (node.examples && node.examples.length > 0) {
             branchHtml += `<div class="tree-node-examples">
-                <div class="tree-examples-title">Exemplar Tracks</div>`;
+                <div class="tree-examples-title">Exemplar Tracks <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button></div>`;
             for (const ex of node.examples) {
                 branchHtml += `<div class="tree-example-track">
                     <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
@@ -542,6 +554,12 @@ function renderNodeContent(node, bodyEl, depth) {
         wrapper.querySelectorAll(".track-artwork").forEach(img => {
             loadArtwork(img.dataset.artist, img.dataset.title, img);
         });
+        // Wire play-all button
+        const branchExamples = wrapper.querySelector(".tree-node-examples");
+        if (branchExamples) {
+            const playAllBtn = branchExamples.querySelector(".tree-play-all-btn");
+            if (playAllBtn) playAllBtn.addEventListener("click", () => startPlayAll(branchExamples));
+        }
 
         // Wire download button
         const dlBtn = wrapper.querySelector(".tree-download-m3u-btn");

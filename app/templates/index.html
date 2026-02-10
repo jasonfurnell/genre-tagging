@@ -6,6 +6,7 @@
     <title>Genre Tagger</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </head>
 <body>
 
@@ -13,6 +14,7 @@
     <h1>Genre Tagger</h1>
     <nav id="tab-bar" class="tab-bar hidden">
         <button class="tab-btn active" data-tab="tagger">Tagger</button>
+        <button class="tab-btn" data-tab="intersections">Intersections</button>
         <button class="tab-btn" data-tab="workshop">Playlist Workshop</button>
         <button class="tab-btn" data-tab="tree">Collection Tree</button>
     </nav>
@@ -57,19 +59,47 @@
         <div id="track-grid" style="width:100%;"></div>
     </div>
 
-    <!-- ═══ Tab: Playlist Workshop ═══ -->
-    <div id="tab-workshop" class="tab-content hidden">
+    <!-- ═══ Tab: Intersections (Lineage DNA Chord Diagram) ═══ -->
+    <div id="tab-intersections" class="tab-content hidden">
+        <!-- Intersection Playlist Cards (appear after Generate Playlists) -->
+        <div id="ix-cards-grid" class="trees-grid hidden"></div>
 
-        <!-- Heatmap Section -->
+        <!-- Chord Diagram Section -->
         <section class="ws-section">
             <div class="ws-section-header">
-                <h2>Genre Intersections</h2>
-                <span id="ws-heatmap-status" class="ws-status-text"></span>
+                <h2>Lineage DNA</h2>
+                <span id="chord-status" class="ws-status-text"></span>
             </div>
-            <div id="ws-heatmap-container" class="ws-heatmap-container">
-                <p class="ws-placeholder">Loading genre analysis...</p>
+
+            <!-- Tree type toggle -->
+            <div class="chord-type-selector">
+                <button class="chord-type-btn active" data-tree-type="genre">Genre Tree</button>
+                <button class="chord-type-btn" data-tree-type="scene">Scene Tree</button>
+            </div>
+
+            <!-- Controls -->
+            <div class="chord-controls">
+                <div class="chord-control-group">
+                    <label for="chord-threshold">DNA Threshold:</label>
+                    <input type="range" id="chord-threshold" min="0.03" max="0.25" step="0.01" value="0.08">
+                    <span id="chord-threshold-val" class="chord-control-val">8%</span>
+                </div>
+                <div class="chord-control-group">
+                    <label for="chord-max-lineages">Max Lineages:</label>
+                    <input type="range" id="chord-max-lineages" min="4" max="20" step="1" value="12">
+                    <span id="chord-max-lineages-val" class="chord-control-val">12</span>
+                </div>
+            </div>
+
+            <!-- Chord SVG Container -->
+            <div id="chord-container" class="chord-container">
+                <p class="ws-placeholder">Loading lineage data...</p>
             </div>
         </section>
+    </div>
+
+    <!-- ═══ Tab: Playlist Workshop ═══ -->
+    <div id="tab-workshop" class="tab-content hidden">
 
         <!-- LLM Suggestions Section -->
         <section class="ws-section">

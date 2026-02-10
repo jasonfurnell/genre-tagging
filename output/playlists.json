@@ -1185,7 +1185,6 @@
     },
     "track_ids": [
       6065,
-      5840,
       4939,
       896,
       282,
@@ -1194,9 +1193,7 @@
       2906,
       6040,
       6281,
-      3143,
       1498,
-      913,
       1870,
       1494,
       1480,
@@ -1212,7 +1209,7 @@
     ],
     "source": "llm",
     "created_at": "2026-02-09T10:56:21.984516+00:00",
-    "updated_at": "2026-02-09T10:57:04.780464+00:00"
+    "updated_at": "2026-02-10T12:04:38.169278+00:00"
   },
   "8d09f9d1": {
     "id": "8d09f9d1",
@@ -1610,5 +1607,244 @@
     "source": "scene-tree",
     "created_at": "2026-02-10T10:51:43.693015+00:00",
     "updated_at": "2026-02-10T10:51:43.693027+00:00"
+  },
+  "05f79af9": {
+    "id": "05f79af9",
+    "name": "Modern Synth Wave Revival",
+    "description": "Contemporary takes on synth-pop and new wave aesthetics from the 2010s-2020s. Indie dance sensibilities meet retro-futurism with crisp modern production.",
+    "filters": {
+      "bpm_max": 130,
+      "bpm_min": 110,
+      "descriptors": [
+        "crisp percussion",
+        "hypnotic arpeggios",
+        "atmospheric pads",
+        "groovy bassline"
+      ],
+      "era": [
+        "late 2010s",
+        "early 2020s",
+        "2020",
+        "2020s"
+      ],
+      "genres": [
+        "Synth-pop",
+        "New Wave",
+        "Indie Dance",
+        "Nu-Disco"
+      ]
+    },
+    "track_ids": [
+      4325,
+      4110,
+      2999,
+      6142,
+      293,
+      4084,
+      3522,
+      446,
+      6123,
+      1860,
+      5667,
+      857,
+      721,
+      4215,
+      4313,
+      4327,
+      440,
+      6154,
+      5620,
+      6084,
+      4400,
+      2754,
+      2932,
+      2218,
+      4107
+    ],
+    "source": "llm",
+    "created_at": "2026-02-10T12:20:32.776473+00:00",
+    "updated_at": "2026-02-10T12:20:32.776495+00:00"
+  },
+  "ece99878": {
+    "id": "ece99878",
+    "name": "Progressive House Resurgence: The New European Melodic Movement",
+    "description": "Somewhere in the mid-2010s, progressive house shed its trance-adjacent reputation and got interesting again\u2014thanks largely to European producers who understood that 'progressive' meant actual progression, not just extended breakdowns. This collection documents that renaissance: Simple Symmetry's remixes layering hypnotic arpeggios over sophisticated basslines, Andhim's German duo bringing organic warmth to minimal grooves, Underworld proving the '90s originators still understand the form better than anyone. What unites these tracks is patience\u2014they build gradually, reward extended listening, and trust dancers to follow complex emotional arcs rather than just waiting for the drop. Gerd Janson's Balearic-tinged remix work shows the Mediterranean influence seeping back in, while tracks like 'Lucida Obscura' prove Y2K-era progressive still sounds futuristic. This is sophisticated club music for adults who remember when progressive meant something, filtered through modern production standards that make everything hit harder. Perfect for those sunrise sets where you've been dancing for hours and your brain is finally ready for something with narrative depth rather than just dopamine spikes.",
+    "filters": {
+      "genres": [
+        "Progressive House",
+        "Melodic Techno",
+        "Melodic House & Techno",
+        "Melodic Progressive",
+        "Deep House",
+        "House"
+      ],
+      "descriptors": [
+        "hypnotic arpeggios",
+        "ethereal pads",
+        "atmospheric pads",
+        "shimmering arpeggios",
+        "lush atmospheric pads",
+        "atmospheric layers"
+      ],
+      "mood": [
+        "moody late-night introspection meets retrofuturism",
+        "introspective after-hours journey through electronic soundscapes",
+        "sophisticated late-night lounges meet dancefloor elegance",
+        "sophisticated urban dance floor energy"
+      ]
+    },
+    "track_ids": [
+      2320,
+      5181,
+      726,
+      1260,
+      3146,
+      3967,
+      1113,
+      699,
+      736,
+      1304,
+      1153,
+      1883,
+      1835,
+      2588,
+      2603,
+      52,
+      4065,
+      3616,
+      1290,
+      3513,
+      1490,
+      4890,
+      3,
+      5391,
+      5486
+    ],
+    "source": "tree",
+    "created_at": "2026-02-10T12:30:30.159994+00:00",
+    "updated_at": "2026-02-10T12:30:30.160011+00:00"
+  },
+  "b2915598": {
+    "id": "b2915598",
+    "name": "Late Night B3 Sessions",
+    "description": "Sophisticated Hammond organ grooves for after-hours contemplation. Laid-back jazz fusion with soul-jazz warmth and lounge sophistication.",
+    "filters": {
+      "bpm_max": 115,
+      "bpm_min": 75,
+      "descriptors": [
+        "Hammond",
+        "laid-back groove",
+        "warm bassline",
+        "Rhodes textures",
+        "sophisticated"
+      ],
+      "genres": [
+        "Jazz Fusion",
+        "Jazz-Funk",
+        "Organ Jazz",
+        "Soul-Jazz",
+        "Neo-Soul"
+      ],
+      "mood": [
+        "sophisticated late-night lounge atmosphere",
+        "sophisticated lounge",
+        "sophisticated after-hours",
+        "contemplative"
+      ]
+    },
+    "track_ids": [
+      6302,
+      3491,
+      2548,
+      5773,
+      5746,
+      5762,
+      205,
+      1657,
+      2878,
+      619,
+      5766,
+      2453,
+      2663,
+      2546,
+      5771,
+      3114,
+      5064,
+      3014,
+      5749,
+      5755,
+      2117,
+      3102,
+      5548,
+      4159,
+      2580
+    ],
+    "source": "llm",
+    "created_at": "2026-02-10T12:42:21.845199+00:00",
+    "updated_at": "2026-02-10T12:42:21.845217+00:00"
+  },
+  "b9f8146c": {
+    "id": "b9f8146c",
+    "name": "Roots & Revival: 70s Soul Meets 2010s",
+    "description": "A time-traveling journey connecting 1970s Brazilian MPB warmth with 2010s Afrobeat revival aesthetics. Downtempo grooves with rich instrumental textures.",
+    "filters": {
+      "bpm_max": 115,
+      "bpm_min": 90,
+      "descriptors": [
+        "lush orchestral strings",
+        "lush string arrangements",
+        "punchy horns",
+        "punchy brass stabs",
+        "sultry vocals",
+        "warm bassline"
+      ],
+      "era": [
+        "mid-70s",
+        "late 70s",
+        "early 80s",
+        "late 2010s",
+        "early 2010s"
+      ],
+      "genres": [
+        "Afrobeat",
+        "Bossa Nova",
+        "MPB",
+        "Soul",
+        "Funk",
+        "Jazz-Funk",
+        "Afro House",
+        "Downtempo"
+      ]
+    },
+    "track_ids": [
+      3283,
+      5492,
+      3270,
+      226,
+      2088,
+      2174,
+      2047,
+      244,
+      5271,
+      217,
+      2491,
+      2828,
+      2025,
+      3284,
+      2103,
+      5106,
+      5548,
+      3265,
+      1632,
+      6237,
+      2314,
+      5044,
+      5482,
+      2942,
+      5298
+    ],
+    "source": "llm",
+    "created_at": "2026-02-10T12:59:18.452591+00:00",
+    "updated_at": "2026-02-10T12:59:18.452632+00:00"
   }
 }

@@ -22,6 +22,7 @@ let tracks = [];
 let eventSource = null;
 let gridApi = null;
 let genreCounts = {};
+let intersectionsInitialized = false;
 let workshopInitialized = false;
 let treeInitialized = false;
 
@@ -33,13 +34,18 @@ const previewAudio = new Audio();
 previewAudio.volume = 0.7;
 let currentPreviewTrackKey = null;
 
+// ── Play-All State ──────────────────────────────────────────
+const playAllState = { active: false, tracks: [], index: 0, containerEl: null, _internal: false };
+
 previewAudio.addEventListener("ended", () => {
     resetAllPreviewButtons();
     currentPreviewTrackKey = null;
+    if (playAllState.active) { playAllNext(); return; }
 });
 previewAudio.addEventListener("error", () => {
     resetAllPreviewButtons();
     currentPreviewTrackKey = null;
+    if (playAllState.active) { playAllNext(); return; }
 });
 
 function makePreviewKey(artist, title) {
@@ -47,6 +53,11 @@ function makePreviewKey(artist, title) {
 }
 
 async function togglePreview(artist, title, buttonEl) {
+    // Manual click during play-all → stop the sequence
+    if (playAllState.active && !playAllState._internal) {
+        stopPlayAll();
+    }
+
     const key = makePreviewKey(artist, title);
 
     // Same track playing → pause
@@ -70,6 +81,8 @@ async function togglePreview(artist, title, buttonEl) {
 
         if (!data.found || !data.preview_url) {
             setPreviewButtonState(buttonEl, "unavailable");
+            // Skip unavailable tracks during play-all
+            if (playAllState.active) { playAllNext(); }
             return;
         }
 
@@ -80,7 +93,89 @@ async function togglePreview(artist, title, buttonEl) {
     } catch (err) {
         console.error("Preview fetch failed:", err);
         setPreviewButtonState(buttonEl, "idle");
+        if (playAllState.active) { playAllNext(); }
     }
+}
+
+// ── Play-All Functions ──────────────────────────────────────
+function startPlayAll(examplesContainer) {
+    // If already playing from this container, stop
+    if (playAllState.active && playAllState.containerEl === examplesContainer) {
+        stopPlayAll();
+        return;
+    }
+    // Stop any existing play-all or preview
+    if (playAllState.active) stopPlayAll();
+    if (!previewAudio.paused) previewAudio.pause();
+    resetAllPreviewButtons();
+    currentPreviewTrackKey = null;
+
+    const trackEls = examplesContainer.querySelectorAll(".tree-example-track");
+    if (trackEls.length === 0) return;
+
+    const tracks = [];
+    trackEls.forEach(el => {
+        const btn = el.querySelector(".btn-preview");
+        if (btn) {
+            tracks.push({ artist: btn.dataset.artist, title: btn.dataset.title, trackEl: el, btnEl: btn });
+        }
+    });
+    if (tracks.length === 0) return;
+
+    playAllState.active = true;
+    playAllState.tracks = tracks;
+    playAllState.index = 0;
+    playAllState.containerEl = examplesContainer;
+
+    // Update button text
+    const playAllBtn = examplesContainer.querySelector(".tree-play-all-btn");
+    if (playAllBtn) {
+        playAllBtn.textContent = "Stop";
+        playAllBtn.classList.add("play-all-playing");
+    }
+
+    playAllPlayCurrent();
+}
+
+function stopPlayAll() {
+    if (!playAllState.active) return;
+    // Remove highlight from current track
+    if (playAllState.tracks[playAllState.index]) {
+        playAllState.tracks[playAllState.index].trackEl.classList.remove("play-all-active");
+    }
+    // Reset button text
+    const playAllBtn = playAllState.containerEl?.querySelector(".tree-play-all-btn");
+    if (playAllBtn) {
+        playAllBtn.textContent = "Play All";
+        playAllBtn.classList.remove("play-all-playing");
+    }
+    playAllState.active = false;
+    playAllState.tracks = [];
+    playAllState.index = 0;
+    playAllState.containerEl = null;
+}
+
+function playAllPlayCurrent() {
+    const track = playAllState.tracks[playAllState.index];
+    if (!track) { stopPlayAll(); return; }
+    track.trackEl.classList.add("play-all-active");
+    playAllState._internal = true;
+    togglePreview(track.artist, track.title, track.btnEl);
+    playAllState._internal = false;
+}
+
+function playAllNext() {
+    if (!playAllState.active) return;
+    // Un-highlight current
+    const current = playAllState.tracks[playAllState.index];
+    if (current) current.trackEl.classList.remove("play-all-active");
+
+    playAllState.index++;
+    if (playAllState.index >= playAllState.tracks.length) {
+        stopPlayAll();
+        return;
+    }
+    playAllPlayCurrent();
 }
 
 function setPreviewButtonState(btn, state) {
@@ -546,6 +641,10 @@ $$(".tab-btn").forEach(btn => {
         $$(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
         $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
 
+        if (target === "intersections" && !intersectionsInitialized) {
+            intersectionsInitialized = true;
+            if (typeof initIntersections === "function") initIntersections();
+        }
         if (target === "workshop" && !workshopInitialized) {
             workshopInitialized = true;
             if (typeof initWorkshop === "function") initWorkshop();

@@ -297,69 +297,101 @@ header h1 {
 .ws-loading { font-style: italic; }
 .ws-error { color: var(--accent); }
 
-/* ── Heatmap ────────────────────────────────────────────── */
-.ws-heatmap-container {
-    overflow: visible;
+/* ── Chord Diagram ─────────────────────────────────────── */
+.chord-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
 }
-.ws-heatmap-scroll {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
+.chord-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    justify-content: center;
 }
-.heatmap-table {
-    border-collapse: collapse;
-    font-size: 0.65rem;
-    margin: 0 auto;
+.chord-control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
-.heatmap-table th,
-.heatmap-table td {
-    border: 1px solid rgba(42, 42, 74, 0.5);
+.chord-control-group label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
 }
-.heatmap-cell {
-    width: 30px;
-    min-width: 30px;
-    height: 28px;
-    text-align: center;
-    vertical-align: middle;
+.chord-control-group input[type="range"] {
+    width: 120px;
+    accent-color: var(--success);
+}
+.chord-control-val {
+    font-size: 0.75rem;
     color: var(--text);
-    font-variant-numeric: tabular-nums;
-    font-size: 0.6rem;
-    padding: 0;
-}
-.heatmap-clickable {
-    cursor: pointer;
-}
-.heatmap-clickable:hover {
-    outline: 2px solid var(--accent);
-    outline-offset: -2px;
-}
-.heatmap-diag {
-    font-weight: 600;
-    font-size: 0.65rem;
-}
-.heatmap-col-header {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    height: 90px;
-    max-width: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight: normal;
-    color: var(--text-muted);
-    font-size: 0.65rem;
-    padding: 4px 2px;
-    text-align: left;
-}
-.heatmap-row-header {
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight: normal;
-    color: var(--text-muted);
-    font-size: 0.65rem;
+    min-width: 30px;
     text-align: right;
-    padding: 2px 6px;
+    font-variant-numeric: tabular-nums;
+}
+/* Chord type toggle */
+.chord-type-selector {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 1rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 4px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--border);
+}
+.chord-type-btn {
+    flex: 1;
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+.chord-type-btn:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+}
+.chord-type-btn.active {
+    background: rgba(78,204,163,0.2);
+    color: var(--success);
+    font-weight: 600;
+}
+/* SVG elements */
+.chord-label {
+    fill: var(--text-muted);
+    font-size: 0.7rem;
+    font-family: inherit;
+}
+.chord-arc { cursor: pointer; }
+.chord-ribbon { cursor: pointer; }
+/* Tooltip */
+.chord-tooltip {
+    display: none;
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.65rem;
+    z-index: 300;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    font-size: 0.8rem;
+    color: var(--text);
+    max-width: 300px;
+    pointer-events: none;
 }
 
 /* ── Vibe Input ────────────────────────────────────────── */
@@ -447,8 +479,8 @@ header h1 {
     gap: 0.4rem;
 }
 
-/* ── Heatmap Popover ────────────────────────────────────── */
-.ws-heatmap-popover {
+/* ── Chord Popover ──────────────────────────────────────── */
+.chord-popover {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -458,12 +490,17 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    position: absolute;
 }
-.ws-heatmap-popover p {
+.chord-popover p {
     font-size: 0.8rem;
     margin: 0;
 }
-.ws-heatmap-popover .btn {
+.chord-popover-count {
+    font-size: 0.75rem;
+    color: var(--success);
+}
+.chord-popover .btn {
     width: 100%;
 }
 
@@ -1110,6 +1147,20 @@ tr.ws-seed-selected {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.tree-play-all-btn {
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.tree-play-all-btn.play-all-playing {
+    background: var(--success);
+    border-color: var(--success);
+    color: var(--bg);
 }
 .tree-example-track {
     background: rgba(255, 255, 255, 0.03);
@@ -1120,6 +1171,11 @@ tr.ws-seed-selected {
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: background 0.2s, border-color 0.2s;
+}
+.tree-example-track.play-all-active {
+    background: rgba(78, 204, 163, 0.12);
+    border-left-color: var(--success);
 }
 .tree-track-title {
     font-weight: 500;

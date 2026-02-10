@@ -13,6 +13,12 @@ let wsSort = { table: null, col: null, asc: true };
 // Track whether search results are in scored mode (for sort re-render)
 let wsScoredMode = false;
 
+// Chord diagram state
+let chordTreeType = "genre";
+let chordData = null;
+let chordThreshold = 0.08;
+let chordMaxLineages = 12;
+
 // ── Helpers ──────────────────────────────────────────────────
 
 function escapeHtml(str) {
@@ -78,131 +84,512 @@ function handleSearchSort(col) {
     }
 }
 
+// ── Cross-tab navigation helper ─────────────────────────────
+
+function switchToTab(tabName) {
+    const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+    if (btn) btn.click();
+}
+
 // ── Init ─────────────────────────────────────────────────────
+
+async function initIntersections() {
+    loadAnalysis();   // still needed for facet_options
+    initChordControls();
+    loadChordData();
+}
 
 async function initWorkshop() {
     renderFilterBar([]);
-    loadAnalysis();
     loadPlaylists();
 }
 
-// ── Analysis & Heatmap ──────────────────────────────────────
+// ── Analysis (facet data for Workshop filters) ───────────────
 
 async function loadAnalysis() {
-    const status = $("#ws-heatmap-status");
-    status.textContent = "Analyzing...";
     try {
         const res = await fetch("/api/workshop/analysis");
         if (!res.ok) throw new Error("Analysis failed");
         wsAnalysis = await res.json();
-        renderHeatmap(wsAnalysis.cooccurrence);
         renderFilterBar(wsAnalysis.facet_options);
-        status.textContent = "";
     } catch (err) {
-        status.textContent = "Error loading analysis";
         console.error(err);
     }
 }
 
-function renderHeatmap(co) {
-    const container = $("#ws-heatmap-container");
-    const { genres, matrix } = co;
-    if (!genres || genres.length === 0) {
-        container.innerHTML = '<p class="ws-placeholder">No genre data found.</p>';
+// ── Chord Diagram ────────────────────────────────────────────
+
+const CHORD_COLORS = [
+    "#4ecca3", "#e94560", "#6c5ce7", "#fdcb6e", "#00b894",
+    "#e17055", "#0984e3", "#fab1a0", "#74b9ff", "#a29bfe",
+    "#55efc4", "#fd79a8", "#00cec9", "#ffeaa7", "#dfe6e9",
+    "#b2bec3", "#636e72", "#81ecec", "#ff7675", "#fd79a8",
+];
+
+function initChordControls() {
+    // Tree type toggle
+    document.querySelectorAll(".chord-type-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".chord-type-btn").forEach(b =>
+                b.classList.toggle("active", b === btn));
+            chordTreeType = btn.dataset.treeType;
+            loadChordData();
+        });
+    });
+
+    // Threshold slider
+    const thresholdSlider = document.getElementById("chord-threshold");
+    const thresholdLabel = document.getElementById("chord-threshold-val");
+    if (thresholdSlider) {
+        thresholdSlider.addEventListener("input", () => {
+            chordThreshold = parseFloat(thresholdSlider.value);
+            thresholdLabel.textContent = Math.round(chordThreshold * 100) + "%";
+        });
+        thresholdSlider.addEventListener("change", () => loadChordData());
+    }
+
+    // Max lineages slider
+    const lineagesSlider = document.getElementById("chord-max-lineages");
+    const lineagesLabel = document.getElementById("chord-max-lineages-val");
+    if (lineagesSlider) {
+        lineagesSlider.addEventListener("input", () => {
+            chordMaxLineages = parseInt(lineagesSlider.value);
+            lineagesLabel.textContent = chordMaxLineages;
+        });
+        lineagesSlider.addEventListener("change", () => loadChordData());
+    }
+}
+
+async function loadChordData() {
+    const container = document.getElementById("chord-container");
+    const status = document.getElementById("chord-status");
+    if (status) status.textContent = "Loading lineage data...";
+    container.innerHTML = "";
+
+    try {
+        const params = new URLSearchParams({
+            tree_type: chordTreeType,
+            threshold: chordThreshold,
+            max_lineages: chordMaxLineages,
+        });
+        const res = await fetch(`/api/workshop/chord-data?${params}`);
+        if (!res.ok) {
+            const err = await res.json();
+            if (res.status === 404) {
+                container.innerHTML = `<p class="ws-placeholder">${escapeHtml(err.error || "No tree built yet.")}</p>`;
+                if (status) status.textContent = "";
+                return;
+            }
+            throw new Error(err.error || "Failed to load chord data");
+        }
+        chordData = await res.json();
+        if (status) status.textContent = "";
+        renderChordDiagram(chordData);
+    } catch (err) {
+        if (status) status.textContent = "Error: " + err.message;
+        console.error(err);
+    }
+}
+
+function renderChordDiagram(data) {
+    const container = document.getElementById("chord-container");
+    container.innerHTML = "";
+
+    const { lineages, matrix } = data;
+    if (!lineages || lineages.length === 0 || !matrix) {
+        container.innerHTML = '<p class="ws-placeholder">No lineage data available.</p>';
         return;
     }
 
-    // Find max off-diagonal value for color scaling
-    let maxVal = 1;
-    for (let i = 0; i < genres.length; i++) {
-        for (let j = 0; j < genres.length; j++) {
-            if (i !== j && matrix[i][j] > maxVal) maxVal = matrix[i][j];
+    // Check if any chords exist (off-diagonal > 0)
+    let hasChords = false;
+    for (let i = 0; i < matrix.length && !hasChords; i++)
+        for (let j = 0; j < matrix.length && !hasChords; j++)
+            if (i !== j && matrix[i][j] > 0) hasChords = true;
+
+    if (!hasChords) {
+        container.innerHTML = '<p class="ws-placeholder">No cross-lineage connections found at this threshold. Try lowering the DNA Threshold slider.</p>';
+        return;
+    }
+
+    const width = Math.min(container.clientWidth || 800, 850);
+    const height = width;
+    const outerRadius = width / 2 - 100;
+    const innerRadius = outerRadius - 20;
+
+    const svg = d3.select(container)
+        .append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("width", "100%")
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    const chord = d3.chord()
+        .padAngle(0.04)
+        .sortSubgroups(d3.descending);
+
+    const chords = chord(matrix);
+
+    const arc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
+
+    const ribbon = d3.ribbon()
+        .radius(innerRadius);
+
+    // Ensure tooltip exists
+    let tooltip = document.getElementById("chord-tooltip");
+    if (!tooltip) {
+        tooltip = document.createElement("div");
+        tooltip.id = "chord-tooltip";
+        tooltip.className = "chord-tooltip";
+        document.body.appendChild(tooltip);
+    }
+
+    // ── Selection state ──────────────────────────────────────
+    let selectedIndex = null;  // index of selected lineage, or null
+
+    function isRibbonConnected(r, idx) {
+        return r.source.index === idx || r.target.index === idx;
+    }
+
+    function applySelectionVisuals() {
+        if (selectedIndex !== null) {
+            // Highlight connected ribbons, dim everything else
+            ribbons
+                .style("fill-opacity", r =>
+                    isRibbonConnected(r, selectedIndex) ? 0.75 : 0.04)
+                .style("pointer-events", r =>
+                    isRibbonConnected(r, selectedIndex) ? "auto" : "none");
+            arcPaths
+                .style("stroke", (d) =>
+                    d.index === selectedIndex ? "#fff" : "#1a1a2e")
+                .style("stroke-width", (d) =>
+                    d.index === selectedIndex ? 2.5 : 1.5);
+            labels.style("fill-opacity", d =>
+                d.index === selectedIndex ? 1 : 0.3);
+        } else {
+            // Reset everything
+            ribbons
+                .style("fill-opacity", 0.45)
+                .style("pointer-events", "auto");
+            arcPaths
+                .style("stroke", "#1a1a2e")
+                .style("stroke-width", 1.5);
+            labels.style("fill-opacity", 1);
         }
     }
 
-    let html = '<div class="ws-heatmap-scroll"><table class="heatmap-table"><thead><tr><th></th>';
-    genres.forEach(g => {
-        html += `<th class="heatmap-col-header" title="${escapeHtml(g)}">${escapeHtml(abbreviate(g, 12))}</th>`;
-    });
-    html += "</tr></thead><tbody>";
+    // ── Draw ribbons (chords) ────────────────────────────────
+    const ribbons = svg.append("g")
+        .selectAll("path")
+        .data(chords)
+        .join("path")
+        .attr("d", ribbon)
+        .attr("class", "chord-ribbon")
+        .style("fill", d => CHORD_COLORS[d.source.index % CHORD_COLORS.length])
+        .style("fill-opacity", 0.45)
+        .style("stroke", "none")
+        .on("mouseover", function (event, d) {
+            if (selectedIndex !== null && !isRibbonConnected(d, selectedIndex)) return;
+            d3.select(this).style("fill-opacity", 0.9);
+            const l1 = lineages[d.source.index];
+            const l2 = lineages[d.target.index];
+            const shared = matrix[d.source.index][d.target.index];
+            tooltip.innerHTML = `<strong>${escapeHtml(l1.title)}</strong><br>+&nbsp;<strong>${escapeHtml(l2.title)}</strong><br>${shared} shared tracks`;
+            tooltip.style.display = "block";
+            tooltip.style.left = (event.pageX + 14) + "px";
+            tooltip.style.top = (event.pageY - 12) + "px";
+        })
+        .on("mousemove", function (event) {
+            tooltip.style.left = (event.pageX + 14) + "px";
+            tooltip.style.top = (event.pageY - 12) + "px";
+        })
+        .on("mouseout", function (event, d) {
+            // Restore to selection-appropriate opacity
+            const base = selectedIndex !== null
+                ? (isRibbonConnected(d, selectedIndex) ? 0.75 : 0.04)
+                : 0.45;
+            d3.select(this).style("fill-opacity", base);
+            tooltip.style.display = "none";
+        })
+        .on("click", function (event, d) {
+            if (selectedIndex !== null && !isRibbonConnected(d, selectedIndex)) return;
+            tooltip.style.display = "none";
+            const l1 = lineages[d.source.index];
+            const l2 = lineages[d.target.index];
+            showChordPopover(event, l1, l2, matrix[d.source.index][d.target.index]);
+        });
 
-    genres.forEach((rowGenre, i) => {
-        html += `<tr><th class="heatmap-row-header" title="${escapeHtml(rowGenre)}">${escapeHtml(abbreviate(rowGenre, 14))}</th>`;
-        genres.forEach((colGenre, j) => {
-            const val = matrix[i][j];
-            let bg, cls;
-            if (i === j) {
-                // Diagonal: total count — use a different color
-                const intensity = Math.min(val / 600, 1);
-                bg = `rgba(78, 204, 163, ${0.08 + intensity * 0.5})`;
-                cls = "heatmap-cell heatmap-diag";
-            } else if (val === 0) {
-                bg = "transparent";
-                cls = "heatmap-cell";
+    // ── Draw arcs (groups) ───────────────────────────────────
+    const groups = svg.append("g")
+        .selectAll("g")
+        .data(chords.groups)
+        .join("g");
+
+    const arcPaths = groups.append("path")
+        .attr("d", arc)
+        .attr("class", "chord-arc")
+        .style("fill", d => CHORD_COLORS[d.index % CHORD_COLORS.length])
+        .style("stroke", "#1a1a2e")
+        .style("stroke-width", 1.5)
+        .on("mouseover", function (event, d) {
+            if (selectedIndex !== null) {
+                // Only show tooltip, don't change ribbon fade
+                const lin = lineages[d.index];
+                tooltip.innerHTML = `<strong>${escapeHtml(lin.title)}</strong><br>${lin.track_count} tracks in tree`;
+                tooltip.style.display = "block";
+                tooltip.style.left = (event.pageX + 14) + "px";
+                tooltip.style.top = (event.pageY - 12) + "px";
+                return;
+            }
+            ribbons.style("fill-opacity", r =>
+                isRibbonConnected(r, d.index) ? 0.85 : 0.06
+            );
+            const lin = lineages[d.index];
+            tooltip.innerHTML = `<strong>${escapeHtml(lin.title)}</strong><br>${lin.track_count} tracks in tree`;
+            tooltip.style.display = "block";
+            tooltip.style.left = (event.pageX + 14) + "px";
+            tooltip.style.top = (event.pageY - 12) + "px";
+        })
+        .on("mousemove", function (event) {
+            tooltip.style.left = (event.pageX + 14) + "px";
+            tooltip.style.top = (event.pageY - 12) + "px";
+        })
+        .on("mouseout", function () {
+            tooltip.style.display = "none";
+            if (selectedIndex !== null) return;  // keep selection visuals
+            ribbons.style("fill-opacity", 0.45);
+        })
+        .on("click", function (event, d) {
+            // Toggle selection
+            if (selectedIndex === d.index) {
+                selectedIndex = null;
             } else {
-                const intensity = val / maxVal;
-                bg = `rgba(233, 69, 96, ${0.1 + intensity * 0.75})`;
-                cls = "heatmap-cell heatmap-clickable";
+                selectedIndex = d.index;
             }
-            const tooltip = i === j
-                ? `${rowGenre}: ${val} total tracks`
-                : `${rowGenre} + ${colGenre}: ${val} tracks`;
-            html += `<td class="${cls}" style="background:${bg}" title="${escapeHtml(tooltip)}"`;
-            if (i !== j && val > 0) {
-                html += ` data-g1="${escapeHtml(rowGenre)}" data-g2="${escapeHtml(colGenre)}"`;
+            applySelectionVisuals();
+        });
+
+    // ── Draw labels around the perimeter ─────────────────────
+    const labels = groups.append("text")
+        .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
+        .attr("dy", ".35em")
+        .attr("transform", d => `
+            rotate(${(d.angle * 180 / Math.PI - 90)})
+            translate(${outerRadius + 10})
+            ${d.angle > Math.PI ? "rotate(180)" : ""}
+        `)
+        .attr("text-anchor", d => d.angle > Math.PI ? "end" : "start")
+        .attr("class", "chord-label")
+        .text(d => abbreviate(lineages[d.index].title, 30));
+}
+
+// ── Chord Popover & Actions ──────────────────────────────────
+
+function showChordPopover(event, lineage1, lineage2, sharedCount) {
+    const existing = document.querySelector(".chord-popover");
+    if (existing) existing.remove();
+
+    const popover = document.createElement("div");
+    popover.className = "chord-popover";
+    popover.innerHTML = `
+        <p><strong>${escapeHtml(lineage1.title)}</strong><br>+ <strong>${escapeHtml(lineage2.title)}</strong></p>
+        <p class="chord-popover-count">${sharedCount} shared tracks</p>
+        <button class="btn btn-primary btn-sm" data-pop-action="browse">Browse Shared Tracks</button>
+        <button class="btn btn-secondary btn-sm" data-pop-action="generate">Generate Playlists</button>
+    `;
+    popover.style.left = (event.pageX + 10) + "px";
+    popover.style.top = (event.pageY - 10) + "px";
+    document.body.appendChild(popover);
+
+    popover.querySelector("[data-pop-action=browse]").addEventListener("click", () => {
+        popover.remove();
+        switchToTab("workshop");
+        // Merge filters from both lineages for a broad scored search
+        const merged = mergeLineageFilters(lineage1.filters, lineage2.filters);
+        applyFilters(merged);
+    });
+
+    popover.querySelector("[data-pop-action=generate]").addEventListener("click", () => {
+        popover.remove();
+        generateChordIntersectionCards(lineage1, lineage2);
+    });
+
+    const closeHandler = (ev) => {
+        if (!popover.contains(ev.target)) {
+            popover.remove();
+            document.removeEventListener("click", closeHandler);
+        }
+    };
+    setTimeout(() => document.addEventListener("click", closeHandler), 0);
+}
+
+function mergeLineageFilters(f1, f2) {
+    const merged = {};
+    for (const key of ["genres", "mood", "descriptors", "location", "era"]) {
+        const a = f1[key] || [];
+        const b = f2[key] || [];
+        const combined = [...new Set([...a, ...b])];
+        if (combined.length) merged[key] = combined;
+    }
+    return merged;
+}
+
+async function generateChordIntersectionCards(lineage1, lineage2) {
+    const grid = document.getElementById("ix-cards-grid");
+    grid.classList.remove("hidden");
+    grid.innerHTML = '<p class="ws-placeholder ws-loading">Exploring ' +
+        escapeHtml(lineage1.title) + ' + ' + escapeHtml(lineage2.title) +
+        '... (this may take a moment)</p>';
+    grid.scrollIntoView({ behavior: "smooth" });
+
+    try {
+        const res = await fetch("/api/workshop/suggest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                mode: "chord-intersection",
+                lineage1_title: lineage1.title,
+                lineage2_title: lineage2.title,
+                lineage1_filters: lineage1.filters,
+                lineage2_filters: lineage2.filters,
+                num_suggestions: 3,
+            }),
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Suggestion failed");
+        }
+        const data = await res.json();
+        renderIntersectionCards(data.suggestions || [], lineage1.title, lineage2.title);
+    } catch (err) {
+        grid.innerHTML = '<p class="ws-placeholder ws-error">Error: ' + escapeHtml(err.message) + '</p>';
+    }
+}
+
+// ── Intersection Playlist Cards (tree-style) ────────────────
+
+async function generateIntersectionCards(genre1, genre2) {
+    const grid = document.getElementById("ix-cards-grid");
+    grid.classList.remove("hidden");
+    grid.innerHTML = '<p class="ws-placeholder ws-loading">Exploring ' + escapeHtml(genre1) + ' + ' + escapeHtml(genre2) + '... (this may take a moment)</p>';
+    grid.scrollIntoView({ behavior: "smooth" });
+
+    try {
+        const res = await fetch("/api/workshop/suggest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                mode: "intersection",
+                genre1,
+                genre2,
+                num_suggestions: 3,
+            }),
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Suggestion failed");
+        }
+        const data = await res.json();
+        renderIntersectionCards(data.suggestions || [], genre1, genre2);
+    } catch (err) {
+        grid.innerHTML = '<p class="ws-placeholder ws-error">Error: ' + escapeHtml(err.message) + '</p>';
+    }
+}
+
+function renderIntersectionCards(suggestions, genre1, genre2) {
+    const grid = document.getElementById("ix-cards-grid");
+    if (!suggestions || suggestions.length === 0) {
+        grid.innerHTML = '<p class="ws-placeholder">No playlists generated.</p>';
+        return;
+    }
+
+    grid.innerHTML = "";
+
+    for (const s of suggestions) {
+        const card = document.createElement("div");
+        card.className = "tree-container";
+
+        let examplesHtml = "";
+        if (s.sample_tracks && s.sample_tracks.length > 0) {
+            examplesHtml = '<div class="tree-node-examples tree-lineage-examples">'
+                + '<div class="tree-examples-title">Exemplar Tracks <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button></div>';
+            for (const t of s.sample_tracks) {
+                const yr = t.year && t.year !== "0" ? `<span class="tree-track-year">${Math.round(parseFloat(t.year))}</span>` : "";
+                examplesHtml += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt="">
+                    <button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button>
+                    <span class="tree-track-title">${escapeHtml(t.title)}</span>
+                    <span class="tree-track-artist">${escapeHtml(t.artist)}</span>
+                    ${yr}
+                </div>`;
             }
-            html += `>${val || ""}</td>`;
-        });
-        html += "</tr>";
-    });
-    html += "</tbody></table></div>";
+            examplesHtml += "</div>";
+        }
 
-    container.innerHTML = html;
+        card.innerHTML = `
+            <div class="tree-card-header">
+                <h3 class="tree-title">${escapeHtml(s.name)}</h3>
+                <p class="tree-subtitle">~${s.track_count || 0} matching tracks</p>
+            </div>
+            <div class="tree-card-desc">${escapeHtml(s.description)}</div>
+            ${examplesHtml}
+            <div class="tree-lineage-actions">
+                <button class="btn btn-sm btn-secondary ix-search-btn">Search Tracks</button>
+                <button class="btn btn-sm btn-primary ix-create-pl-btn">Create Playlist</button>
+            </div>
+        `;
+        grid.appendChild(card);
 
-    // Click handler for heatmap cells — show action popover
-    container.querySelectorAll(".heatmap-clickable").forEach(cell => {
-        cell.addEventListener("click", (e) => {
-            const g1 = cell.dataset.g1;
-            const g2 = cell.dataset.g2;
-            if (!g1 || !g2) return;
-
-            // Remove any existing popover
-            const existing = document.querySelector(".ws-heatmap-popover");
-            if (existing) existing.remove();
-
-            const popover = document.createElement("div");
-            popover.className = "ws-heatmap-popover";
-            popover.innerHTML = `
-                <p><strong>${escapeHtml(g1)} + ${escapeHtml(g2)}</strong></p>
-                <button class="btn btn-primary btn-sm" data-pop-action="search">Search</button>
-                <button class="btn btn-secondary btn-sm" data-pop-action="generate">Generate Playlists</button>
-            `;
-            popover.style.position = "absolute";
-            popover.style.left = (e.pageX + 10) + "px";
-            popover.style.top = (e.pageY - 10) + "px";
-            document.body.appendChild(popover);
-
-            popover.querySelector("[data-pop-action=search]").addEventListener("click", () => {
-                popover.remove();
-                applyFilters({ genres: [g1, g2] });
+        // Wire preview buttons
+        card.querySelectorAll(".btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
             });
-            popover.querySelector("[data-pop-action=generate]").addEventListener("click", () => {
-                popover.remove();
-                generateSuggestions("intersection", { genre1: g1, genre2: g2 });
-                // Scroll to suggestions
-                document.getElementById("ws-suggestions-list").scrollIntoView({ behavior: "smooth" });
-            });
-
-            // Close on outside click
-            const closeHandler = (ev) => {
-                if (!popover.contains(ev.target) && ev.target !== cell) {
-                    popover.remove();
-                    document.removeEventListener("click", closeHandler);
-                }
-            };
-            setTimeout(() => document.addEventListener("click", closeHandler), 0);
         });
-    });
+        // Load artwork
+        card.querySelectorAll(".track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
+        });
+        // Wire play-all
+        const examplesEl = card.querySelector(".tree-lineage-examples");
+        if (examplesEl) {
+            const playAllBtn = examplesEl.querySelector(".tree-play-all-btn");
+            if (playAllBtn) playAllBtn.addEventListener("click", () => startPlayAll(examplesEl));
+        }
+
+        // Wire search button → go to workshop with filters
+        card.querySelector(".ix-search-btn").addEventListener("click", () => {
+            switchToTab("workshop");
+            applyFilters(s.filters || { genres: [genre1, genre2] });
+        });
+
+        // Wire create playlist button
+        const plBtn = card.querySelector(".ix-create-pl-btn");
+        plBtn.addEventListener("click", async () => {
+            plBtn.disabled = true;
+            plBtn.textContent = "Creating...";
+            try {
+                await fetch("/api/workshop/playlists/smart-create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: s.name,
+                        description: s.description,
+                        filters: s.filters,
+                        target_count: 25,
+                    }),
+                });
+                plBtn.textContent = "Playlist Created";
+            } catch (err) {
+                plBtn.textContent = "Failed";
+                plBtn.disabled = false;
+            }
+        });
+    }
 }
 
 // ── LLM Suggestions ─────────────────────────────────────────

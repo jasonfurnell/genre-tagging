@@ -20,6 +20,7 @@ from app.parser import (
     parse_all_comments, invalidate_parsed_columns,
     build_genre_cooccurrence, build_genre_landscape_summary,
     build_facet_options, faceted_search, scored_search,
+    build_chord_data,
 )
 from app.playlist import (
     create_playlist, get_playlist, list_playlists, update_playlist,
@@ -58,6 +59,7 @@ _state = {
     "scene_tree_progress_listeners": [],
     "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
     "_artwork_cache": {},          # "artist||title" -> {cover_url, found}
+    "_chord_cache": None,          # cached chord diagram data
 }
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
@@ -188,6 +190,7 @@ def upload():
     _state["df"] = df
     _state["original_filename"] = file.filename
     _state["_analysis_cache"] = None
+    _state["_chord_cache"] = None
     _state["_preview_cache"] = {}
     _state["_artwork_cache"] = {}
 
@@ -228,6 +231,7 @@ def restore():
         _state["df"] = df
         _state["original_filename"] = original
         _state["_analysis_cache"] = None
+        _state["_chord_cache"] = None
         _state["_preview_cache"] = {}
         _state["_artwork_cache"] = {}
 
@@ -562,6 +566,47 @@ def workshop_analysis():
 
 
 # ---------------------------------------------------------------------------
+# GET /api/workshop/chord-data
+# ---------------------------------------------------------------------------
+@api.route("/api/workshop/chord-data")
+def workshop_chord_data():
+    """Build chord diagram data from tree lineages."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    tree_type = request.args.get("tree_type", "genre")
+    threshold = float(request.args.get("threshold", "0.08"))
+    max_lineages = int(request.args.get("max_lineages", "12"))
+
+    # Load tree
+    if tree_type == "scene":
+        tree = _state.get("scene_tree") or load_tree(
+            file_path=TREE_PROFILES["scene"]["file"])
+        if tree:
+            _state["scene_tree"] = tree
+    else:
+        tree = _state.get("tree") or load_tree()
+        if tree:
+            _state["tree"] = tree
+
+    if not tree or not tree.get("lineages"):
+        return jsonify({"error": f"No {tree_type} tree built yet. "
+                        "Build one in the Collection Tree tab first."}), 404
+
+    # Check cache
+    cache_key = f"{tree_type}_{threshold}_{max_lineages}"
+    cached = _state.get("_chord_cache")
+    if cached and cached.get("_key") == cache_key:
+        return jsonify(cached["data"])
+
+    data = build_chord_data(df, tree, threshold=threshold,
+                            max_lineages=max_lineages)
+    _state["_chord_cache"] = {"_key": cache_key, "data": data}
+    return jsonify(data)
+
+
+# ---------------------------------------------------------------------------
 # POST /api/workshop/search
 # ---------------------------------------------------------------------------
 @api.route("/api/workshop/search", methods=["POST"])
@@ -717,6 +762,23 @@ def workshop_suggest():
                 landscape, genre1, genre2, len(intersection_ids),
                 client, model, provider, num
             )
+        elif mode == "chord-intersection":
+            l1_title = body.get("lineage1_title", "")
+            l2_title = body.get("lineage2_title", "")
+            l1_filters = body.get("lineage1_filters", {})
+            l2_filters = body.get("lineage2_filters", {})
+            if not l1_title or not l2_title:
+                return jsonify({"error": "lineage titles required"}), 400
+            # Find tracks scoring well for both lineages
+            r1 = scored_search(df, l1_filters, min_score=0.08,
+                               max_results=len(df))
+            r2 = scored_search(df, l2_filters, min_score=0.08,
+                               max_results=len(df))
+            shared = {i for i, _, _ in r1} & {i for i, _, _ in r2}
+            suggestions = generate_intersection_suggestions(
+                landscape, l1_title, l2_title, len(shared),
+                client, model, provider, num
+            )
         else:
             # Default: explore mode
             suggestions = generate_playlist_suggestions(
@@ -740,6 +802,7 @@ def workshop_suggest():
                     "id": t["id"],
                     "title": t.get("title", ""),
                     "artist": t.get("artist", ""),
+                    "year": t.get("year", ""),
                     "score": score_map.get(t["id"], 0),
                 }
                 for t in samples
