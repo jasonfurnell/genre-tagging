@@ -539,6 +539,7 @@ function renderIntersectionCards(suggestions, genre1, genre2) {
             <div class="tree-lineage-actions">
                 <button class="btn btn-sm btn-secondary ix-search-btn">Search Tracks</button>
                 <button class="btn btn-sm btn-primary ix-create-pl-btn">Create Playlist</button>
+                <button class="btn btn-sm btn-secondary ix-push-set-btn">Push to Set Workshop</button>
             </div>
         `;
         grid.appendChild(card);
@@ -587,6 +588,31 @@ function renderIntersectionCards(suggestions, genre1, genre2) {
             } catch (err) {
                 plBtn.textContent = "Failed";
                 plBtn.disabled = false;
+            }
+        });
+
+        // Wire push-to-set button
+        const pushSetBtn = card.querySelector(".ix-push-set-btn");
+        pushSetBtn.addEventListener("click", async () => {
+            pushSetBtn.disabled = true;
+            pushSetBtn.textContent = "Loading...";
+            try {
+                const res = await fetch("/api/workshop/search", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ filters: s.filters || { genres: [genre1, genre2] } }),
+                });
+                const data = await res.json();
+                if (data.track_ids && data.track_ids.length > 0) {
+                    pushToSetWorkshop(data.track_ids, s.name, "adhoc", null, null);
+                } else {
+                    alert("No matching tracks found.");
+                }
+            } catch (err) {
+                alert("Failed to load tracks: " + err.message);
+            } finally {
+                pushSetBtn.disabled = false;
+                pushSetBtn.textContent = "Push to Set Workshop";
             }
         });
     }
@@ -1522,6 +1548,7 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
         ${playlist.description ? `<p class="ws-pl-description">${escapeHtml(playlist.description)}</p>` : ""}
         <div class="ws-pl-actions">
             ${playlistTracks.length > 0 ? '<button class="btn btn-secondary btn-sm play-all-btn">Play All</button>' : ''}
+            ${playlistTracks.length > 0 ? '<button class="btn btn-secondary btn-sm" id="ws-pl-push-set">Push to Set Workshop</button>' : ''}
             <button class="btn btn-secondary btn-sm" id="ws-pl-export-m3u">Export M3U8 (Lexicon)</button>
             <button class="btn btn-secondary btn-sm" id="ws-pl-export-csv">Export CSV</button>
             <button class="btn btn-danger btn-sm" id="ws-pl-delete">Delete</button>
@@ -1584,6 +1611,14 @@ function renderPlaylistDetail(playlist, playlistTracks, isSorted) {
         });
         loadPlaylists();
     });
+
+    // Push to Set Workshop
+    const pushSetBtn = document.getElementById("ws-pl-push-set");
+    if (pushSetBtn) {
+        pushSetBtn.addEventListener("click", () => {
+            pushToSetWorkshop(playlist.track_ids, playlist.name, "playlist", playlist.id, null);
+        });
+    }
 
     // Export buttons
     document.getElementById("ws-pl-export-m3u").addEventListener("click", () => {

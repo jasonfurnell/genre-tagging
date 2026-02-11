@@ -35,9 +35,8 @@ from app.tree import (
     find_node, refresh_all_examples, TREE_PROFILES,
 )
 from app.setbuilder import (
-    generate_set, generate_energy_wave, generate_key_wave,
-    auto_fill_vibes, get_vibe_options, select_tracks_for_slot,
-    ENERGY_PRESETS, KEY_PRESETS, VIBE_PRESETS,
+    get_browse_sources, get_source_detail, get_source_info,
+    get_source_tracks, select_tracks_for_source, suggest_similar_sources,
 )
 
 api = Blueprint("api", __name__)
@@ -1891,106 +1890,138 @@ def get_artwork():
 # Set Workshop
 # ═══════════════════════════════════════════════════════════════════════════
 
-@api.route("/api/set-workshop/presets")
-def set_workshop_presets():
-    """Return energy/key presets and vibe options from the collection tree."""
-    tree_type = request.args.get("tree_type", "genre")
+def _resolve_tree(tree_type):
+    """Helper: load genre or scene tree from state or disk."""
     if tree_type == "scene":
-        tree = _state.get("scene_tree") or load_tree(
+        return _state.get("scene_tree") or load_tree(
             file_path=TREE_PROFILES["scene"]["file"])
-    else:
-        tree = _state.get("tree") or load_tree()
-
-    vibes = get_vibe_options(tree) if tree else []
-
-    return jsonify({
-        "energy_presets": {k: {"label": v["label"], "description": v["description"]}
-                          for k, v in ENERGY_PRESETS.items()},
-        "key_presets": {k: {"label": v["label"], "description": v["description"]}
-                        for k, v in KEY_PRESETS.items()},
-        "vibe_presets": {k: {"label": v["label"], "description": v["description"]}
-                         for k, v in VIBE_PRESETS.items()},
-        "vibe_options": vibes,
-        "tree_available": tree is not None,
-    })
+    return _state.get("tree") or load_tree()
 
 
-@api.route("/api/set-workshop/generate", methods=["POST"])
-def set_workshop_generate():
-    """Generate a complete DJ set."""
-    df = _ensure_parsed()
-    if df is None:
-        return jsonify({"error": "No file uploaded"}), 400
-
-    body = request.get_json() or {}
-    tree_type = body.get("tree_type", "genre")
-
-    if tree_type == "scene":
-        tree = _state.get("scene_tree") or load_tree(
-            file_path=TREE_PROFILES["scene"]["file"])
-    else:
-        tree = _state.get("tree") or load_tree()
-
-    if not tree:
-        return jsonify({"error": "No collection tree built. Build one in the Collection Tree tab first."}), 404
-
-    result = generate_set(
-        df=df,
-        tree=tree,
-        tree_type=tree_type,
-        duration_minutes=body.get("duration", 60),
-        energy_preset=body.get("energy_preset", "classic_arc"),
-        key_preset=body.get("key_preset", "harmonic_flow"),
-        start_key=body.get("start_key", "8B"),
-        vibe_assignments=body.get("vibes") or None,
-        vibe_preset=body.get("vibe_preset", "journey"),
-        bpm_min=body.get("bpm_min", 70),
-        bpm_max=body.get("bpm_max", 140),
-    )
+@api.route("/api/set-workshop/sources")
+def set_workshop_sources():
+    """Return available sources for the drawer's browse mode."""
+    search = request.args.get("search", "")
+    genre_tree = _state.get("tree") or load_tree()
+    scene_tree = _state.get("scene_tree") or load_tree(
+        file_path=TREE_PROFILES["scene"]["file"])
+    result = get_browse_sources(genre_tree, scene_tree, search)
     return jsonify(result)
 
 
-@api.route("/api/set-workshop/slot-tracks", methods=["POST"])
-def set_workshop_slot_tracks():
-    """Re-fetch candidate tracks for a single slot."""
+@api.route("/api/set-workshop/assign-source", methods=["POST"])
+def set_workshop_assign_source():
+    """Assign a source to a slot — returns 10 tracks (one per BPM level)."""
     df = _ensure_parsed()
     if df is None:
         return jsonify({"error": "No file uploaded"}), 400
 
     body = request.get_json() or {}
+    source_type = body.get("source_type", "playlist")
+    source_id = body.get("source_id", "")
+    tree_type = body.get("tree_type", "genre")
+    used_ids = set(body.get("used_track_ids", []))
+    anchor_track_id = body.get("anchor_track_id")
+
+    tree = _resolve_tree(tree_type) if source_type == "tree_node" else None
+
+    # Resolve track IDs and source info
+    if source_type == "adhoc":
+        track_ids = body.get("track_ids", [])
+        info = {"id": source_id, "name": body.get("name", "Ad-hoc"),
+                "description": "", "track_count": len(track_ids), "examples": []}
+    else:
+        info = get_source_info(source_type, source_id, tree)
+        if not info:
+            return jsonify({"error": "Source not found"}), 404
+        track_ids = get_source_tracks(source_type, source_id, tree)
+
+    if not track_ids:
+        return jsonify({"error": "Source has no tracks"}), 400
+
+    tracks = select_tracks_for_source(
+        df, track_ids,
+        used_track_ids=used_ids,
+        anchor_track_id=anchor_track_id,
+    )
+
+    return jsonify({"source": info, "tracks": tracks})
+
+
+@api.route("/api/set-workshop/drag-track", methods=["POST"])
+def set_workshop_drag_track():
+    """Handle dragging a track into a slot: place it, fill remaining BPM levels."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    track_id = body.get("track_id")
+    source_type = body.get("source_type", "playlist")
+    source_id = body.get("source_id", "")
+    tree_type = body.get("tree_type", "genre")
+    used_ids = set(body.get("used_track_ids", []))
+
+    tree = _resolve_tree(tree_type) if source_type == "tree_node" else None
+
+    if source_type == "adhoc":
+        track_ids = body.get("track_ids", [])
+    else:
+        track_ids = get_source_tracks(source_type, source_id, tree)
+
+    if not track_ids:
+        return jsonify({"error": "Source has no tracks"}), 400
+
+    tracks = select_tracks_for_source(
+        df, track_ids,
+        used_track_ids=used_ids,
+        anchor_track_id=track_id,
+    )
+
+    # Get source info for name
+    if source_type == "adhoc":
+        info = {"id": source_id, "name": body.get("name", "Ad-hoc"),
+                "description": "", "track_count": len(track_ids), "examples": []}
+    else:
+        info = get_source_info(source_type, source_id, tree)
+
+    return jsonify({"source": info, "tracks": tracks})
+
+
+@api.route("/api/set-workshop/source-detail")
+def set_workshop_source_detail():
+    """Get detailed info + all tracks for a source (drawer detail view)."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    source_type = request.args.get("source_type", "playlist")
+    source_id = request.args.get("source_id", "")
+    tree_type = request.args.get("tree_type", "genre")
+
+    tree = _resolve_tree(tree_type) if source_type == "tree_node" else None
+    detail = get_source_detail(df, source_type, source_id, tree)
+    if not detail:
+        return jsonify({"error": "Source not found"}), 404
+
+    return jsonify(detail)
+
+
+@api.route("/api/set-workshop/suggest-sources", methods=["POST"])
+def set_workshop_suggest_sources():
+    """Suggest similar/related sources for the Suggest button."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    source_type = body.get("source_type", "tree_node")
+    source_id = body.get("source_id", "")
     tree_type = body.get("tree_type", "genre")
 
-    if tree_type == "scene":
-        tree = _state.get("scene_tree") or load_tree(
-            file_path=TREE_PROFILES["scene"]["file"])
-    else:
-        tree = _state.get("tree") or load_tree()
-
-    if not tree:
-        return jsonify({"error": "No collection tree built"}), 404
-
-    tracks = select_tracks_for_slot(
-        df=df,
-        target_bpm=body.get("target_bpm", 100),
-        target_key=body.get("target_key", "8B"),
-        vibe_node_ids=body.get("vibe_node_ids", []),
-        tree=tree,
-        used_track_ids=set(body.get("used_track_ids", [])),
-        key_mode=body.get("key_mode", "harmonic_flow"),
-    )
-    return jsonify({"tracks": tracks})
-
-
-@api.route("/api/set-workshop/energy-wave")
-def set_workshop_energy_wave():
-    """Preview an energy wave for a given preset and slot count."""
-    preset = request.args.get("preset", "classic_arc")
-    num_slots = int(request.args.get("num_slots", 20))
-    bpm_min = float(request.args.get("bpm_min", 70))
-    bpm_max = float(request.args.get("bpm_max", 140))
-
-    wave = generate_energy_wave(preset, num_slots, bpm_min, bpm_max)
-    return jsonify({"wave": [round(v, 1) for v in wave]})
+    tree = _resolve_tree(tree_type)
+    result = suggest_similar_sources(df, tree, source_type, source_id)
+    return jsonify(result)
 
 
 @api.route("/api/set-workshop/export-m3u", methods=["POST"])

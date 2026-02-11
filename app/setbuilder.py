@@ -1,15 +1,15 @@
-"""Set Workshop — DJ set builder with energy wave, key flow, and vibe progression."""
+"""Set Workshop — User-built DJ set builder with per-slot source assignment."""
 
 import math
 import random
 import re
 from app.tree import find_node
+from app.playlist import get_playlist, list_playlists
 
 # ---------------------------------------------------------------------------
 # Camelot Wheel
 # ---------------------------------------------------------------------------
 
-# Map Camelot keys to (number, letter) for distance/compat calculations
 _CAMELOT = {}
 for _n in range(1, 13):
     _CAMELOT[f"{_n}A"] = (_n, "A")
@@ -38,17 +38,15 @@ def camelot_compatible(key1, key2):
     """True if two keys are mix-compatible (±1 number same letter, or same number cross letter)."""
     k1, k2 = normalize_camelot(key1), normalize_camelot(key2)
     if not k1 or not k2:
-        return True  # can't parse → don't filter
+        return True
     if k1 == k2:
         return True
     n1, l1 = _CAMELOT[k1]
     n2, l2 = _CAMELOT[k2]
-    # Same letter, adjacent number (wrapping 12↔1)
     if l1 == l2:
         diff = abs(n1 - n2)
         if diff <= 1 or diff == 11:
             return True
-    # Same number, different letter (relative major/minor)
     if n1 == n2 and l1 != l2:
         return True
     return False
@@ -69,313 +67,42 @@ def camelot_distance(key1, key2):
 
 
 # ---------------------------------------------------------------------------
-# Energy Wave Presets
+# Helpers
 # ---------------------------------------------------------------------------
 
-ENERGY_PRESETS = {
-    "classic_arc": {
-        "label": "Classic Arc",
-        "description": "Build → peak → wind down",
-    },
-    "double_peak": {
-        "label": "Double Peak",
-        "description": "Two crescendos with valley between",
-    },
-    "slow_burn": {
-        "label": "Slow Burn",
-        "description": "Gradual build throughout",
-    },
-    "steady_groove": {
-        "label": "Steady Groove",
-        "description": "Constant mid-tempo throughout",
-    },
-}
+def _is_nan(val):
+    try:
+        return math.isnan(float(val))
+    except (TypeError, ValueError):
+        return False
 
 
-def generate_energy_wave(preset_name, num_slots, bpm_min=70, bpm_max=140):
-    """Generate a list of target BPMs for each slot."""
-    bpm_range = bpm_max - bpm_min
-    n = max(num_slots, 1)
-
-    if preset_name == "classic_arc":
-        # Sine arc peaking around 60%
-        return [
-            round(bpm_min + bpm_range * math.sin(math.pi * i / (n - 1)), 1)
-            if n > 1 else bpm_min + bpm_range * 0.5
-            for i in range(n)
-        ]
-
-    if preset_name == "double_peak":
-        peak1 = max(int(n * 0.3), 1)
-        valley = max(int(n * 0.5), 2)
-        peak2 = max(int(n * 0.75), 3)
-        result = []
-        for i in range(n):
-            if i <= peak1:
-                t = i / peak1
-                result.append(round(bpm_min + bpm_range * t, 1))
-            elif i <= valley:
-                t = (i - peak1) / max(valley - peak1, 1)
-                result.append(round(bpm_max - bpm_range * 0.3 * t, 1))
-            elif i <= peak2:
-                t = (i - valley) / max(peak2 - valley, 1)
-                result.append(round(bpm_min + bpm_range * 0.7 + bpm_range * 0.3 * t, 1))
-            else:
-                t = (i - peak2) / max(n - 1 - peak2, 1)
-                result.append(round(bpm_max - bpm_range * 0.6 * t, 1))
-        return result
-
-    if preset_name == "slow_burn":
-        return [round(bpm_min + bpm_range * i / max(n - 1, 1), 1) for i in range(n)]
-
-    if preset_name == "steady_groove":
-        mid = round((bpm_min + bpm_max) / 2, 1)
-        return [mid] * n
-
-    # fallback
-    return [round((bpm_min + bpm_max) / 2, 1)] * n
+def _sv(val):
+    """Safe value for JSON — handle numpy/pandas types."""
+    if _is_nan(val):
+        return ""
+    if hasattr(val, "item"):
+        return val.item()
+    return val
 
 
-# ---------------------------------------------------------------------------
-# Key Wave Presets
-# ---------------------------------------------------------------------------
-
-KEY_PRESETS = {
-    "harmonic_flow": {
-        "label": "Harmonic Flow",
-        "description": "Walk the Camelot wheel smoothly",
-    },
-    "key_lock": {
-        "label": "Key Lock",
-        "description": "Stay in one key region",
-    },
-    "free": {
-        "label": "Free",
-        "description": "No key constraint (widest pool)",
-    },
-}
-
-_CAMELOT_ORDER = [f"{n}{l}" for n in range(1, 13) for l in ("A", "B")]
-
-
-def generate_key_wave(preset_name, num_slots, start_key="8B"):
-    """Generate target Camelot keys per slot."""
-    start = normalize_camelot(start_key) or "8B"
-    n = max(num_slots, 1)
-
-    if preset_name == "key_lock":
-        # Alternate between start key and its relative major/minor
-        num, letter = _CAMELOT[start]
-        alt = f"{num}{'A' if letter == 'B' else 'B'}"
-        return [start if i % 4 < 2 else alt for i in range(n)]
-
-    if preset_name == "free":
-        return [start] * n  # placeholder — selection ignores key
-
-    # harmonic_flow: walk ±1 on Camelot wheel
-    keys = [start]
-    num, letter = _CAMELOT[start]
-    direction = 1
-    for _ in range(n - 1):
-        num += direction
-        if num > 12:
-            num = 1
-        elif num < 1:
-            num = 12
-        # Occasionally switch letter (every 4 steps)
-        if len(keys) % 4 == 0:
-            letter = "A" if letter == "B" else "B"
-        keys.append(f"{num}{letter}")
-    return keys
-
-
-# ---------------------------------------------------------------------------
-# Vibe Presets
-# ---------------------------------------------------------------------------
-
-VIBE_PRESETS = {
-    "journey": {
-        "label": "Journey",
-        "description": "Progress through vibes in tree order",
-    },
-    "focus": {
-        "label": "Deep Focus",
-        "description": "Concentrate on 1–2 dominant vibes",
-    },
-    "contrast": {
-        "label": "Contrast",
-        "description": "Alternate between different lineages",
-    },
-    "random": {
-        "label": "Shuffle",
-        "description": "Random vibe order",
-    },
-}
-
-
-# ---------------------------------------------------------------------------
-# Vibe Layout Helpers
-# ---------------------------------------------------------------------------
-
-def compute_vibe_layout(num_slots):
-    """Compute 2-row offset vibe grid positions.
-
-    Returns list of {row: 0|1, col_start: int, col_end: int} (0-indexed, inclusive).
-    Pattern: row 0 at [0..2], [4..6], [8..10], ...
-             row 1 at [2..4], [6..8], [10..12], ...
-    """
-    positions = []
-    # Row 0: start at 0, step 4
-    for start in range(0, num_slots, 4):
-        end = min(start + 2, num_slots - 1)
-        positions.append({"row": 0, "col_start": start, "col_end": end})
-    # Row 1: start at 2, step 4
-    for start in range(2, num_slots, 4):
-        end = min(start + 2, num_slots - 1)
-        positions.append({"row": 1, "col_start": start, "col_end": end})
-    return sorted(positions, key=lambda p: (p["row"], p["col_start"]))
-
-
-def get_slot_vibe_ids(slot_index, vibe_assignments):
-    """Return list of node_ids that apply to a given slot (1 or 2 for overlap)."""
-    ids = []
-    for v in vibe_assignments:
-        if v["col_start"] <= slot_index <= v["col_end"] and v.get("node_id"):
-            ids.append(v["node_id"])
-    return ids
-
-
-def get_vibe_options(tree):
-    """Extract leaves and branches from tree for vibe dropdown options."""
-    if not tree:
-        return []
-    options = []
+def _find_parent(tree, node_id):
+    """Find the parent node of a given node_id in the tree."""
     for lineage in tree.get("lineages", []):
-        _collect_vibe_nodes(lineage, options, parent_title=None, depth=0)
-    return options
+        result = _find_parent_in(lineage, node_id)
+        if result:
+            return result
+    return None
 
 
-def _collect_vibe_nodes(node, options, parent_title, depth):
-    options.append({
-        "id": node.get("id"),
-        "title": node.get("title", ""),
-        "track_count": node.get("track_count", len(node.get("track_ids", []))),
-        "depth": depth,
-        "parent_title": parent_title or "",
-        "is_leaf": node.get("is_leaf", False),
-    })
+def _find_parent_in(node, node_id):
     for child in node.get("children", []):
-        _collect_vibe_nodes(child, options, node.get("title", ""), depth + 1)
-
-
-def auto_fill_vibes(tree, num_slots, start_node_id=None, preset="journey"):
-    """Auto-fill vibe progression from tree leaves.
-
-    Preset strategies:
-      journey  — cycle through leaves in tree order (sequential chapters)
-      focus    — top 2 leaves by track count dominate ~70% of zones
-      contrast — pick leaves from different lineages, alternate them
-      random   — shuffle leaves then cycle
-
-    Returns list of {row, col_start, col_end, node_id, title}.
-    """
-    layout = compute_vibe_layout(num_slots)
-
-    # Collect all leaves in tree order, tagged with lineage index
-    leaves = []
-    for lineage in tree.get("lineages", []):
-        _collect_leaves(lineage, leaves)
-
-    if not leaves:
-        return [{"row": p["row"], "col_start": p["col_start"],
-                 "col_end": p["col_end"], "node_id": None, "title": ""}
-                for p in layout]
-
-    # Apply preset strategy to reorder leaves
-    ordered = _apply_vibe_preset(leaves, tree, preset)
-
-    # If start_node_id given, rotate to start there
-    if start_node_id:
-        idx = next((i for i, l in enumerate(ordered) if l["id"] == start_node_id), 0)
-        ordered = ordered[idx:] + ordered[:idx]
-
-    # Assign to positions, cycling if needed
-    result = []
-    for i, pos in enumerate(layout):
-        leaf = ordered[i % len(ordered)]
-        result.append({
-            "row": pos["row"],
-            "col_start": pos["col_start"],
-            "col_end": pos["col_end"],
-            "node_id": leaf["id"],
-            "title": leaf.get("title", ""),
-        })
-    return result
-
-
-def _apply_vibe_preset(leaves, tree, preset):
-    """Reorder leaves according to the chosen vibe preset."""
-    if preset == "random":
-        shuffled = list(leaves)
-        random.shuffle(shuffled)
-        return shuffled
-
-    if preset == "focus":
-        # Sort by track count descending; top 2 dominate ~70% of slots
-        by_count = sorted(leaves, key=lambda l: len(l.get("track_ids", [])), reverse=True)
-        primary = by_count[:2]
-        others = by_count[2:]
-        # Build sequence: 7 primary for every 3 others (≈70/30 split)
-        result = []
-        pi, oi = 0, 0
-        while len(result) < len(leaves):
-            for _ in range(7):
-                if len(result) >= len(leaves):
-                    break
-                result.append(primary[pi % len(primary)])
-                pi += 1
-            for _ in range(3):
-                if len(result) >= len(leaves):
-                    break
-                if others:
-                    result.append(others[oi % len(others)])
-                    oi += 1
-                else:
-                    result.append(primary[pi % len(primary)])
-                    pi += 1
-        return result
-
-    if preset == "contrast":
-        # Group leaves by lineage, pick one from each lineage in rotation
-        lineages = tree.get("lineages", [])
-        buckets = {lin.get("id"): [] for lin in lineages}
-        for leaf in leaves:
-            lin_id = _find_lineage_id(tree, leaf["id"])
-            if lin_id and lin_id in buckets:
-                buckets[lin_id].append(leaf)
-            else:
-                # Orphan — put in first bucket
-                first_key = next(iter(buckets), None)
-                if first_key:
-                    buckets[first_key].append(leaf)
-        # Sort buckets by size descending, take top 3
-        sorted_buckets = sorted(buckets.values(), key=len, reverse=True)
-        active = [b for b in sorted_buckets if b][:3]
-        if not active:
-            return leaves
-        # Interleave: one from each bucket in round-robin
-        result = []
-        idxs = [0] * len(active)
-        while len(result) < len(leaves):
-            for bi, bucket in enumerate(active):
-                if len(result) >= len(leaves):
-                    break
-                result.append(bucket[idxs[bi] % len(bucket)])
-                idxs[bi] += 1
-        return result
-
-    # "journey" (default): leaves already in tree order
-    return list(leaves)
+        if child.get("id") == node_id:
+            return node
+        result = _find_parent_in(child, node_id)
+        if result:
+            return result
+    return None
 
 
 def _find_lineage_id(tree, node_id):
@@ -403,242 +130,373 @@ def _collect_leaves(node, leaves):
         _collect_leaves(child, leaves)
 
 
+def _track_dict(df, idx, bpm_level=None):
+    """Build a JSON-safe track dict from a DataFrame row."""
+    if idx not in df.index:
+        return None
+    row = df.loc[idx]
+    bpm = row.get("bpm")
+    bpm_val = round(float(bpm), 1) if bpm is not None and not _is_nan(bpm) else None
+    d = {
+        "id": int(idx),
+        "title": _sv(row.get("title", "")),
+        "artist": _sv(row.get("artist", "")),
+        "bpm": bpm_val,
+        "key": _sv(row.get("key", "")),
+        "year": _sv(row.get("year", "")),
+    }
+    if bpm_level is not None:
+        d["bpm_level"] = bpm_level
+    return d
+
+
 # ---------------------------------------------------------------------------
-# Track Selection
+# BPM Levels
 # ---------------------------------------------------------------------------
 
-def select_tracks_for_slot(df, target_bpm, target_key, vibe_node_ids,
-                           tree, used_track_ids=None, num_tracks=5,
-                           bpm_tolerance=10, key_mode="harmonic_flow"):
-    """Select candidate tracks for one time slot.
+DEFAULT_BPM_LEVELS = [60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
 
-    Returns list of track dicts [{id, title, artist, bpm, key, year}].
+
+# ---------------------------------------------------------------------------
+# Source Resolution
+# ---------------------------------------------------------------------------
+
+def get_source_tracks(source_type, source_id, tree=None):
+    """Resolve a source to its track_ids list.
+
+    source_type: "playlist", "tree_node", or "adhoc"
+    For adhoc, source_id is ignored — caller should supply track_ids directly.
     """
+    if source_type == "playlist":
+        pl = get_playlist(source_id)
+        if pl:
+            return pl.get("track_ids", [])
+        return []
+    if source_type == "tree_node":
+        if not tree:
+            return []
+        node = find_node(tree, source_id)
+        if node:
+            return node.get("track_ids", [])
+        return []
+    return []
+
+
+def get_source_info(source_type, source_id, tree=None):
+    """Return display info for a source: {name, description, track_count, examples}."""
+    if source_type == "playlist":
+        pl = get_playlist(source_id)
+        if not pl:
+            return None
+        return {
+            "id": pl["id"],
+            "name": pl.get("name", ""),
+            "description": pl.get("description", ""),
+            "track_count": len(pl.get("track_ids", [])),
+            "examples": [],
+        }
+    if source_type == "tree_node":
+        if not tree:
+            return None
+        node = find_node(tree, source_id)
+        if not node:
+            return None
+        return {
+            "id": node.get("id", source_id),
+            "name": node.get("title", ""),
+            "description": node.get("description", ""),
+            "track_count": node.get("track_count", len(node.get("track_ids", []))),
+            "examples": node.get("examples", []),
+        }
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Track Selection for Source-Based Slots
+# ---------------------------------------------------------------------------
+
+def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
+                             used_track_ids=None, anchor_track_id=None):
+    """Pick one best track per BPM level from a source's track pool.
+
+    Args:
+        df: DataFrame with track data.
+        source_track_ids: list of track IDs from the source.
+        bpm_levels: list of target BPMs (default [60,70,...,150]).
+        used_track_ids: set of IDs already used in other slots (optional dedup).
+        anchor_track_id: if set, this track is placed at its natural BPM level first.
+
+    Returns:
+        list of 10 items (one per BPM level). Each is a track dict or None.
+    """
+    if bpm_levels is None:
+        bpm_levels = list(DEFAULT_BPM_LEVELS)
     if used_track_ids is None:
         used_track_ids = set()
 
-    # Step 1: gather candidate track ids from vibe nodes
-    candidate_sets = []
-    parent_node_ids = []
-    for nid in vibe_node_ids:
-        node = find_node(tree, nid)
-        if node:
-            candidate_sets.append(set(node.get("track_ids", [])))
-            # Stash parent for fallback
-            parent = _find_parent(tree, nid)
-            if parent:
-                parent_node_ids.append(parent.get("id"))
-
-    if not candidate_sets:
-        return []
-
-    # Intersection for overlap slots, union otherwise
-    if len(candidate_sets) == 1:
-        candidates = candidate_sets[0]
-    else:
-        candidates = candidate_sets[0].intersection(*candidate_sets[1:])
-        # If intersection too small, fall back to union
-        if len(candidates) < num_tracks:
-            candidates = set().union(*candidate_sets)
-
-    # Remove already-used tracks
-    candidates = candidates - set(used_track_ids)
-
-    # Step 2-3: Filter by BPM and key with progressive relaxation
-    for bpm_tol, key_dist in [(bpm_tolerance, 1), (bpm_tolerance * 2, 2),
-                               (bpm_tolerance * 3, 99)]:
-        filtered = _filter_and_score(df, candidates, target_bpm, target_key,
-                                     bpm_tol, key_dist, key_mode)
-        if len(filtered) >= num_tracks:
-            break
-
-    # Step 4: If still not enough, expand to parent branch tracks
-    if len(filtered) < num_tracks and parent_node_ids:
-        for pid in parent_node_ids:
-            pnode = find_node(tree, pid)
-            if pnode:
-                parent_tracks = set(pnode.get("track_ids", [])) - set(used_track_ids)
-                extra = _filter_and_score(df, parent_tracks, target_bpm, target_key,
-                                          bpm_tolerance * 2, 99, key_mode)
-                # Merge, avoiding duplicates
-                seen = {t["id"] for t in filtered}
-                for t in extra:
-                    if t["id"] not in seen:
-                        filtered.append(t)
-                        seen.add(t["id"])
-                if len(filtered) >= num_tracks:
-                    break
-
-    return filtered[:num_tracks]
-
-
-def _filter_and_score(df, candidate_ids, target_bpm, target_key,
-                      bpm_tolerance, max_key_dist, key_mode):
-    """Filter candidate track ids by BPM/key and return scored list."""
-    results = []
-    for idx in candidate_ids:
+    # Build pool of available tracks with their BPMs
+    pool = []
+    for idx in source_track_ids:
+        if idx in used_track_ids:
+            # Always keep the anchor track even if used in another slot
+            if anchor_track_id is None or int(idx) != int(anchor_track_id):
+                continue
         if idx not in df.index:
             continue
-        row = df.loc[idx]
-
-        # BPM filter
-        bpm = row.get("bpm")
+        bpm = df.loc[idx].get("bpm")
         if bpm is not None and not _is_nan(bpm):
-            bpm_val = float(bpm)
-            if abs(bpm_val - target_bpm) > bpm_tolerance:
-                continue
-            bpm_score = 1.0 - abs(bpm_val - target_bpm) / max(bpm_tolerance, 1)
+            pool.append((int(idx), float(bpm)))
+
+    assigned = {}  # bpm_level → track_id
+    used_in_slot = set()
+
+    # If anchor track specified, place it first
+    if anchor_track_id is not None:
+        anchor_bpm = None
+        for idx, bpm in pool:
+            if idx == anchor_track_id:
+                anchor_bpm = bpm
+                break
+        if anchor_bpm is not None:
+            # Find closest BPM level
+            best_level = min(bpm_levels, key=lambda lv: abs(lv - anchor_bpm))
+            assigned[best_level] = anchor_track_id
+            used_in_slot.add(anchor_track_id)
+
+    # For each remaining BPM level, find best available track
+    for level in bpm_levels:
+        if level in assigned:
+            continue
+
+        best_id = None
+        best_dist = float("inf")
+
+        # Progressive tolerance: ±5, ±10, ±15
+        for tolerance in (5, 10, 15):
+            for idx, bpm in pool:
+                if idx in used_in_slot:
+                    continue
+                dist = abs(bpm - level)
+                if dist <= tolerance and dist < best_dist:
+                    best_dist = dist
+                    best_id = idx
+            if best_id is not None:
+                break
+
+        if best_id is not None:
+            assigned[level] = best_id
+            used_in_slot.add(best_id)
+
+    # Build result list aligned to bpm_levels
+    result = []
+    for level in bpm_levels:
+        tid = assigned.get(level)
+        if tid is not None:
+            result.append(_track_dict(df, tid, bpm_level=level))
         else:
-            bpm_val = target_bpm
-            bpm_score = 0.3  # unknown BPM gets low score
+            result.append(None)
 
-        # Key filter
-        if key_mode != "free":
-            track_key = str(row.get("key", ""))
-            dist = camelot_distance(target_key, track_key)
-            if dist > max_key_dist:
-                continue
-            key_score = 1.0 - dist * 0.3
-        else:
-            key_score = 1.0
-            track_key = str(row.get("key", ""))
-
-        score = bpm_score * 0.6 + key_score * 0.4
-
-        results.append({
-            "id": int(idx),
-            "title": _sv(row.get("title", "")),
-            "artist": _sv(row.get("artist", "")),
-            "bpm": round(float(bpm_val), 1),
-            "key": _sv(track_key),
-            "year": _sv(row.get("year", "")),
-            "_score": score,
-        })
-
-    results.sort(key=lambda t: t["_score"], reverse=True)
-    # Remove internal score field
-    for t in results:
-        t.pop("_score", None)
-    return results
-
-
-def _find_parent(tree, node_id):
-    """Find the parent node of a given node_id in the tree."""
-    for lineage in tree.get("lineages", []):
-        result = _find_parent_in(lineage, node_id)
-        if result:
-            return result
-    return None
-
-
-def _find_parent_in(node, node_id):
-    for child in node.get("children", []):
-        if child.get("id") == node_id:
-            return node
-        result = _find_parent_in(child, node_id)
-        if result:
-            return result
-    return None
-
-
-def _is_nan(val):
-    try:
-        return math.isnan(float(val))
-    except (TypeError, ValueError):
-        return False
-
-
-def _sv(val):
-    """Safe value for JSON — handle numpy/pandas types."""
-    if _is_nan(val):
-        return ""
-    if hasattr(val, "item"):
-        return val.item()
-    return val
+    return result
 
 
 # ---------------------------------------------------------------------------
-# Full Set Generation
+# Source Suggestions
 # ---------------------------------------------------------------------------
 
-def generate_set(df, tree, tree_type, duration_minutes=60,
-                 energy_preset="classic_arc", key_preset="harmonic_flow",
-                 start_key="8B", vibe_assignments=None, vibe_preset="journey",
-                 bpm_min=70, bpm_max=140, track_minutes=3):
-    """Generate a complete DJ set.
+def suggest_similar_sources(df, tree, current_source_type, current_source_id):
+    """Suggest sources related to the current one.
 
-    Returns dict with slots, energy_wave, key_wave, vibes, metadata.
+    Returns {similar: [...], energy_up: [...], energy_down: [...]}.
+    Each item: {id, name, track_count, type, tree_type, relationship}.
     """
-    num_slots = max(duration_minutes // track_minutes, 1)
+    similar = []
+    energy_up = []
+    energy_down = []
 
-    # Generate waves
-    energy_wave = generate_energy_wave(energy_preset, num_slots, bpm_min, bpm_max)
-    key_wave = generate_key_wave(key_preset, num_slots, start_key)
+    if current_source_type != "tree_node" or not tree:
+        return {"similar": similar, "energy_up": energy_up, "energy_down": energy_down}
 
-    # Vibe assignments: use provided or auto-fill
-    if not vibe_assignments:
-        vibes = auto_fill_vibes(tree, num_slots, preset=vibe_preset)
-    else:
-        vibes = vibe_assignments
+    node = find_node(tree, current_source_id)
+    if not node:
+        return {"similar": similar, "energy_up": energy_up, "energy_down": energy_down}
 
-    # Build slots
-    used_ids = set()
-    slots = []
+    tree_type = tree.get("tree_type", "genre")
 
-    for i in range(num_slots):
-        target_bpm = energy_wave[i]
-        target_key = key_wave[i]
-        vibe_ids = get_slot_vibe_ids(i, vibes)
+    # Compute current node's avg BPM
+    current_avg_bpm = _avg_bpm(df, node.get("track_ids", []))
 
-        # Get vibe titles for display
-        vibe_titles = []
-        for vid in vibe_ids:
-            node = find_node(tree, vid)
-            if node:
-                vibe_titles.append(node.get("title", vid))
+    # Siblings (same parent's children, excluding self)
+    parent = _find_parent(tree, current_source_id)
+    if parent:
+        for sibling in parent.get("children", []):
+            if sibling.get("id") == current_source_id:
+                continue
+            info = _suggestion_item(df, sibling, tree_type, "sibling")
+            if info:
+                similar.append(info)
 
-        tracks = select_tracks_for_slot(
-            df, target_bpm, target_key, vibe_ids,
-            tree, used_track_ids=used_ids,
-            bpm_tolerance=10, key_mode=key_preset,
-        )
+    # Parent node itself
+    if parent and parent.get("id"):
+        info = _suggestion_item(df, parent, tree_type, "parent")
+        if info:
+            similar.append(info)
 
-        # Add selected tracks to used set (only the default-selected one)
-        if tracks:
-            default_selected = min(2, len(tracks) - 1)
-            used_ids.add(tracks[default_selected]["id"])
-        else:
-            default_selected = 0
+    # Children (if branch node)
+    for child in node.get("children", []):
+        info = _suggestion_item(df, child, tree_type, "child")
+        if info:
+            similar.append(info)
 
-        # Time label
-        mins = i * track_minutes
-        time_label = f"{mins // 60}:{mins % 60:02d}"
+    # Energy up/down: collect all leaves in same lineage, sort by avg BPM
+    lineage_id = _find_lineage_id(tree, current_source_id)
+    if lineage_id:
+        lineage_node = find_node(tree, lineage_id)
+        if lineage_node:
+            all_leaves = []
+            _collect_leaves(lineage_node, all_leaves)
+            for leaf in all_leaves:
+                if leaf.get("id") == current_source_id:
+                    continue
+                avg = _avg_bpm(df, leaf.get("track_ids", []))
+                if avg is None:
+                    continue
+                info = _suggestion_item(df, leaf, tree_type, "")
+                if not info:
+                    continue
+                if current_avg_bpm is not None:
+                    if avg > current_avg_bpm + 5:
+                        info["relationship"] = "higher energy"
+                        energy_up.append((avg, info))
+                    elif avg < current_avg_bpm - 5:
+                        info["relationship"] = "lower energy"
+                        energy_down.append((avg, info))
 
-        slots.append({
-            "index": i,
-            "time_label": time_label,
-            "target_bpm": round(target_bpm, 1),
-            "target_key": target_key,
-            "vibe_ids": vibe_ids,
-            "vibe_titles": vibe_titles,
-            "tracks": tracks,
-            "selected_index": default_selected,
+    # Sort energy_up ascending (closest first), energy_down descending
+    energy_up.sort(key=lambda x: x[0])
+    energy_down.sort(key=lambda x: -x[0])
+    energy_up = [item for _, item in energy_up[:8]]
+    energy_down = [item for _, item in energy_down[:8]]
+
+    return {"similar": similar[:10], "energy_up": energy_up, "energy_down": energy_down}
+
+
+def _suggestion_item(df, node, tree_type, relationship):
+    """Build a suggestion dict from a tree node."""
+    track_ids = node.get("track_ids", [])
+    if not track_ids:
+        return None
+    return {
+        "id": node.get("id", ""),
+        "name": node.get("title", ""),
+        "track_count": node.get("track_count", len(track_ids)),
+        "type": "tree_node",
+        "tree_type": tree_type,
+        "relationship": relationship,
+    }
+
+
+def _avg_bpm(df, track_ids):
+    """Compute average BPM for a set of track IDs."""
+    bpms = []
+    for idx in track_ids:
+        if idx not in df.index:
+            continue
+        bpm = df.loc[idx].get("bpm")
+        if bpm is not None and not _is_nan(bpm):
+            bpms.append(float(bpm))
+    return sum(bpms) / len(bpms) if bpms else None
+
+
+# ---------------------------------------------------------------------------
+# Browse Sources (for drawer)
+# ---------------------------------------------------------------------------
+
+def get_browse_sources(genre_tree=None, scene_tree=None, search_term=""):
+    """Return available sources for the drawer's browse mode.
+
+    Returns {playlists: [...], genre_tree: {...}, scene_tree: {...}}.
+    """
+    search = search_term.strip().lower()
+
+    # Playlists
+    all_playlists = list_playlists()
+    playlists = []
+    for pl in all_playlists:
+        if search and search not in pl.get("name", "").lower():
+            continue
+        playlists.append({
+            "id": pl["id"],
+            "name": pl.get("name", ""),
+            "description": pl.get("description", ""),
+            "track_count": len(pl.get("track_ids", [])),
+            "source": pl.get("source", ""),
         })
+
+    # Tree summaries (lightweight — no track_ids)
+    def _tree_summary(tree):
+        if not tree:
+            return {"available": False, "lineages": []}
+        lineages = []
+        for lin in tree.get("lineages", []):
+            lineages.append(_summarize_node(lin, search))
+        if search:
+            lineages = [l for l in lineages if l is not None]
+        return {"available": True, "lineages": lineages}
 
     return {
-        "slots": slots,
-        "energy_wave": [round(v, 1) for v in energy_wave],
-        "key_wave": key_wave,
-        "vibes": vibes,
-        "metadata": {
-            "duration": duration_minutes,
-            "num_slots": num_slots,
-            "energy_preset": energy_preset,
-            "key_preset": key_preset,
-            "start_key": start_key,
-            "tree_type": tree_type,
-            "vibe_preset": vibe_preset,
-            "bpm_min": bpm_min,
-            "bpm_max": bpm_max,
-        },
+        "playlists": playlists,
+        "genre_tree": _tree_summary(genre_tree),
+        "scene_tree": _tree_summary(scene_tree),
     }
+
+
+def _summarize_node(node, search=""):
+    """Recursively build a lightweight tree summary (no track_ids)."""
+    title = node.get("title", "")
+    children_summaries = []
+    for child in node.get("children", []):
+        s = _summarize_node(child, search)
+        if s is not None:
+            children_summaries.append(s)
+
+    # If searching, include node only if it matches or has matching children
+    if search:
+        self_match = search in title.lower()
+        if not self_match and not children_summaries:
+            return None
+
+    return {
+        "id": node.get("id", ""),
+        "title": title,
+        "description": node.get("description", ""),
+        "track_count": node.get("track_count", len(node.get("track_ids", []))),
+        "is_leaf": node.get("is_leaf", False),
+        "children": children_summaries,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Source Detail (all tracks for drawer)
+# ---------------------------------------------------------------------------
+
+def get_source_detail(df, source_type, source_id, tree=None):
+    """Full source info + all tracks for the drawer detail view.
+
+    Returns {id, name, description, track_count, examples, tracks: [...]}.
+    """
+    info = get_source_info(source_type, source_id, tree)
+    if not info:
+        return None
+
+    track_ids = get_source_tracks(source_type, source_id, tree)
+    tracks = []
+    for idx in track_ids:
+        t = _track_dict(df, idx)
+        if t:
+            tracks.append(t)
+
+    # Sort by BPM for the drawer list
+    tracks.sort(key=lambda t: t.get("bpm") or 0)
+
+    info["tracks"] = tracks
+    return info

@@ -48,6 +48,24 @@ function apiUrl(path) {
     return treeState[currentTreeType].apiPrefix + (path || "");
 }
 
+function findTreeNode(nodeId) {
+    if (!treeData || !treeData.lineages) return null;
+    for (const lineage of treeData.lineages) {
+        if (lineage.id === nodeId) return lineage;
+        const found = _findInChildren(lineage, nodeId);
+        if (found) return found;
+    }
+    return null;
+}
+function _findInChildren(node, nodeId) {
+    for (const child of (node.children || [])) {
+        if (child.id === nodeId) return child;
+        const found = _findInChildren(child, nodeId);
+        if (found) return found;
+    }
+    return null;
+}
+
 // ── Init ────────────────────────────────────────────────────
 
 async function initTree() {
@@ -352,6 +370,11 @@ function renderTreeGrid() {
                         title="Create a Workshop playlist from this lineage">
                     ${createdPlaylistNodeIds.has(lineage.id) ? "Playlist Created" : "Create Playlist"}
                 </button>
+                <button class="btn btn-sm btn-secondary tree-push-set-btn"
+                        data-node-id="${lineage.id}"
+                        title="Generate a DJ set from these tracks">
+                    Push to Set Workshop
+                </button>
             </div>
             <div class="tree-content" id="tree-lineage-${lineage.id}"></div>
         `;
@@ -388,6 +411,20 @@ function renderTreeGrid() {
         if (plBtn && !createdPlaylistNodeIds.has(lineage.id)) {
             plBtn.addEventListener("click", () => {
                 createPlaylistFromLeaf(lineage.id, plBtn);
+            });
+        }
+
+        // Wire push-to-set button
+        const pushBtn = card.querySelector(".tree-push-set-btn");
+        if (pushBtn) {
+            pushBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const node = findTreeNode(lineage.id);
+                if (node && node.track_ids && node.track_ids.length > 0) {
+                    pushToSetWorkshop(node.track_ids, node.title || lineage.id, "tree_node", node.id, currentTreeType);
+                } else {
+                    alert("No tracks found for this node.");
+                }
             });
         }
 
@@ -475,6 +512,11 @@ function renderNodeContent(node, bodyEl, depth) {
                     ${isCreated ? "disabled" : ""}>
                 ${isCreated ? "Playlist Created" : "Create Playlist"}
             </button>
+            <button class="btn btn-sm btn-secondary tree-push-set-btn"
+                    data-node-id="${node.id}"
+                    title="Generate a DJ set from these tracks">
+                Push to Set Workshop
+            </button>
         </div>`;
         html += `</div>`;
         bodyEl.innerHTML = html;
@@ -503,6 +545,20 @@ function renderNodeContent(node, bodyEl, depth) {
             createBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
                 createPlaylistFromLeaf(node.id, createBtn);
+            });
+        }
+
+        // Wire push-to-set button
+        const pushBtn = bodyEl.querySelector(".tree-push-set-btn");
+        if (pushBtn) {
+            pushBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const n = findTreeNode(node.id);
+                if (n && n.track_ids && n.track_ids.length > 0) {
+                    pushToSetWorkshop(n.track_ids, n.title || node.id, "tree_node", n.id, currentTreeType);
+                } else {
+                    alert("No tracks found for this node.");
+                }
             });
         }
     } else {
@@ -536,6 +592,11 @@ function renderNodeContent(node, bodyEl, depth) {
                     data-node-id="${node.id}"
                     ${isCreated ? "disabled" : ""}>
                 ${isCreated ? "Playlist Created" : "Create Playlist"}
+            </button>
+            <button class="btn btn-sm btn-secondary tree-push-set-btn"
+                    data-node-id="${node.id}"
+                    title="Generate a DJ set from these tracks">
+                Push to Set Workshop
             </button>
         </div>`;
 
@@ -576,6 +637,20 @@ function renderNodeContent(node, bodyEl, depth) {
             plBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
                 createPlaylistFromLeaf(node.id, plBtn);
+            });
+        }
+
+        // Wire push-to-set button
+        const pushBtn = wrapper.querySelector(".tree-push-set-btn");
+        if (pushBtn) {
+            pushBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const n = findTreeNode(node.id);
+                if (n && n.track_ids && n.track_ids.length > 0) {
+                    pushToSetWorkshop(n.track_ids, n.title || node.id, "tree_node", n.id, currentTreeType);
+                } else {
+                    alert("No tracks found for this node.");
+                }
             });
         }
 

@@ -1,34 +1,37 @@
-/* ── Set Workshop — Frontend ─────────────────────────────────────────────── */
+/* ── Set Workshop — User-Built DJ Sets ───────────────────────────────────── */
 
 let setInitialized = false;
-let setData = null;            // Full set from /generate
-let setVibeOptions = [];       // Tree nodes for dropdowns
-let setSlotSelections = [];    // Per-slot selected index (0–4)
 
-const setSettings = {
-    duration: 60,
-    energyPreset: "classic_arc",
-    keyPreset: "harmonic_flow",
-    startKey: "8B",
-    treeType: "genre",
-    vibePreset: "journey",
-    bpmMin: 70,
-    bpmMax: 140,
-};
+// ── Slot State ──
+// Each slot: {id, source: {type, id, tree_type, name}|null, tracks: [], selectedTrackIndex: null}
+let setSlots = [];
+let setHours = 1;   // 1, 2, or 3 hours
 
-// Layout constants
+// ── Drawer State ──
+let setDrawerOpen = false;
+let setDrawerMode = null;         // "browse" | "detail" | "suggest"
+let setDrawerTargetSlotId = null; // which slot the drawer is acting on
+
+// ── Drag State ──
+let setDragTrack = null;          // track being dragged from drawer
+
+// ── Play All State ──
+let setPlayAllActive = false;
+let setPlayAllIndex = 0;
+
+// ── Layout Constants ──
 const SET_IMG = 48;
-const SET_PAD = 4;             // padding each side of image in column
+const SET_PAD = 4;
 const SET_COL_W = SET_IMG + SET_PAD * 2;  // 56
 const SET_GAP = 6;
-const SET_STACK_GAP = 2;
-const SET_GRID_H = 300;        // BPM grid height (px)
-const SET_GRID_PAD = 125;      // padding above/below grid for stack overflow
-const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // total area height
+const SET_GRID_H = 300;
+const SET_GRID_PAD = 125;
+const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // 550
 const SET_BPM_MIN = 60;
-const SET_BPM_MAX = 140;
+const SET_BPM_MAX = 150;
+const SET_BPM_LEVELS = [60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
 
-// Tooltip element (created once)
+// ── Tooltip ──
 let setTooltipEl = null;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -39,410 +42,345 @@ async function initSetBuilder() {
     if (setInitialized) return;
     setInitialized = true;
 
-    // Toolbar buttons
-    document.getElementById("set-generate-btn").addEventListener("click", generateSet);
-    document.getElementById("set-settings-btn").addEventListener("click", toggleSettings);
-    document.getElementById("set-play-all-btn").addEventListener("click", playAllSet);
-    document.getElementById("set-export-btn").addEventListener("click", exportSet);
-
-    // Duration toggle
-    document.querySelectorAll(".set-dur-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".set-dur-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            setSettings.duration = parseInt(btn.dataset.dur);
-        });
-    });
-
-    // Settings panel
-    document.getElementById("set-settings-close").addEventListener("click", toggleSettings);
-    document.getElementById("set-settings-apply").addEventListener("click", applySettings);
-
-    // Settings inputs → sync to setSettings
-    document.getElementById("set-energy-preset").addEventListener("change", e => {
-        setSettings.energyPreset = e.target.value;
-        previewEnergyWave();
-    });
-    document.getElementById("set-key-preset").addEventListener("change", e => {
-        setSettings.keyPreset = e.target.value;
-    });
-    document.getElementById("set-start-key").addEventListener("change", e => {
-        setSettings.startKey = e.target.value;
-    });
-    document.getElementById("set-tree-type").addEventListener("change", async e => {
-        setSettings.treeType = e.target.value;
-        await loadPresets();
-    });
-    const vibePresetEl = document.getElementById("set-vibe-preset");
-    if (vibePresetEl) {
-        vibePresetEl.addEventListener("change", e => {
-            setSettings.vibePreset = e.target.value;
-        });
-    }
-
-    // Populate start key dropdown (1A–12B)
-    populateKeyDropdown();
-
-    // Create tooltip element
+    // Tooltip
     setTooltipEl = document.createElement("div");
     setTooltipEl.className = "set-track-tooltip";
     document.body.appendChild(setTooltipEl);
 
-    // Load presets & vibe options
-    await loadPresets();
+    // Toolbar buttons
+    document.getElementById("set-play-all-btn").addEventListener("click", togglePlayAll);
+    document.getElementById("set-export-btn").addEventListener("click", exportSet);
 
-    // Preview initial energy wave in settings
-    previewEnergyWave();
-}
+    // Drawer close
+    document.getElementById("set-drawer-close").addEventListener("click", closeDrawer);
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Presets & vibe options
-// ═══════════════════════════════════════════════════════════════════════════
+    // Drawer search (debounced)
+    let searchTimer = null;
+    document.getElementById("set-drawer-search").addEventListener("input", (e) => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadDrawerSources(e.target.value), 300);
+    });
 
-async function loadPresets() {
-    try {
-        const res = await fetch(`/api/set-workshop/presets?tree_type=${setSettings.treeType}`);
-        const data = await res.json();
-        setVibeOptions = data.vibe_options || [];
-        if (!data.tree_available) {
-            const ph = document.getElementById("set-placeholder");
-            if (ph) {
-                ph.querySelector(".ws-placeholder").textContent =
-                    "No Collection Tree found. Build one in the Collection Tree tab first.";
-            }
+    // Keyboard
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            if (setDrawerOpen) closeDrawer();
+            else if (setPlayAllActive) stopSetPlayAll();
         }
-    } catch (e) {
-        console.error("Failed to load set presets:", e);
-    }
-}
+    });
 
-function populateKeyDropdown() {
-    const sel = document.getElementById("set-start-key");
-    sel.innerHTML = "";
-    for (let n = 1; n <= 12; n++) {
-        for (const l of ["A", "B"]) {
-            const opt = document.createElement("option");
-            opt.value = `${n}${l}`;
-            opt.textContent = `${n}${l}`;
-            if (`${n}${l}` === setSettings.startKey) opt.selected = true;
-            sel.appendChild(opt);
-        }
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Generate Set
-// ═══════════════════════════════════════════════════════════════════════════
-
-async function generateSet() {
-    const btn = document.getElementById("set-generate-btn");
-    btn.disabled = true;
-    btn.textContent = "Generating...";
-
-    try {
-        const vibes = collectVibeAssignments();
-
-        const res = await fetch("/api/set-workshop/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                duration: setSettings.duration,
-                energy_preset: setSettings.energyPreset,
-                key_preset: setSettings.keyPreset,
-                start_key: setSettings.startKey,
-                tree_type: setSettings.treeType,
-                vibe_preset: setSettings.vibePreset,
-                vibes: vibes.length ? vibes : undefined,
-                bpm_min: setSettings.bpmMin,
-                bpm_max: setSettings.bpmMax,
-            }),
-        });
-
-        if (!res.ok) {
-            const err = await res.json();
-            alert(err.error || "Generation failed");
-            return;
-        }
-
-        setData = await res.json();
-        setSlotSelections = setData.slots.map(s => s.selected_index || 2);
-
-        // Enable toolbar buttons
-        document.getElementById("set-play-all-btn").disabled = false;
-        document.getElementById("set-export-btn").disabled = false;
-
-        renderSet();
-    } catch (e) {
-        console.error("Set generation failed:", e);
-        alert("Generation failed: " + e.message);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "Generate Set";
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Collect current vibe assignments from dropdowns (if grid is rendered)
-// ═══════════════════════════════════════════════════════════════════════════
-
-function collectVibeAssignments() {
-    if (!setData) return [];
-    const vibes = [];
-    document.querySelectorAll(".set-vibe-dropdown").forEach(dd => {
-        vibes.push({
-            row: parseInt(dd.dataset.vibeRow),
-            col_start: parseInt(dd.dataset.colStart),
-            col_end: parseInt(dd.dataset.colEnd),
-            node_id: dd.value || null,
-            title: dd.selectedOptions[0]?.textContent || "",
+    // Set length selector
+    document.querySelectorAll(".set-length-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const hours = parseInt(btn.dataset.hours);
+            if (hours === setHours) return;
+            setHours = hours;
+            document.querySelectorAll(".set-length-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            initEmptySlots(hours * 20);
+            renderSet();
         });
     });
-    return vibes;
+
+    // Init empty grid
+    initEmptySlots(setHours * 20);
+    renderSet();
 }
 
+
+function initEmptySlots(count) {
+    setSlots = [];
+    for (let i = 0; i < count; i++) {
+        setSlots.push({
+            id: `slot-${Date.now()}-${i}`,
+            source: null,
+            tracks: [],
+            selectedTrackIndex: null,
+        });
+    }
+}
+
+
 // ═══════════════════════════════════════════════════════════════════════════
-// Render Set
+// Rendering
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderSet() {
-    if (!setData) return;
-
-    document.getElementById("set-placeholder").classList.add("hidden");
-    document.getElementById("set-grid-wrapper").classList.remove("hidden");
-
-    renderVibeRows();
+    renderSlotHeaders();
     renderKeyRow();
     renderBpmGrid();
     renderEnergyWave();
     renderTrackColumns();
     renderPreviewRow();
     renderTimeRow();
+    updateToolbarState();
 }
 
-// ── Vibe Rows ────────────────────────────────────────────────────────────
 
-function renderVibeRows() {
-    const row1 = document.getElementById("set-vibe-row-1");
-    const row2 = document.getElementById("set-vibe-row-2");
-    row1.innerHTML = "";
-    row2.innerHTML = "";
+function updateToolbarState() {
+    const hasSelection = setSlots.some(s => s.selectedTrackIndex != null && s.tracks[s.selectedTrackIndex]);
+    document.getElementById("set-play-all-btn").disabled = !hasSelection;
+    document.getElementById("set-export-btn").disabled = !hasSelection;
+}
 
-    const slotW = SET_COL_W + SET_GAP;
-    const vibes = setData.vibes || [];
 
-    for (const v of vibes) {
-        const cell = document.createElement("div");
-        cell.className = "set-vibe-cell";
-        const left = v.col_start * slotW;
-        const width = (v.col_end - v.col_start + 1) * slotW - SET_GAP;
-        cell.style.left = `${left}px`;
-        cell.style.width = `${width}px`;
+// ── Slot Headers ──
 
-        const dd = document.createElement("select");
-        dd.className = "set-vibe-dropdown";
-        dd.dataset.vibeRow = v.row;
-        dd.dataset.colStart = v.col_start;
-        dd.dataset.colEnd = v.col_end;
+function renderSlotHeaders() {
+    const row = document.getElementById("set-slot-headers");
+    row.innerHTML = "";
 
-        // Empty option
-        const emptyOpt = document.createElement("option");
-        emptyOpt.value = "";
-        emptyOpt.textContent = "— select vibe —";
-        dd.appendChild(emptyOpt);
+    setSlots.forEach((slot) => {
+        const header = document.createElement("div");
+        header.className = "set-slot-header";
+        header.dataset.slotId = slot.id;
 
-        // Populate from vibe options
-        for (const opt of setVibeOptions) {
-            const o = document.createElement("option");
-            o.value = opt.id;
-            const indent = "  ".repeat(opt.depth);
-            o.textContent = `${indent}${opt.title} (${opt.track_count})`;
-            if (opt.id === v.node_id) o.selected = true;
-            dd.appendChild(o);
+        if (!slot.source) {
+            header.innerHTML = `<button class="set-add-source-btn" title="Assign source">+</button>`;
+            header.querySelector(".set-add-source-btn").addEventListener("click", () => {
+                openDrawer("browse", slot.id);
+            });
+        } else {
+            const safeName = escHtml(slot.source.name || "Source");
+            header.innerHTML = `
+                <div class="set-source-name" title="${safeName}">${safeName}</div>
+                <div class="set-slot-controls">
+                    <button class="set-ctrl-btn" data-action="move" title="Drag to reorder">&#8661;</button>
+                    <button class="set-ctrl-btn" data-action="duplicate" title="Duplicate right">&#10697;</button>
+                    <button class="set-ctrl-btn" data-action="suggest" title="Suggest similar">&#9733;</button>
+                    <button class="set-ctrl-btn" data-action="delete" title="Delete slot">&#10005;</button>
+                    <button class="set-ctrl-btn" data-action="clear" title="Clear source">&#8634;</button>
+                </div>
+            `;
+            header.querySelector(".set-source-name").addEventListener("click", () => {
+                openDrawer("detail", slot.id);
+            });
+            header.querySelectorAll(".set-ctrl-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    handleSlotControl(slot.id, btn.dataset.action);
+                });
+            });
         }
 
-        dd.addEventListener("change", () => onVibeChange(dd));
-        cell.appendChild(dd);
+        // Drag to reorder + accept track drops
+        header.draggable = true;
+        header.addEventListener("dragstart", (e) => onSlotDragStart(e, slot.id));
+        header.addEventListener("dragover", (e) => {
+            onSlotDragOver(e);
+            if (setDragTrack) header.classList.add("drag-over");
+        });
+        header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
+        header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
+        header.addEventListener("dragend", () => { dragSlotId = null; });
 
-        if (v.row === 0) row1.appendChild(cell);
-        else row2.appendChild(cell);
-    }
-
-    // Set min-width for rows
-    const numSlots = setData.slots.length;
-    const totalW = numSlots * slotW;
-    row1.style.minWidth = `${totalW}px`;
-    row2.style.minWidth = `${totalW}px`;
-    row1.style.position = "relative";
-    row2.style.position = "relative";
+        row.appendChild(header);
+    });
 }
 
-// ── Key Row ──────────────────────────────────────────────────────────────
+
+// ── Key Row ──
 
 function renderKeyRow() {
     const row = document.getElementById("set-key-row");
     row.innerHTML = "";
-    for (const slot of setData.slots) {
+
+    for (const slot of setSlots) {
         const cell = document.createElement("div");
         cell.className = "set-key-cell";
-        cell.textContent = slot.target_key;
+        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
+            cell.textContent = slot.tracks[slot.selectedTrackIndex].key || "";
+        }
         row.appendChild(cell);
     }
 }
 
-// ── BPM Grid (gridlines) ────────────────────────────────────────────────
+
+// ── BPM Grid ──
 
 function renderBpmGrid() {
     const grid = document.getElementById("set-bpm-grid");
     // Remove old gridlines
     grid.querySelectorAll(".set-bpm-gridline").forEach(el => el.remove());
 
-    // Add gridlines at 60, 80, 100, 120, 140
-    for (let bpm = SET_BPM_MIN; bpm <= SET_BPM_MAX; bpm += 20) {
+    const slotW = SET_COL_W + SET_GAP;
+    const totalW = setSlots.length * slotW;
+    grid.style.width = `${totalW}px`;
+
+    // Draw gridlines at each BPM level
+    for (const bpm of SET_BPM_LEVELS) {
         const line = document.createElement("div");
         line.className = "set-bpm-gridline";
         line.style.top = `${bpmToY(bpm)}px`;
+        line.style.width = `${totalW}px`;
         grid.appendChild(line);
     }
-
-    // Set grid width
-    const numSlots = setData.slots.length;
-    const totalW = numSlots * (SET_COL_W + SET_GAP);
-    grid.style.width = `${totalW}px`;
 }
 
-// ── Energy Wave SVG ─────────────────────────────────────────────────────
+
+// ── Energy Wave (reactive smooth curve) ──
 
 function renderEnergyWave() {
     const svg = document.getElementById("set-energy-svg");
-    const wave = setData.energy_wave;
-    const n = wave.length;
     const slotW = SET_COL_W + SET_GAP;
+    const totalW = setSlots.length * slotW;
 
-    const points = wave.map((bpm, i) => {
-        const x = i * slotW + SET_COL_W / 2;
-        const y = bpmToY(bpm);
-        return { x, y };
-    });
-
-    const lineD = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
-    const fillD = lineD +
-        ` L ${points[n - 1].x} ${SET_AREA_H} L ${points[0].x} ${SET_AREA_H} Z`;
-
-    const totalW = n * slotW;
     svg.setAttribute("viewBox", `0 0 ${totalW} ${SET_AREA_H}`);
     svg.style.width = `${totalW}px`;
     svg.style.height = `${SET_AREA_H}px`;
+
+    // Collect data points from slots with selected tracks
+    const points = [];
+    setSlots.forEach((slot, i) => {
+        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
+            const track = slot.tracks[slot.selectedTrackIndex];
+            const bpm = track.bpm || track.bpm_level || 100;
+            const x = i * slotW + SET_COL_W / 2;
+            const y = bpmToY(bpm);
+            points.push({ x, y });
+        }
+    });
+
+    if (points.length < 2) {
+        svg.innerHTML = "";
+        return;
+    }
+
+    const pathD = catmullRomPath(points);
+    const fillD = pathD
+        + ` L ${points[points.length - 1].x} ${SET_AREA_H}`
+        + ` L ${points[0].x} ${SET_AREA_H} Z`;
+
     svg.innerHTML = `
         <path class="set-energy-fill" d="${fillD}" />
-        <path class="set-energy-line" d="${lineD}" />
+        <path class="set-energy-line" d="${pathD}" />
     `;
 }
 
-// ── Track Columns ───────────────────────────────────────────────────────
+function catmullRomPath(points, tension) {
+    if (typeof tension === "undefined") tension = 0.3;
+    if (points.length < 2) return "";
+    let d = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 0; i < points.length - 1; i++) {
+        const p0 = points[Math.max(i - 1, 0)];
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const p3 = points[Math.min(i + 2, points.length - 1)];
+        const t = 1 / (6 * (tension || 0.3));
+        const cp1x = p1.x + (p2.x - p0.x) * t;
+        const cp1y = p1.y + (p2.y - p0.y) * t;
+        const cp2x = p2.x - (p3.x - p1.x) * t;
+        const cp2y = p2.y - (p3.y - p1.y) * t;
+        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+    }
+    return d;
+}
+
+
+// ── Track Columns ──
 
 function renderTrackColumns() {
     const container = document.getElementById("set-columns");
     container.innerHTML = "";
 
-    setData.slots.forEach((slot, si) => {
+    setSlots.forEach((slot) => {
         const col = document.createElement("div");
         col.className = "set-column";
-        col.dataset.slotIndex = si;
+        col.dataset.slotId = slot.id;
 
-        const stack = document.createElement("div");
-        stack.className = "set-slot-stack";
-        stack.dataset.slotIndex = si;
+        // Drop target for tracks from drawer
+        col.addEventListener("dragover", (e) => {
+            if (setDragTrack) {
+                e.preventDefault();
+                col.classList.add("drag-over");
+            }
+        });
+        col.addEventListener("dragleave", () => col.classList.remove("drag-over"));
+        col.addEventListener("drop", (e) => onTrackDrop(e, slot.id));
 
-        // Position vertically: selected track center at target BPM Y
-        const centerY = bpmToY(slot.target_bpm);
-        const selectedIdx = setSlotSelections[si] || 0;
-        const imgH = SET_IMG + SET_STACK_GAP;
-        const stackTop = centerY - (selectedIdx * imgH) - SET_IMG / 2;
-        stack.style.top = `${stackTop}px`;
-
-        if (slot.tracks.length === 0) {
+        if (!slot.source || slot.tracks.length === 0) {
             // Empty slot
-            const empty = document.createElement("div");
-            empty.className = "set-track-slot empty";
-            stack.appendChild(empty);
+            const placeholder = document.createElement("div");
+            placeholder.className = "set-empty-slot";
+            placeholder.addEventListener("click", () => {
+                openDrawer("browse", slot.id);
+            });
+            col.appendChild(placeholder);
         } else {
+            // Render tracks at their BPM Y positions
             slot.tracks.forEach((track, ti) => {
-                const el = document.createElement("div");
-                el.className = `set-track-slot${ti === selectedIdx ? " selected" : ""}`;
-                el.dataset.trackIdx = ti;
-                el.dataset.slotIdx = si;
+                if (!track) return;
 
-                // Text fallback label (always visible, image overlays when loaded)
+                const isSelected = ti === slot.selectedTrackIndex;
+                const el = document.createElement("div");
+                el.className = `set-track-slot${isSelected ? " selected" : ""}`;
+                el.dataset.trackIdx = ti;
+                el.dataset.slotId = slot.id;
+
+                // Position at BPM
+                const bpm = track.bpm_level || track.bpm || 100;
+                el.style.top = `${bpmToY(bpm) - SET_IMG / 2}px`;
+
+                // Label fallback
                 const label = document.createElement("div");
                 label.className = "set-track-label";
                 label.textContent = (track.artist || "").split(/[,&]/)[0].trim().slice(0, 8);
                 el.appendChild(label);
 
+                // Artwork
                 const img = document.createElement("img");
                 img.alt = "";
                 img.draggable = false;
-                img.style.display = "none";  // hidden until artwork loads
+                img.style.display = "none";
                 img.onload = () => { img.style.display = ""; };
                 img.onerror = () => { img.style.display = "none"; };
                 el.appendChild(img);
-
                 if (typeof loadArtwork === "function") {
                     loadArtwork(track.artist, track.title, img);
                 }
 
-                // Click to select + preview
+                // Click to select
                 el.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    onTrackClick(si, ti);
+                    onTrackClick(slot.id, ti);
                 });
 
-                // Hover tooltip
-                el.addEventListener("mouseenter", (e) => showTooltip(e, track, slot));
+                // Tooltip
+                el.addEventListener("mouseenter", (e) => showTooltip(e, track));
                 el.addEventListener("mouseleave", hideTooltip);
 
-                stack.appendChild(el);
+                col.appendChild(el);
             });
         }
 
-        // Mouse wheel to cycle selection
-        stack.addEventListener("wheel", (e) => {
-            e.preventDefault();
-            const dir = e.deltaY > 0 ? 1 : -1;
-            const current = setSlotSelections[si] || 0;
-            const maxIdx = Math.max((slot.tracks.length || 1) - 1, 0);
-            const next = Math.max(0, Math.min(maxIdx, current + dir));
-            if (next !== current) selectTrack(si, next);
-        }, { passive: false });
-
-        col.appendChild(stack);
         container.appendChild(col);
     });
 }
 
-// ── Preview Row ─────────────────────────────────────────────────────────
+
+// ── Preview Row ──
 
 function renderPreviewRow() {
     const row = document.getElementById("set-preview-row");
     row.innerHTML = "";
 
-    setData.slots.forEach((slot, si) => {
+    setSlots.forEach((slot) => {
         const cell = document.createElement("div");
         cell.className = "set-preview-cell";
 
-        if (slot.tracks.length > 0) {
+        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
+            const track = slot.tracks[slot.selectedTrackIndex];
             const btn = document.createElement("button");
             btn.className = "btn-preview";
+            btn.title = "Play 30s preview";
             btn.textContent = "\u25B6";
-            btn.title = "Preview selected track";
-
+            btn.dataset.artist = track.artist || "";
+            btn.dataset.title = track.title || "";
             btn.addEventListener("click", () => {
-                const ti = setSlotSelections[si] || 0;
-                const track = slot.tracks[ti];
-                if (track && typeof togglePreview === "function") {
+                if (typeof togglePreview === "function") {
                     togglePreview(track.artist, track.title, btn);
                 }
             });
-
             cell.appendChild(btn);
         }
 
@@ -450,73 +388,51 @@ function renderPreviewRow() {
     });
 }
 
-// ── Time Row ────────────────────────────────────────────────────────────
+
+// ── Time Row ──
 
 function renderTimeRow() {
     const row = document.getElementById("set-time-row");
     row.innerHTML = "";
-    for (const slot of setData.slots) {
+
+    setSlots.forEach((_, i) => {
         const cell = document.createElement("div");
         cell.className = "set-time-cell";
-        cell.textContent = slot.time_label;
+        const mins = i * 3;
+        cell.textContent = `${Math.floor(mins / 60)}:${(mins % 60).toString().padStart(2, "0")}`;
         row.appendChild(cell);
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Slot Machine: Select Track
-// ═══════════════════════════════════════════════════════════════════════════
-
-function selectTrack(slotIdx, trackIdx) {
-    const slot = setData.slots[slotIdx];
-    if (!slot || trackIdx < 0 || trackIdx >= slot.tracks.length) return;
-
-    setSlotSelections[slotIdx] = trackIdx;
-
-    // Update DOM: selection highlighting
-    const stack = document.querySelector(`.set-slot-stack[data-slot-index="${slotIdx}"]`);
-    if (!stack) return;
-
-    stack.querySelectorAll(".set-track-slot").forEach((el, i) => {
-        el.classList.toggle("selected", i === trackIdx);
     });
-
-    // Reposition stack so selected track aligns with BPM Y
-    const centerY = bpmToY(slot.target_bpm);
-    const imgH = SET_IMG + SET_STACK_GAP;
-    const stackTop = centerY - (trackIdx * imgH) - SET_IMG / 2;
-    stack.style.transition = "top 0.3s ease";
-    stack.style.top = `${stackTop}px`;
-    setTimeout(() => { stack.style.transition = ""; }, 350);
 }
 
+
 // ═══════════════════════════════════════════════════════════════════════════
-// Track Click: Select + Preview
+// Track Selection
 // ═══════════════════════════════════════════════════════════════════════════
 
-function onTrackClick(slotIdx, trackIdx) {
-    const slot = setData.slots[slotIdx];
+function onTrackClick(slotId, trackIdx) {
+    const slot = setSlots.find(s => s.id === slotId);
     if (!slot || trackIdx < 0 || trackIdx >= slot.tracks.length) return;
+    if (!slot.tracks[trackIdx]) return;
 
-    const wasSelected = setSlotSelections[slotIdx] === trackIdx;
-    const track = slot.tracks[trackIdx];
-    if (!track || typeof togglePreview !== "function") return;
+    const wasSelected = slot.selectedTrackIndex === trackIdx;
 
-    // Select if not already selected
     if (!wasSelected) {
-        selectTrack(slotIdx, trackIdx);
+        slot.selectedTrackIndex = trackIdx;
+        renderSet();
     }
 
+    // Always play/toggle preview on click
+    const track = slot.tracks[trackIdx];
+    if (typeof togglePreview === "function") {
+        const si = setSlots.indexOf(slot);
+        const btn = getSlotPreviewBtn(si);
+        if (btn) togglePreview(track.artist, track.title, btn);
+    }
+
+    // If play-all active, redirect to this slot
     if (setPlayAllActive && !wasSelected) {
-        // During play-all + clicked a non-selected track:
-        // redirect the play-all sequence to continue from this slot
-        playSetTrackAt(slotIdx);
-    } else {
-        // Normal click: preview the track (toggle play/pause)
-        const previewBtn = getSlotPreviewBtn(slotIdx);
-        if (previewBtn) {
-            togglePreview(track.artist, track.title, previewBtn);
-        }
+        const si = setSlots.indexOf(slot);
+        playSetTrackAt(si);
     }
 }
 
@@ -528,208 +444,703 @@ function getSlotPreviewBtn(slotIdx) {
     return null;
 }
 
+
 // ═══════════════════════════════════════════════════════════════════════════
-// Vibe Dropdown Change → Re-fetch tracks
+// Slot Controls
 // ═══════════════════════════════════════════════════════════════════════════
 
-async function onVibeChange(dropdown) {
-    if (!setData) return;
+function handleSlotControl(slotId, action) {
+    const idx = setSlots.findIndex(s => s.id === slotId);
+    if (idx === -1) return;
 
-    const colStart = parseInt(dropdown.dataset.colStart);
-    const colEnd = parseInt(dropdown.dataset.colEnd);
-
-    // Update vibe assignment in setData
-    for (const v of setData.vibes) {
-        if (v.col_start === colStart && v.col_end === colEnd && v.row === parseInt(dropdown.dataset.vibeRow)) {
-            v.node_id = dropdown.value || null;
-            v.title = dropdown.selectedOptions[0]?.textContent || "";
+    switch (action) {
+        case "duplicate": {
+            const orig = setSlots[idx];
+            const copy = {
+                id: `slot-${Date.now()}`,
+                source: orig.source ? { ...orig.source } : null,
+                tracks: orig.tracks.map(t => t ? { ...t } : null),
+                selectedTrackIndex: orig.selectedTrackIndex,
+            };
+            setSlots.splice(idx + 1, 0, copy);
+            renderSet();
             break;
         }
+        case "delete": {
+            if (setSlots.length <= 1) return;
+            setSlots.splice(idx, 1);
+            renderSet();
+            break;
+        }
+        case "clear": {
+            setSlots[idx].source = null;
+            setSlots[idx].tracks = [];
+            setSlots[idx].selectedTrackIndex = null;
+            renderSet();
+            break;
+        }
+        case "suggest": {
+            openDrawer("suggest", slotId);
+            break;
+        }
+        // "move" handled by drag-and-drop
+    }
+}
+
+
+// ── Slot Reordering ──
+
+let dragSlotId = null;
+
+function onSlotDragStart(e, slotId) {
+    dragSlotId = slotId;
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "slot");
+}
+
+function onSlotDragOver(e) {
+    if (dragSlotId) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    } else if (setDragTrack) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+    }
+}
+
+function onSlotDrop(e, targetSlotId) {
+    e.preventDefault();
+
+    // Track drop from drawer → delegate to onTrackDrop
+    if (setDragTrack && !dragSlotId) {
+        onTrackDrop(e, targetSlotId);
+        return;
     }
 
-    // Determine affected slots
-    const affected = new Set();
-    for (let c = colStart; c <= colEnd; c++) {
-        if (c < setData.slots.length) affected.add(c);
+    if (!dragSlotId || dragSlotId === targetSlotId) return;
+
+    const fromIdx = setSlots.findIndex(s => s.id === dragSlotId);
+    const toIdx = setSlots.findIndex(s => s.id === targetSlotId);
+    if (fromIdx === -1 || toIdx === -1) return;
+
+    const [moved] = setSlots.splice(fromIdx, 1);
+    setSlots.splice(toIdx, 0, moved);
+    dragSlotId = null;
+    renderSet();
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Drawer
+// ═══════════════════════════════════════════════════════════════════════════
+
+function openDrawer(mode, targetSlotId) {
+    setDrawerMode = mode;
+    setDrawerTargetSlotId = targetSlotId;
+    setDrawerOpen = true;
+
+    const drawer = document.getElementById("set-drawer");
+    drawer.classList.add("open");
+
+    // Push content left so drawer doesn't cover slots
+    const tab = document.getElementById("tab-setbuilder");
+    if (tab) tab.classList.add("drawer-open");
+
+    // Hide all sections
+    document.querySelectorAll(".set-drawer-section").forEach(s => s.classList.add("hidden"));
+
+    if (mode === "browse") {
+        document.getElementById("set-drawer-browse").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = "Assign Source";
+        document.getElementById("set-drawer-search").value = "";
+        loadDrawerSources("");
+    } else if (mode === "detail") {
+        document.getElementById("set-drawer-detail").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = "Source Detail";
+        const slot = targetSlotId ? setSlots.find(s => s.id === targetSlotId) : null;
+        if (slot && slot.source) {
+            loadDrawerSourceDetail(slot.source);
+        }
+    } else if (mode === "suggest") {
+        document.getElementById("set-drawer-suggest").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = "Suggestions";
+        const slot = setSlots.find(s => s.id === targetSlotId);
+        if (slot && slot.source) {
+            loadDrawerSuggestions(slot.source);
+        }
     }
 
-    // Re-fetch tracks for each affected slot
-    for (const si of affected) {
-        const slot = setData.slots[si];
-        const vibeIds = getVibeIdsForSlot(si);
-        if (vibeIds.length === 0) continue;
+    // After layout shift, keep the target slot visible
+    if (targetSlotId) {
+        setTimeout(() => {
+            const header = document.querySelector(`.set-slot-header[data-slot-id="${targetSlotId}"]`);
+            if (header) header.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+        }, 320);  // wait for the 0.3s CSS transition
+    }
+}
 
-        const usedIds = getAdjacentUsedIds(si);
+function closeDrawer() {
+    setDrawerOpen = false;
+    setDrawerTargetSlotId = null;
+    document.getElementById("set-drawer").classList.remove("open");
 
-        try {
-            const res = await fetch("/api/set-workshop/slot-tracks", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    slot_index: si,
-                    target_bpm: slot.target_bpm,
-                    target_key: slot.target_key,
-                    vibe_node_ids: vibeIds,
-                    tree_type: setSettings.treeType,
-                    used_track_ids: usedIds,
-                    key_mode: setSettings.keyPreset,
-                }),
-            });
-            if (res.ok) {
-                const data = await res.json();
-                slot.tracks = data.tracks;
-                setSlotSelections[si] = Math.min(2, Math.max(0, (data.tracks.length || 1) - 1));
+    // Restore full content width
+    const tab = document.getElementById("tab-setbuilder");
+    if (tab) tab.classList.remove("drawer-open");
+}
+
+
+// ── Browse Mode ──
+
+async function loadDrawerSources(searchTerm) {
+    try {
+        const res = await fetch(`/api/set-workshop/sources?search=${encodeURIComponent(searchTerm || "")}`);
+        const data = await res.json();
+        renderDrawerPlaylists(data.playlists);
+        renderDrawerTreeSection("set-drawer-genre-tree", "Genre Tree", data.genre_tree, "genre");
+        renderDrawerTreeSection("set-drawer-scene-tree", "Scene Explorer", data.scene_tree, "scene");
+    } catch (e) {
+        console.error("Failed to load sources:", e);
+    }
+}
+
+function renderDrawerPlaylists(playlists) {
+    const div = document.getElementById("set-drawer-playlists");
+    div.innerHTML = "<h4>Playlists</h4>";
+    if (!playlists || playlists.length === 0) {
+        div.innerHTML += `<div style="font-size:0.75rem;color:var(--text-muted);padding:0.3rem 0.5rem;">No playlists found</div>`;
+        return;
+    }
+    for (const pl of playlists) {
+        const item = document.createElement("div");
+        item.className = "set-drawer-source-item";
+        item.innerHTML = `
+            <span class="set-drawer-source-name">${escHtml(pl.name)}</span>
+            <span class="set-drawer-source-count">${pl.track_count} tracks</span>
+        `;
+        item.addEventListener("click", () => assignSource("playlist", pl.id, null, pl.name));
+        div.appendChild(item);
+    }
+}
+
+function renderDrawerTreeSection(containerId, title, treeData, treeType) {
+    const div = document.getElementById(containerId);
+    div.innerHTML = `<h4>${escHtml(title)}</h4>`;
+    if (!treeData || !treeData.available || !treeData.lineages || treeData.lineages.length === 0) {
+        div.innerHTML += `<div style="font-size:0.75rem;color:var(--text-muted);padding:0.3rem 0.5rem;">Not available</div>`;
+        return;
+    }
+    for (const lineage of treeData.lineages) {
+        renderDrawerTreeNode(div, lineage, treeType, 0);
+    }
+}
+
+function renderDrawerTreeNode(parentEl, node, treeType, depth) {
+    const hasChildren = node.children && node.children.length > 0;
+
+    const row = document.createElement("div");
+    row.className = "set-drawer-tree-node";
+    row.style.paddingLeft = `${depth * 14 + 4}px`;
+
+    row.innerHTML = `
+        <span class="set-drawer-tree-toggle">${hasChildren ? "\u25B6" : "\u00B7"}</span>
+        <span class="set-drawer-tree-title">${escHtml(node.title)}</span>
+        <span class="set-drawer-tree-count">${node.track_count}</span>
+    `;
+
+    let childContainer = null;
+    if (hasChildren) {
+        childContainer = document.createElement("div");
+        childContainer.className = "set-drawer-tree-children collapsed";
+        for (const child of node.children) {
+            renderDrawerTreeNode(childContainer, child, treeType, depth + 1);
+        }
+    }
+
+    const toggle = row.querySelector(".set-drawer-tree-toggle");
+
+    // Click on title → assign source
+    row.querySelector(".set-drawer-tree-title").addEventListener("click", (e) => {
+        e.stopPropagation();
+        assignSource("tree_node", node.id, treeType, node.title);
+    });
+
+    // Click on toggle → expand/collapse
+    if (hasChildren) {
+        toggle.style.cursor = "pointer";
+        toggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const collapsed = childContainer.classList.toggle("collapsed");
+            toggle.textContent = collapsed ? "\u25B6" : "\u25BC";
+        });
+    }
+
+    parentEl.appendChild(row);
+    if (childContainer) parentEl.appendChild(childContainer);
+}
+
+
+// ── Detail Mode ──
+
+async function loadDrawerSourceDetail(source) {
+    try {
+        const qs = `source_type=${source.type}&source_id=${encodeURIComponent(source.id)}&tree_type=${source.tree_type || ""}`;
+        const res = await fetch(`/api/set-workshop/source-detail?${qs}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        renderDrawerDetail(data, source);
+    } catch (e) {
+        console.error("Failed to load source detail:", e);
+    }
+}
+
+
+function renderDrawerDetail(data, source) {
+    const headerDiv = document.getElementById("set-drawer-detail-header");
+    headerDiv.innerHTML = `
+        <h4>${escHtml(data.name || "")}</h4>
+        ${data.description ? `<p class="set-drawer-desc">${escHtml(data.description)}</p>` : ""}
+        <span class="set-drawer-count">${data.track_count || 0} tracks</span>
+    `;
+
+    const tracksDiv = document.getElementById("set-drawer-detail-tracks");
+    tracksDiv.innerHTML = "";
+
+    if (!data.tracks || data.tracks.length === 0) {
+        return;
+    }
+
+    for (const track of data.tracks) {
+        const row = document.createElement("div");
+        row.className = "set-drawer-track-row";
+
+        const safeArtist = escHtml(track.artist || "");
+        const safeTitle = escHtml(track.title || "");
+
+        row.innerHTML = `
+            <img class="set-drawer-track-art" alt="" draggable="true">
+            <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
+            <div class="set-drawer-track-info">
+                <span class="set-drawer-track-title">${safeTitle}</span>
+                <span class="set-drawer-track-artist">${safeArtist}</span>
+            </div>
+            <div class="set-drawer-track-meta">
+                <span>${track.bpm ? Math.round(track.bpm) + " BPM" : ""}</span><br>
+                <span>${escHtml(track.key || "")}</span>
+            </div>
+        `;
+
+        // Load artwork
+        const img = row.querySelector("img");
+        if (typeof loadArtwork === "function") {
+            loadArtwork(track.artist, track.title, img);
+        }
+
+        // Make artwork draggable
+        img.addEventListener("dragstart", (e) => {
+            setDragTrack = {
+                id: track.id,
+                artist: track.artist,
+                title: track.title,
+                bpm: track.bpm,
+                key: track.key || "",
+                year: track.year || "",
+                source_type: source.type,
+                source_id: source.id,
+                tree_type: source.tree_type,
+            };
+            e.dataTransfer.setData("text/plain", String(track.id));
+            e.dataTransfer.effectAllowed = "copy";
+        });
+        img.addEventListener("dragend", () => { setDragTrack = null; });
+
+        // Preview button
+        row.querySelector(".btn-preview").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(track.artist, track.title, e.currentTarget);
             }
-        } catch (e) {
-            console.error(`Failed to refresh slot ${si}:`, e);
-        }
-    }
+        });
 
-    // Re-render track columns
-    renderTrackColumns();
+        // Click row to assign to target slot (if one is set)
+        row.addEventListener("click", () => {
+            if (setDrawerTargetSlotId) {
+                assignSourceWithAnchor(source.type, source.id, source.tree_type, data.name, track.id);
+            }
+        });
+
+        tracksDiv.appendChild(row);
+    }
 }
 
-function getVibeIdsForSlot(slotIdx) {
+
+// ── Suggest Mode ──
+
+async function loadDrawerSuggestions(source) {
+    try {
+        const res = await fetch("/api/set-workshop/suggest-sources", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                source_type: source.type,
+                source_id: source.id,
+                tree_type: source.tree_type || "",
+            }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        renderSuggestionList("set-drawer-suggest-similar", "Similar", data.similar);
+        renderSuggestionList("set-drawer-suggest-up", "Energy Up", data.energy_up);
+        renderSuggestionList("set-drawer-suggest-down", "Energy Down", data.energy_down);
+    } catch (e) {
+        console.error("Failed to load suggestions:", e);
+    }
+}
+
+function renderSuggestionList(containerId, title, items) {
+    const div = document.getElementById(containerId);
+    div.innerHTML = `<h4>${escHtml(title)}</h4>`;
+
+    if (!items || items.length === 0) {
+        div.innerHTML += `<div style="font-size:0.75rem;color:var(--text-muted);padding:0.3rem 0.5rem;">None found</div>`;
+        return;
+    }
+
+    for (const item of items) {
+        const el = document.createElement("div");
+        el.className = "set-drawer-source-item";
+        el.innerHTML = `
+            <span class="set-drawer-source-name">${escHtml(item.name)}</span>
+            <span class="set-drawer-source-rel">${escHtml(item.relationship || "")}</span>
+            <span class="set-drawer-source-count">${item.track_count} tracks</span>
+        `;
+        el.addEventListener("click", () => {
+            assignSource(item.type || "tree_node", item.id, item.tree_type, item.name);
+        });
+        div.appendChild(el);
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Source Assignment
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function assignSource(sourceType, sourceId, treeType, sourceName, anchorTrackId) {
+    const targetId = setDrawerTargetSlotId;
+    if (!targetId) return;
+
+    const slot = setSlots.find(s => s.id === targetId);
+    if (!slot) return;
+
+    const usedIds = getUsedTrackIds(targetId);
+
+    try {
+        const body = {
+            source_type: sourceType,
+            source_id: sourceId,
+            tree_type: treeType || "",
+            used_track_ids: usedIds,
+            name: sourceName || "",
+        };
+        if (anchorTrackId != null) body.anchor_track_id = anchorTrackId;
+
+        const res = await fetch("/api/set-workshop/assign-source", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            alert(err.error || "Failed to assign source");
+            return;
+        }
+
+        const data = await res.json();
+        slot.source = {
+            type: sourceType,
+            id: sourceId,
+            tree_type: treeType,
+            name: data.source ? data.source.name : sourceName,
+        };
+        slot.tracks = data.tracks || [];
+        slot.selectedTrackIndex = findDefaultSelection(slot.tracks, anchorTrackId);
+
+        renderSet();
+
+        // Switch drawer to detail mode for the assigned source so user can
+        // drag individual tracks into the slot.
+        setDrawerMode = "detail";
+        setDrawerTargetSlotId = targetId;
+        document.querySelectorAll(".set-drawer-section").forEach(s => s.classList.add("hidden"));
+        document.getElementById("set-drawer-detail").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = slot.source.name || "Source Detail";
+        loadDrawerSourceDetail(slot.source);
+    } catch (e) {
+        console.error("Assign source failed:", e);
+        alert("Failed to assign source: " + e.message);
+    }
+}
+
+async function assignSourceWithAnchor(sourceType, sourceId, treeType, sourceName, anchorTrackId) {
+    return assignSource(sourceType, sourceId, treeType, sourceName, anchorTrackId);
+}
+
+
+function getUsedTrackIds(excludeSlotId) {
     const ids = [];
-    for (const v of (setData.vibes || [])) {
-        if (v.col_start <= slotIdx && slotIdx <= v.col_end && v.node_id) {
-            ids.push(v.node_id);
+    for (const slot of setSlots) {
+        if (slot.id === excludeSlotId) continue;
+        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
+            ids.push(slot.tracks[slot.selectedTrackIndex].id);
         }
     }
     return ids;
 }
 
-function getAdjacentUsedIds(slotIdx) {
-    const ids = [];
-    for (let si = Math.max(0, slotIdx - 2); si <= Math.min(setData.slots.length - 1, slotIdx + 2); si++) {
-        if (si === slotIdx) continue;
-        const slot = setData.slots[si];
-        const sel = setSlotSelections[si];
-        if (slot.tracks[sel]) ids.push(slot.tracks[sel].id);
+function findDefaultSelection(tracks, anchorTrackId) {
+    if (!tracks || tracks.length === 0) return null;
+
+    // If anchor specified, find it
+    if (anchorTrackId != null) {
+        const idx = tracks.findIndex(t => t && t.id === anchorTrackId);
+        if (idx >= 0) return idx;
     }
-    return ids;
+
+    // Default to ~100 BPM level (index 4)
+    if (tracks[4]) return 4;
+    // Otherwise first non-null
+    return tracks.findIndex(t => t != null);
 }
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Drag Track from Drawer into Slot
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function onTrackDrop(e, slotId) {
+    e.preventDefault();
+    const col = e.currentTarget;
+    col.classList.remove("drag-over");
+
+    if (!setDragTrack) return;
+
+    // Capture drag data locally — dragend can clear setDragTrack during await
+    const drag = { ...setDragTrack };
+    setDragTrack = null;
+
+    const slot = setSlots.find(s => s.id === slotId);
+    if (!slot) return;
+
+    // If slot already has tracks from the same source, swap in-place
+    if (slot.source && slot.tracks.length > 0 &&
+        slot.source.type === drag.source_type &&
+        slot.source.id === drag.source_id) {
+
+        const dragBpm = drag.bpm || 100;
+
+        // Find the track slot closest to the dragged track's BPM
+        let bestIdx = 0;
+        let bestDist = Infinity;
+        slot.tracks.forEach((t, i) => {
+            if (!t) return;
+            const level = t.bpm_level || t.bpm || 100;
+            const dist = Math.abs(level - dragBpm);
+            if (dist < bestDist) {
+                bestDist = dist;
+                bestIdx = i;
+            }
+        });
+
+        // Replace that track with the dragged one
+        const replaced = slot.tracks[bestIdx];
+        slot.tracks[bestIdx] = {
+            id: drag.id,
+            title: drag.title || "",
+            artist: drag.artist || "",
+            bpm: drag.bpm,
+            key: drag.key || "",
+            year: drag.year || "",
+            bpm_level: replaced ? replaced.bpm_level : dragBpm,
+        };
+        slot.selectedTrackIndex = bestIdx;
+        renderSet();
+        return;
+    }
+
+    // Otherwise, assign as new source via API
+    const usedIds = getUsedTrackIds(slotId);
+
+    try {
+        const res = await fetch("/api/set-workshop/drag-track", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                track_id: drag.id,
+                source_type: drag.source_type,
+                source_id: drag.source_id,
+                tree_type: drag.tree_type || "",
+                used_track_ids: usedIds,
+            }),
+        });
+
+        if (!res.ok) {
+            console.error("Drag track failed:", res.status, await res.text());
+            return;
+        }
+        const data = await res.json();
+
+        slot.source = {
+            type: drag.source_type,
+            id: drag.source_id,
+            tree_type: drag.tree_type,
+            name: data.source ? data.source.name : "",
+        };
+        slot.tracks = data.tracks || [];
+
+        // Select the dragged track
+        const dragIdx = slot.tracks.findIndex(t => t && t.id === drag.id);
+        slot.selectedTrackIndex = dragIdx >= 0 ? dragIdx : findDefaultSelection(slot.tracks);
+
+        renderSet();
+    } catch (e2) {
+        console.error("Drag track failed:", e2);
+    }
+}
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Play All
 // ═══════════════════════════════════════════════════════════════════════════
 
-let setPlayAllIndex = -1;
-let setPlayAllActive = false;
-let setPlayAllAdvanceCleanup = null;
+function togglePlayAll() {
+    if (setPlayAllActive) {
+        stopSetPlayAll();
+    } else {
+        playAllSet();
+    }
+}
 
 function playAllSet() {
-    if (!setData) return;
-    const btn = document.getElementById("set-play-all-btn");
-
-    if (setPlayAllActive) {
-        // Stop
-        stopSetPlayAll();
-        return;
-    }
-
     setPlayAllActive = true;
     setPlayAllIndex = 0;
-    btn.textContent = "Stop";
-    btn.classList.add("play-all-playing");
+    document.getElementById("set-play-all-btn").textContent = "Stop";
 
-    playSetTrackAt(0);
+    // Find first slot with a selected track
+    const first = findNextPlayableSlot(0);
+    if (first >= 0) {
+        playSetTrackAt(first);
+    } else {
+        stopSetPlayAll();
+    }
+}
+
+function findNextPlayableSlot(fromIdx) {
+    for (let i = fromIdx; i < setSlots.length; i++) {
+        const slot = setSlots[i];
+        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 async function playSetTrackAt(idx) {
-    // Clean up previous advance listeners (prevents stale callbacks)
-    if (setPlayAllAdvanceCleanup) {
-        setPlayAllAdvanceCleanup();
-        setPlayAllAdvanceCleanup = null;
-    }
-
-    if (!setPlayAllActive || idx >= setData.slots.length) {
+    if (!setPlayAllActive || idx >= setSlots.length) {
         stopSetPlayAll();
         return;
     }
 
     setPlayAllIndex = idx;
 
-    // Highlight current column
-    document.querySelectorAll(".set-column").forEach(col => col.classList.remove("play-all-active"));
-    const col = document.querySelector(`.set-column[data-slot-index="${idx}"]`);
+    // Skip empty slots
+    const slot = setSlots[idx];
+    if (!slot || slot.selectedTrackIndex == null || !slot.tracks[slot.selectedTrackIndex]) {
+        const next = findNextPlayableSlot(idx + 1);
+        if (next >= 0) playSetTrackAt(next);
+        else stopSetPlayAll();
+        return;
+    }
+
+    // Highlight column
+    document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
+    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (col) {
         col.classList.add("play-all-active");
         col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
     }
 
-    const slot = setData.slots[idx];
-    const selIdx = setSlotSelections[idx] || 0;
-    const track = slot.tracks[selIdx];
+    const track = slot.tracks[slot.selectedTrackIndex];
+    const btn = getSlotPreviewBtn(idx);
 
-    if (track && typeof togglePreview === "function") {
-        const previewBtn = getSlotPreviewBtn(idx);
-
-        if (previewBtn) {
-            let advanced = false;
-            const advance = () => {
-                if (advanced) return;
-                advanced = true;
-                cleanup();
-                if (setPlayAllActive) playSetTrackAt(idx + 1);
-            };
-            const cleanup = () => {
-                previewAudio.removeEventListener("ended", advance);
-                previewAudio.removeEventListener("error", advance);
-            };
-
-            previewAudio.addEventListener("ended", advance);
-            previewAudio.addEventListener("error", advance);
-            setPlayAllAdvanceCleanup = cleanup;
-
-            // Call togglePreview and wait for it to resolve
-            await togglePreview(track.artist, track.title, previewBtn);
-
-            // If audio didn't start (no preview found), skip after a short pause
-            if (!advanced && (previewAudio.paused || previewAudio.src === "")) {
-                setTimeout(advance, 500);
+    // Set up audio ended listener
+    const audio = document.getElementById("preview-audio");
+    if (audio) {
+        const onEnded = () => {
+            audio.removeEventListener("ended", onEnded);
+            audio.removeEventListener("error", onEnded);
+            if (setPlayAllActive) {
+                const next = findNextPlayableSlot(idx + 1);
+                if (next >= 0) playSetTrackAt(next);
+                else stopSetPlayAll();
             }
-        } else {
-            setTimeout(() => playSetTrackAt(idx + 1), 100);
-        }
+        };
+        audio.addEventListener("ended", onEnded);
+        audio.addEventListener("error", onEnded);
+    }
+
+    // Play
+    if (typeof togglePreview === "function" && btn) {
+        togglePreview(track.artist, track.title, btn);
     } else {
-        setTimeout(() => playSetTrackAt(idx + 1), 100);
+        // No preview available, skip after short delay
+        setTimeout(() => {
+            if (setPlayAllActive) {
+                const next = findNextPlayableSlot(idx + 1);
+                if (next >= 0) playSetTrackAt(next);
+                else stopSetPlayAll();
+            }
+        }, 500);
     }
 }
 
 function stopSetPlayAll() {
-    if (setPlayAllAdvanceCleanup) {
-        setPlayAllAdvanceCleanup();
-        setPlayAllAdvanceCleanup = null;
-    }
-
     setPlayAllActive = false;
-    setPlayAllIndex = -1;
-
-    const btn = document.getElementById("set-play-all-btn");
-    btn.textContent = "Play All";
-    btn.classList.remove("play-all-playing");
-
-    document.querySelectorAll(".set-column").forEach(col => col.classList.remove("play-all-active"));
+    document.getElementById("set-play-all-btn").textContent = "Play All";
+    document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
 
     // Stop audio
-    if (typeof previewAudio !== "undefined") {
-        previewAudio.pause();
-        previewAudio.src = "";
+    const audio = document.getElementById("preview-audio");
+    if (audio && !audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
     }
-    if (typeof resetAllPreviewButtons === "function") resetAllPreviewButtons();
+
+    // Reset any playing preview buttons
+    document.querySelectorAll(".btn-preview.playing").forEach(btn => {
+        btn.textContent = "\u25B6";
+        btn.classList.remove("playing");
+    });
 }
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Export M3U
 // ═══════════════════════════════════════════════════════════════════════════
 
 async function exportSet() {
-    if (!setData) return;
+    const slots = setSlots
+        .filter(s => s.selectedTrackIndex != null && s.tracks[s.selectedTrackIndex])
+        .map(s => ({ track_id: s.tracks[s.selectedTrackIndex].id }));
 
-    const slots = setData.slots.map((slot, i) => ({
-        track_id: slot.tracks[setSlotSelections[i]]?.id,
-    }));
+    if (slots.length === 0) {
+        alert("No tracks selected in the set.");
+        return;
+    }
+
+    const totalMinutes = setSlots.length * 3;
 
     try {
         const res = await fetch("/api/set-workshop/export-m3u", {
@@ -737,7 +1148,7 @@ async function exportSet() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 slots,
-                name: `DJ_Set_${setSettings.duration}min`,
+                name: `DJ_Set_${totalMinutes}min`,
             }),
         });
 
@@ -746,7 +1157,7 @@ async function exportSet() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `DJ_Set_${setSettings.duration}min.m3u8`;
+            a.download = `DJ_Set_${totalMinutes}min.m3u8`;
             a.click();
             URL.revokeObjectURL(url);
         }
@@ -755,122 +1166,74 @@ async function exportSet() {
     }
 }
 
+
 // ═══════════════════════════════════════════════════════════════════════════
-// Settings Panel
+// Push to Set Workshop (called from other tabs)
 // ═══════════════════════════════════════════════════════════════════════════
 
-function toggleSettings() {
-    const panel = document.getElementById("set-settings-panel");
-    panel.classList.toggle("open");
-    panel.classList.toggle("hidden", !panel.classList.contains("open"));
-}
-
-async function applySettings() {
-    // Read settings from panel
-    setSettings.energyPreset = document.getElementById("set-energy-preset").value;
-    setSettings.keyPreset = document.getElementById("set-key-preset").value;
-    setSettings.startKey = document.getElementById("set-start-key").value;
-    setSettings.treeType = document.getElementById("set-tree-type").value;
-    setSettings.vibePreset = document.getElementById("set-vibe-preset")?.value || "journey";
-    setSettings.bpmMin = parseInt(document.getElementById("set-bpm-min").value) || 70;
-    setSettings.bpmMax = parseInt(document.getElementById("set-bpm-max").value) || 140;
-
-    // Discard old vibe assignments so the backend auto-fills fresh vibes
-    // from the (possibly new) tree type and vibe preset
-    setData = null;
-
-    toggleSettings();
-    await loadPresets();   // ensure vibe options match the selected tree type
-    await generateSet();
-}
-
-async function previewEnergyWave() {
-    const container = document.getElementById("set-energy-preview");
-    if (!container) return;
-
-    const numSlots = setSettings.duration / 3;
-    try {
-        const res = await fetch(
-            `/api/set-workshop/energy-wave?preset=${setSettings.energyPreset}` +
-            `&num_slots=${numSlots}&bpm_min=${setSettings.bpmMin}&bpm_max=${setSettings.bpmMax}`
-        );
-        const data = await res.json();
-        const wave = data.wave;
-        if (!wave || !wave.length) return;
-
-        const w = container.clientWidth || 260;
-        const h = 50;
-        const minB = setSettings.bpmMin;
-        const maxB = setSettings.bpmMax;
-        const rangeB = maxB - minB || 1;
-
-        const pts = wave.map((bpm, i) => {
-            const x = (i / (wave.length - 1)) * w;
-            const y = h - ((bpm - minB) / rangeB) * h;
-            return `${x},${y}`;
-        });
-
-        container.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-            <polyline class="set-energy-preview-line" points="${pts.join(" ")}" />
-        </svg>`;
-    } catch (e) {
-        console.error("Energy wave preview failed:", e);
+async function pushToSetWorkshop(trackIds, name, sourceType, sourceId, treeType) {
+    if (!trackIds || trackIds.length === 0) {
+        alert("No tracks to push.");
+        return;
     }
+
+    // Switch to Set Workshop tab
+    if (typeof switchToTab === "function") {
+        switchToTab("setbuilder");
+    }
+
+    await new Promise(r => setTimeout(r, 100));
+
+    // Open drawer in detail mode — user drags tracks to slots
+    openDrawer("detail", null);
+    loadDrawerSourceDetail({
+        type: sourceType || "adhoc",
+        id: sourceId || null,
+        tree_type: treeType || null,
+    });
+
+    showToast(`"${name || "Source"}" loaded \u2014 drag tracks to slots`);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Tooltip
-// ═══════════════════════════════════════════════════════════════════════════
-
-function showTooltip(e, track, slot) {
-    if (!setTooltipEl) return;
-    setTooltipEl.innerHTML = `
-        <div class="tt-title">${escHtml(track.title)}</div>
-        <div class="tt-artist">${escHtml(track.artist)}</div>
-        <div class="tt-meta">
-            <span>BPM: ${track.bpm}</span>
-            <span>Key: ${track.key}</span>
-            ${track.year ? `<span>Year: ${track.year}</span>` : ""}
-        </div>
-    `;
-    setTooltipEl.classList.add("visible");
-    setTooltipEl.style.left = `${e.clientX + 12}px`;
-    setTooltipEl.style.top = `${e.clientY - 10}px`;
-}
-
-function hideTooltip() {
-    if (setTooltipEl) setTooltipEl.classList.remove("visible");
-}
-
-function escHtml(str) {
-    const d = document.createElement("div");
-    d.textContent = str || "";
-    return d.innerHTML;
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Helpers
 // ═══════════════════════════════════════════════════════════════════════════
 
 function bpmToY(bpm) {
-    // Convert BPM value to Y pixel position in the grid area
-    // BPM_MAX at top (y = SET_GRID_PAD), BPM_MIN at bottom (y = SET_GRID_PAD + SET_GRID_H)
-    const pct = (bpm - SET_BPM_MIN) / (SET_BPM_MAX - SET_BPM_MIN);
-    return SET_GRID_PAD + SET_GRID_H * (1 - pct);
+    // Map BPM to Y coordinate: 150 at top (SET_GRID_PAD), 60 at bottom
+    return SET_GRID_PAD + SET_GRID_H * (1 - (bpm - SET_BPM_MIN) / (SET_BPM_MAX - SET_BPM_MIN));
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Keyboard Navigation
-// ═══════════════════════════════════════════════════════════════════════════
+function escHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
 
-document.addEventListener("keydown", (e) => {
-    if (!setData) return;
-    // Only handle if Set Workshop tab is active
-    const tab = document.getElementById("tab-setbuilder");
-    if (!tab || tab.classList.contains("hidden")) return;
+function showTooltip(e, track) {
+    if (!setTooltipEl) return;
+    setTooltipEl.innerHTML = `
+        <div class="tt-title">${escHtml(track.title)}</div>
+        <div class="tt-artist">${escHtml(track.artist)}</div>
+        <div class="tt-meta">
+            ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+            ${track.key ? `<span>${escHtml(track.key)}</span>` : ""}
+            ${track.year ? `<span>${track.year}</span>` : ""}
+        </div>
+    `;
+    setTooltipEl.classList.add("visible");
+    setTooltipEl.style.left = `${e.clientX + 12}px`;
+    setTooltipEl.style.top = `${e.clientY + 12}px`;
+}
 
-    if (e.key === "Escape" && setPlayAllActive) {
-        stopSetPlayAll();
-        e.preventDefault();
-    }
-});
+function hideTooltip() {
+    if (setTooltipEl) setTooltipEl.classList.remove("visible");
+}
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "set-push-toast";
+    toast.textContent = message;
+    document.getElementById("tab-setbuilder").appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+}

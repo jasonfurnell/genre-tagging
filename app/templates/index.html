@@ -193,38 +193,28 @@
         <!-- Toolbar -->
         <div class="set-toolbar">
             <div class="set-toolbar-left">
-                <div class="set-duration-toggle">
-                    <button class="set-dur-btn active" data-dur="60">1 Hour</button>
-                    <button class="set-dur-btn" data-dur="120">2 Hours</button>
+                <span class="set-toolbar-title">Set Workshop</span>
+                <div class="set-length-selector">
+                    <button class="set-length-btn active" data-hours="1">1 hr</button>
+                    <button class="set-length-btn" data-hours="2">2 hr</button>
+                    <button class="set-length-btn" data-hours="3">3 hr</button>
                 </div>
-                <button id="set-generate-btn" class="btn btn-primary">Generate Set</button>
             </div>
             <div class="set-toolbar-right">
-                <button id="set-settings-btn" class="btn btn-secondary btn-sm">Settings</button>
                 <button id="set-play-all-btn" class="btn btn-secondary btn-sm" disabled>Play All</button>
                 <button id="set-export-btn" class="btn btn-secondary btn-sm" disabled>Export M3U</button>
             </div>
         </div>
 
-        <!-- Placeholder: shown before generation -->
-        <div id="set-placeholder" class="set-placeholder">
-            <h2>Set Workshop</h2>
-            <p>Build DJ sets with energy waves, key flow, and vibes from your collection tree.</p>
-            <p class="ws-placeholder">Configure settings and click Generate Set. Requires a built Collection Tree.</p>
-        </div>
-
-        <!-- Set Grid: shown after generation -->
-        <div id="set-grid-wrapper" class="set-grid-wrapper hidden">
+        <!-- Set Grid: always visible (starts empty) -->
+        <div id="set-grid-wrapper" class="set-grid-wrapper">
             <div id="set-grid-scroll" class="set-grid-scroll">
               <div class="set-grid-content">
 
-                <!-- Vibe Selector Rows -->
-                <div class="set-vibe-area">
-                    <div class="set-row-label">Vibe</div>
-                    <div class="set-vibe-rows">
-                        <div id="set-vibe-row-1" class="set-vibe-row"></div>
-                        <div id="set-vibe-row-2" class="set-vibe-row"></div>
-                    </div>
+                <!-- Slot Headers (source indicators + controls) -->
+                <div class="set-slot-headers-area">
+                    <div class="set-row-label">Source</div>
+                    <div id="set-slot-headers" class="set-slot-headers"></div>
                 </div>
 
                 <!-- Key Row -->
@@ -236,11 +226,11 @@
                 <!-- BPM Grid + Track Columns -->
                 <div class="set-bpm-area">
                     <div class="set-bpm-axis">
-                        <span class="set-bpm-label" data-bpm="140">140</span>
-                        <span class="set-bpm-label" data-bpm="120">120</span>
-                        <span class="set-bpm-label" data-bpm="100">100</span>
-                        <span class="set-bpm-label" data-bpm="80">80</span>
-                        <span class="set-bpm-label" data-bpm="60">60</span>
+                        <span class="set-bpm-label" data-bpm="150">150</span>
+                        <span class="set-bpm-label" data-bpm="130">130</span>
+                        <span class="set-bpm-label" data-bpm="110">110</span>
+                        <span class="set-bpm-label" data-bpm="90">90</span>
+                        <span class="set-bpm-label" data-bpm="70">70</span>
                     </div>
                     <div id="set-bpm-grid" class="set-bpm-grid">
                         <svg id="set-energy-svg" class="set-energy-svg"></svg>
@@ -267,56 +257,33 @@
 
 </main>
 
-<!-- Set Workshop Settings Slide-out -->
-<div id="set-settings-panel" class="set-settings-panel hidden">
-    <div class="set-settings-inner">
-        <div class="set-settings-header">
-            <h3>Set Settings</h3>
-            <button id="set-settings-close" class="btn btn-sm btn-secondary">Close</button>
+<!-- Set Workshop Drawer (right-hand slide-out) -->
+<div id="set-drawer" class="set-drawer">
+    <div class="set-drawer-inner">
+        <div class="set-drawer-header">
+            <h3 id="set-drawer-title">Source Browser</h3>
+            <button id="set-drawer-close" class="btn btn-sm btn-secondary">Close</button>
         </div>
 
-        <label for="set-energy-preset">Energy Wave</label>
-        <select id="set-energy-preset">
-            <option value="classic_arc">Classic Arc</option>
-            <option value="double_peak">Double Peak</option>
-            <option value="slow_burn">Slow Burn</option>
-            <option value="steady_groove">Steady Groove</option>
-        </select>
-        <div id="set-energy-preview" class="set-energy-preview"></div>
-
-        <label for="set-key-preset">Key Flow</label>
-        <select id="set-key-preset">
-            <option value="harmonic_flow">Harmonic Flow</option>
-            <option value="key_lock">Key Lock</option>
-            <option value="free">Free</option>
-        </select>
-
-        <label for="set-start-key">Start Key</label>
-        <select id="set-start-key"></select>
-
-        <label for="set-tree-type">Vibe Source</label>
-        <select id="set-tree-type">
-            <option value="genre">Genre Tree</option>
-            <option value="scene">Scene Tree</option>
-        </select>
-
-        <label for="set-vibe-preset">Vibe Progression</label>
-        <select id="set-vibe-preset">
-            <option value="journey">Journey</option>
-            <option value="focus">Deep Focus</option>
-            <option value="contrast">Contrast</option>
-            <option value="random">Shuffle</option>
-        </select>
-
-        <label>BPM Range</label>
-        <div class="set-bpm-range">
-            <input type="number" id="set-bpm-min" value="70" min="50" max="180">
-            <span class="set-range-sep">&ndash;</span>
-            <input type="number" id="set-bpm-max" value="140" min="50" max="180">
+        <!-- Browse Mode -->
+        <div id="set-drawer-browse" class="set-drawer-section hidden">
+            <input type="text" id="set-drawer-search" class="set-drawer-search" placeholder="Search playlists and tree nodes...">
+            <div id="set-drawer-playlists" class="set-drawer-list"></div>
+            <div id="set-drawer-genre-tree" class="set-drawer-tree"></div>
+            <div id="set-drawer-scene-tree" class="set-drawer-tree"></div>
         </div>
 
-        <div class="set-settings-actions">
-            <button id="set-settings-apply" class="btn btn-primary btn-sm">Apply &amp; Regenerate</button>
+        <!-- Detail Mode -->
+        <div id="set-drawer-detail" class="set-drawer-section hidden">
+            <div id="set-drawer-detail-header" class="set-drawer-detail-header"></div>
+            <div id="set-drawer-detail-tracks" class="set-drawer-track-list"></div>
+        </div>
+
+        <!-- Suggest Mode -->
+        <div id="set-drawer-suggest" class="set-drawer-section hidden">
+            <div id="set-drawer-suggest-similar" class="set-drawer-list"></div>
+            <div id="set-drawer-suggest-up" class="set-drawer-list"></div>
+            <div id="set-drawer-suggest-down" class="set-drawer-list"></div>
         </div>
     </div>
 </div>
