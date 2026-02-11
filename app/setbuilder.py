@@ -1,6 +1,7 @@
 """Set Workshop — DJ set builder with energy wave, key flow, and vibe progression."""
 
 import math
+import random
 import re
 from app.tree import find_node
 
@@ -189,6 +190,30 @@ def generate_key_wave(preset_name, num_slots, start_key="8B"):
 
 
 # ---------------------------------------------------------------------------
+# Vibe Presets
+# ---------------------------------------------------------------------------
+
+VIBE_PRESETS = {
+    "journey": {
+        "label": "Journey",
+        "description": "Progress through vibes in tree order",
+    },
+    "focus": {
+        "label": "Deep Focus",
+        "description": "Concentrate on 1–2 dominant vibes",
+    },
+    "contrast": {
+        "label": "Contrast",
+        "description": "Alternate between different lineages",
+    },
+    "random": {
+        "label": "Shuffle",
+        "description": "Random vibe order",
+    },
+}
+
+
+# ---------------------------------------------------------------------------
 # Vibe Layout Helpers
 # ---------------------------------------------------------------------------
 
@@ -243,14 +268,20 @@ def _collect_vibe_nodes(node, options, parent_title, depth):
         _collect_vibe_nodes(child, options, node.get("title", ""), depth + 1)
 
 
-def auto_fill_vibes(tree, num_slots, start_node_id=None):
+def auto_fill_vibes(tree, num_slots, start_node_id=None, preset="journey"):
     """Auto-fill vibe progression from tree leaves.
+
+    Preset strategies:
+      journey  — cycle through leaves in tree order (sequential chapters)
+      focus    — top 2 leaves by track count dominate ~70% of zones
+      contrast — pick leaves from different lineages, alternate them
+      random   — shuffle leaves then cycle
 
     Returns list of {row, col_start, col_end, node_id, title}.
     """
     layout = compute_vibe_layout(num_slots)
 
-    # Collect all leaves in tree order
+    # Collect all leaves in tree order, tagged with lineage index
     leaves = []
     for lineage in tree.get("lineages", []):
         _collect_leaves(lineage, leaves)
@@ -260,15 +291,18 @@ def auto_fill_vibes(tree, num_slots, start_node_id=None):
                  "col_end": p["col_end"], "node_id": None, "title": ""}
                 for p in layout]
 
-    # If start_node_id given, rotate leaves to start there
-    if start_node_id:
-        idx = next((i for i, l in enumerate(leaves) if l["id"] == start_node_id), 0)
-        leaves = leaves[idx:] + leaves[:idx]
+    # Apply preset strategy to reorder leaves
+    ordered = _apply_vibe_preset(leaves, tree, preset)
 
-    # Assign leaves to positions, cycling if needed
+    # If start_node_id given, rotate to start there
+    if start_node_id:
+        idx = next((i for i, l in enumerate(ordered) if l["id"] == start_node_id), 0)
+        ordered = ordered[idx:] + ordered[:idx]
+
+    # Assign to positions, cycling if needed
     result = []
     for i, pos in enumerate(layout):
-        leaf = leaves[i % len(leaves)]
+        leaf = ordered[i % len(ordered)]
         result.append({
             "row": pos["row"],
             "col_start": pos["col_start"],
@@ -277,6 +311,89 @@ def auto_fill_vibes(tree, num_slots, start_node_id=None):
             "title": leaf.get("title", ""),
         })
     return result
+
+
+def _apply_vibe_preset(leaves, tree, preset):
+    """Reorder leaves according to the chosen vibe preset."""
+    if preset == "random":
+        shuffled = list(leaves)
+        random.shuffle(shuffled)
+        return shuffled
+
+    if preset == "focus":
+        # Sort by track count descending; top 2 dominate ~70% of slots
+        by_count = sorted(leaves, key=lambda l: len(l.get("track_ids", [])), reverse=True)
+        primary = by_count[:2]
+        others = by_count[2:]
+        # Build sequence: 7 primary for every 3 others (≈70/30 split)
+        result = []
+        pi, oi = 0, 0
+        while len(result) < len(leaves):
+            for _ in range(7):
+                if len(result) >= len(leaves):
+                    break
+                result.append(primary[pi % len(primary)])
+                pi += 1
+            for _ in range(3):
+                if len(result) >= len(leaves):
+                    break
+                if others:
+                    result.append(others[oi % len(others)])
+                    oi += 1
+                else:
+                    result.append(primary[pi % len(primary)])
+                    pi += 1
+        return result
+
+    if preset == "contrast":
+        # Group leaves by lineage, pick one from each lineage in rotation
+        lineages = tree.get("lineages", [])
+        buckets = {lin.get("id"): [] for lin in lineages}
+        for leaf in leaves:
+            lin_id = _find_lineage_id(tree, leaf["id"])
+            if lin_id and lin_id in buckets:
+                buckets[lin_id].append(leaf)
+            else:
+                # Orphan — put in first bucket
+                first_key = next(iter(buckets), None)
+                if first_key:
+                    buckets[first_key].append(leaf)
+        # Sort buckets by size descending, take top 3
+        sorted_buckets = sorted(buckets.values(), key=len, reverse=True)
+        active = [b for b in sorted_buckets if b][:3]
+        if not active:
+            return leaves
+        # Interleave: one from each bucket in round-robin
+        result = []
+        idxs = [0] * len(active)
+        while len(result) < len(leaves):
+            for bi, bucket in enumerate(active):
+                if len(result) >= len(leaves):
+                    break
+                result.append(bucket[idxs[bi] % len(bucket)])
+                idxs[bi] += 1
+        return result
+
+    # "journey" (default): leaves already in tree order
+    return list(leaves)
+
+
+def _find_lineage_id(tree, node_id):
+    """Find which top-level lineage a node belongs to."""
+    for lineage in tree.get("lineages", []):
+        if _node_contains(lineage, node_id):
+            return lineage.get("id")
+    return None
+
+
+def _node_contains(node, target_id):
+    """Check if target_id is this node or any descendant."""
+    if node.get("id") == target_id:
+        return True
+    for child in node.get("children", []):
+        if _node_contains(child, target_id):
+            return True
+    return False
 
 
 def _collect_leaves(node, leaves):
@@ -446,7 +563,7 @@ def _sv(val):
 
 def generate_set(df, tree, tree_type, duration_minutes=60,
                  energy_preset="classic_arc", key_preset="harmonic_flow",
-                 start_key="8B", vibe_assignments=None,
+                 start_key="8B", vibe_assignments=None, vibe_preset="journey",
                  bpm_min=70, bpm_max=140, track_minutes=3):
     """Generate a complete DJ set.
 
@@ -460,7 +577,7 @@ def generate_set(df, tree, tree_type, duration_minutes=60,
 
     # Vibe assignments: use provided or auto-fill
     if not vibe_assignments:
-        vibes = auto_fill_vibes(tree, num_slots)
+        vibes = auto_fill_vibes(tree, num_slots, preset=vibe_preset)
     else:
         vibes = vibe_assignments
 
@@ -520,6 +637,7 @@ def generate_set(df, tree, tree_type, duration_minutes=60,
             "key_preset": key_preset,
             "start_key": start_key,
             "tree_type": tree_type,
+            "vibe_preset": vibe_preset,
             "bpm_min": bpm_min,
             "bpm_max": bpm_max,
         },

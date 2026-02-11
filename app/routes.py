@@ -37,7 +37,7 @@ from app.tree import (
 from app.setbuilder import (
     generate_set, generate_energy_wave, generate_key_wave,
     auto_fill_vibes, get_vibe_options, select_tracks_for_slot,
-    ENERGY_PRESETS, KEY_PRESETS,
+    ENERGY_PRESETS, KEY_PRESETS, VIBE_PRESETS,
 )
 
 api = Blueprint("api", __name__)
@@ -1908,6 +1908,8 @@ def set_workshop_presets():
                           for k, v in ENERGY_PRESETS.items()},
         "key_presets": {k: {"label": v["label"], "description": v["description"]}
                         for k, v in KEY_PRESETS.items()},
+        "vibe_presets": {k: {"label": v["label"], "description": v["description"]}
+                         for k, v in VIBE_PRESETS.items()},
         "vibe_options": vibes,
         "tree_available": tree is not None,
     })
@@ -1941,6 +1943,7 @@ def set_workshop_generate():
         key_preset=body.get("key_preset", "harmonic_flow"),
         start_key=body.get("start_key", "8B"),
         vibe_assignments=body.get("vibes") or None,
+        vibe_preset=body.get("vibe_preset", "journey"),
         bpm_min=body.get("bpm_min", 70),
         bpm_max=body.get("bpm_max", 140),
     )

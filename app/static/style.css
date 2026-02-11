@@ -1441,6 +1441,12 @@ tr.ws-seed-selected {
 .set-grid-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
 .set-grid-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
+/* -- Grid content: center when narrower than viewport ------------------- */
+.set-grid-content {
+    width: fit-content;
+    margin: 0 auto;
+}
+
 /* -- Row labels (left column) ------------------------------------------- */
 .set-row-label {
     width: 44px;
@@ -1549,7 +1555,7 @@ tr.ws-seed-selected {
 .set-bpm-label[data-bpm="60"]  { top: 425px; }
 
 .set-bpm-grid {
-    flex: 1;
+    flex: none;
     position: relative;
     height: 550px;
     overflow: visible;
@@ -1570,8 +1576,6 @@ tr.ws-seed-selected {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     pointer-events: none;
     z-index: 1;
 }

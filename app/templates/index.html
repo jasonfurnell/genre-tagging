@@ -216,6 +216,7 @@
         <!-- Set Grid: shown after generation -->
         <div id="set-grid-wrapper" class="set-grid-wrapper hidden">
             <div id="set-grid-scroll" class="set-grid-scroll">
+              <div class="set-grid-content">
 
                 <!-- Vibe Selector Rows -->
                 <div class="set-vibe-area">
@@ -259,6 +260,7 @@
                     <div id="set-time-row" class="set-time-row"></div>
                 </div>
 
+              </div>
             </div>
         </div>
     </div>
@@ -296,6 +298,14 @@
         <select id="set-tree-type">
             <option value="genre">Genre Tree</option>
             <option value="scene">Scene Tree</option>
+        </select>
+
+        <label for="set-vibe-preset">Vibe Progression</label>
+        <select id="set-vibe-preset">
+            <option value="journey">Journey</option>
+            <option value="focus">Deep Focus</option>
+            <option value="contrast">Contrast</option>
+            <option value="random">Shuffle</option>
         </select>
 
         <label>BPM Range</label>

@@ -11,6 +11,7 @@ const setSettings = {
     keyPreset: "harmonic_flow",
     startKey: "8B",
     treeType: "genre",
+    vibePreset: "journey",
     bpmMin: 70,
     bpmMax: 140,
 };
@@ -72,6 +73,12 @@ async function initSetBuilder() {
         setSettings.treeType = e.target.value;
         await loadPresets();
     });
+    const vibePresetEl = document.getElementById("set-vibe-preset");
+    if (vibePresetEl) {
+        vibePresetEl.addEventListener("change", e => {
+            setSettings.vibePreset = e.target.value;
+        });
+    }
 
     // Populate start key dropdown (1A–12B)
     populateKeyDropdown();
@@ -144,6 +151,7 @@ async function generateSet() {
                 key_preset: setSettings.keyPreset,
                 start_key: setSettings.startKey,
                 tree_type: setSettings.treeType,
+                vibe_preset: setSettings.vibePreset,
                 vibes: vibes.length ? vibes : undefined,
                 bpm_min: setSettings.bpmMin,
                 bpm_max: setSettings.bpmMax,
@@ -320,7 +328,10 @@ function renderEnergyWave() {
     const fillD = lineD +
         ` L ${points[n - 1].x} ${SET_AREA_H} L ${points[0].x} ${SET_AREA_H} Z`;
 
-    svg.setAttribute("viewBox", `0 0 ${n * slotW} ${SET_AREA_H}`);
+    const totalW = n * slotW;
+    svg.setAttribute("viewBox", `0 0 ${totalW} ${SET_AREA_H}`);
+    svg.style.width = `${totalW}px`;
+    svg.style.height = `${SET_AREA_H}px`;
     svg.innerHTML = `
         <path class="set-energy-fill" d="${fillD}" />
         <path class="set-energy-line" d="${lineD}" />
@@ -379,10 +390,10 @@ function renderTrackColumns() {
                     loadArtwork(track.artist, track.title, img);
                 }
 
-                // Click to select
+                // Click to select + preview
                 el.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    selectTrack(si, ti);
+                    onTrackClick(si, ti);
                 });
 
                 // Hover tooltip
@@ -480,6 +491,44 @@ function selectTrack(slotIdx, trackIdx) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// Track Click: Select + Preview
+// ═══════════════════════════════════════════════════════════════════════════
+
+function onTrackClick(slotIdx, trackIdx) {
+    const slot = setData.slots[slotIdx];
+    if (!slot || trackIdx < 0 || trackIdx >= slot.tracks.length) return;
+
+    const wasSelected = setSlotSelections[slotIdx] === trackIdx;
+    const track = slot.tracks[trackIdx];
+    if (!track || typeof togglePreview !== "function") return;
+
+    // Select if not already selected
+    if (!wasSelected) {
+        selectTrack(slotIdx, trackIdx);
+    }
+
+    if (setPlayAllActive && !wasSelected) {
+        // During play-all + clicked a non-selected track:
+        // redirect the play-all sequence to continue from this slot
+        playSetTrackAt(slotIdx);
+    } else {
+        // Normal click: preview the track (toggle play/pause)
+        const previewBtn = getSlotPreviewBtn(slotIdx);
+        if (previewBtn) {
+            togglePreview(track.artist, track.title, previewBtn);
+        }
+    }
+}
+
+function getSlotPreviewBtn(slotIdx) {
+    const row = document.getElementById("set-preview-row");
+    if (row && row.children[slotIdx]) {
+        return row.children[slotIdx].querySelector(".btn-preview");
+    }
+    return null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // Vibe Dropdown Change → Re-fetch tracks
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -567,6 +616,7 @@ function getAdjacentUsedIds(slotIdx) {
 
 let setPlayAllIndex = -1;
 let setPlayAllActive = false;
+let setPlayAllAdvanceCleanup = null;
 
 function playAllSet() {
     if (!setData) return;
@@ -587,6 +637,12 @@ function playAllSet() {
 }
 
 async function playSetTrackAt(idx) {
+    // Clean up previous advance listeners (prevents stale callbacks)
+    if (setPlayAllAdvanceCleanup) {
+        setPlayAllAdvanceCleanup();
+        setPlayAllAdvanceCleanup = null;
+    }
+
     if (!setPlayAllActive || idx >= setData.slots.length) {
         stopSetPlayAll();
         return;
@@ -607,20 +663,24 @@ async function playSetTrackAt(idx) {
     const track = slot.tracks[selIdx];
 
     if (track && typeof togglePreview === "function") {
-        const previewBtn = col?.querySelector(".btn-preview") ||
-            document.getElementById("set-preview-row")?.children[idx]?.querySelector(".btn-preview");
+        const previewBtn = getSlotPreviewBtn(idx);
 
         if (previewBtn) {
             let advanced = false;
             const advance = () => {
                 if (advanced) return;
                 advanced = true;
-                previewAudio.removeEventListener("ended", advance);
-                previewAudio.removeEventListener("error", advance);
+                cleanup();
                 if (setPlayAllActive) playSetTrackAt(idx + 1);
             };
+            const cleanup = () => {
+                previewAudio.removeEventListener("ended", advance);
+                previewAudio.removeEventListener("error", advance);
+            };
+
             previewAudio.addEventListener("ended", advance);
             previewAudio.addEventListener("error", advance);
+            setPlayAllAdvanceCleanup = cleanup;
 
             // Call togglePreview and wait for it to resolve
             await togglePreview(track.artist, track.title, previewBtn);
@@ -638,6 +698,11 @@ async function playSetTrackAt(idx) {
 }
 
 function stopSetPlayAll() {
+    if (setPlayAllAdvanceCleanup) {
+        setPlayAllAdvanceCleanup();
+        setPlayAllAdvanceCleanup = null;
+    }
+
     setPlayAllActive = false;
     setPlayAllIndex = -1;
 
@@ -706,10 +771,16 @@ async function applySettings() {
     setSettings.keyPreset = document.getElementById("set-key-preset").value;
     setSettings.startKey = document.getElementById("set-start-key").value;
     setSettings.treeType = document.getElementById("set-tree-type").value;
+    setSettings.vibePreset = document.getElementById("set-vibe-preset")?.value || "journey";
     setSettings.bpmMin = parseInt(document.getElementById("set-bpm-min").value) || 70;
     setSettings.bpmMax = parseInt(document.getElementById("set-bpm-max").value) || 140;
 
+    // Discard old vibe assignments so the backend auto-fills fresh vibes
+    // from the (possibly new) tree type and vibe preset
+    setData = null;
+
     toggleSettings();
+    await loadPresets();   // ensure vibe options match the selected tree type
     await generateSet();
 }
 
