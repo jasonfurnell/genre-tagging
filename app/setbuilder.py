@@ -500,3 +500,78 @@ def get_source_detail(df, source_type, source_id, tree=None):
 
     info["tracks"] = tracks
     return info
+
+
+# ---------------------------------------------------------------------------
+# Track Search & Context (for drawer search mode)
+# ---------------------------------------------------------------------------
+
+def find_leaf_for_track(tree, track_id):
+    """Return the leaf node whose track_ids contains track_id, or None."""
+    if not tree:
+        return None
+    for lineage in tree.get("lineages", []):
+        result = _find_leaf_with_track(lineage, track_id)
+        if result:
+            return result
+    return None
+
+
+def _find_leaf_with_track(node, track_id):
+    """Recursively find a leaf that contains track_id."""
+    if node.get("is_leaf") or not node.get("children"):
+        if track_id in node.get("track_ids", []):
+            return node
+        return None
+    for child in node.get("children", []):
+        result = _find_leaf_with_track(child, track_id)
+        if result:
+            return result
+    return None
+
+
+def build_track_context(df, track_id, genre_tree, scene_tree):
+    """Build the 2-card context for a selected track (genre leaf + scene leaf).
+
+    Returns {genre_leaf: {...}, scene_leaf: {...}}.
+    """
+    if track_id not in df.index:
+        return None
+
+    genre_leaf = _build_leaf_card(df, genre_tree, track_id, "genre")
+    scene_leaf = _build_leaf_card(df, scene_tree, track_id, "scene")
+
+    return {"genre_leaf": genre_leaf, "scene_leaf": scene_leaf}
+
+
+def _build_leaf_card(df, tree, track_id, tree_type):
+    """Build a card dict for the leaf node containing track_id."""
+    label = "Genre" if tree_type == "genre" else "Scene"
+    if not tree:
+        return {"available": False, "reason": f"{label} tree not built"}
+
+    leaf = find_leaf_for_track(tree, track_id)
+    if not leaf:
+        return {"available": False, "reason": f"Track not assigned in {label.lower()} tree"}
+
+    leaf_track_ids = leaf.get("track_ids", [])
+    sample_tracks = []
+    for tid in leaf_track_ids:
+        if tid == track_id:
+            continue
+        t = _track_dict(df, tid)
+        if t:
+            sample_tracks.append(t)
+        if len(sample_tracks) >= 10:
+            break
+
+    return {
+        "available": True,
+        "node_id": leaf.get("id", ""),
+        "name": leaf.get("title", "Unknown"),
+        "description": leaf.get("description", ""),
+        "track_count": len(leaf_track_ids),
+        "tree_type": tree_type,
+        "tracks": sample_tracks,
+        "examples": leaf.get("examples", []),
+    }

@@ -201,6 +201,7 @@
                 </div>
             </div>
             <div class="set-toolbar-right">
+                <button id="set-search-btn" class="btn btn-secondary btn-sm">Search</button>
                 <button id="set-play-all-btn" class="btn btn-secondary btn-sm" disabled>Play All</button>
                 <button id="set-export-btn" class="btn btn-secondary btn-sm" disabled>Export M3U</button>
             </div>
@@ -284,6 +285,18 @@
             <div id="set-drawer-suggest-similar" class="set-drawer-list"></div>
             <div id="set-drawer-suggest-up" class="set-drawer-list"></div>
             <div id="set-drawer-suggest-down" class="set-drawer-list"></div>
+        </div>
+
+        <!-- Track Search Mode -->
+        <div id="set-drawer-search-mode" class="set-drawer-section hidden">
+            <input type="text" id="set-drawer-track-search" class="set-drawer-search"
+                   placeholder="Search by title or artist...">
+            <div id="set-drawer-search-results" class="set-drawer-track-list"></div>
+            <div id="set-drawer-selected-track" class="set-drawer-selected-track hidden"></div>
+            <div id="set-drawer-search-context" class="set-drawer-search-context hidden">
+                <div id="set-search-card-genre" class="set-search-card"></div>
+                <div id="set-search-card-scene" class="set-search-card"></div>
+            </div>
         </div>
     </div>
 </div>

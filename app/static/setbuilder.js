@@ -9,7 +9,7 @@ let setHours = 1;   // 1, 2, or 3 hours
 
 // ── Drawer State ──
 let setDrawerOpen = false;
-let setDrawerMode = null;         // "browse" | "detail" | "suggest"
+let setDrawerMode = null;         // "browse" | "detail" | "suggest" | "search"
 let setDrawerTargetSlotId = null; // which slot the drawer is acting on
 
 // ── Drag State ──
@@ -54,11 +54,29 @@ async function initSetBuilder() {
     // Drawer close
     document.getElementById("set-drawer-close").addEventListener("click", closeDrawer);
 
-    // Drawer search (debounced)
+    // Drawer source search (debounced)
     let searchTimer = null;
     document.getElementById("set-drawer-search").addEventListener("input", (e) => {
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => loadDrawerSources(e.target.value), 300);
+    });
+
+    // Track search button
+    document.getElementById("set-search-btn").addEventListener("click", () => {
+        openDrawer("search", null);
+    });
+
+    // Track search input (debounced)
+    let trackSearchTimer = null;
+    document.getElementById("set-drawer-track-search").addEventListener("input", (e) => {
+        clearTimeout(trackSearchTimer);
+        const q = e.target.value.trim();
+        if (q.length < 2) {
+            document.getElementById("set-drawer-search-results").innerHTML = "";
+            document.getElementById("set-drawer-search-context").classList.add("hidden");
+            return;
+        }
+        trackSearchTimer = setTimeout(() => searchTracks(q), 300);
     });
 
     // Keyboard
@@ -568,6 +586,15 @@ function openDrawer(mode, targetSlotId) {
         if (slot && slot.source) {
             loadDrawerSuggestions(slot.source);
         }
+    } else if (mode === "search") {
+        document.getElementById("set-drawer-search-mode").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = "Track Search";
+        document.getElementById("set-drawer-track-search").value = "";
+        document.getElementById("set-drawer-search-results").innerHTML = "";
+        document.getElementById("set-drawer-selected-track").classList.add("hidden");
+        document.getElementById("set-drawer-selected-track").innerHTML = "";
+        document.getElementById("set-drawer-search-context").classList.add("hidden");
+        setTimeout(() => document.getElementById("set-drawer-track-search").focus(), 350);
     }
 
     // After layout shift, keep the target slot visible
@@ -1236,4 +1263,294 @@ function showToast(message) {
     toast.textContent = message;
     document.getElementById("tab-setbuilder").appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Track Search (drawer search mode)
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function searchTracks(query) {
+    try {
+        const res = await fetch("/api/set-workshop/track-search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        renderSearchResults(data.tracks);
+        document.getElementById("set-drawer-selected-track").classList.add("hidden");
+        document.getElementById("set-drawer-selected-track").innerHTML = "";
+        document.getElementById("set-drawer-search-context").classList.add("hidden");
+    } catch (e) {
+        console.error("Track search failed:", e);
+    }
+}
+
+
+function renderSearchResults(tracks) {
+    const container = document.getElementById("set-drawer-search-results");
+    container.innerHTML = "";
+
+    if (!tracks || tracks.length === 0) {
+        container.innerHTML = `<div class="set-drawer-empty">No tracks found</div>`;
+        return;
+    }
+
+    for (const track of tracks) {
+        const row = document.createElement("div");
+        row.className = "set-drawer-track-row set-search-result-row";
+
+        const safeArtist = escHtml(track.artist || "");
+        const safeTitle = escHtml(track.title || "");
+
+        row.innerHTML = `
+            <img class="set-drawer-track-art" alt="" draggable="true">
+            <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
+            <div class="set-drawer-track-info">
+                <span class="set-drawer-track-title">${safeTitle}</span>
+                <span class="set-drawer-track-artist">${safeArtist}</span>
+            </div>
+            <div class="set-drawer-track-meta">
+                ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+                ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
+                ${track.year ? `<span>${track.year}</span>` : ""}
+            </div>
+        `;
+
+        // Artwork
+        const img = row.querySelector("img");
+        if (typeof loadArtwork === "function") {
+            loadArtwork(track.artist, track.title, img);
+        }
+
+        // Drag
+        img.addEventListener("dragstart", (e) => {
+            setDragTrack = {
+                id: track.id, artist: track.artist, title: track.title,
+                bpm: track.bpm, key: track.key || "", year: track.year || "",
+                source_type: "adhoc", source_id: null, track_ids: [track.id],
+            };
+            e.dataTransfer.setData("text/plain", String(track.id));
+            e.dataTransfer.effectAllowed = "copy";
+        });
+        img.addEventListener("dragend", () => { setDragTrack = null; });
+
+        // Preview
+        row.querySelector(".btn-preview").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(track.artist, track.title, e.currentTarget);
+            }
+        });
+
+        // Click to select track: clear results, load context cards
+        row.addEventListener("click", () => {
+            document.getElementById("set-drawer-track-search").value = "";
+            container.innerHTML = "";
+            loadTrackContext(track);
+        });
+
+        container.appendChild(row);
+    }
+}
+
+
+async function loadTrackContext(track) {
+    const selectedDiv = document.getElementById("set-drawer-selected-track");
+    const contextDiv = document.getElementById("set-drawer-search-context");
+
+    // Show selected track immediately (drag source updated once genre leaf loads)
+    selectedDiv.classList.remove("hidden");
+    renderSelectedTrack(selectedDiv, track, null);
+
+    contextDiv.classList.remove("hidden");
+
+    // Loading state
+    ["set-search-card-genre", "set-search-card-scene"].forEach(id => {
+        document.getElementById(id).innerHTML = `<div class="set-search-card-loading">Loading\u2026</div>`;
+    });
+
+    try {
+        const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
+        if (!res.ok) {
+            contextDiv.innerHTML = `<div class="set-drawer-empty">Failed to load context</div>`;
+            return;
+        }
+        const data = await res.json();
+
+        // Re-render selected track with genre leaf as drag source
+        const genreLeaf = data.genre_leaf && data.genre_leaf.available ? data.genre_leaf : null;
+        renderSelectedTrack(selectedDiv, track, genreLeaf);
+
+        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree Leaf", "tree_node", "genre");
+        renderSearchCard("set-search-card-scene", data.scene_leaf, "Scene Tree Leaf", "tree_node", "scene");
+
+        contextDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } catch (e) {
+        console.error("Track context failed:", e);
+        contextDiv.innerHTML = `<div class="set-drawer-empty">Failed to load context</div>`;
+    }
+}
+
+
+function renderSelectedTrack(container, track, genreLeaf) {
+    container.innerHTML = "";
+
+    const safeArtist = escHtml(track.artist || "");
+    const safeTitle = escHtml(track.title || "");
+
+    const row = document.createElement("div");
+    row.className = "set-drawer-track-row set-selected-track-row";
+    row.innerHTML = `
+        <img class="set-selected-track-art" alt="" draggable="true">
+        <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
+        <div class="set-drawer-track-info">
+            <span class="set-drawer-track-title">${safeTitle}</span>
+            <span class="set-drawer-track-artist">${safeArtist}</span>
+        </div>
+        <div class="set-drawer-track-meta">
+            ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+            ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
+            ${track.year ? `<span>${track.year}</span>` : ""}
+        </div>
+    `;
+
+    // Artwork
+    const img = row.querySelector("img");
+    if (typeof loadArtwork === "function") {
+        loadArtwork(track.artist, track.title, img);
+    }
+
+    // Drag — source is the genre leaf (so slot gets filled from that leaf's track pool)
+    img.addEventListener("dragstart", (e) => {
+        setDragTrack = {
+            id: track.id, artist: track.artist, title: track.title,
+            bpm: track.bpm, key: track.key || "", year: track.year || "",
+            source_type: genreLeaf ? "tree_node" : "adhoc",
+            source_id: genreLeaf ? genreLeaf.node_id : null,
+            tree_type: genreLeaf ? "genre" : "",
+            track_ids: genreLeaf ? [] : [track.id],
+            name: genreLeaf ? genreLeaf.name : safeTitle,
+        };
+        e.dataTransfer.setData("text/plain", String(track.id));
+        e.dataTransfer.effectAllowed = "copy";
+    });
+    img.addEventListener("dragend", () => { setDragTrack = null; });
+
+    // Preview
+    row.querySelector(".btn-preview").addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (typeof togglePreview === "function") {
+            togglePreview(track.artist, track.title, e.currentTarget);
+        }
+    });
+
+    container.appendChild(row);
+}
+
+
+function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType) {
+    const div = document.getElementById(containerId);
+
+    if (!cardData) {
+        div.innerHTML = `<div class="set-search-card-empty">Not available</div>`;
+        return;
+    }
+
+    // Unavailable tree cards
+    if (cardData.available === false) {
+        div.innerHTML = `
+            <div class="set-search-card-header"><h4>${escHtml(cardTitle)}</h4></div>
+            <div class="set-search-card-empty">${escHtml(cardData.reason)}</div>
+        `;
+        return;
+    }
+
+    const name = cardData.name || cardTitle;
+    const desc = cardData.description || "";
+    const count = cardData.track_count || 0;
+    const tracks = cardData.tracks || [];
+
+    div.innerHTML = "";
+
+    // Header
+    const header = document.createElement("div");
+    header.className = "set-search-card-header";
+    header.innerHTML = `
+        <h4>${escHtml(name)}</h4>
+        ${desc ? `<p class="set-search-card-desc">${escHtml(desc)}</p>` : ""}
+        <span class="set-search-card-count">${count} tracks</span>
+    `;
+    div.appendChild(header);
+
+    if (tracks.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "set-search-card-empty";
+        empty.textContent = "No tracks";
+        div.appendChild(empty);
+        return;
+    }
+
+    // Track list
+    const list = document.createElement("div");
+    list.className = "set-search-card-tracks";
+
+    for (const track of tracks) {
+        const row = document.createElement("div");
+        row.className = "set-drawer-track-row";
+
+        const safeArtist = escHtml(track.artist || "");
+        const safeTitle = escHtml(track.title || "");
+
+        row.innerHTML = `
+            <img class="set-drawer-track-art" alt="" draggable="true">
+            <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
+            <div class="set-drawer-track-info">
+                <span class="set-drawer-track-title">${safeTitle}</span>
+                <span class="set-drawer-track-artist">${safeArtist}</span>
+            </div>
+            <div class="set-drawer-track-meta">
+                ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+                ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
+            </div>
+        `;
+
+        // Artwork
+        const img = row.querySelector("img");
+        if (typeof loadArtwork === "function") {
+            loadArtwork(track.artist, track.title, img);
+        }
+
+        // Drag — tree leaf cards use tree_node source, similar uses adhoc
+        const dragInfo = sourceType === "tree_node" && cardData.node_id
+            ? { type: "tree_node", id: cardData.node_id, tree_type: treeType }
+            : { type: "adhoc", id: null, track_ids: tracks.map(t => t.id) };
+
+        img.addEventListener("dragstart", (e) => {
+            setDragTrack = {
+                id: track.id, artist: track.artist, title: track.title,
+                bpm: track.bpm, key: track.key || "", year: track.year || "",
+                source_type: dragInfo.type, source_id: dragInfo.id,
+                tree_type: dragInfo.tree_type || "",
+                track_ids: dragInfo.track_ids || [], name: name,
+            };
+            e.dataTransfer.setData("text/plain", String(track.id));
+            e.dataTransfer.effectAllowed = "copy";
+        });
+        img.addEventListener("dragend", () => { setDragTrack = null; });
+
+        // Preview
+        row.querySelector(".btn-preview").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(track.artist, track.title, e.currentTarget);
+            }
+        });
+
+        list.appendChild(row);
+    }
+
+    div.appendChild(list);
 }

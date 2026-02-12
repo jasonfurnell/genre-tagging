@@ -37,6 +37,7 @@ from app.tree import (
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source, suggest_similar_sources,
+    build_track_context,
 )
 
 api = Blueprint("api", __name__)
@@ -2021,6 +2022,54 @@ def set_workshop_suggest_sources():
 
     tree = _resolve_tree(tree_type)
     result = suggest_similar_sources(df, tree, source_type, source_id)
+    return jsonify(result)
+
+
+@api.route("/api/set-workshop/track-search", methods=["POST"])
+def set_workshop_track_search():
+    """Search tracks by title or artist keyword for the drawer search mode."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    query = (body.get("query") or "").strip()
+    if not query or len(query) < 2:
+        return jsonify({"tracks": [], "count": 0})
+
+    q_lower = query.lower()
+    matches = []
+    for idx in df.index:
+        row = df.loc[idx]
+        title = str(row.get("title", "")).lower()
+        artist = str(row.get("artist", "")).lower()
+        if q_lower in title or q_lower in artist:
+            matches.append(idx)
+        if len(matches) >= 50:
+            break
+
+    tracks = _tracks_from_ids(df, matches)
+    return jsonify({"tracks": tracks, "count": len(tracks)})
+
+
+@api.route("/api/set-workshop/track-context/<int:track_id>")
+def set_workshop_track_context(track_id):
+    """Return 3-card context (similar, genre leaf, scene leaf) for a track."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    if track_id not in df.index:
+        return jsonify({"error": "Track not found"}), 404
+
+    genre_tree = _state.get("tree") or load_tree()
+    scene_tree = _state.get("scene_tree") or load_tree(
+        file_path=TREE_PROFILES["scene"]["file"])
+
+    result = build_track_context(df, track_id, genre_tree, scene_tree)
+    if not result:
+        return jsonify({"error": "Track not found"}), 404
+
     return jsonify(result)
 
 
