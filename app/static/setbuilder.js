@@ -23,6 +23,31 @@ let _setPlayAllOnEnded = null;  // current ended listener (for cleanup)
 // ── Auto-Save ──
 let _saveTimer = null;
 
+// ── Camelot Key Colors ──
+const CAMELOT_COLORS = {
+    "1A":"#7BEED9","1B":"#00D4D4","2A":"#4BF1A8","2B":"#00E67E",
+    "3A":"#90ED7D","3B":"#6FDB5E","4A":"#D5E96E","4B":"#C6D84E",
+    "5A":"#F5C895","5B":"#F5B270","6A":"#FFB3B3","6B":"#FF8FA3",
+    "7A":"#FF99C8","7B":"#FF6DB5","8A":"#EEA5D8","8B":"#E780CE",
+    "9A":"#D5B0E8","9B":"#C88FDE","10A":"#B8B5ED","10B":"#9F98E8",
+    "11A":"#98C9F1","11B":"#7BB2ED","12A":"#6DD9ED","12B":"#00C8E8",
+};
+function camelotColor(key) {
+    if (!key) return null;
+    let k = key.trim();
+    // Normalize: M/B/b → B (major), m/a/d/D → A (minor)... wait
+    // Camelot: A = minor, B = major.  Data: m = minor → A, M/D = major → B
+    const m = k.match(/^(\d{1,2})([A-Za-z])$/);
+    if (!m) return null;
+    const num = m[1];
+    const letter = m[2];
+    let norm;
+    if (letter === "A" || letter === "a" || letter === "m") norm = num + "A";
+    else if (letter === "B" || letter === "b" || letter === "M" || letter === "D" || letter === "d") norm = num + "B";
+    else return null;
+    return CAMELOT_COLORS[norm] || null;
+}
+
 // ── Layout Constants ──
 const SET_IMG = 48;
 const SET_PAD = 4;
@@ -193,58 +218,143 @@ function updateToolbarState() {
 }
 
 
+// ── Source Grouping ──
+
+function buildSourceGroups() {
+    const groups = [];
+    let i = 0;
+    while (i < setSlots.length) {
+        const slot = setSlots[i];
+        if (slot.source) {
+            const key = `${slot.source.type}:${slot.source.id}`;
+            let count = 1;
+            while (i + count < setSlots.length &&
+                   setSlots[i + count].source &&
+                   `${setSlots[i + count].source.type}:${setSlots[i + count].source.id}` === key) {
+                count++;
+            }
+            groups.push({
+                startIdx: i, count, key,
+                source: slot.source,
+                slotIds: setSlots.slice(i, i + count).map(s => s.id)
+            });
+            i += count;
+        } else {
+            groups.push({ startIdx: i, count: 1, key: null, source: null, slotIds: [slot.id] });
+            i++;
+        }
+    }
+    return groups;
+}
+
 // ── Slot Headers ──
 
 function renderSlotHeaders() {
     const row = document.getElementById("set-slot-headers");
     row.innerHTML = "";
 
-    setSlots.forEach((slot) => {
-        const header = document.createElement("div");
-        header.className = "set-slot-header";
-        header.dataset.slotId = slot.id;
+    const groups = buildSourceGroups();
 
-        if (!slot.source) {
-            header.innerHTML = `<button class="set-add-source-btn" title="Assign source">+</button>`;
-            header.querySelector(".set-add-source-btn").addEventListener("click", () => {
-                openDrawer("browse", slot.id);
+    for (const group of groups) {
+        if (group.count === 1) {
+            // Single slot — render as before
+            const slot = setSlots[group.startIdx];
+            const header = document.createElement("div");
+            header.className = "set-slot-header";
+            header.dataset.slotId = slot.id;
+
+            if (!slot.source) {
+                header.innerHTML = `<button class="set-add-source-btn" title="Assign source">+</button>`;
+                header.querySelector(".set-add-source-btn").addEventListener("click", () => {
+                    openDrawer("browse", slot.id);
+                });
+            } else {
+                const safeName = escHtml(slot.source.name || "Source");
+                header.innerHTML = `
+                    <div class="set-source-name" title="${safeName}">${safeName}</div>
+                    <div class="set-slot-controls">
+                        <button class="set-ctrl-btn" data-action="move" title="Drag to reorder">&#8661;</button>
+                        <button class="set-ctrl-btn" data-action="duplicate" title="Duplicate right">&#10697;</button>
+                        <button class="set-ctrl-btn" data-action="suggest" title="Suggest similar">&#9733;</button>
+                        <button class="set-ctrl-btn" data-action="delete" title="Delete slot">&#10005;</button>
+                        <button class="set-ctrl-btn" data-action="clear" title="Clear source">&#8634;</button>
+                    </div>
+                `;
+                header.querySelector(".set-source-name").addEventListener("click", () => {
+                    openDrawer("detail", slot.id);
+                });
+                header.querySelectorAll(".set-ctrl-btn").forEach(btn => {
+                    btn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        handleSlotControl(slot.id, btn.dataset.action);
+                    });
+                });
+            }
+
+            // Drag to reorder + accept track drops
+            header.draggable = true;
+            header.addEventListener("dragstart", (e) => onSlotDragStart(e, slot.id));
+            header.addEventListener("dragover", (e) => {
+                onSlotDragOver(e);
+                if (setDragTrack) header.classList.add("drag-over");
             });
+            header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
+            header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
+            header.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
+
+            row.appendChild(header);
         } else {
-            const safeName = escHtml(slot.source.name || "Source");
+            // Grouped slots — single spanning header
+            const groupW = group.count * (SET_COL_W + SET_GAP) - SET_GAP;
+            const header = document.createElement("div");
+            header.className = "set-slot-header set-source-group";
+            header.style.width = `${groupW}px`;
+            header.dataset.slotIds = JSON.stringify(group.slotIds);
+            header.dataset.slotId = group.slotIds[0]; // primary for drop target
+
+            const safeName = escHtml(group.source.name || "Source");
+            let controlsHtml = `<div class="set-group-controls">`;
+            for (let si = 0; si < group.count; si++) {
+                const slotId = group.slotIds[si];
+                controlsHtml += `
+                    <div class="set-group-slot-controls" style="width:${SET_COL_W}px">
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="duplicate" title="Duplicate">&#10697;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="suggest" title="Suggest">&#9733;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="delete" title="Delete">&#10005;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="clear" title="Clear">&#8634;</button>
+                    </div>`;
+            }
+            controlsHtml += `</div>`;
+
             header.innerHTML = `
-                <div class="set-source-name" title="${safeName}">${safeName}</div>
-                <div class="set-slot-controls">
-                    <button class="set-ctrl-btn" data-action="move" title="Drag to reorder">&#8661;</button>
-                    <button class="set-ctrl-btn" data-action="duplicate" title="Duplicate right">&#10697;</button>
-                    <button class="set-ctrl-btn" data-action="suggest" title="Suggest similar">&#9733;</button>
-                    <button class="set-ctrl-btn" data-action="delete" title="Delete slot">&#10005;</button>
-                    <button class="set-ctrl-btn" data-action="clear" title="Clear source">&#8634;</button>
-                </div>
+                <div class="set-source-name set-group-label" title="${safeName}">${safeName}</div>
+                ${controlsHtml}
             `;
-            header.querySelector(".set-source-name").addEventListener("click", () => {
-                openDrawer("detail", slot.id);
+
+            header.querySelector(".set-group-label").addEventListener("click", () => {
+                openDrawer("detail", group.slotIds[0]);
             });
             header.querySelectorAll(".set-ctrl-btn").forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    handleSlotControl(slot.id, btn.dataset.action);
+                    handleSlotControl(btn.dataset.slotId, btn.dataset.action);
                 });
             });
+
+            // Drag entire group
+            header.draggable = true;
+            header.addEventListener("dragstart", (e) => onGroupDragStart(e, group.slotIds));
+            header.addEventListener("dragover", (e) => {
+                onSlotDragOver(e);
+                if (setDragTrack) header.classList.add("drag-over");
+            });
+            header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
+            header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, group.slotIds[0]); });
+            header.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
+
+            row.appendChild(header);
         }
-
-        // Drag to reorder + accept track drops
-        header.draggable = true;
-        header.addEventListener("dragstart", (e) => onSlotDragStart(e, slot.id));
-        header.addEventListener("dragover", (e) => {
-            onSlotDragOver(e);
-            if (setDragTrack) header.classList.add("drag-over");
-        });
-        header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
-        header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
-        header.addEventListener("dragend", () => { dragSlotId = null; });
-
-        row.appendChild(header);
-    });
+    }
 }
 
 
@@ -258,7 +368,14 @@ function renderKeyRow() {
         const cell = document.createElement("div");
         cell.className = "set-key-cell";
         if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
-            cell.textContent = slot.tracks[slot.selectedTrackIndex].key || "";
+            const key = slot.tracks[slot.selectedTrackIndex].key || "";
+            cell.textContent = key;
+            const color = camelotColor(key);
+            if (color) {
+                cell.style.color = color;
+                cell.style.backgroundColor = color + "18";
+                cell.style.borderColor = color + "40";
+            }
         }
         row.appendChild(cell);
     }
@@ -357,15 +474,23 @@ function renderTrackColumns() {
         col.className = "set-column";
         col.dataset.slotId = slot.id;
 
-        // Drop target for tracks from drawer
+        // Key color as CSS variable (shown on hover via CSS)
+        const selTrack = (slot.selectedTrackIndex != null) ? slot.tracks[slot.selectedTrackIndex] : null;
+        const colColor = selTrack ? camelotColor(selTrack.key) : null;
+        if (colColor) {
+            col.style.setProperty("--key-bg", `linear-gradient(to bottom, transparent, ${colColor}30)`);
+        }
+
+        // Draggable for reordering + drop target for tracks
+        col.draggable = true;
+        col.addEventListener("dragstart", (e) => onSlotDragStart(e, slot.id));
         col.addEventListener("dragover", (e) => {
-            if (setDragTrack) {
-                e.preventDefault();
-                col.classList.add("drag-over");
-            }
+            onSlotDragOver(e);
+            col.classList.add("drag-over");
         });
         col.addEventListener("dragleave", () => col.classList.remove("drag-over"));
-        col.addEventListener("drop", (e) => onTrackDrop(e, slot.id));
+        col.addEventListener("drop", (e) => { col.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
+        col.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
 
         if (!slot.source || slot.tracks.length === 0) {
             // Empty slot
@@ -386,6 +511,15 @@ function renderTrackColumns() {
                 el.dataset.trackIdx = ti;
                 el.dataset.slotId = slot.id;
 
+                // Key-colored border for selected track
+                if (isSelected) {
+                    const kc = camelotColor(track.key);
+                    if (kc) {
+                        el.style.borderColor = kc;
+                        el.style.boxShadow = `0 0 10px ${kc}66, 0 0 3px ${kc}33`;
+                    }
+                }
+
                 // Position at BPM
                 const bpm = track.bpm_level || track.bpm || 100;
                 el.style.top = `${bpmToY(bpm) - SET_IMG / 2}px`;
@@ -404,9 +538,8 @@ function renderTrackColumns() {
                 img.onload = () => { img.style.display = ""; };
                 img.onerror = () => { img.style.display = "none"; };
                 el.appendChild(img);
-                if (typeof loadArtwork === "function") {
-                    loadArtwork(track.artist, track.title, img);
-                }
+                img.dataset.pendingArtist = track.artist || "";
+                img.dataset.pendingTitle = track.title || "";
 
                 // Click to select
                 el.addEventListener("click", (e) => {
@@ -424,6 +557,16 @@ function renderTrackColumns() {
 
         container.appendChild(col);
     });
+
+    // Bypass IntersectionObserver — queue artwork directly (observer doesn't
+    // reliably fire inside the horizontally-scrolling .set-grid-scroll container)
+    if (typeof _queueArtwork === "function") {
+        container.querySelectorAll("img[data-pending-artist]").forEach(img => {
+            _queueArtwork(img.dataset.pendingArtist, img.dataset.pendingTitle, img);
+            delete img.dataset.pendingArtist;
+            delete img.dataset.pendingTitle;
+        });
+    }
 }
 
 
@@ -561,15 +704,24 @@ function handleSlotControl(slotId, action) {
 // ── Slot Reordering ──
 
 let dragSlotId = null;
+let dragGroupSlotIds = null;  // array of slot IDs when dragging a group
 
 function onSlotDragStart(e, slotId) {
     dragSlotId = slotId;
+    dragGroupSlotIds = null;
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "slot");
 }
 
+function onGroupDragStart(e, slotIds) {
+    dragGroupSlotIds = slotIds;
+    dragSlotId = slotIds[0];
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "group");
+}
+
 function onSlotDragOver(e) {
-    if (dragSlotId) {
+    if (dragSlotId || dragGroupSlotIds) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
     } else if (setDragTrack) {
@@ -582,11 +734,41 @@ function onSlotDrop(e, targetSlotId) {
     e.preventDefault();
 
     // Track drop from drawer → delegate to onTrackDrop
-    if (setDragTrack && !dragSlotId) {
+    if (setDragTrack && !dragSlotId && !dragGroupSlotIds) {
         onTrackDrop(e, targetSlotId);
         return;
     }
 
+    // Group drag — move all group slots as a block
+    if (dragGroupSlotIds) {
+        const targetIdx = setSlots.findIndex(s => s.id === targetSlotId);
+        if (targetIdx === -1) return;
+        // Don't drop onto itself
+        if (dragGroupSlotIds.includes(targetSlotId)) {
+            dragGroupSlotIds = null;
+            dragSlotId = null;
+            return;
+        }
+        // Extract group slots (in order)
+        const groupSlots = dragGroupSlotIds.map(id => setSlots.find(s => s.id === id)).filter(Boolean);
+        // Remove them from array
+        for (const gs of groupSlots) {
+            const idx = setSlots.indexOf(gs);
+            if (idx !== -1) setSlots.splice(idx, 1);
+        }
+        // Find new target index after removal
+        const newTargetIdx = setSlots.findIndex(s => s.id === targetSlotId);
+        const insertIdx = newTargetIdx === -1 ? setSlots.length : newTargetIdx;
+        // Insert group at target
+        setSlots.splice(insertIdx, 0, ...groupSlots);
+        dragGroupSlotIds = null;
+        dragSlotId = null;
+        renderSet();
+        scheduleAutoSave();
+        return;
+    }
+
+    // Single slot drag
     if (!dragSlotId || dragSlotId === targetSlotId) return;
 
     const fromIdx = setSlots.findIndex(s => s.id === dragSlotId);
