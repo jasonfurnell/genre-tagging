@@ -7,6 +7,7 @@ import threading
 import time
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 from flask import Blueprint, request, jsonify, Response, send_file
@@ -37,7 +38,7 @@ from app.tree import (
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source, suggest_similar_sources,
-    build_track_context,
+    build_track_context, save_set_state, load_set_state,
 )
 
 api = Blueprint("api", __name__)
@@ -66,6 +67,35 @@ _state = {
     "_artwork_cache": {},          # "artist||title" -> {cover_url, found}
     "_chord_cache": None,          # cached chord diagram data
 }
+
+# ---------------------------------------------------------------------------
+# Persistent artwork cache (survives server restarts)
+# ---------------------------------------------------------------------------
+_ARTWORK_CACHE_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "output", "artwork_cache.json"
+)
+
+def _load_artwork_cache():
+    """Load artwork cache from disk into _state."""
+    try:
+        if os.path.exists(_ARTWORK_CACHE_FILE):
+            with open(_ARTWORK_CACHE_FILE, "r") as f:
+                _state["_artwork_cache"] = json.load(f)
+            logging.info("Loaded %d artwork cache entries from disk",
+                         len(_state["_artwork_cache"]))
+    except Exception:
+        logging.exception("Failed to load artwork cache from disk")
+
+def _save_artwork_cache():
+    """Persist artwork cache to disk."""
+    try:
+        snapshot = dict(_state["_artwork_cache"])   # safe copy
+        with open(_ARTWORK_CACHE_FILE, "w") as f:
+            json.dump(snapshot, f)
+    except Exception:
+        logging.exception("Failed to save artwork cache to disk")
+
+_load_artwork_cache()
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 
@@ -1841,17 +1871,12 @@ def get_preview():
 # ---------------------------------------------------------------------------
 # GET /api/artwork — Lightweight album cover lookup (separate cache)
 # ---------------------------------------------------------------------------
-@api.route("/api/artwork")
-def get_artwork():
-    artist = request.args.get("artist", "").strip()
-    title = request.args.get("title", "").strip()
-    if not artist or not title:
-        return jsonify({"cover_url": None, "found": False}), 400
-
+def _lookup_artwork(artist, title):
+    """Look up artwork for a single track. Returns dict with cover_url/found."""
     cache_key = f"{artist.lower()}||{title.lower()}"
     cached = _state["_artwork_cache"].get(cache_key)
     if cached is not None:
-        return jsonify(cached)
+        return cached
 
     query = urllib.parse.quote(f"{artist} {title}")
     url = f"https://api.deezer.com/search?q={query}&limit=5"
@@ -1881,10 +1906,76 @@ def get_artwork():
                 result = {"cover_url": cover, "found": True}
     except Exception:
         logging.exception("Deezer artwork lookup failed for %s - %s", artist, title)
-        return jsonify(result)
+        return result
 
     _state["_artwork_cache"][cache_key] = result
-    return jsonify(result)
+    return result
+
+
+_artwork_cache_dirty = 0          # count of unsaved new lookups
+
+@api.route("/api/artwork")
+def get_artwork():
+    global _artwork_cache_dirty
+    artist = request.args.get("artist", "").strip()
+    title = request.args.get("title", "").strip()
+    if not artist or not title:
+        return jsonify({"cover_url": None, "found": False}), 400
+
+    cache_key = f"{artist.lower()}||{title.lower()}"
+    was_cached = cache_key in _state["_artwork_cache"]
+    result = _lookup_artwork(artist, title)
+    if not was_cached:
+        _artwork_cache_dirty += 1
+        if _artwork_cache_dirty >= 10:         # batch-save every 10 new entries
+            _save_artwork_cache()
+            _artwork_cache_dirty = 0
+    resp = jsonify(result)
+    resp.headers["Cache-Control"] = "public, max-age=86400"   # 24h browser cache
+    return resp
+
+
+# POST /api/artwork/batch — Batch artwork lookup (reduces HTTP roundtrips)
+# ---------------------------------------------------------------------------
+@api.route("/api/artwork/batch", methods=["POST"])
+def get_artwork_batch():
+    items = request.get_json(silent=True) or []
+    if not isinstance(items, list) or len(items) > 50:
+        return jsonify({"error": "Expected a JSON array (max 50)"}), 400
+
+    # Separate cached from uncached
+    results = {}
+    uncached = []     # (key, artist, title)
+    for item in items:
+        artist = (item.get("artist") or "").strip()
+        title = (item.get("title") or "").strip()
+        if not artist or not title:
+            continue
+        key = f"{artist.lower()}||{title.lower()}"
+        cached = _state["_artwork_cache"].get(key)
+        if cached is not None:
+            results[key] = cached
+        else:
+            uncached.append((key, artist, title))
+
+    # Fetch uncached items in parallel (max 8 concurrent Deezer calls)
+    if uncached:
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            futures = {
+                pool.submit(_lookup_artwork, artist, title): key
+                for key, artist, title in uncached
+            }
+            for fut in as_completed(futures):
+                key = futures[fut]
+                try:
+                    results[key] = fut.result()
+                except Exception:
+                    results[key] = {"cover_url": "", "found": False}
+        _save_artwork_cache()
+
+    resp = jsonify(results)
+    resp.headers["Cache-Control"] = "public, max-age=86400"
+    return resp
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -2071,6 +2162,25 @@ def set_workshop_track_context(track_id):
         return jsonify({"error": "Track not found"}), 404
 
     return jsonify(result)
+
+
+@api.route("/api/set-workshop/state", methods=["GET"])
+def set_workshop_get_state():
+    """Load saved set workshop state."""
+    state = load_set_state()
+    if state:
+        return jsonify(state)
+    return jsonify(None)
+
+
+@api.route("/api/set-workshop/state", methods=["POST"])
+def set_workshop_save_state():
+    """Save set workshop state."""
+    body = request.get_json()
+    if body is None:
+        return jsonify({"error": "No data"}), 400
+    save_set_state(body)
+    return jsonify({"ok": True})
 
 
 @api.route("/api/set-workshop/export-m3u", methods=["POST"])

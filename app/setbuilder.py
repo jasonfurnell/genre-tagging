@@ -1,10 +1,36 @@
 """Set Workshop — User-built DJ set builder with per-slot source assignment."""
 
+import json
 import math
+import os
 import random
 import re
 from app.tree import find_node
 from app.playlist import get_playlist, list_playlists
+
+# ---------------------------------------------------------------------------
+# State Persistence
+# ---------------------------------------------------------------------------
+
+_SET_STATE_FILE = os.path.join("output", "set_workshop_state.json")
+
+
+def save_set_state(state):
+    """Save the set workshop state to disk."""
+    os.makedirs(os.path.dirname(_SET_STATE_FILE), exist_ok=True)
+    with open(_SET_STATE_FILE, "w") as f:
+        json.dump(state, f)
+
+
+def load_set_state():
+    """Load the set workshop state from disk, or None."""
+    if os.path.exists(_SET_STATE_FILE):
+        try:
+            with open(_SET_STATE_FILE) as f:
+                return json.load(f)
+        except Exception:
+            return None
+    return None
 
 # ---------------------------------------------------------------------------
 # Camelot Wheel

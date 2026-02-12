@@ -18,6 +18,10 @@ let setDragTrack = null;          // track being dragged from drawer
 // ── Play All State ──
 let setPlayAllActive = false;
 let setPlayAllIndex = 0;
+let _setPlayAllOnEnded = null;  // current ended listener (for cleanup)
+
+// ── Auto-Save ──
+let _saveTimer = null;
 
 // ── Layout Constants ──
 const SET_IMG = 48;
@@ -97,12 +101,12 @@ async function initSetBuilder() {
             btn.classList.add("active");
             initEmptySlots(hours * 20);
             renderSet();
+            scheduleAutoSave();
         });
     });
 
-    // Init empty grid
-    initEmptySlots(setHours * 20);
-    renderSet();
+    // Load saved state or init empty grid
+    await loadSavedSetState();
 }
 
 
@@ -116,6 +120,53 @@ function initEmptySlots(count) {
             selectedTrackIndex: null,
         });
     }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// State Persistence
+// ═══════════════════════════════════════════════════════════════════════════
+
+function scheduleAutoSave() {
+    clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(saveSetState, 1000);
+}
+
+async function saveSetState() {
+    try {
+        await fetch("/api/set-workshop/state", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ hours: setHours, slots: setSlots }),
+        });
+    } catch (e) {
+        console.error("Failed to save set state:", e);
+    }
+}
+
+async function loadSavedSetState() {
+    try {
+        const res = await fetch("/api/set-workshop/state");
+        const data = await res.json();
+        if (data && data.slots && data.slots.length > 0) {
+            setHours = data.hours || 1;
+            setSlots = data.slots;
+
+            // Update hour selector UI
+            document.querySelectorAll(".set-length-btn").forEach(b => {
+                b.classList.toggle("active", parseInt(b.dataset.hours) === setHours);
+            });
+
+            renderSet();
+            return;
+        }
+    } catch (e) {
+        console.error("Failed to load set state:", e);
+    }
+
+    // Fallback: init empty
+    initEmptySlots(setHours * 20);
+    renderSet();
 }
 
 
@@ -437,6 +488,7 @@ function onTrackClick(slotId, trackIdx) {
     if (!wasSelected) {
         slot.selectedTrackIndex = trackIdx;
         renderSet();
+        scheduleAutoSave();
     }
 
     // Always play/toggle preview on click
@@ -896,6 +948,7 @@ async function assignSource(sourceType, sourceId, treeType, sourceName, anchorTr
         slot.selectedTrackIndex = findDefaultSelection(slot.tracks, anchorTrackId);
 
         renderSet();
+        scheduleAutoSave();
 
         // Switch drawer to detail mode for the assigned source so user can
         // drag individual tracks into the slot.
@@ -1032,6 +1085,7 @@ async function onTrackDrop(e, slotId) {
         slot.selectedTrackIndex = dragIdx >= 0 ? dragIdx : findDefaultSelection(slot.tracks);
 
         renderSet();
+        scheduleAutoSave();
     } catch (e2) {
         console.error("Drag track failed:", e2);
     }
@@ -1102,20 +1156,25 @@ async function playSetTrackAt(idx) {
     const track = slot.tracks[slot.selectedTrackIndex];
     const btn = getSlotPreviewBtn(idx);
 
-    // Set up audio ended listener
-    const audio = document.getElementById("preview-audio");
-    if (audio) {
+    // Clean up previous ended listener, then attach a new one
+    if (typeof previewAudio !== "undefined" && previewAudio) {
+        if (_setPlayAllOnEnded) {
+            previewAudio.removeEventListener("ended", _setPlayAllOnEnded);
+            previewAudio.removeEventListener("error", _setPlayAllOnEnded);
+        }
         const onEnded = () => {
-            audio.removeEventListener("ended", onEnded);
-            audio.removeEventListener("error", onEnded);
+            previewAudio.removeEventListener("ended", onEnded);
+            previewAudio.removeEventListener("error", onEnded);
+            _setPlayAllOnEnded = null;
             if (setPlayAllActive) {
                 const next = findNextPlayableSlot(idx + 1);
                 if (next >= 0) playSetTrackAt(next);
                 else stopSetPlayAll();
             }
         };
-        audio.addEventListener("ended", onEnded);
-        audio.addEventListener("error", onEnded);
+        _setPlayAllOnEnded = onEnded;
+        previewAudio.addEventListener("ended", onEnded);
+        previewAudio.addEventListener("error", onEnded);
     }
 
     // Play
@@ -1138,14 +1197,23 @@ function stopSetPlayAll() {
     document.getElementById("set-play-all-btn").textContent = "Play All";
     document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
 
+    // Clean up ended listener
+    if (typeof previewAudio !== "undefined" && previewAudio && _setPlayAllOnEnded) {
+        previewAudio.removeEventListener("ended", _setPlayAllOnEnded);
+        previewAudio.removeEventListener("error", _setPlayAllOnEnded);
+        _setPlayAllOnEnded = null;
+    }
+
     // Stop audio
-    const audio = document.getElementById("preview-audio");
-    if (audio && !audio.paused) {
-        audio.pause();
-        audio.currentTime = 0;
+    if (typeof previewAudio !== "undefined" && previewAudio && !previewAudio.paused) {
+        previewAudio.pause();
+        previewAudio.currentTime = 0;
     }
 
     // Reset any playing preview buttons
+    if (typeof resetAllPreviewButtons === "function") {
+        resetAllPreviewButtons();
+    }
     document.querySelectorAll(".btn-preview.playing").forEach(btn => {
         btn.textContent = "\u25B6";
         btn.classList.remove("playing");

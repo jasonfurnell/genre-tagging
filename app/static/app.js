@@ -214,43 +214,141 @@ function resetAllPreviewButtons() {
     });
 }
 
-// ── Album Artwork Loader ────────────────────────────────────
+// ── Album Artwork Loader (lazy + batch + queue) ─────────────
 const artworkCache = new Map();          // "artist||title" -> url | ""
-const artworkQueue = [];
-let artworkActive = 0;
-const ARTWORK_MAX_CONCURRENT = 4;
+const artworkQueue = [];                 // pending jobs (visible elements only)
+const artworkWaiting = new Map();        // key -> [jobs] for in-flight requests
+let artworkBatchTimer = null;
+let artworkInFlight = 0;
+const ARTWORK_BATCH_SIZE = 40;
+const ARTWORK_BATCH_DELAY = 150;         // ms debounce
+const ARTWORK_MAX_INFLIGHT = 2;          // max concurrent batch requests
+
+// IntersectionObserver — only queue artwork when the <img> scrolls into view
+const artworkObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const img = entry.target;
+        artworkObserver.unobserve(img);
+        const artist = img.dataset.artworkArtist;
+        const title = img.dataset.artworkTitle;
+        if (!artist || !title) continue;
+        _queueArtwork(artist, title, img);
+    }
+}, { rootMargin: "200px" });             // start loading 200px before visible
 
 function loadArtwork(artist, title, imgEl) {
     if (!artist || !title || !imgEl) return;
     const key = `${artist.toLowerCase()}||${title.toLowerCase()}`;
+
+    // If already cached, apply immediately — no need to observe
     if (artworkCache.has(key)) {
         const url = artworkCache.get(key);
         if (url) { imgEl.src = url; imgEl.classList.add("artwork-loaded"); }
         return;
     }
-    artworkQueue.push({ artist, title, imgEl, key });
-    drainArtworkQueue();
+
+    // Stash metadata on the element and let the observer decide when to fetch
+    imgEl.dataset.artworkArtist = artist;
+    imgEl.dataset.artworkTitle = title;
+    artworkObserver.observe(imgEl);
 }
 
-function drainArtworkQueue() {
-    while (artworkActive < ARTWORK_MAX_CONCURRENT && artworkQueue.length > 0) {
+function _queueArtwork(artist, title, imgEl) {
+    const key = `${artist.toLowerCase()}||${title.toLowerCase()}`;
+
+    // Re-check cache (may have been populated while waiting to intersect)
+    if (artworkCache.has(key)) {
+        const url = artworkCache.get(key);
+        if (url) { imgEl.src = url; imgEl.classList.add("artwork-loaded"); }
+        return;
+    }
+    // Already in-flight? Just attach the imgEl
+    if (artworkWaiting.has(key)) {
+        artworkWaiting.get(key).push({ imgEl });
+        return;
+    }
+    artworkQueue.push({ artist, title, imgEl, key });
+    scheduleBatchFlush();
+}
+
+function scheduleBatchFlush() {
+    if (artworkBatchTimer) return;
+    artworkBatchTimer = setTimeout(() => {
+        artworkBatchTimer = null;
+        flushArtworkBatch();
+    }, ARTWORK_BATCH_DELAY);
+}
+
+function flushArtworkBatch() {
+    if (artworkQueue.length === 0 || artworkInFlight >= ARTWORK_MAX_INFLIGHT) return;
+
+    // Drain queue, deduplicate, resolve already-cached
+    const batch = new Map();             // key -> { artist, title, jobs: [{imgEl}] }
+    while (artworkQueue.length > 0 && batch.size < ARTWORK_BATCH_SIZE) {
         const job = artworkQueue.shift();
         if (artworkCache.has(job.key)) {
             const url = artworkCache.get(job.key);
-            if (url) { job.imgEl.src = url; job.imgEl.classList.add("artwork-loaded"); }
+            if (url && job.imgEl) { job.imgEl.src = url; job.imgEl.classList.add("artwork-loaded"); }
             continue;
         }
-        artworkActive++;
-        const params = new URLSearchParams({ artist: job.artist, title: job.title });
-        fetch(`/api/artwork?${params}`)
-            .then(r => r.json())
-            .then(data => {
-                const url = data.cover_url || "";
-                artworkCache.set(job.key, url);
-                if (url && job.imgEl) { job.imgEl.src = url; job.imgEl.classList.add("artwork-loaded"); }
-            })
-            .catch(() => artworkCache.set(job.key, ""))
-            .finally(() => { artworkActive--; drainArtworkQueue(); });
+        if (artworkWaiting.has(job.key)) {
+            artworkWaiting.get(job.key).push({ imgEl: job.imgEl });
+            continue;
+        }
+        if (!batch.has(job.key)) batch.set(job.key, { artist: job.artist, title: job.title, jobs: [] });
+        batch.get(job.key).jobs.push({ imgEl: job.imgEl });
+    }
+
+    if (batch.size === 0) {
+        if (artworkQueue.length > 0) scheduleBatchFlush();
+        return;
+    }
+
+    // Register as in-flight
+    for (const [key, entry] of batch) artworkWaiting.set(key, entry.jobs);
+
+    const payload = [];
+    for (const [, entry] of batch) payload.push({ artist: entry.artist, title: entry.title });
+
+    artworkInFlight++;
+    fetch("/api/artwork/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+    })
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        })
+        .then(data => {
+            for (const [key, info] of Object.entries(data)) {
+                const url = info.cover_url || "";
+                artworkCache.set(key, url);
+                const jobs = artworkWaiting.get(key) || [];
+                for (const job of jobs) {
+                    if (url && job.imgEl) {
+                        job.imgEl.src = url;
+                        job.imgEl.classList.add("artwork-loaded");
+                    }
+                }
+                artworkWaiting.delete(key);
+            }
+        })
+        .catch(() => {
+            for (const [key] of batch) {
+                artworkCache.set(key, "");
+                artworkWaiting.delete(key);
+            }
+        })
+        .finally(() => {
+            artworkInFlight--;
+            if (artworkQueue.length > 0) flushArtworkBatch();
+        });
+
+    // If queue still has items and we have capacity, flush another immediately
+    if (artworkQueue.length > 0 && artworkInFlight < ARTWORK_MAX_INFLIGHT) {
+        flushArtworkBatch();
     }
 }
 
