@@ -313,15 +313,16 @@ function renderSlotHeaders() {
             header.dataset.slotId = group.slotIds[0]; // primary for drop target
 
             const safeName = escHtml(group.source.name || "Source");
-            let controlsHtml = `<div class="set-group-controls">`;
+            let controlsHtml = `<div class="set-group-slot-row">`;
             for (let si = 0; si < group.count; si++) {
                 const slotId = group.slotIds[si];
                 controlsHtml += `
-                    <div class="set-group-slot-controls" style="width:${SET_COL_W}px">
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="duplicate" title="Duplicate">&#10697;</button>
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="suggest" title="Suggest">&#9733;</button>
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="delete" title="Delete">&#10005;</button>
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="clear" title="Clear">&#8634;</button>
+                    <div class="set-slot-controls" style="width:${SET_COL_W}px" data-slot-id="${slotId}">
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="move" title="Drag to reorder">&#8661;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="duplicate" title="Duplicate right">&#10697;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="suggest" title="Suggest similar">&#9733;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="delete" title="Delete slot">&#10005;</button>
+                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="clear" title="Clear source">&#8634;</button>
                     </div>`;
             }
             controlsHtml += `</div>`;

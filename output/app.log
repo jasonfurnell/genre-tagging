@@ -13707,105 +13707,157 @@ INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:23:33] "GET /api/set-workshop/source
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:23:33] "POST /api/artwork/batch HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:23:40] "POST /api/set-workshop/state HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:23:43] "POST /api/set-workshop/state HTTP/1.1" 200 -
-1.1" 200 -
-2026-02-13 08:10:52,495 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:10:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:10:55,813 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:10:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:01,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:01,709 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:01] "GET /api/preview?artist=Slim+Harpo&title=Baby,+Scratch+My+Back HTTP/1.1" 200 -
-2026-02-13 08:11:02,947 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:02,970 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:02] "POST /api/set-workshop/state HTTP/1.1" 200 -
-2026-02-13 08:11:02,973 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:03,150 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:03] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:03,250 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:03] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:04,584 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:06,934 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:06] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
-2026-02-13 08:11:06,935 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:06] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:10,347 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:10,542 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:10,554 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:12,053 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:12] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:13,591 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:14,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:16,502 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:17,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:19,483 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:20,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:22,483 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:23,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:25,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:26,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:28,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:29,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:31,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:32,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:34,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:35,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:37,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:38,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:40,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:41,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:43,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:44,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:46,489 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:47,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:49,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:50,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:52,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:53,987 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:55,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:56,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:58,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:11:59,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:11:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:01,483 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:02,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:04,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:05,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:07,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:08,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:10,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:11,987 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:13,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:14,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:16,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:17,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:19,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:20,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:22,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:23,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:25,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:26,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:28,488 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:29,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:31,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:32,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:34,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:35,989 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:37,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:38,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:40,489 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:41,991 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:43,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:44,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:46,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:47,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:49,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:50,989 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:52,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:53,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:55,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:56,988 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:58,484 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:12:59,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:12:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:01,483 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:02,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:04,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:05,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:07,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:08,985 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:10,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:11,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:13,489 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 08:13:14,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/app.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/tree.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/workshop.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:45] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:48] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:48] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:48] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:49] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:49] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/app.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/workshop.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/tree.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:52] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:52] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:53] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:55] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:56] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:57] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:57] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:57] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 08:27:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/app.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/tree.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/workshop.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:45] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:48:56] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:04] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:04] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:06] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:09] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:10] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:10] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:27] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:49:27] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:50:53] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/workshop.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/tree.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/app.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:34] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:34] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:34] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:36] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:39] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:40] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:41] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 10:53:41] "POST /api/artwork/batch HTTP/1.1" 200 -
+3:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
 2026-02-13 08:13:16,488 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
 2026-02-13 08:13:17,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
 2026-02-13 08:13:19,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:13:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
@@ -13946,3 +13998,153 @@ urllib.error.HTTPError: HTTP Error 403: Forbidden
 2026-02-13 08:23:33,432 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:23:33] "POST /api/artwork/batch HTTP/1.1" 200 -
 2026-02-13 08:23:40,699 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:23:40] "POST /api/set-workshop/state HTTP/1.1" 200 -
 2026-02-13 08:23:43,986 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:23:43] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 08:27:42,803 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:42] "GET / HTTP/1.1" 200 -
+2026-02-13 08:27:43,198 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 08:27:43,201 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/app.js HTTP/1.1[0m" 304 -
+2026-02-13 08:27:43,203 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/tree.js HTTP/1.1[0m" 304 -
+2026-02-13 08:27:43,207 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "[36mGET /static/workshop.js HTTP/1.1[0m" 304 -
+2026-02-13 08:27:43,207 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 08:27:43,642 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 08:27:43,850 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:43] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 08:27:45,762 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:45] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 08:27:48,111 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:48] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:48,346 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:48] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+2026-02-13 08:27:48,744 [ERROR] root: Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2026-02-13 08:27:48,798 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:48] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 08:27:49,256 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:49] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:49,257 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:49] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:49,994 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 08:27:51,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET / HTTP/1.1" 200 -
+2026-02-13 08:27:51,410 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 08:27:51,411 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-13 08:27:51,411 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 08:27:51,412 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-13 08:27:51,413 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:51] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-13 08:27:52,132 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 08:27:52,188 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:52] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 08:27:52,410 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:52] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 08:27:53,640 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:53] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 08:27:55,767 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:55] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:56,059 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:56] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+2026-02-13 08:27:56,234 [ERROR] root: Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2026-02-13 08:27:57,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:57] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 08:27:57,898 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:57] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:57,899 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:57] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 08:27:59,126 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 08:27:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 10:48:42,112 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:42] "GET / HTTP/1.1" 200 -
+2026-02-13 10:48:44,018 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 10:48:44,019 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-13 10:48:44,019 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-13 10:48:44,021 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-13 10:48:44,022 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 10:48:44,887 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 10:48:44,905 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:44] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 10:48:45,147 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:45] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 10:48:56,585 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:48:56] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 10:49:04,067 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:04] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 10:49:04,393 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:04] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+2026-02-13 10:49:05,396 [ERROR] root: Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2026-02-13 10:49:06,422 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:06] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 10:49:09,559 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:09] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 10:49:10,467 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:10] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 10:49:10,469 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:10] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 10:49:27,587 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:27] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-02-13 10:49:27,594 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:49:27] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2026-02-13 10:50:53,190 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:50:53] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-02-13 10:53:33,728 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET / HTTP/1.1" 200 -
+2026-02-13 10:53:33,843 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 10:53:33,847 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-13 10:53:33,852 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-13 10:53:33,852 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-13 10:53:33,854 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:33] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 10:53:34,624 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:34] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 10:53:34,653 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:34] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 10:53:34,876 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:34] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 10:53:36,704 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:36] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 10:53:38,951 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 10:53:39,185 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:39] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+2026-02-13 10:53:39,383 [ERROR] root: Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1887, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2026-02-13 10:53:40,810 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:40] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 10:53:41,115 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 10:53:41,321 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:41] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 10:53:41,322 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 10:53:41] "POST /api/artwork/batch HTTP/1.1" 200 -

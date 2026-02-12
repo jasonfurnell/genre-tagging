@@ -1553,12 +1553,10 @@ tr.ws-seed-selected {
 
 /* -- Source Group (consecutive same-source slots) ----------------------- */
 .set-source-group {
-    border: 1px solid rgba(78, 204, 163, 0.25);
-    background: rgba(78, 204, 163, 0.06);
-    border-radius: 4px;
     cursor: grab;
     min-height: 42px;
     text-align: center;
+    position: relative;
 }
 .set-source-group:active {
     cursor: grabbing;
@@ -1566,21 +1564,19 @@ tr.ws-seed-selected {
 .set-source-group .set-group-label {
     width: 100%;
     max-width: 100%;
+    border: 1px solid rgba(78, 204, 163, 0.25);
+    background: rgba(78, 204, 163, 0.06);
 }
-.set-group-controls {
+.set-group-slot-row {
     display: flex;
     gap: 6px;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
-.set-source-group:hover .set-group-controls {
+.set-source-group:hover .set-slot-controls {
     opacity: 1;
-}
-.set-group-slot-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1px;
 }
 
 /* -- Key area ----------------------------------------------------------- */
