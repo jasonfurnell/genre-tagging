@@ -1978,6 +1978,115 @@ def get_artwork_batch():
     return resp
 
 
+# ---------------------------------------------------------------------------
+# Artwork cache warm-up (background)
+# ---------------------------------------------------------------------------
+_warm_cache_state = {
+    "running": False,
+    "total": 0,
+    "done": 0,
+    "found": 0,
+    "skipped": 0,       # already cached
+}
+
+def _warm_cache_worker():
+    """Background thread: look up artwork for every track in the DataFrame."""
+    st = _warm_cache_state
+    try:
+        df = _state.get("df")
+        if df is None or "artist" not in df.columns or "title" not in df.columns:
+            st["running"] = False
+            return
+
+        # Build unique (artist, title) pairs not yet cached
+        pairs = []
+        seen = set()
+        for _, row in df.iterrows():
+            artist = str(row.get("artist") or "").strip()
+            title = str(row.get("title") or "").strip()
+            if not artist or not title:
+                continue
+            key = f"{artist.lower()}||{title.lower()}"
+            if key in seen:
+                continue
+            seen.add(key)
+            if key in _state["_artwork_cache"]:
+                st["skipped"] += 1
+                continue
+            pairs.append((key, artist, title))
+
+        st["total"] = len(pairs) + st["skipped"]
+        st["done"] = st["skipped"]
+
+        # Process in batches of 8 with a small delay to avoid rate-limiting
+        BATCH = 8
+        for i in range(0, len(pairs), BATCH):
+            if not st["running"]:
+                break
+            chunk = pairs[i:i + BATCH]
+            with ThreadPoolExecutor(max_workers=BATCH) as pool:
+                futures = {
+                    pool.submit(_lookup_artwork, artist, title): key
+                    for key, artist, title in chunk
+                }
+                for fut in as_completed(futures):
+                    key = futures[fut]
+                    try:
+                        result = fut.result()
+                        if result.get("cover_url"):
+                            st["found"] += 1
+                    except Exception:
+                        pass
+                    st["done"] += 1
+            # Save every 50 lookups and throttle
+            if (i // BATCH) % 6 == 5:
+                _save_artwork_cache()
+            time.sleep(0.3)                       # small delay between batches
+
+        _save_artwork_cache()
+    except Exception:
+        logging.exception("Artwork warm-cache failed")
+    finally:
+        st["running"] = False
+
+
+@api.route("/api/artwork/warm-cache", methods=["POST"])
+def start_warm_cache():
+    if _warm_cache_state["running"]:
+        return jsonify({"status": "already_running", **_warm_cache_state})
+    _warm_cache_state.update(running=True, total=0, done=0, found=0, skipped=0)
+    t = threading.Thread(target=_warm_cache_worker, daemon=True)
+    t.start()
+    return jsonify({"status": "started"})
+
+
+@api.route("/api/artwork/warm-cache/status")
+def warm_cache_status():
+    return jsonify(_warm_cache_state)
+
+
+@api.route("/api/artwork/uncached-count")
+def uncached_count():
+    """Quick check: how many tracks have no cached artwork lookup."""
+    df = _state.get("df")
+    if df is None or "artist" not in df.columns:
+        return jsonify({"uncached": 0})
+    seen = set()
+    uncached = 0
+    for _, row in df.iterrows():
+        artist = str(row.get("artist") or "").strip()
+        title = str(row.get("title") or "").strip()
+        if not artist or not title:
+            continue
+        key = f"{artist.lower()}||{title.lower()}"
+        if key in seen:
+            continue
+        seen.add(key)
+        if key not in _state["_artwork_cache"]:
+            uncached += 1
+    return jsonify({"uncached": uncached, "total": len(seen)})
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Set Workshop
 # ═══════════════════════════════════════════════════════════════════════════

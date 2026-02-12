@@ -352,6 +352,49 @@ function flushArtworkBatch() {
     }
 }
 
+// ── Artwork warm-cache (background pre-fetch) ───────────────
+let _warmPollTimer = null;
+
+async function checkAndWarmArtworkCache() {
+    try {
+        const res = await fetch("/api/artwork/uncached-count");
+        const data = await res.json();
+        if (data.uncached > 0) {
+            await fetch("/api/artwork/warm-cache", { method: "POST" });
+            _startWarmPoll();
+        }
+    } catch (_) { /* ignore */ }
+}
+
+function _startWarmPoll() {
+    const el = document.getElementById("artwork-warm-status");
+    if (!el || _warmPollTimer) return;
+    el.classList.remove("hidden");
+    el.innerHTML = `<span class="artwork-warm-text">Loading artwork...</span>
+        <div class="artwork-warm-bar"><div class="artwork-warm-bar-fill" style="width:0%"></div></div>`;
+    _warmPollTimer = setInterval(async () => {
+        try {
+            const res = await fetch("/api/artwork/warm-cache/status");
+            const st = await res.json();
+            const pct = st.total > 0 ? Math.round((st.done / st.total) * 100) : 0;
+            const fill = el.querySelector(".artwork-warm-bar-fill");
+            const text = el.querySelector(".artwork-warm-text");
+            if (fill) fill.style.width = pct + "%";
+            if (text) text.textContent = `Loading artwork\u2026 ${st.done}/${st.total} (${st.found} found)`;
+            if (!st.running) {
+                clearInterval(_warmPollTimer);
+                _warmPollTimer = null;
+                if (text) text.textContent = `Artwork cached: ${st.found} found of ${st.total} tracks`;
+                setTimeout(() => el.classList.add("hidden"), 4000);
+            }
+        } catch (_) {
+            clearInterval(_warmPollTimer);
+            _warmPollTimer = null;
+            el.classList.add("hidden");
+        }
+    }, 1500);
+}
+
 // ── AG Grid Setup ────────────────────────────────────────────
 
 const theme = agGrid.themeQuartz.withPart(agGrid.colorSchemeDarkBlue).withParams({
@@ -509,6 +552,7 @@ async function uploadFile(file) {
         toolbar.classList.remove("hidden");
         summary.classList.remove("hidden");
         $("#tab-bar").classList.remove("hidden");
+        checkAndWarmArtworkCache();
     } catch (err) {
         alert("Upload error: " + err.message);
     }
@@ -774,6 +818,7 @@ initGrid();
             toolbar.classList.remove("hidden");
             summary.classList.remove("hidden");
             $("#tab-bar").classList.remove("hidden");
+            checkAndWarmArtworkCache();
         }
     } catch (_) { /* no autosave available */ }
 })();

@@ -35,6 +35,32 @@ header h1 {
     letter-spacing: 0.02em;
 }
 
+/* ── Artwork warm-cache indicator ────────────────────────── */
+.artwork-warm-status {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s;
+}
+.artwork-warm-status.hidden { display: none; }
+.artwork-warm-bar {
+    width: 120px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.artwork-warm-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+
 /* ── Upload Area ─────────────────────────────────────────── */
 .upload-area {
     border: 2px dashed var(--border);
@@ -1289,9 +1315,8 @@ tr.ws-seed-selected {
     border-radius: 4px;
     object-fit: cover;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.05);
-    opacity: 0;
-    transition: opacity 0.25s ease;
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
 }
 .track-artwork.artwork-loaded {
     opacity: 1;
