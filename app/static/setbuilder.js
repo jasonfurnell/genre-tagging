@@ -23,6 +23,7 @@ let _setPlayAllOnEnded = null;  // current ended listener (for cleanup)
 // ── Play Set State (full-track local playback) ──
 let setPlaySetActive = false;
 let setPlaySetIndex = 0;
+let setPlayGen = 0;    // generation counter to detect stale error events on skip
 let setAudio = null;   // separate Audio element for full-track playback
 
 // ── Saved Set State ──
@@ -1792,6 +1793,7 @@ function startPlaySet() {
 
 function stopPlaySet() {
     setPlaySetActive = false;
+    setPlayGen++;  // invalidate any pending error handlers
     if (setAudio) {
         setAudio.pause();
         setAudio.currentTime = 0;
@@ -1875,10 +1877,15 @@ function removeAllEqOverlays() {
 }
 
 async function playFullTrack(idx) {
+    const gen = ++setPlayGen;
+
     if (!setPlaySetActive || idx < 0 || idx >= setSlots.length) {
         stopPlaySet();
         return;
     }
+
+    // Pause current playback before switching source
+    setAudio.pause();
 
     setPlaySetIndex = idx;
     const slot = setSlots[idx];
@@ -1908,6 +1915,8 @@ async function playFullTrack(idx) {
     setAudio.src = `/api/audio/${track.id}`;
     setAudio.load();
     setAudio.play().catch(err => {
+        if (gen !== setPlayGen) return; // stale — another track was requested
+        if (err.name === 'AbortError') return; // source changed, not a real error
         console.error("Play Set audio failed:", err);
         onPlaySetTrackError();
     });
@@ -2020,10 +2029,15 @@ function onPlaySetTrackEnded() {
 
 function onPlaySetTrackError() {
     if (!setPlaySetActive) return;
-    console.warn("Play Set: audio error, skipping to next track");
+    // If currentTime is 0, this is likely a stale error from an aborted load
+    // (changing src aborts the previous fetch and fires an error event).
+    // Genuine initial load failures are handled by play().catch() above.
+    // Only auto-advance on mid-stream errors where audio was already playing.
+    if (setAudio.currentTime === 0) return;
+    console.warn("Play Set: mid-stream audio error, skipping to next track");
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
     if (next >= 0) {
-        setTimeout(() => playFullTrack(next), 500);
+        playFullTrack(next);
     } else {
         stopPlaySet();
     }
