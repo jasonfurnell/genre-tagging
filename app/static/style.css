@@ -2067,24 +2067,28 @@ tr.ws-seed-selected {
     border-left-color: var(--success);
 }
 
-/* Selected track hero */
+/* Selected track hero (now-playing style) */
 .set-drawer-selected-track {
-    background: rgba(78, 204, 163, 0.08);
-    border: 1px solid var(--success);
-    border-radius: var(--radius);
-    padding: 0.25rem;
     margin-bottom: 0.75rem;
 }
-.set-selected-track-row {
-    gap: 0.5rem;
+.selected-track-hero .now-playing-artwork-container {
+    padding: 0.25rem 0 0.5rem;
 }
-.set-selected-track-art {
-    width: 56px;
-    height: 56px;
-    border-radius: 4px;
-    object-fit: cover;
-    cursor: grab;
-    flex-shrink: 0;
+.selected-track-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+.selected-track-preview-btn {
+    font-size: 0.7rem !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+.selected-track-progress {
+    padding: 0 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 /* Context cards */
@@ -2095,16 +2099,35 @@ tr.ws-seed-selected {
     padding: 0.75rem;
     margin-bottom: 0.75rem;
 }
+.set-search-card-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+}
 .set-search-card-header h4 {
     margin: 0 0 0.3rem;
     font-size: 0.85rem;
     color: var(--success);
+}
+.set-search-card:empty {
+    display: none;
 }
 .set-search-card-desc {
     font-size: 0.7rem;
     color: var(--text-muted);
     margin: 0 0 0.3rem;
     line-height: 1.4;
+}
+.set-search-card-toggle {
+    color: var(--success);
+    text-decoration: none;
+    font-size: 0.65rem;
+    cursor: pointer;
+}
+.set-search-card-toggle:hover {
+    text-decoration: underline;
 }
 .set-search-card-count {
     font-size: 0.65rem;
@@ -2172,36 +2195,6 @@ tr.ws-seed-selected {
     display: flex;
     justify-content: center;
     gap: 1rem;
-}
-
-/* Leaf cards in now-playing */
-.now-playing-leaf-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.65rem;
-    margin-bottom: 0.5rem;
-}
-.now-playing-leaf-card:empty {
-    display: none;
-}
-.now-playing-leaf-card .leaf-card-label {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-bottom: 0.2rem;
-}
-.now-playing-leaf-card .leaf-card-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--success);
-    margin-bottom: 0.15rem;
-}
-.now-playing-leaf-card .leaf-card-desc {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    line-height: 1.4;
 }
 
 /* Playback controls */

@@ -1801,8 +1801,8 @@ async function updateNowPlayingDrawer(track, slotIdx) {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
         if (res.ok) {
             const data = await res.json();
-            renderNowPlayingLeafCard("now-playing-scene-leaf", data.scene_leaf, "Scene");
-            renderNowPlayingLeafCard("now-playing-genre-leaf", data.genre_leaf, "Genre");
+            renderSearchCard("now-playing-scene-leaf", data.scene_leaf, "Scene Tree", "tree_node", "scene");
+            renderSearchCard("now-playing-genre-leaf", data.genre_leaf, "Genre Tree", "tree_node", "genre");
         }
     } catch (e) {
         console.error("Failed to load track context:", e);
@@ -1817,19 +1817,6 @@ function loadNowPlayingArtwork(artist, title, imgEl) {
             if (url) imgEl.src = url;
         })
         .catch(() => {});
-}
-
-function renderNowPlayingLeafCard(containerId, cardData, label) {
-    const div = document.getElementById(containerId);
-    if (!cardData || !cardData.available) {
-        div.innerHTML = "";
-        return;
-    }
-    div.innerHTML = `
-        <div class="leaf-card-label">${escHtml(label)} Tree</div>
-        <div class="leaf-card-name">${escHtml(cardData.name || "")}</div>
-        ${cardData.description ? `<div class="leaf-card-desc">${escHtml(cardData.description)}</div>` : ""}
-    `;
 }
 
 function togglePlaySetPause() {
@@ -2023,8 +2010,10 @@ async function searchTracks(query) {
         if (!res.ok) return;
         const data = await res.json();
         renderSearchResults(data.tracks);
-        document.getElementById("set-drawer-selected-track").classList.add("hidden");
-        document.getElementById("set-drawer-selected-track").innerHTML = "";
+        const selDiv = document.getElementById("set-drawer-selected-track");
+        if (selDiv._searchCleanup) selDiv._searchCleanup();
+        selDiv.classList.add("hidden");
+        selDiv.innerHTML = "";
         document.getElementById("set-drawer-search-context").classList.add("hidden");
     } catch (e) {
         console.error("Track search failed:", e);
@@ -2104,9 +2093,15 @@ async function loadTrackContext(track) {
     const selectedDiv = document.getElementById("set-drawer-selected-track");
     const contextDiv = document.getElementById("set-drawer-search-context");
 
+    // Clean up previous search playback
+    if (selectedDiv._searchCleanup) selectedDiv._searchCleanup();
+
     // Show selected track immediately (drag source updated once genre leaf loads)
     selectedDiv.classList.remove("hidden");
     renderSelectedTrack(selectedDiv, track, null);
+
+    // Scroll to top of the selected track (not the context cards)
+    selectedDiv.scrollIntoView({ behavior: "smooth", block: "start" });
 
     contextDiv.classList.remove("hidden");
 
@@ -2127,10 +2122,8 @@ async function loadTrackContext(track) {
         const genreLeaf = data.genre_leaf && data.genre_leaf.available ? data.genre_leaf : null;
         renderSelectedTrack(selectedDiv, track, genreLeaf);
 
-        renderSearchCard("set-search-card-scene", data.scene_leaf, "Scene Tree Leaf", "tree_node", "scene");
-        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree Leaf", "tree_node", "genre");
-
-        contextDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        renderSearchCard("set-search-card-scene", data.scene_leaf, "Scene Tree", "tree_node", "scene");
+        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree", "tree_node", "genre");
     } catch (e) {
         console.error("Track context failed:", e);
         contextDiv.innerHTML = `<div class="set-drawer-empty">Failed to load context</div>`;
@@ -2144,27 +2137,41 @@ function renderSelectedTrack(container, track, genreLeaf) {
     const safeArtist = escHtml(track.artist || "");
     const safeTitle = escHtml(track.title || "");
 
-    const row = document.createElement("div");
-    row.className = "set-drawer-track-row set-selected-track-row";
-    row.innerHTML = `
-        <img class="set-selected-track-art" alt="" draggable="true">
-        <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
-        <div class="set-drawer-track-info">
-            <span class="set-drawer-track-title">${safeTitle}</span>
-            <span class="set-drawer-track-artist">${safeArtist}</span>
+    // Hero layout matching Now Playing style
+    const hero = document.createElement("div");
+    hero.className = "selected-track-hero";
+    hero.innerHTML = `
+        <div class="now-playing-artwork-container">
+            <img class="now-playing-artwork selected-track-art-big" alt="" draggable="true"
+                 src="" style="cursor:grab;">
         </div>
-        <div class="set-drawer-track-meta">
-            ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
-            ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
-            ${track.year ? `<span>${track.year}</span>` : ""}
+        <div class="now-playing-track-info">
+            <div class="now-playing-title">${safeTitle}</div>
+            <div class="now-playing-artist">${safeArtist}</div>
+            <div class="now-playing-meta">
+                ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+                ${track.key ? `<span>${escHtml(track.key)}</span>` : ""}
+                ${track.year ? `<span>${track.year}</span>` : ""}
+            </div>
+        </div>
+        <div class="selected-track-buttons">
+            <button class="now-playing-btn selected-track-preview-btn" title="30s Preview">&#9654;</button>
+            <button class="now-playing-btn now-playing-btn-main selected-track-play-btn" title="Play Full Track">&#9654;</button>
+        </div>
+        <div class="selected-track-progress hidden">
+            <div class="now-playing-progress-bar">
+                <div class="selected-track-progress-fill now-playing-progress-fill"></div>
+            </div>
+            <div class="now-playing-time">
+                <span class="selected-track-current-time">0:00</span>
+                <span class="selected-track-duration">0:00</span>
+            </div>
         </div>
     `;
 
-    // Artwork
-    const img = row.querySelector("img");
-    if (typeof loadArtwork === "function") {
-        loadArtwork(track.artist, track.title, img);
-    }
+    // Big artwork (cover_big for higher res)
+    const img = hero.querySelector(".selected-track-art-big");
+    loadNowPlayingArtwork(track.artist, track.title, img);
 
     // Drag — source is the genre leaf (so slot gets filled from that leaf's track pool)
     img.addEventListener("dragstart", (e) => {
@@ -2182,15 +2189,87 @@ function renderSelectedTrack(container, track, genreLeaf) {
     });
     img.addEventListener("dragend", () => { setDragTrack = null; });
 
-    // Preview
-    row.querySelector(".btn-preview").addEventListener("click", (e) => {
+    // 30s Preview button
+    const previewBtn = hero.querySelector(".selected-track-preview-btn");
+    previewBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         if (typeof togglePreview === "function") {
-            togglePreview(track.artist, track.title, e.currentTarget);
+            togglePreview(track.artist, track.title, previewBtn);
         }
     });
 
-    container.appendChild(row);
+    // Full-track play button
+    const playBtn = hero.querySelector(".selected-track-play-btn");
+    const progressDiv = hero.querySelector(".selected-track-progress");
+    const progressFill = hero.querySelector(".selected-track-progress-fill");
+    const currentTimeEl = hero.querySelector(".selected-track-current-time");
+    const durationEl = hero.querySelector(".selected-track-duration");
+
+    playBtn.addEventListener("click", () => {
+        // Stop Play Set if active
+        if (setPlaySetActive) stopPlaySet();
+        // Stop Deezer preview if playing
+        if (typeof previewAudio !== "undefined" && !previewAudio.paused) {
+            previewAudio.pause();
+            previewAudio.currentTime = 0;
+        }
+        if (typeof resetAllPreviewButtons === "function") resetAllPreviewButtons();
+
+        if (!setAudio.paused && setAudio._searchTrackId === track.id) {
+            // Pause current
+            setAudio.pause();
+            playBtn.innerHTML = "&#9654;";
+        } else if (setAudio.paused && setAudio._searchTrackId === track.id && setAudio.currentTime > 0) {
+            // Resume
+            setAudio.play();
+            playBtn.innerHTML = "&#9646;&#9646;";
+        } else {
+            // Play new track
+            setAudio._searchTrackId = track.id;
+            setAudio.src = `/api/audio/${track.id}`;
+            setAudio.load();
+            setAudio.play().catch(() => {
+                playBtn.innerHTML = "&#9654;";
+                progressDiv.classList.add("hidden");
+            });
+            playBtn.innerHTML = "&#9646;&#9646;";
+            progressDiv.classList.remove("hidden");
+        }
+    });
+
+    // Progress updates for search playback
+    const onTimeUpdate = () => {
+        if (setAudio._searchTrackId !== track.id) return;
+        if (!setAudio.duration) return;
+        const pct = (setAudio.currentTime / setAudio.duration) * 100;
+        progressFill.style.width = pct + "%";
+        currentTimeEl.textContent = formatPlaySetTime(setAudio.currentTime);
+        durationEl.textContent = formatPlaySetTime(setAudio.duration);
+    };
+    const onEnded = () => {
+        if (setAudio._searchTrackId !== track.id) return;
+        playBtn.innerHTML = "&#9654;";
+        progressFill.style.width = "0%";
+        currentTimeEl.textContent = "0:00";
+    };
+
+    setAudio.addEventListener("timeupdate", onTimeUpdate);
+    setAudio.addEventListener("ended", onEnded);
+    setAudio.addEventListener("error", onEnded);
+
+    // Store cleanup refs on container so re-render cleans up
+    container._searchCleanup = () => {
+        setAudio.removeEventListener("timeupdate", onTimeUpdate);
+        setAudio.removeEventListener("ended", onEnded);
+        setAudio.removeEventListener("error", onEnded);
+        if (setAudio._searchTrackId === track.id && !setAudio.paused) {
+            setAudio.pause();
+            setAudio.src = "";
+            setAudio._searchTrackId = null;
+        }
+    };
+
+    container.appendChild(hero);
 }
 
 
@@ -2205,7 +2284,9 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
     // Unavailable tree cards
     if (cardData.available === false) {
         div.innerHTML = `
-            <div class="set-search-card-header"><h4>${escHtml(cardTitle)}</h4></div>
+            <div class="set-search-card-header">
+                <div class="set-search-card-label">${escHtml(cardTitle)}</div>
+            </div>
             <div class="set-search-card-empty">${escHtml(cardData.reason)}</div>
         `;
         return;
@@ -2219,13 +2300,40 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
     div.innerHTML = "";
 
     // Header
+    const DESC_LIMIT = 350;
     const header = document.createElement("div");
     header.className = "set-search-card-header";
+
+    let descHtml = "";
+    if (desc) {
+        if (desc.length > DESC_LIMIT) {
+            const truncated = desc.slice(0, DESC_LIMIT).replace(/\s+\S*$/, "");
+            descHtml = `<p class="set-search-card-desc">
+                <span class="set-search-card-desc-short">${escHtml(truncated)}&hellip; <a href="#" class="set-search-card-toggle">Show More</a></span>
+                <span class="set-search-card-desc-full hidden">${escHtml(desc)} <a href="#" class="set-search-card-toggle">Show Less</a></span>
+            </p>`;
+        } else {
+            descHtml = `<p class="set-search-card-desc">${escHtml(desc)}</p>`;
+        }
+    }
+
     header.innerHTML = `
+        <div class="set-search-card-label">${escHtml(cardTitle)}</div>
         <h4>${escHtml(name)}</h4>
-        ${desc ? `<p class="set-search-card-desc">${escHtml(desc)}</p>` : ""}
+        ${descHtml}
         <span class="set-search-card-count">${count} tracks</span>
     `;
+
+    // Toggle show more/less
+    header.querySelectorAll(".set-search-card-toggle").forEach(link => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const p = link.closest(".set-search-card-desc");
+            p.querySelector(".set-search-card-desc-short").classList.toggle("hidden");
+            p.querySelector(".set-search-card-desc-full").classList.toggle("hidden");
+        });
+    });
+
     div.appendChild(header);
 
     if (tracks.length === 0) {
