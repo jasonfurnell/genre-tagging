@@ -407,8 +407,14 @@ let _dlPollTimer = null;
 
 async function _startDownloadAll() {
     try {
-        await fetch("/api/artwork/download-all", { method: "POST" });
-        _startDlPoll();
+        const res = await fetch("/api/artwork/download-all", { method: "POST" });
+        const data = await res.json();
+        // If nothing needs downloading, skip straight to retry
+        if (data.status === "started") {
+            _startDlPoll();
+        } else {
+            _startRetryNotFound();
+        }
     } catch (_) { /* ignore */ }
 }
 
@@ -431,11 +437,57 @@ function _startDlPoll() {
                 clearInterval(_dlPollTimer);
                 _dlPollTimer = null;
                 if (text) text.textContent = `Artwork downloaded: ${st.downloaded} images saved locally`;
-                setTimeout(() => el.classList.add("hidden"), 4000);
+                setTimeout(() => {
+                    el.classList.add("hidden");
+                    // After download, retry not-found via iTunes + placeholders
+                    _startRetryNotFound();
+                }, 1000);
             }
         } catch (_) {
             clearInterval(_dlPollTimer);
             _dlPollTimer = null;
+            el.classList.add("hidden");
+        }
+    }, 1500);
+}
+
+// ── Retry not-found artwork (iTunes fallback → placeholder) ──
+let _retryPollTimer = null;
+
+async function _startRetryNotFound() {
+    try {
+        const res = await fetch("/api/artwork/retry-not-found", { method: "POST" });
+        const data = await res.json();
+        if (data.status === "started") _startRetryPoll();
+    } catch (_) { /* ignore */ }
+}
+
+function _startRetryPoll() {
+    const el = document.getElementById("artwork-warm-status");
+    if (!el || _retryPollTimer) return;
+    el.classList.remove("hidden");
+    el.innerHTML = `<span class="artwork-warm-text">Finding missing artwork...</span>
+        <div class="artwork-warm-bar"><div class="artwork-warm-bar-fill" style="width:0%"></div></div>`;
+    _retryPollTimer = setInterval(async () => {
+        try {
+            const res = await fetch("/api/artwork/retry-not-found/status");
+            const st = await res.json();
+            const pct = st.total > 0 ? Math.round((st.done / st.total) * 100) : 0;
+            const fill = el.querySelector(".artwork-warm-bar-fill");
+            const text = el.querySelector(".artwork-warm-text");
+            if (fill) fill.style.width = pct + "%";
+            if (text) text.textContent =
+                `Finding missing artwork\u2026 ${st.done}/${st.total} (${st.itunes_found} found, ${st.placeholders} placeholders)`;
+            if (!st.running) {
+                clearInterval(_retryPollTimer);
+                _retryPollTimer = null;
+                if (text) text.textContent =
+                    `Missing artwork resolved: ${st.itunes_found} found via iTunes, ${st.placeholders} placeholders generated`;
+                setTimeout(() => el.classList.add("hidden"), 5000);
+            }
+        } catch (_) {
+            clearInterval(_retryPollTimer);
+            _retryPollTimer = null;
             el.classList.add("hidden");
         }
     }, 1500);

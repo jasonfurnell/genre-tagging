@@ -85,6 +85,7 @@ _state = {
 _ARTWORK_CACHE_FILE = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), "output", "artwork_cache.json"
 )
+_artwork_cache_lock = threading.Lock()
 
 def _load_artwork_cache():
     """Load artwork cache from disk into _state."""
@@ -98,13 +99,17 @@ def _load_artwork_cache():
         logging.exception("Failed to load artwork cache from disk")
 
 def _save_artwork_cache():
-    """Persist artwork cache to disk."""
-    try:
-        snapshot = dict(_state["_artwork_cache"])   # safe copy
-        with open(_ARTWORK_CACHE_FILE, "w") as f:
-            json.dump(snapshot, f)
-    except Exception:
-        logging.exception("Failed to save artwork cache to disk")
+    """Persist artwork cache to disk (thread-safe)."""
+    with _artwork_cache_lock:
+        try:
+            snapshot = dict(_state["_artwork_cache"])   # safe copy
+            # Write to temp file then rename for atomicity
+            tmp = _ARTWORK_CACHE_FILE + ".tmp"
+            with open(tmp, "w") as f:
+                json.dump(snapshot, f)
+            os.replace(tmp, _ARTWORK_CACHE_FILE)
+        except Exception:
+            logging.exception("Failed to save artwork cache to disk")
 
 _load_artwork_cache()
 
@@ -2024,6 +2029,24 @@ _NOT_FOUND_RETRY_SECS = 86400      # retry not-found lookups after 24h
 def _lookup_artwork(artist, title):
     """Look up artwork for a single track. Returns dict with cover_url/found."""
     cache_key = f"{artist.lower()}||{title.lower()}"
+
+    # Disk-first: if local files exist, trust them (survives cache corruption)
+    small_fname = _artwork_filename(cache_key, "small")
+    if os.path.exists(os.path.join(_ARTWORK_DIR, small_fname)):
+        big_fname = _artwork_filename(cache_key, "big")
+        big_path = os.path.join(_ARTWORK_DIR, big_fname)
+        result = {
+            "cover_url": f"/artwork/{small_fname}",
+            "cover_big": f"/artwork/{big_fname}" if os.path.exists(big_path)
+                         else f"/artwork/{small_fname}",
+            "found": True,
+        }
+        # Repair cache if missing/stale
+        if cache_key not in _state["_artwork_cache"] or \
+           not _state["_artwork_cache"][cache_key].get("found"):
+            _state["_artwork_cache"][cache_key] = result
+        return result
+
     cached = _state["_artwork_cache"].get(cache_key)
     if cached is not None:
         # Retry not-found entries after 24h (Deezer may have added the track)
@@ -2095,6 +2118,203 @@ def _ensure_local_artwork(entry, cache_key):
         _state["_artwork_cache"][cache_key] = entry
 
 
+# ---------------------------------------------------------------------------
+# iTunes Search API fallback for tracks not found on Deezer
+# ---------------------------------------------------------------------------
+def _lookup_artwork_itunes(artist, title, cache_key):
+    """Try iTunes Search API. Returns cache entry dict or None."""
+    query = urllib.parse.quote(f"{artist} {title}")
+    url = f"https://itunes.apple.com/search?term={query}&media=music&limit=5"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        results = data.get("results", [])
+        if not results:
+            return None
+
+        # Try to match artist/title
+        a_low, t_low = artist.lower(), title.lower()
+        best = None
+        for r in results:
+            r_artist = (r.get("artistName") or "").lower()
+            r_title = (r.get("trackName") or "").lower()
+            if (a_low in r_artist or r_artist in a_low) and \
+               (t_low in r_title or r_title in t_low):
+                best = r
+                break
+        if best is None:
+            best = results[0]
+
+        art_url = best.get("artworkUrl100", "")
+        if not art_url:
+            return None
+
+        # iTunes URLs support size substitution
+        small_url = art_url.replace("100x100", "60x60")
+        big_url = art_url.replace("100x100", "600x600")
+
+        # Download locally
+        local_small = _download_artwork_local(small_url, cache_key, "small")
+        local_big = _download_artwork_local(big_url, cache_key, "big")
+        if not local_small:
+            return None
+
+        return {
+            "cover_url": local_small,
+            "cover_big": local_big or local_small,
+            "found": True,
+            "source": "itunes",
+        }
+    except Exception:
+        logging.exception("iTunes artwork lookup failed for %s - %s", artist, title)
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Placeholder image generation (artist initials on coloured background)
+# ---------------------------------------------------------------------------
+def _generate_placeholder(artist, title, cache_key):
+    """Generate a placeholder image with artist initials. Returns cache entry."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    # Pick initials (up to 2 chars from artist name)
+    words = (artist or "?").split()
+    initials = "".join(w[0].upper() for w in words[:2]) if words else "?"
+
+    # Deterministic colour from cache_key hash
+    h = hashlib.md5(cache_key.encode()).hexdigest()
+    hue = int(h[:2], 16) / 255.0
+    # HSL to RGB (muted tones: saturation ~40%, lightness ~30%)
+    import colorsys
+    r, g, b = colorsys.hls_to_rgb(hue, 0.30, 0.40)
+    bg = (int(r * 255), int(g * 255), int(b * 255))
+
+    for size_name, px in [("small", 60), ("big", 600)]:
+        img = Image.new("RGB", (px, px), bg)
+        draw = ImageDraw.Draw(img)
+        # Use default font, scaled
+        try:
+            font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc",
+                                      size=px // 3)
+        except Exception:
+            font = ImageFont.load_default()
+        # Centre text
+        bbox = draw.textbbox((0, 0), initials, font=font)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        x = (px - tw) // 2
+        y = (px - th) // 2 - bbox[1]
+        draw.text((x, y), initials, fill=(255, 255, 255, 200), font=font)
+
+        fname = _artwork_filename(cache_key, size_name)
+        local_path = os.path.join(_ARTWORK_DIR, fname)
+        img.save(local_path, "JPEG", quality=85)
+
+    return {
+        "cover_url": f"/artwork/{_artwork_filename(cache_key, 'small')}",
+        "cover_big": f"/artwork/{_artwork_filename(cache_key, 'big')}",
+        "found": True,
+        "source": "placeholder",
+    }
+
+
+# ---------------------------------------------------------------------------
+# Retry not-found artwork (iTunes fallback → placeholder)
+# ---------------------------------------------------------------------------
+_retry_artwork_state = {
+    "running": False, "total": 0, "done": 0,
+    "itunes_found": 0, "placeholders": 0,
+}
+
+
+def _retry_artwork_worker():
+    """Background: try iTunes for all not-found entries, then generate placeholders."""
+    st = _retry_artwork_state
+    try:
+        not_found = [
+            (key, entry) for key, entry in _state["_artwork_cache"].items()
+            if isinstance(entry, dict) and not entry.get("found")
+        ]
+        st["total"] = len(not_found)
+        st["done"] = 0
+        st["itunes_found"] = 0
+        st["placeholders"] = 0
+
+        BATCH = 6
+        for i in range(0, len(not_found), BATCH):
+            if not st["running"]:
+                break
+            chunk = not_found[i:i + BATCH]
+
+            # Try iTunes in parallel
+            with ThreadPoolExecutor(max_workers=BATCH) as pool:
+                futures = {}
+                for cache_key, entry in chunk:
+                    parts = cache_key.split("||", 1)
+                    if len(parts) == 2:
+                        futures[pool.submit(
+                            _lookup_artwork_itunes, parts[0], parts[1], cache_key
+                        )] = cache_key
+
+                for fut in as_completed(futures):
+                    cache_key = futures[fut]
+                    try:
+                        result = fut.result()
+                        if result:
+                            _state["_artwork_cache"][cache_key] = result
+                            st["itunes_found"] += 1
+                    except Exception:
+                        pass
+
+            # Generate placeholders for anything still not found
+            for cache_key, _ in chunk:
+                entry = _state["_artwork_cache"].get(cache_key, {})
+                if not entry.get("found"):
+                    parts = cache_key.split("||", 1)
+                    artist = parts[0] if parts else "?"
+                    title = parts[1] if len(parts) > 1 else ""
+                    placeholder = _generate_placeholder(artist, title, cache_key)
+                    _state["_artwork_cache"][cache_key] = placeholder
+                    st["placeholders"] += 1
+                st["done"] += 1
+
+            if (i // BATCH) % 5 == 4:
+                _save_artwork_cache()
+            time.sleep(0.4)     # throttle iTunes API
+
+        _save_artwork_cache()
+    except Exception:
+        logging.exception("Retry artwork worker failed")
+    finally:
+        st["running"] = False
+
+
+@api.route("/api/artwork/retry-not-found", methods=["POST"])
+def retry_not_found_artwork():
+    """Start background retry: iTunes fallback → placeholder for not-found entries."""
+    if _retry_artwork_state["running"]:
+        return jsonify({"status": "already_running", **_retry_artwork_state})
+    # Quick check: anything not found?
+    not_found = sum(
+        1 for e in _state["_artwork_cache"].values()
+        if isinstance(e, dict) and not e.get("found")
+    )
+    if not_found == 0:
+        return jsonify({"status": "nothing_to_do"})
+    _retry_artwork_state.update(
+        running=True, total=0, done=0, itunes_found=0, placeholders=0
+    )
+    t = threading.Thread(target=_retry_artwork_worker, daemon=True)
+    t.start()
+    return jsonify({"status": "started"})
+
+
+@api.route("/api/artwork/retry-not-found/status")
+def retry_not_found_status():
+    return jsonify(_retry_artwork_state)
+
+
 _artwork_cache_dirty = 0          # count of unsaved new lookups
 
 @api.route("/api/artwork")
@@ -2126,7 +2346,7 @@ def get_artwork_batch():
     if not isinstance(items, list) or len(items) > 50:
         return jsonify({"error": "Expected a JSON array (max 50)"}), 400
 
-    # Separate cached from uncached
+    # Separate cached/on-disk from uncached
     results = {}
     uncached = []     # (key, artist, title)
     for item in items:
@@ -2135,6 +2355,21 @@ def get_artwork_batch():
         if not artist or not title:
             continue
         key = f"{artist.lower()}||{title.lower()}"
+        # Disk-first: check local files
+        small_fname = _artwork_filename(key, "small")
+        if os.path.exists(os.path.join(_ARTWORK_DIR, small_fname)):
+            big_fname = _artwork_filename(key, "big")
+            big_path = os.path.join(_ARTWORK_DIR, big_fname)
+            results[key] = {
+                "cover_url": f"/artwork/{small_fname}",
+                "cover_big": f"/artwork/{big_fname}" if os.path.exists(big_path)
+                             else f"/artwork/{small_fname}",
+                "found": True,
+            }
+            if key not in _state["_artwork_cache"] or \
+               not _state["_artwork_cache"][key].get("found"):
+                _state["_artwork_cache"][key] = results[key]
+            continue
         cached = _state["_artwork_cache"].get(key)
         if cached is not None:
             _ensure_local_artwork(cached, key)
@@ -2182,7 +2417,7 @@ def _warm_cache_worker():
             st["running"] = False
             return
 
-        # Build unique (artist, title) pairs not yet cached
+        # Build unique (artist, title) pairs not yet cached or on disk
         pairs = []
         seen = set()
         for _, row in df.iterrows():
@@ -2194,6 +2429,11 @@ def _warm_cache_worker():
             if key in seen:
                 continue
             seen.add(key)
+            # Skip if local file exists on disk
+            small_fname = _artwork_filename(key, "small")
+            if os.path.exists(os.path.join(_ARTWORK_DIR, small_fname)):
+                st["skipped"] += 1
+                continue
             if key in _state["_artwork_cache"]:
                 st["skipped"] += 1
                 continue
@@ -2251,7 +2491,7 @@ def warm_cache_status():
 
 @api.route("/api/artwork/uncached-count")
 def uncached_count():
-    """Quick check: how many tracks have no cached artwork lookup."""
+    """Quick check: how many tracks have no cached artwork lookup or local file."""
     df = _state.get("df")
     if df is None or "artist" not in df.columns:
         return jsonify({"uncached": 0})
@@ -2266,6 +2506,10 @@ def uncached_count():
         if key in seen:
             continue
         seen.add(key)
+        # Check disk first, then cache
+        small_fname = _artwork_filename(key, "small")
+        if os.path.exists(os.path.join(_ARTWORK_DIR, small_fname)):
+            continue
         if key not in _state["_artwork_cache"]:
             uncached += 1
     return jsonify({"uncached": uncached, "total": len(seen)})
@@ -2297,6 +2541,8 @@ def _download_all_worker():
         entries = [
             (key, entry) for key, entry in _state["_artwork_cache"].items()
             if isinstance(entry, dict) and entry.get("found")
+            and any(entry.get(f, "").startswith("https://")
+                    for f in ("cover_url", "cover_big"))
         ]
         st["total"] = len(entries)
         st["done"] = 0
@@ -2342,6 +2588,14 @@ def download_all_artwork():
     """Start bulk download of all cached artwork to local files."""
     if _download_all_state["running"]:
         return jsonify({"status": "already_running", **_download_all_state})
+    # Quick check: anything to download?
+    need_dl = any(
+        isinstance(e, dict) and e.get("found")
+        and any(e.get(f, "").startswith("https://") for f in ("cover_url", "cover_big"))
+        for e in _state["_artwork_cache"].values()
+    )
+    if not need_dl:
+        return jsonify({"status": "nothing_to_do"})
     _download_all_state.update(running=True, total=0, done=0, downloaded=0)
     t = threading.Thread(target=_download_all_worker, daemon=True)
     t.start()
