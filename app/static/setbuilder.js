@@ -25,6 +25,12 @@ let setPlaySetActive = false;
 let setPlaySetIndex = 0;
 let setAudio = null;   // separate Audio element for full-track playback
 
+// ── Saved Set State ──
+let currentSetId = null;        // ID of the loaded saved set, or null
+let currentSetName = null;      // Name of the loaded saved set
+let setDirty = false;           // True if workshop changed since last save/load
+let setsInitialized = false;    // Lazy init for the Sets tab
+
 // ── Auto-Save ──
 let _saveTimer = null;
 
@@ -82,6 +88,8 @@ async function initSetBuilder() {
     document.body.appendChild(setTooltipEl);
 
     // Toolbar buttons
+    document.getElementById("set-save-btn").addEventListener("click", saveCurrentSet);
+    document.getElementById("set-save-as-btn").addEventListener("click", saveSetAs);
     document.getElementById("set-preview-all-btn").addEventListener("click", togglePreviewAll);
     document.getElementById("set-play-set-btn").addEventListener("click", togglePlaySet);
     document.getElementById("set-export-btn").addEventListener("click", exportSet);
@@ -190,6 +198,8 @@ function ensureBookendSlots() {
 
 function scheduleAutoSave() {
     clearTimeout(_saveTimer);
+    setDirty = true;
+    updateSaveButtons();
     _saveTimer = setTimeout(saveSetState, 1000);
 }
 
@@ -198,7 +208,11 @@ async function saveSetState() {
         await fetch("/api/set-workshop/state", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ slots: setSlots }),
+            body: JSON.stringify({
+                slots: setSlots,
+                set_id: currentSetId,
+                set_name: currentSetName,
+            }),
         });
     } catch (e) {
         console.error("Failed to save set state:", e);
@@ -211,9 +225,12 @@ async function loadSavedSetState() {
         const data = await res.json();
         if (data && data.slots && data.slots.length > 0) {
             setSlots = data.slots;
+            currentSetId = data.set_id || null;
+            currentSetName = data.set_name || null;
+            setDirty = false;
             ensureBookendSlots();
             renderSet();
-            // Refresh has_audio flags (saved state may predate this field)
+            updateSaveButtons();
             refreshHasAudioFlags();
             return;
         }
@@ -223,8 +240,201 @@ async function loadSavedSetState() {
 
     // Fallback: init empty (2-hour default)
     initEmptySlots();
+    currentSetId = null;
+    currentSetName = null;
+    setDirty = false;
     renderSet();
+    updateSaveButtons();
 }
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Save / Load Named Sets
+// ═══════════════════════════════════════════════════════════════════════════
+
+function updateSaveButtons() {
+    const saveBtn = document.getElementById("set-save-btn");
+    const nameEl = document.getElementById("set-current-name");
+    if (!saveBtn || !nameEl) return;
+    if (currentSetId) {
+        saveBtn.style.display = "";
+        saveBtn.disabled = !setDirty;
+    } else {
+        saveBtn.style.display = "none";
+    }
+    nameEl.textContent = currentSetName
+        ? (setDirty && currentSetId ? currentSetName + " *" : currentSetName)
+        : "";
+}
+
+async function saveCurrentSet() {
+    if (!currentSetId) { saveSetAs(); return; }
+    try {
+        const res = await fetch(`/api/saved-sets/${currentSetId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ slots: setSlots, name: currentSetName }),
+        });
+        if (res.ok) {
+            setDirty = false;
+            updateSaveButtons();
+            showToast(`Saved "${currentSetName}"`);
+        }
+    } catch (e) {
+        console.error("Save failed:", e);
+        alert("Failed to save set.");
+    }
+}
+
+async function saveSetAs() {
+    const name = prompt("Set name:", currentSetName || "My Set");
+    if (!name || !name.trim()) return;
+    try {
+        const res = await fetch("/api/saved-sets", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name.trim(), slots: setSlots }),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            currentSetId = data.id;
+            currentSetName = data.name;
+            setDirty = false;
+            updateSaveButtons();
+            showToast(`Saved as "${currentSetName}"`);
+        }
+    } catch (e) {
+        console.error("Save As failed:", e);
+        alert("Failed to save set.");
+    }
+}
+
+async function loadSavedSet(setId) {
+    if (setDirty) {
+        if (!confirm("You have unsaved changes. Discard and load a different set?")) return;
+    }
+    try {
+        const res = await fetch(`/api/saved-sets/${setId}`);
+        if (!res.ok) { alert("Failed to load set."); return; }
+        const data = await res.json();
+        setSlots = data.slots || [];
+        currentSetId = data.id;
+        currentSetName = data.name;
+        setDirty = false;
+        ensureBookendSlots();
+        renderSet();
+        updateSaveButtons();
+        refreshHasAudioFlags();
+        saveSetState(); // persist to working state immediately
+        if (typeof switchToTab === "function") switchToTab("setbuilder");
+        showToast(`Loaded "${currentSetName}"`);
+    } catch (e) {
+        console.error("Failed to load set:", e);
+        alert("Failed to load set.");
+    }
+}
+
+function startNewSet() {
+    if (setDirty) {
+        if (!confirm("You have unsaved changes. Start a new set?")) return;
+    }
+    initEmptySlots();
+    currentSetId = null;
+    currentSetName = null;
+    setDirty = false;
+    renderSet();
+    updateSaveButtons();
+    saveSetState();
+    if (typeof switchToTab === "function") switchToTab("setbuilder");
+}
+
+// ── Sets Tab ──
+
+async function initSetsTab() {
+    if (setsInitialized) return;
+    setsInitialized = true;
+    document.getElementById("sets-new-btn").addEventListener("click", startNewSet);
+    await loadSetsList();
+}
+
+async function loadSetsList() {
+    try {
+        const res = await fetch("/api/saved-sets");
+        const data = await res.json();
+        renderSetsGrid(data.sets || []);
+    } catch (e) {
+        console.error("Failed to load sets:", e);
+    }
+}
+
+function renderSetsGrid(sets) {
+    const grid = document.getElementById("sets-grid");
+    if (!grid) return;
+    const emptyMsg = grid.querySelector(".sets-empty");
+
+    // Remove old cards
+    grid.querySelectorAll(".set-card").forEach(el => el.remove());
+
+    if (sets.length === 0) {
+        if (emptyMsg) emptyMsg.classList.remove("hidden");
+        return;
+    }
+    if (emptyMsg) emptyMsg.classList.add("hidden");
+
+    for (const s of sets) {
+        const card = document.createElement("div");
+        card.className = "set-card" + (s.id === currentSetId ? " active" : "");
+        card.dataset.setId = s.id;
+
+        const durH = Math.floor(s.duration_minutes / 60);
+        const durM = s.duration_minutes % 60;
+        const durStr = durH > 0 ? `${durH}h ${durM}m` : `${durM}m`;
+        const dateStr = s.updated_at
+            ? new Date(s.updated_at).toLocaleDateString()
+            : "";
+
+        card.innerHTML = `
+            <div class="set-card-name">${escHtml(s.name)}</div>
+            <div class="set-card-meta">
+                <span>${s.track_count} tracks</span>
+                <span>${durStr}</span>
+                <span>${dateStr}</span>
+            </div>
+            <div class="set-card-actions">
+                <button class="btn btn-sm btn-secondary set-card-load">Load</button>
+                <button class="btn btn-sm btn-danger set-card-delete" title="Delete">&times;</button>
+            </div>
+        `;
+
+        card.querySelector(".set-card-load").addEventListener("click", (e) => {
+            e.stopPropagation();
+            loadSavedSet(s.id);
+        });
+        card.querySelector(".set-card-delete").addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteSavedSet(s.id, s.name);
+        });
+        card.addEventListener("click", () => loadSavedSet(s.id));
+
+        grid.appendChild(card);
+    }
+}
+
+async function deleteSavedSet(setId, setName) {
+    if (!confirm(`Delete set "${setName}"?`)) return;
+    try {
+        await fetch(`/api/saved-sets/${setId}`, { method: "DELETE" });
+        if (currentSetId === setId) {
+            currentSetId = null;
+            currentSetName = null;
+            updateSaveButtons();
+        }
+        await loadSetsList();
+    } catch (e) {
+        console.error("Delete failed:", e);
+    }
+}
+
 
 async function refreshHasAudioFlags() {
     // Collect all unique track IDs across all slots

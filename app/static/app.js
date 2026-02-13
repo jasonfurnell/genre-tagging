@@ -816,6 +816,10 @@ $$(".tab-btn").forEach(btn => {
             setBuilderInitialized = true;
             if (typeof initSetBuilder === "function") initSetBuilder();
         }
+        if (target === "sets") {
+            if (typeof initSetsTab === "function") initSetsTab();
+            if (typeof loadSetsList === "function") loadSetsList();
+        }
     });
 });
 

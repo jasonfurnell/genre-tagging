@@ -15,6 +15,7 @@
     <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
     <nav id="tab-bar" class="tab-bar hidden">
         <button class="tab-btn active" data-tab="setbuilder">Set Workshop</button>
+        <button class="tab-btn" data-tab="sets">Sets</button>
         <button class="tab-btn" data-tab="tagger">Tagger</button>
         <button class="tab-btn" data-tab="intersections">Intersections</button>
         <button class="tab-btn" data-tab="workshop">Playlist Workshop</button>
@@ -188,6 +189,17 @@
 
     </div>
 
+    <!-- ═══ Tab: Saved Sets ═══ -->
+    <div id="tab-sets" class="tab-content hidden">
+        <div class="sets-header">
+            <h2>Saved Sets</h2>
+            <button id="sets-new-btn" class="btn btn-primary btn-sm">New Set</button>
+        </div>
+        <div id="sets-grid" class="sets-grid">
+            <p class="sets-empty">No saved sets yet. Build a set in the Set Workshop and save it.</p>
+        </div>
+    </div>
+
     <!-- ═══ Tab: Set Workshop ═══ -->
     <div id="tab-setbuilder" class="tab-content">
 
@@ -197,6 +209,10 @@
                 <span class="set-toolbar-title">Set Workshop</span>
             </div>
             <div class="set-toolbar-right">
+                <span id="set-current-name" class="set-current-name"></span>
+                <button id="set-save-btn" class="btn btn-secondary btn-sm" style="display:none;">Save</button>
+                <button id="set-save-as-btn" class="btn btn-secondary btn-sm">Save As</button>
+                <span class="set-toolbar-sep"></span>
                 <button id="set-search-btn" class="btn btn-secondary btn-sm">Search</button>
                 <button id="set-preview-all-btn" class="btn btn-secondary btn-sm" disabled>Preview All</button>
                 <button id="set-play-set-btn" class="btn btn-secondary btn-sm" disabled>Play Set</button>

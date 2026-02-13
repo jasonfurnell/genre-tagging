@@ -39,6 +39,8 @@ from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source,
     build_track_context, save_set_state, load_set_state,
+    create_saved_set, get_saved_set, list_saved_sets,
+    update_saved_set, delete_saved_set,
 )
 
 api = Blueprint("api", __name__)
@@ -2332,6 +2334,54 @@ def set_workshop_export_m3u():
     buf = io.BytesIO(content.encode("utf-8"))
     return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
                      download_name=f"{safe_name}.m3u8")
+
+
+# ---------------------------------------------------------------------------
+# Saved Sets CRUD
+# ---------------------------------------------------------------------------
+
+@api.route("/api/saved-sets")
+def saved_sets_list():
+    return jsonify({"sets": list_saved_sets()})
+
+
+@api.route("/api/saved-sets/<set_id>")
+def saved_sets_get(set_id):
+    s = get_saved_set(set_id)
+    if not s:
+        return jsonify({"error": "Set not found"}), 404
+    return jsonify(s)
+
+
+@api.route("/api/saved-sets", methods=["POST"])
+def saved_sets_create():
+    body = request.get_json() or {}
+    name = body.get("name", "").strip()
+    slots = body.get("slots")
+    if not name:
+        return jsonify({"error": "Name is required"}), 400
+    if not slots:
+        return jsonify({"error": "Slots data is required"}), 400
+    s = create_saved_set(name, slots)
+    return jsonify(s), 201
+
+
+@api.route("/api/saved-sets/<set_id>", methods=["PUT"])
+def saved_sets_update(set_id):
+    body = request.get_json() or {}
+    name = body.get("name")
+    slots = body.get("slots")
+    s = update_saved_set(set_id, name=name, slots=slots)
+    if not s:
+        return jsonify({"error": "Set not found"}), 404
+    return jsonify(s)
+
+
+@api.route("/api/saved-sets/<set_id>", methods=["DELETE"])
+def saved_sets_delete(set_id):
+    if delete_saved_set(set_id):
+        return jsonify({"ok": True})
+    return jsonify({"error": "Set not found"}), 404
 
 
 # ---------------------------------------------------------------------------

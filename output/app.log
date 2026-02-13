@@ -15583,349 +15583,474 @@ INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:34:02] "GET /api/set-workshop/track-
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:34:02] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:34:02] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:34:02] "[35m[1mGET /api/audio/523 HTTP/1.1[0m" 206 -
-"GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:05,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:07,096 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:08,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:10,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:11,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:13,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:14,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:16,101 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:17,602 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:19,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:20,602 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:22,101 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:23,602 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:25,106 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:26,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:28,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:29,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:31,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:32,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:34,103 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:35,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:37,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:38,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:40,096 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:41,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:43,103 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:44,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:46,103 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:47,598 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:49,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:50,798 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:52,101 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:53,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:55,101 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:56,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:58,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:05:59,604 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:05:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:01,097 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:02,607 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:04,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:05,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:07,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:08,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:10,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:11,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:13,114 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:14,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:16,097 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:17,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:19,102 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:20,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:22,102 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:23,609 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:25,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:26,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:28,193 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:29,603 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:31,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:32,598 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:34,097 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:35,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:37,102 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:38,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:40,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:41,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:43,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:44,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:46,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:47,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:49,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:50,674 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:52,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:53,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:55,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:56,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:58,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:06:59,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:06:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:01,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:02,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:04,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:05,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:07,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:08,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:10,101 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:11,596 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:13,099 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:14,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:16,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:17,603 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:19,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:20,602 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:22,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:23,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:25,103 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:26,646 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:28,137 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:29,751 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:31,366 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:32,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:34,107 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:35,597 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:37,102 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:38,609 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:40,098 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:41,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:43,107 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:44,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:46,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:48,124 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:48] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:50,895 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:51,669 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:51] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:53,074 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:54,056 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:54] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:56,070 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:57,059 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:57] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:07:59,056 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:07:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:00,059 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:00] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:02,073 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:03,056 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:03] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:05,058 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:06,057 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:06] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:08,078 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:08,961 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:10,173 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:11,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:14,102 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:14,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
-2026-02-13 14:08:15,461 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:15] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:15,719 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:15] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:08:15,801 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:15] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:15,990 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:15] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:08:27,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:27] "GET /api/set-workshop/track-context/426 HTTP/1.1" 200 -
-2026-02-13 14:08:28,052 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:28] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:08:31,407 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:31] "POST /api/set-workshop/drag-track HTTP/1.1" 200 -
-2026-02-13 14:08:31,614 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:31] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:08:32,472 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:32] "POST /api/set-workshop/state HTTP/1.1" 200 -
-2026-02-13 14:08:40,621 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:40] "GET /api/artwork?artist=Beats%20International,Raiwa&title=Dub%20Be%20Good%20To%20Me%20-%20Raiwa%20Remix HTTP/1.1" 200 -
-2026-02-13 14:08:40,645 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:40] "GET /api/set-workshop/track-context/426 HTTP/1.1" 200 -
-2026-02-13 14:08:40,665 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:40] "GET /api/audio/426 HTTP/1.1" 200 -
-2026-02-13 14:08:41,241 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "[36mGET /api/audio/1346 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:41,245 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:08:41,262 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:08:41,771 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "[36mGET /api/audio/5687 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:41,773 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/audio/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:41,776 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:41,794 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:41,812 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:41] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:42,297 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:42,299 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:42,307 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:42,315 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:42,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:42,345 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:42,822 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "[36mGET /api/audio/5704 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:42,822 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/audio/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,826 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/audio/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,841 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,857 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,888 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:42,910 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:42] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:08:43,341 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "[36mGET /api/audio/4152 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:43,342 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/audio/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,345 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,362 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,380 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,396 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,581 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,599 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:08:43,881 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "[36mGET /api/audio/5542 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:43,884 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:43,884 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/audio/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:43,904 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:43,921 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:43,936 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:43,956 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:43] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:44,106 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:44,124 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:44,140 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:08:44,373 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "[36mGET /api/audio/523 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:44,374 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/audio/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,374 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/audio/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,379 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,396 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,420 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,443 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,461 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:44,477 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:44] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:08:47,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:47] "GET /api/set-workshop/track-context/426 HTTP/1.1" 200 -
-2026-02-13 14:08:47,611 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:47] "[36mGET /api/audio/1346 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:47,614 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:47] "GET /api/audio/1346 HTTP/1.1" 200 -
-2026-02-13 14:08:47,615 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:47] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:08:47,634 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:47] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:08:48,154 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:48,185 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:48,204 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:08:48,665 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:08:48,669 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/audio/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:48,671 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:48,690 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:48,708 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:48,725 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:48] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:08:55,357 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:55] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:55,721 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:55] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:55,921 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:55] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:56,556 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:56] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:08:57,100 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:08:57] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:02,669 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:02] "GET /api/set-workshop/track-context/5200 HTTP/1.1" 200 -
-2026-02-13 14:09:02,846 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:02] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:06,271 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:06] "POST /api/set-workshop/drag-track HTTP/1.1" 200 -
-2026-02-13 14:09:06,474 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:06] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:07,338 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:07] "POST /api/set-workshop/state HTTP/1.1" 200 -
-2026-02-13 14:09:09,847 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:09] "GET /api/artwork?artist=Beats%20International&title=Dub%20Be%20Good%20To%20Me HTTP/1.1" 200 -
-2026-02-13 14:09:09,865 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:09] "GET /api/set-workshop/track-context/5200 HTTP/1.1" 200 -
-2026-02-13 14:09:09,866 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:09] "GET /api/audio/5200 HTTP/1.1" 200 -
-2026-02-13 14:09:10,418 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:09:10,441 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:09:10,927 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "[36mGET /api/audio/5687 HTTP/1.1[0m" 304 -
-2026-02-13 14:09:10,931 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:09:10,946 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "[36mGET /api/audio/5687 HTTP/1.1[0m" 304 -
-2026-02-13 14:09:10,949 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:10] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:09:11,136 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:09:11,459 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:09:11,460 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/audio/1566 HTTP/1.1" 200 -
-2026-02-13 14:09:11,463 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:09:11,465 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:09:11,479 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:09:11,493 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:09:11,508 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:09:11,975 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "[36mGET /api/audio/5704 HTTP/1.1[0m" 304 -
-2026-02-13 14:09:11,975 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/audio/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:11,978 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:11,995 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:11] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:12,010 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:12] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:12,025 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:12] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:12,039 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:12] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:09:37,600 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:37] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
-2026-02-13 14:09:37,774 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:37] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:39,561 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:39] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
-2026-02-13 14:09:39,746 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:39] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:44,257 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:44] "POST /api/set-workshop/drag-track HTTP/1.1" 200 -
-2026-02-13 14:09:44,464 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:44] "POST /api/artwork/batch HTTP/1.1" 200 -
-2026-02-13 14:09:45,301 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:45] "POST /api/set-workshop/state HTTP/1.1" 200 -
-2026-02-13 14:09:48,548 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:48] "GET /api/preview?artist=The+Turtles&title=Buzzsaw HTTP/1.1" 200 -
-2026-02-13 14:09:50,877 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
-2026-02-13 14:09:57,662 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:57] "GET /api/artwork?artist=The%20Turtles&title=Buzzsaw HTTP/1.1" 200 -
-2026-02-13 14:09:57,717 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:57] "[35m[1mGET /api/audio/2572 HTTP/1.1[0m" 206 -
-2026-02-13 14:09:57,729 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:09:57] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
-2026-02-13 14:11:57,230 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:57] "[36mGET /api/audio/1346 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:57,233 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:57] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
-2026-02-13 14:11:57,766 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:57] "[36mGET /api/audio/5687 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:57,770 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:57] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:11:57,787 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:57] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
-2026-02-13 14:11:58,285 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:58,289 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:11:58,291 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "[36mGET /api/audio/1566 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:58,309 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:11:58,334 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
-2026-02-13 14:11:58,808 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "[36mGET /api/audio/5704 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:58,813 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:11:58,821 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "[36mGET /api/audio/5704 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:58,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:11:58,850 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:11:58,865 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:58] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
-2026-02-13 14:11:59,351 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "[36mGET /api/audio/4152 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:59,354 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/audio/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,358 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,379 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,399 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,415 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,430 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
-2026-02-13 14:11:59,883 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "[36mGET /api/audio/5542 HTTP/1.1[0m" 304 -
-2026-02-13 14:11:59,886 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,895 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/audio/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,907 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,925 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,941 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,955 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:11:59,970 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:11:59] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
-2026-02-13 14:12:00,404 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "[36mGET /api/audio/523 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:00,407 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/audio/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,412 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,446 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,496 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "[36mGET /api/audio/523 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:00,500 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,516 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,531 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,545 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,561 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
-2026-02-13 14:12:00,928 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "[36mGET /api/audio/4859 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:00,931 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:00,948 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/audio/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:00,952 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:00,966 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:00,982 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:00,997 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:00] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:01,012 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:01,031 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:01,046 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
-2026-02-13 14:12:01,463 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "[36mGET /api/audio/155 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:01,467 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,486 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,501 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/audio/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,511 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,528 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,544 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,559 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,574 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,587 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,601 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,633 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
-2026-02-13 14:12:01,994 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "[36mGET /api/audio/2903 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:01,998 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:01] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,016 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/audio/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,020 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,040 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,093 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,114 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,131 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,148 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,154 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/audio/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,170 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,286 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,300 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,315 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,336 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
-2026-02-13 14:12:02,515 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "[36mGET /api/audio/2579 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:02,519 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,536 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "[36mGET /api/audio/2579 HTTP/1.1[0m" 304 -
-2026-02-13 14:12:02,541 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,561 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,576 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,591 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,604 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,611 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/audio/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,626 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,643 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,660 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,683 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,703 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,724 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
-2026-02-13 14:12:02,741 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:36:48] "[35m[1mGET /api/audio/4859 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:36:48] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:17] "[36mGET /api/audio/155 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:17] "[36mGET /api/audio/2903 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "[35m[1mGET /api/audio/2579 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "[35m[1mGET /api/audio/2579 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/audio/1475 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/artwork?artist=Gautier%20Vizioz&title=Trafic HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/audio/1352 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/audio/1352 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/artwork?artist=Matthew%20Dear&title=Her%20Fantasy HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/4324 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/4324 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:21] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:21] "[35m[1mGET /api/audio/2572 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:23] "[36mGET /api/audio/1346 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:23] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/1566 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:40:49] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:44:38] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:44:38] "[35m[1mGET /api/audio/4152 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/workshop.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/app.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/tree.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:27] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:28] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/setbuilder.py', reloading
+
+  Genre Tagger is running at http://localhost:5001
+  Logging to /Users/jason.furnell/Sources/Jason_Learning/GenreTagging/output/app.log
+
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 711-910-125
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:30] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:30] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py', reloading
+
+  Genre Tagger is running at http://localhost:5001
+  Logging to /Users/jason.furnell/Sources/Jason_Learning/GenreTagging/output/app.log
+
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 711-910-125
+INFO:werkzeug: * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py', reloading
+
+  Genre Tagger is running at http://localhost:5001
+  Logging to /Users/jason.furnell/Sources/Jason_Learning/GenreTagging/output/app.log
+
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 711-910-125
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:47:42] "GET /api/preview?artist=Tom+Waits&title=Hang+On+St.+Christopher HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:47:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/workshop.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/app.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/tree.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/setbuilder.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/restore HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/tracks HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:26] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1892, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:40] "[35m[1mPOST /api/saved-sets HTTP/1.1[0m" 201 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:45] "GET /api/saved-sets HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:45] "GET /api/saved-sets HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:50] "GET /api/saved-sets/747c6072 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:50] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:50] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:55] "GET /api/set-workshop/source-detail?source_type=tree_node&source_id=new-york-underground-pulse&tree_type=genre HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:55] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:59] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:56:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:02] "GET /api/saved-sets HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:05] "GET /api/saved-sets HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:12] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:15] "GET /api/saved-sets HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:18] "GET /api/saved-sets/747c6072 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:18] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:18] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:18] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:40] "[35m[1mGET /api/audio/2572 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:40] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:40] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:50] "GET /api/preview?artist=Foreigner&title=Waiting+for+a+Girl+like+You HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:51] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:57:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:00] "GET /api/preview?artist=Bill+Withers&title=Railroad+Man HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:01] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:13] "GET /api/preview?artist=Bessie+Smith&title=Devil's+Gonna+Git+You HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:13] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:17] "GET /api/preview?artist=Etta+James&title=I+Just+Want+To+Make+Love+To+You+-+Single+Version HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:18] "POST /api/set-workshop/state HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/artwork?artist=Foreigner&title=Waiting%20for%20a%20Girl%20like%20You HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/audio/5921 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/artwork?artist=Bill%20Withers&title=Railroad%20Man HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/audio/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/artwork?artist=Etta%20James&title=I%20Just%20Want%20To%20Make%20Love%20To%20You%20-%20Single%20Version HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:35] "[36mGET /api/audio/5921 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:35] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "[36mGET /api/audio/5359 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:58:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+ERROR:root:Deezer artwork lookup failed for Handsome Boy Modeling School, Róisín, J-Live - The Truth
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1319, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1358, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1404, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1492, in connect
+    super().connect()
+    ~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1023, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py", line 840, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1892, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 489, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1367, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        context=self._context)
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1322, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 14:59:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:21] "GET /api/set-workshop/source-detail?source_type=tree_node&source_id=southern-crossroads-juke-joint-blues&tree_type=genre HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:22] "POST /api/artwork/batch HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:42] "[36mGET /api/audio/5921 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:42] "[36mGET /api/audio/5359 HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:44] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:45] "[35m[1mGET /api/audio/4152 HTTP/1.1[0m" 206 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:45] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:00:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [13/Feb/2026 15:01:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+12:02,741 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:02] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
 2026-02-13 14:12:03,050 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:03] "GET /api/audio/1475 HTTP/1.1" 200 -
 2026-02-13 14:12:03,058 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:03] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
 2026-02-13 14:12:03,081 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:12:03] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
@@ -16127,3 +16252,458 @@ urllib.error.HTTPError: HTTP Error 403: Forbidden
 2026-02-13 14:34:02,469 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:34:02] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
 2026-02-13 14:34:02,918 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:34:02] "GET /api/set-workshop/track-context/523 HTTP/1.1" 200 -
 2026-02-13 14:34:02,918 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:34:02] "[35m[1mGET /api/audio/523 HTTP/1.1[0m" 206 -
+2026-02-13 14:36:48,432 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:36:48] "[35m[1mGET /api/audio/4859 HTTP/1.1[0m" 206 -
+2026-02-13 14:36:48,440 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:36:48] "GET /api/set-workshop/track-context/4859 HTTP/1.1" 200 -
+2026-02-13 14:38:17,127 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:17] "[36mGET /api/audio/155 HTTP/1.1[0m" 304 -
+2026-02-13 14:38:17,150 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/155 HTTP/1.1" 200 -
+2026-02-13 14:38:17,702 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:17] "[36mGET /api/audio/2903 HTTP/1.1[0m" 304 -
+2026-02-13 14:38:17,707 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
+2026-02-13 14:38:17,726 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:17] "GET /api/set-workshop/track-context/2903 HTTP/1.1" 200 -
+2026-02-13 14:38:18,219 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "[35m[1mGET /api/audio/2579 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:18,222 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "[35m[1mGET /api/audio/2579 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:18,226 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+2026-02-13 14:38:18,246 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+2026-02-13 14:38:18,262 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/2579 HTTP/1.1" 200 -
+2026-02-13 14:38:18,740 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/audio/1475 HTTP/1.1" 200 -
+2026-02-13 14:38:18,752 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
+2026-02-13 14:38:18,774 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:18] "GET /api/set-workshop/track-context/1475 HTTP/1.1" 200 -
+2026-02-13 14:38:19,234 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/artwork?artist=Gautier%20Vizioz&title=Trafic HTTP/1.1" 200 -
+2026-02-13 14:38:19,261 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/audio/1352 HTTP/1.1" 200 -
+2026-02-13 14:38:19,261 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/audio/1352 HTTP/1.1" 200 -
+2026-02-13 14:38:19,267 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+2026-02-13 14:38:19,312 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+2026-02-13 14:38:19,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/1352 HTTP/1.1" 200 -
+2026-02-13 14:38:19,759 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/artwork?artist=Matthew%20Dear&title=Her%20Fantasy HTTP/1.1" 200 -
+2026-02-13 14:38:19,789 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/4324 HTTP/1.1" 200 -
+2026-02-13 14:38:19,811 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:19] "GET /api/set-workshop/track-context/4324 HTTP/1.1" 200 -
+2026-02-13 14:38:21,672 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:21] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
+2026-02-13 14:38:21,677 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:21] "[35m[1mGET /api/audio/2572 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:23,607 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:23] "[36mGET /api/audio/1346 HTTP/1.1[0m" 304 -
+2026-02-13 14:38:23,622 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:23] "GET /api/set-workshop/track-context/1346 HTTP/1.1" 200 -
+2026-02-13 14:38:24,152 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:24,157 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:38:24,158 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:24,177 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:38:24,180 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:24,682 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "[35m[1mGET /api/audio/1566 HTTP/1.1[0m" 206 -
+2026-02-13 14:38:24,686 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:38:24] "GET /api/set-workshop/track-context/1566 HTTP/1.1" 200 -
+2026-02-13 14:40:49,604 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:40:49,609 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:40:49] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+2026-02-13 14:40:49,611 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:40:49,620 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:40:49] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:44:38,681 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:44:38] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
+2026-02-13 14:44:38,746 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:44:38] "[35m[1mGET /api/audio/4152 HTTP/1.1[0m" 206 -
+2026-02-13 14:46:26,175 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET / HTTP/1.1" 200 -
+2026-02-13 14:46:26,239 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 14:46:26,246 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-13 14:46:26,247 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-13 14:46:26,247 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-13 14:46:26,248 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:26] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 14:46:27,362 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:27] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 14:46:27,370 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 14:46:28,154 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:28] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 14:46:28,214 [INFO] werkzeug:  * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/setbuilder.py', reloading
+2026-02-13 14:46:28,577 [INFO] werkzeug:  * Restarting with stat
+2026-02-13 14:46:30,101 [WARNING] werkzeug:  * Debugger is active!
+2026-02-13 14:46:30,128 [INFO] werkzeug:  * Debugger PIN: 711-910-125
+2026-02-13 14:46:30,172 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:30] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 14:46:30,173 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:30] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:46:30,192 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-13 14:46:30,338 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 14:46:30,339 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:46:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 14:46:47,187 [INFO] werkzeug:  * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py', reloading
+2026-02-13 14:46:47,345 [INFO] werkzeug:  * Restarting with stat
+2026-02-13 14:46:48,722 [WARNING] werkzeug:  * Debugger is active!
+2026-02-13 14:46:48,749 [INFO] werkzeug:  * Debugger PIN: 711-910-125
+2026-02-13 14:46:57,405 [INFO] werkzeug:  * Detected change in '/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py', reloading
+2026-02-13 14:46:57,531 [INFO] werkzeug:  * Restarting with stat
+2026-02-13 14:46:58,792 [WARNING] werkzeug:  * Debugger is active!
+2026-02-13 14:46:58,815 [INFO] werkzeug:  * Debugger PIN: 711-910-125
+2026-02-13 14:47:42,977 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:47:42] "GET /api/preview?artist=Tom+Waits&title=Hang+On+St.+Christopher HTTP/1.1" 200 -
+2026-02-13 14:47:43,280 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:47:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 14:56:24,286 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET / HTTP/1.1" 200 -
+2026-02-13 14:56:24,886 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-13 14:56:24,886 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-13 14:56:24,886 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-13 14:56:24,887 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-13 14:56:24,887 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:24] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-13 14:56:26,303 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 14:56:26,456 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/restore HTTP/1.1" 200 -
+2026-02-13 14:56:26,606 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-13 14:56:26,740 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:56:26,810 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-13 14:56:26,816 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "POST /api/artwork/warm-cache HTTP/1.1" 200 -
+2026-02-13 14:56:26,909 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:26] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-13 14:56:28,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:29,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:30,269 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 14:56:30,285 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 14:56:31,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:32,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:38,982 [ERROR] root: Deezer artwork lookup failed for Basement Jaxx - Red Alert (Jaxx Radio Mix)
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1892, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
+2026-02-13 14:56:40,637 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:40,639 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:40] "[35m[1mPOST /api/saved-sets HTTP/1.1[0m" 201 -
+2026-02-13 14:56:41,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:43,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:44,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:45,485 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:45] "GET /api/saved-sets HTTP/1.1" 200 -
+2026-02-13 14:56:45,487 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:45] "GET /api/saved-sets HTTP/1.1" 200 -
+2026-02-13 14:56:46,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:47,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:49,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:50,701 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:50] "GET /api/saved-sets/747c6072 HTTP/1.1" 200 -
+2026-02-13 14:56:50,789 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:50] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:56:50,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:50,874 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:50] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-13 14:56:52,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:53,826 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:55,178 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:55] "GET /api/set-workshop/source-detail?source_type=tree_node&source_id=new-york-underground-pulse&tree_type=genre HTTP/1.1" 200 -
+2026-02-13 14:56:55,326 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:55,957 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:55] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 14:56:56,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:58,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:56:59,630 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:59] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:56:59,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:56:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:01,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:02,254 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:02] "GET /api/saved-sets HTTP/1.1" 200 -
+2026-02-13 14:57:02,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:04,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:05,653 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:05] "GET /api/saved-sets HTTP/1.1" 200 -
+2026-02-13 14:57:05,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:12,275 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:12] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:13,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:14,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:15,499 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:15] "GET /api/saved-sets HTTP/1.1" 200 -
+2026-02-13 14:57:16,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:18,117 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:18] "GET /api/saved-sets/747c6072 HTTP/1.1" 200 -
+2026-02-13 14:57:18,118 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:18] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:18,133 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:18] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:57:18,200 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:18] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-13 14:57:19,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:20,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:22,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:23,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:25,359 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:26,837 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:28,496 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:29,873 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:31,341 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:32,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:34,326 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:35,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:37,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:38,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:40,195 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:40] "[35m[1mGET /api/audio/2572 HTTP/1.1[0m" 206 -
+2026-02-13 14:57:40,207 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:40] "GET /api/set-workshop/track-context/2572 HTTP/1.1" 200 -
+2026-02-13 14:57:40,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:40,522 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:40] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-13 14:57:41,836 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:43,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:44,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:46,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:47,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:49,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:50,786 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:50] "GET /api/preview?artist=Foreigner&title=Waiting+for+a+Girl+like+You HTTP/1.1" 200 -
+2026-02-13 14:57:50,877 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:51,342 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:51] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:57:52,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:53,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:55,326 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:56,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:58,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:57:59,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:57:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:00,626 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:00] "GET /api/preview?artist=Bill+Withers&title=Railroad+Man HTTP/1.1" 200 -
+2026-02-13 14:58:01,158 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:01] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:58:01,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:02,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:04,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:05,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:07,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:08,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:10,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:11,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:13,333 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:13,542 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:13] "GET /api/preview?artist=Bessie+Smith&title=Devil's+Gonna+Git+You HTTP/1.1" 200 -
+2026-02-13 14:58:13,847 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:13] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:58:14,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:16,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:17,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:17,933 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:17] "GET /api/preview?artist=Etta+James&title=I+Just+Want+To+Make+Love+To+You+-+Single+Version HTTP/1.1" 200 -
+2026-02-13 14:58:18,367 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:18] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-13 14:58:19,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:20,826 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:22,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:22,568 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/artwork?artist=Foreigner&title=Waiting%20for%20a%20Girl%20like%20You HTTP/1.1" 200 -
+2026-02-13 14:58:22,587 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/audio/5921 HTTP/1.1" 200 -
+2026-02-13 14:58:22,603 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:22] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+2026-02-13 14:58:23,108 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/artwork?artist=Bill%20Withers&title=Railroad%20Man HTTP/1.1" 200 -
+2026-02-13 14:58:23,132 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/audio/5359 HTTP/1.1" 200 -
+2026-02-13 14:58:23,147 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 14:58:23,169 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 14:58:23,643 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:23,647 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:23,655 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:23,667 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:23,681 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:23,685 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:23,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:24,143 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/artwork?artist=Etta%20James&title=I%20Just%20Want%20To%20Make%20Love%20To%20You%20-%20Single%20Version HTTP/1.1" 200 -
+2026-02-13 14:58:24,165 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:24,170 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 14:58:24,188 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 14:58:24,683 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:24,687 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+2026-02-13 14:58:24,689 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:24,694 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:24] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:25,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:26,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:28,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:29,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:31,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:32,826 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:34,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:35,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:35,893 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:35] "[36mGET /api/audio/5921 HTTP/1.1[0m" 304 -
+2026-02-13 14:58:35,910 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:35] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+2026-02-13 14:58:36,428 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "[36mGET /api/audio/5359 HTTP/1.1[0m" 304 -
+2026-02-13 14:58:36,435 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 14:58:36,456 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 14:58:36,954 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:36,954 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:36,970 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:36,975 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:36,992 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:36,994 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:36,996 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:36] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 14:58:37,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:37,474 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:37,478 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 14:58:37,494 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 14:58:37,977 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:37,979 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+2026-02-13 14:58:37,983 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:37,984 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:37,988 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:37] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 14:58:38,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:40,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:41,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:43,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:44,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:46,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:47,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:49,333 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:50,834 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:52,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:53,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:55,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:56,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:58,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:58:59,832 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:58:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:01,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:02,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:04,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:05,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:07,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:08,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:10,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:11,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:13,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:14,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:16,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:17,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:19,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:20,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:22,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:23,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:25,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:26,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:28,336 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:29,826 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:31,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:32,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:34,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:35,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:37,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:38,620 [ERROR] root: Deezer artwork lookup failed for Handsome Boy Modeling School, Róisín, J-Live - The Truth
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1319, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1358, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1404, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1492, in connect
+    super().connect()
+    ~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/client.py", line 1023, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py", line 840, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/app/routes.py", line 1892, in _lookup_artwork
+    with urllib.request.urlopen(req, timeout=5) as resp:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 489, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1367, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        context=self._context)
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.11/Frameworks/Python.framework/Versions/3.13/lib/python3.13/urllib/request.py", line 1322, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+2026-02-13 14:59:38,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:40,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:41,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:43,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:44,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:46,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:47,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:49,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:50,841 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:52,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:53,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:55,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:56,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:58,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 14:59:59,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 14:59:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:01,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:02,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:04,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:05,835 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:07,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:08,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:10,334 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:11,834 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:13,334 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:14,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:16,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:17,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:19,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:20,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:21,981 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:21] "GET /api/set-workshop/source-detail?source_type=tree_node&source_id=southern-crossroads-juke-joint-blues&tree_type=genre HTTP/1.1" 200 -
+2026-02-13 15:00:22,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:22,628 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:22] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-13 15:00:23,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:25,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:26,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:28,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:29,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:31,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:32,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:34,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:34] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:35,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:35] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:37,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:37] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:38,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:38] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:40,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:40] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:41,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:41] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:42,234 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:42] "[36mGET /api/audio/5921 HTTP/1.1[0m" 304 -
+2026-02-13 15:00:42,257 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5921 HTTP/1.1" 200 -
+2026-02-13 15:00:42,767 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:42] "[36mGET /api/audio/5359 HTTP/1.1[0m" 304 -
+2026-02-13 15:00:42,786 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 15:00:42,806 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:42] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-13 15:00:43,275 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,288 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 15:00:43,298 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,306 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,308 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 15:00:43,321 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,324 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5687 HTTP/1.1" 200 -
+2026-02-13 15:00:43,326 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:43,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5687 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,810 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "[35m[1mGET /api/audio/5300 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:43,814 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 15:00:43,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:43] "GET /api/set-workshop/track-context/5300 HTTP/1.1" 200 -
+2026-02-13 15:00:44,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:44] "GET /api/set-workshop/track-context/5704 HTTP/1.1" 200 -
+2026-02-13 15:00:44,349 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:44,352 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:44,356 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:44] "[35m[1mGET /api/audio/5704 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:44,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:44] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:45,587 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:45] "[35m[1mGET /api/audio/4152 HTTP/1.1[0m" 206 -
+2026-02-13 15:00:45,595 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:45] "GET /api/set-workshop/track-context/4152 HTTP/1.1" 200 -
+2026-02-13 15:00:46,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:46] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:47,828 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:47] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:49,334 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:49] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:50,836 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:50] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:52,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:52] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:53,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:53] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:55,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:55] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:56,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:56] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:58,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:58] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:00:59,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:00:59] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:01,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:01] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:02,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:02] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:04,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:04] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:05,833 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:05] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:07,330 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:07] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:08,827 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:08] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:10,327 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:10] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:11,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:11] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:13,329 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:13] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:14,843 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:14] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:16,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:16] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:17,830 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:17] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:19,332 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:19] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:20,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:20] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:22,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:22] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:23,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:23] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:25,331 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:25] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:26,831 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:26] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:28,328 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:28] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:29,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:29] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:31,336 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:31] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -
+2026-02-13 15:01:32,829 [INFO] werkzeug: 127.0.0.1 - - [13/Feb/2026 15:01:32] "GET /api/artwork/warm-cache/status HTTP/1.1" 200 -

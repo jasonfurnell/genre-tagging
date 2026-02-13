@@ -5,11 +5,13 @@ import math
 import os
 import random
 import re
+import uuid
+from datetime import datetime, timezone
 from app.tree import find_node
 from app.playlist import get_playlist, list_playlists
 
 # ---------------------------------------------------------------------------
-# State Persistence
+# State Persistence (working copy — crash recovery)
 # ---------------------------------------------------------------------------
 
 _SET_STATE_FILE = os.path.join("output", "set_workshop_state.json")
@@ -31,6 +33,102 @@ def load_set_state():
         except Exception:
             return None
     return None
+
+
+# ---------------------------------------------------------------------------
+# Saved Sets Persistence (named sets — mirrors playlist.py CRUD pattern)
+# ---------------------------------------------------------------------------
+
+_SAVED_SETS_FILE = os.path.join("output", "saved_sets.json")
+_saved_sets: dict = {}
+
+
+def _load_saved_sets():
+    global _saved_sets
+    if os.path.exists(_SAVED_SETS_FILE):
+        try:
+            with open(_SAVED_SETS_FILE) as f:
+                _saved_sets = json.load(f)
+        except Exception:
+            _saved_sets = {}
+    else:
+        _saved_sets = {}
+
+
+def _save_saved_sets():
+    os.makedirs(os.path.dirname(_SAVED_SETS_FILE), exist_ok=True)
+    with open(_SAVED_SETS_FILE, "w") as f:
+        json.dump(_saved_sets, f, indent=2)
+
+
+_load_saved_sets()
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def create_saved_set(name, slots):
+    sid = str(uuid.uuid4())[:8]
+    saved = {
+        "id": sid,
+        "name": name,
+        "slots": slots,
+        "created_at": _now(),
+        "updated_at": _now(),
+    }
+    _saved_sets[sid] = saved
+    _save_saved_sets()
+    return saved
+
+
+def get_saved_set(set_id):
+    return _saved_sets.get(set_id)
+
+
+def list_saved_sets():
+    result = []
+    for s in sorted(_saved_sets.values(),
+                    key=lambda x: x.get("updated_at", ""), reverse=True):
+        slots = s.get("slots", [])
+        track_count = sum(
+            1 for sl in slots
+            if sl.get("selectedTrackIndex") is not None
+            and sl.get("tracks")
+            and len(sl["tracks"]) > (sl["selectedTrackIndex"] or 0)
+            and sl["tracks"][sl["selectedTrackIndex"]] is not None
+        )
+        result.append({
+            "id": s["id"],
+            "name": s["name"],
+            "track_count": track_count,
+            "slot_count": len(slots),
+            "duration_minutes": len(slots) * 3,
+            "created_at": s.get("created_at", ""),
+            "updated_at": s.get("updated_at", ""),
+        })
+    return result
+
+
+def update_saved_set(set_id, name=None, slots=None):
+    s = _saved_sets.get(set_id)
+    if not s:
+        return None
+    if name is not None:
+        s["name"] = name
+    if slots is not None:
+        s["slots"] = slots
+    s["updated_at"] = _now()
+    _save_saved_sets()
+    return s
+
+
+def delete_saved_set(set_id):
+    if set_id in _saved_sets:
+        del _saved_sets[set_id]
+        _save_saved_sets()
+        return True
+    return False
 
 # ---------------------------------------------------------------------------
 # Camelot Wheel

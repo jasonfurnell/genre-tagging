@@ -2300,3 +2300,84 @@ tr.ws-seed-selected {
     width: 16px;
     height: 16px;
 }
+
+/* ═══ Saved Sets Tab ═══════════════════════════════════════════════════════ */
+
+.sets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.sets-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+.sets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+.sets-empty {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    grid-column: 1 / -1;
+}
+.set-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.set-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+.set-card.active {
+    border-color: var(--accent);
+}
+.set-card-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.set-card-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+}
+.set-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+.set-card-actions .set-card-delete {
+    margin-left: auto;
+}
+
+/* ── Set Workshop: current set name + toolbar separator ───────────────── */
+
+.set-current-name {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-right: 0.25rem;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.set-toolbar-sep {
+    width: 1px;
+    height: 18px;
+    background: var(--border);
+    margin: 0 0.25rem;
+}
