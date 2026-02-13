@@ -362,6 +362,9 @@ async function checkAndWarmArtworkCache() {
         if (data.uncached > 0) {
             await fetch("/api/artwork/warm-cache", { method: "POST" });
             _startWarmPoll();
+        } else {
+            // All artwork cached — ensure local files are downloaded
+            _startDownloadAll();
         }
     } catch (_) { /* ignore */ }
 }
@@ -385,11 +388,54 @@ function _startWarmPoll() {
                 clearInterval(_warmPollTimer);
                 _warmPollTimer = null;
                 if (text) text.textContent = `Artwork cached: ${st.found} found of ${st.total} tracks`;
-                setTimeout(() => el.classList.add("hidden"), 4000);
+                setTimeout(() => {
+                    el.classList.add("hidden");
+                    // After warm-cache finishes, download all artwork locally
+                    _startDownloadAll();
+                }, 1000);
             }
         } catch (_) {
             clearInterval(_warmPollTimer);
             _warmPollTimer = null;
+            el.classList.add("hidden");
+        }
+    }, 1500);
+}
+
+// ── Download artwork to local files ──────────────────────────
+let _dlPollTimer = null;
+
+async function _startDownloadAll() {
+    try {
+        await fetch("/api/artwork/download-all", { method: "POST" });
+        _startDlPoll();
+    } catch (_) { /* ignore */ }
+}
+
+function _startDlPoll() {
+    const el = document.getElementById("artwork-warm-status");
+    if (!el || _dlPollTimer) return;
+    el.classList.remove("hidden");
+    el.innerHTML = `<span class="artwork-warm-text">Downloading artwork...</span>
+        <div class="artwork-warm-bar"><div class="artwork-warm-bar-fill" style="width:0%"></div></div>`;
+    _dlPollTimer = setInterval(async () => {
+        try {
+            const res = await fetch("/api/artwork/download-all/status");
+            const st = await res.json();
+            const pct = st.total > 0 ? Math.round((st.done / st.total) * 100) : 0;
+            const fill = el.querySelector(".artwork-warm-bar-fill");
+            const text = el.querySelector(".artwork-warm-text");
+            if (fill) fill.style.width = pct + "%";
+            if (text) text.textContent = `Downloading artwork\u2026 ${st.done}/${st.total}`;
+            if (!st.running) {
+                clearInterval(_dlPollTimer);
+                _dlPollTimer = null;
+                if (text) text.textContent = `Artwork downloaded: ${st.downloaded} images saved locally`;
+                setTimeout(() => el.classList.add("hidden"), 4000);
+            }
+        } catch (_) {
+            clearInterval(_dlPollTimer);
+            _dlPollTimer = null;
             el.classList.add("hidden");
         }
     }, 1500);

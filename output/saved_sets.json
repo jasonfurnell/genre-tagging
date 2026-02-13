@@ -4771,105 +4771,11 @@
             "artist": "Yello",
             "bpm": 124,
             "bpm_level": 120,
+            "has_audio": true,
             "id": 6272,
             "key": "1M",
             "title": "Tied Up In Red - Remastered 2005",
-            "year": 1988,
-            "has_audio": true
-          },
-          {
-            "artist": "Beardyman,Joe Rogan",
-            "bpm": 125,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1086,
-            "key": "5M",
-            "title": "6am (Ready to Write) (feat. Joe Rogan)",
-            "year": 2015
-          },
-          null,
-          null
-        ]
-      },
-      {
-        "id": "slot-1770979034206-2aed",
-        "selectedTrackIndex": 6,
-        "source": {
-          "id": "chill-out-room-redux",
-          "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Seelenluft",
-            "bpm": 62.5,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3193,
-            "key": "1M",
-            "title": "Manila",
-            "year": 2004
-          },
-          {
-            "artist": "Anna Morgan",
-            "bpm": 80,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4012,
-            "key": "1M",
-            "title": "Grace",
-            "year": 2017
-          },
-          {
-            "artist": "Steve Cobby",
-            "bpm": 90,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4683,
-            "key": "10M",
-            "title": "The World And Your Place In It",
-            "year": 2023
-          },
-          {
-            "artist": "Chateau Flight",
-            "bpm": 93,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2868,
-            "key": "8M",
-            "title": "Grn Aventurine",
-            "year": 2004
-          },
-          {
-            "artist": "DEMI",
-            "bpm": 100.8,
-            "bpm_level": 100,
-            "has_audio": false,
-            "id": 3649,
-            "key": "6M",
-            "title": "CymbalCrash",
-            "year": 2016
-          },
-          {
-            "artist": "Mel & Kim",
-            "bpm": 118.2,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 5418,
-            "key": "12M",
-            "title": "That's The Way It Is - Acid House Remix",
-            "year": 1987
-          },
-          {
-            "artist": "Mel & Kim",
-            "bpm": 118.2,
-            "bpm_level": 120,
-            "id": 5418,
-            "key": "12M",
-            "title": "That's The Way It Is - Acid House Remix",
-            "year": 1987,
-            "has_audio": true
+            "year": 1988
           },
           {
             "artist": "Beardyman,Joe Rogan",
@@ -5332,10 +5238,10 @@
         "id": "slot-1770979193900-xjyb",
         "selectedTrackIndex": 5,
         "source": {
-          "type": "tree_node",
           "id": "post-trip-hop-noir-transmissions",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
           "tree_type": "genre",
-          "name": "Post-Trip-Hop Noir: UK & European Transmissions"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -5424,11 +5330,12 @@
       },
       {
         "id": "slot-1770980814473-v2cf",
+        "selectedTrackIndex": 4,
         "source": {
-          "type": "tree_node",
           "id": "post-trip-hop-noir-transmissions",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
           "tree_type": "genre",
-          "name": "Post-Trip-Hop Noir: UK & European Transmissions"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -5472,14 +5379,13 @@
             "year": 2017
           },
           {
-            "artist": "Saint Etienne",
-            "bpm": 98.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 194,
-            "key": "11M",
-            "title": "Filthy",
-            "year": 1994
+            "id": 4105,
+            "title": "Rush Hour",
+            "artist": "Hoosky,La Fine Equipe,oOgo,Chomsk'",
+            "bpm": 104,
+            "key": "6D",
+            "year": 2012,
+            "bpm_level": 100
           },
           {
             "artist": "The Quantic Soul Orchestra",
@@ -5513,111 +5419,198 @@
           },
           null,
           null
-        ],
-        "selectedTrackIndex": 7
+        ]
       },
       {
-        "id": "slot-1770979029650-c336",
-        "selectedTrackIndex": 2,
+        "id": "slot-1770981809241-ob0n",
         "source": {
-          "id": "post-trip-hop-noir-transmissions",
-          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
+          "type": "playlist",
+          "id": "ece99878",
+          "tree_type": null,
+          "name": "Progressive House Resurgence: The New European Melodic Movement"
         },
         "tracks": [
+          null,
+          null,
+          null,
+          null,
           {
-            "artist": "DEMI",
-            "bpm": 63,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3610,
-            "key": "6D",
-            "title": "A3 Kick&Bas&Timbale",
-            "year": 2018
-          },
-          {
-            "artist": "Saint Etienne",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 6176,
-            "key": "6M",
-            "title": "Carnt Sleep",
-            "year": 1992
-          },
-          {
-            "artist": "Laurel and Hardy",
-            "bpm": 76,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5290,
-            "key": "1M",
-            "title": "You're Nicked",
-            "year": 2019
-          },
-          {
-            "artist": "Calypso Valois",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2775,
-            "key": "10M",
-            "title": "Surprise-partie",
-            "year": 2017
-          },
-          {
-            "artist": "Saint Etienne",
-            "bpm": 98.2,
+            "artist": "Tony Palkovic",
+            "bpm": 96.8,
             "bpm_level": 100,
             "has_audio": true,
-            "id": 194,
-            "key": "11M",
-            "title": "Filthy",
-            "year": 1994
-          },
-          {
-            "artist": "Shadowax",
-            "bpm": 110,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1830,
-            "key": "3M",
-            "title": "Nikolai Reptile",
-            "year": 2019
-          },
-          {
-            "artist": "River Yarra",
-            "bpm": 121,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 3440,
-            "key": "12M",
-            "title": "Aorsom Wislhs",
+            "id": 3967,
+            "key": "1M",
+            "title": "Breath of Sound",
             "year": 2018
           },
           {
-            "artist": "Cro-Magnon",
-            "bpm": 125.1,
+            "artist": "Blancmange",
+            "bpm": 118,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3,
+            "key": "10M",
+            "title": "Distant Storm - Kincaid Remix",
+            "year": 2019
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Marc Spence",
+            "bpm": 126,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 3426,
+            "id": 1290,
             "key": "12M",
-            "title": "Patchwork Jazz",
-            "year": 2014
+            "title": "On Air",
+            "year": 2018
           },
+          {
+            "artist": "Anunaku",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1490,
+            "key": "2D",
+            "title": "Forgotten Tales",
+            "year": 2018
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "slot-1770980859937-qx3b",
+        "selectedTrackIndex": 8,
+        "source": {
+          "type": "playlist",
+          "id": "ece99878",
+          "tree_type": null,
+          "name": "Progressive House Resurgence: The New European Melodic Movement"
+        },
+        "tracks": [
           null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Blancmange",
+            "bpm": 118,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3,
+            "key": "10M",
+            "title": "Distant Storm - Kincaid Remix",
+            "year": 2019
+          },
+          {
+            "id": 2320,
+            "title": "EQUILIBRIUM",
+            "artist": "Darius, Wayne Snow",
+            "bpm": 118,
+            "key": "7M",
+            "year": 2020,
+            "bpm_level": 120
+          },
+          {
+            "artist": "Marc Spence",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1290,
+            "key": "12M",
+            "title": "On Air",
+            "year": 2018
+          },
+          {
+            "artist": "Iz and Diz",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4065,
+            "key": "3D",
+            "title": "Mouth - Pepe Bradock Remix",
+            "year": 2006
+          },
           null
         ]
       },
       {
-        "id": "slot-1770980859937-qx3b",
+        "id": "slot-1770981849256-a8st",
+        "source": {
+          "type": "playlist",
+          "id": "ece99878",
+          "tree_type": null,
+          "name": "Progressive House Resurgence: The New European Melodic Movement"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Blancmange",
+            "bpm": 118,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3,
+            "key": "10M",
+            "title": "Distant Storm - Kincaid Remix",
+            "year": 2019
+          },
+          {
+            "artist": "Corine,Pacific State",
+            "bpm": 118.5,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 726,
+            "key": "12M",
+            "title": "Marche nocturne - Pacific State Remix",
+            "year": 2018
+          },
+          {
+            "artist": "Marc Spence",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1290,
+            "key": "12M",
+            "title": "On Air",
+            "year": 2018
+          },
+          {
+            "artist": "Iz and Diz",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4065,
+            "key": "3D",
+            "title": "Mouth - Pepe Bradock Remix",
+            "year": 2006
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "slot-1770981858751-i94i",
         "source": null,
         "tracks": [],
         "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-13T11:07:51.266929+00:00"
+    "updated_at": "2026-02-13T11:31:59.255638+00:00"
   }
 }

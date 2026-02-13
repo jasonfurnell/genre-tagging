@@ -16,3 +16,6 @@ __pycache__/
 
 # Dropbox tokens (sensitive)
 output/dropbox_tokens.json
+
+# Local artwork cache (downloaded from Deezer CDN)
+output/artwork/

@@ -1,3 +1,4 @@
+import hashlib
 import io
 import json
 import logging
@@ -106,6 +107,40 @@ def _save_artwork_cache():
         logging.exception("Failed to save artwork cache to disk")
 
 _load_artwork_cache()
+
+# ---------------------------------------------------------------------------
+# Local artwork files (downloaded from Deezer CDN for reliable serving)
+# ---------------------------------------------------------------------------
+_ARTWORK_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "output", "artwork"
+)
+os.makedirs(_ARTWORK_DIR, exist_ok=True)
+
+
+def _artwork_filename(cache_key, size="small"):
+    """Deterministic filename for a cached artwork image."""
+    h = hashlib.md5(cache_key.encode()).hexdigest()
+    return f"{h}_{size}.jpg"
+
+
+def _download_artwork_local(url, cache_key, size="small"):
+    """Download a single artwork image to local disk. Returns local URL or ''."""
+    if not url:
+        return ""
+    fname = _artwork_filename(cache_key, size)
+    local_path = os.path.join(_ARTWORK_DIR, fname)
+    if os.path.exists(local_path):
+        return f"/artwork/{fname}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = resp.read()
+        with open(local_path, "wb") as f:
+            f.write(data)
+        return f"/artwork/{fname}"
+    except Exception:
+        return ""
+
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 
@@ -1984,16 +2019,26 @@ def get_preview():
 # ---------------------------------------------------------------------------
 # GET /api/artwork — Lightweight album cover lookup (separate cache)
 # ---------------------------------------------------------------------------
+_NOT_FOUND_RETRY_SECS = 86400      # retry not-found lookups after 24h
+
 def _lookup_artwork(artist, title):
     """Look up artwork for a single track. Returns dict with cover_url/found."""
     cache_key = f"{artist.lower()}||{title.lower()}"
     cached = _state["_artwork_cache"].get(cache_key)
     if cached is not None:
-        return cached
+        # Retry not-found entries after 24h (Deezer may have added the track)
+        if not cached.get("found"):
+            cached_at = cached.get("_ts", 0)
+            if time.time() - cached_at < _NOT_FOUND_RETRY_SECS:
+                return cached
+            # Expired — fall through to re-lookup
+        else:
+            _ensure_local_artwork(cached, cache_key)
+            return cached
 
     query = urllib.parse.quote(f"{artist} {title}")
     url = f"https://api.deezer.com/search?q={query}&limit=5"
-    result = {"cover_url": "", "found": False}
+    result = {"cover_url": "", "found": False, "_ts": time.time()}
 
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "GenreTagger/1.0"})
@@ -2019,12 +2064,35 @@ def _lookup_artwork(artist, title):
             cover_big = album.get("cover_big", "") or album.get("cover_medium", "") or cover
             if cover:
                 result = {"cover_url": cover, "cover_big": cover_big, "found": True}
+                # Download images locally
+                local_small = _download_artwork_local(cover, cache_key, "small")
+                local_big = _download_artwork_local(cover_big, cache_key, "big")
+                if local_small:
+                    result["cover_url"] = local_small
+                if local_big:
+                    result["cover_big"] = local_big
     except Exception:
         logging.exception("Deezer artwork lookup failed for %s - %s", artist, title)
         return result
 
     _state["_artwork_cache"][cache_key] = result
     return result
+
+
+def _ensure_local_artwork(entry, cache_key):
+    """If a cache entry still has CDN URLs, download locally and update in-place."""
+    if not entry.get("found"):
+        return
+    changed = False
+    for field, size in [("cover_url", "small"), ("cover_big", "big")]:
+        url = entry.get(field, "")
+        if url and not url.startswith("/artwork/"):
+            local = _download_artwork_local(url, cache_key, size)
+            if local:
+                entry[field] = local
+                changed = True
+    if changed:
+        _state["_artwork_cache"][cache_key] = entry
 
 
 _artwork_cache_dirty = 0          # count of unsaved new lookups
@@ -2069,6 +2137,7 @@ def get_artwork_batch():
         key = f"{artist.lower()}||{title.lower()}"
         cached = _state["_artwork_cache"].get(key)
         if cached is not None:
+            _ensure_local_artwork(cached, key)
             results[key] = cached
         else:
             uncached.append((key, artist, title))
@@ -2200,6 +2269,88 @@ def uncached_count():
         if key not in _state["_artwork_cache"]:
             uncached += 1
     return jsonify({"uncached": uncached, "total": len(seen)})
+
+
+# ---------------------------------------------------------------------------
+# Serve local artwork files
+# ---------------------------------------------------------------------------
+@api.route("/artwork/<path:filename>")
+def serve_artwork(filename):
+    """Serve locally-cached artwork images."""
+    return send_file(
+        os.path.join(_ARTWORK_DIR, filename),
+        mimetype="image/jpeg",
+        max_age=86400 * 30,     # 30-day browser cache
+    )
+
+
+# ---------------------------------------------------------------------------
+# Bulk-download artwork from CDN → local (one-time migration)
+# ---------------------------------------------------------------------------
+_download_all_state = {"running": False, "total": 0, "done": 0, "downloaded": 0}
+
+
+def _download_all_worker():
+    """Download all Deezer CDN URLs in cache to local files."""
+    st = _download_all_state
+    try:
+        entries = [
+            (key, entry) for key, entry in _state["_artwork_cache"].items()
+            if isinstance(entry, dict) and entry.get("found")
+        ]
+        st["total"] = len(entries)
+        st["done"] = 0
+        st["downloaded"] = 0
+
+        BATCH = 12
+        for i in range(0, len(entries), BATCH):
+            if not st["running"]:
+                break
+            chunk = entries[i:i + BATCH]
+            with ThreadPoolExecutor(max_workers=BATCH) as pool:
+                futures = []
+                for cache_key, entry in chunk:
+                    for field, size in [("cover_url", "small"), ("cover_big", "big")]:
+                        url = entry.get(field, "")
+                        if url and not url.startswith("/artwork/"):
+                            futures.append(
+                                pool.submit(_download_artwork_local, url, cache_key, size)
+                            )
+                for fut in as_completed(futures):
+                    result = fut.result()
+                    if result:
+                        st["downloaded"] += 1
+
+            # Update cache entries with local URLs
+            for cache_key, entry in chunk:
+                _ensure_local_artwork(entry, cache_key)
+                st["done"] += 1
+
+            if (i // BATCH) % 10 == 9:
+                _save_artwork_cache()
+            time.sleep(0.1)
+
+        _save_artwork_cache()
+    except Exception:
+        logging.exception("Bulk artwork download failed")
+    finally:
+        st["running"] = False
+
+
+@api.route("/api/artwork/download-all", methods=["POST"])
+def download_all_artwork():
+    """Start bulk download of all cached artwork to local files."""
+    if _download_all_state["running"]:
+        return jsonify({"status": "already_running", **_download_all_state})
+    _download_all_state.update(running=True, total=0, done=0, downloaded=0)
+    t = threading.Thread(target=_download_all_worker, daemon=True)
+    t.start()
+    return jsonify({"status": "started"})
+
+
+@api.route("/api/artwork/download-all/status")
+def download_all_status():
+    return jsonify(_download_all_state)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
