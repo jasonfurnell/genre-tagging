@@ -1416,29 +1416,6 @@ tr.ws-seed-selected {
     font-weight: 600;
     color: var(--text);
 }
-.set-length-selector {
-    display: flex;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-left: 0.5rem;
-}
-.set-length-btn {
-    background: transparent;
-    border: none;
-    border-right: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 0.2rem 0.6rem;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-}
-.set-length-btn:last-child { border-right: none; }
-.set-length-btn:hover { background: var(--hover); }
-.set-length-btn.active {
-    background: var(--accent);
-    color: #fff;
-}
 
 /* -- Grid wrapper: horizontal scrolling --------------------------------- */
 .set-grid-wrapper { overflow: visible; }

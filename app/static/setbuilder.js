@@ -5,7 +5,7 @@ let setInitialized = false;
 // ── Slot State ──
 // Each slot: {id, source: {type, id, tree_type, name}|null, tracks: [], selectedTrackIndex: null}
 let setSlots = [];
-let setHours = 1;   // 1, 2, or 3 hours
+const SET_DEFAULT_SLOTS = 40;  // 2-hour set (40 × 3 min)
 
 // ── Drawer State ──
 let setDrawerOpen = false;
@@ -141,26 +141,13 @@ async function initSetBuilder() {
         }
     });
 
-    // Set length selector
-    document.querySelectorAll(".set-length-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const hours = parseInt(btn.dataset.hours);
-            if (hours === setHours) return;
-            setHours = hours;
-            document.querySelectorAll(".set-length-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            initEmptySlots(hours * 20);
-            renderSet();
-            scheduleAutoSave();
-        });
-    });
-
     // Load saved state or init empty grid
     await loadSavedSetState();
 }
 
 
 function initEmptySlots(count) {
+    if (!count) count = SET_DEFAULT_SLOTS;
     setSlots = [];
     for (let i = 0; i < count; i++) {
         setSlots.push({
@@ -169,6 +156,30 @@ function initEmptySlots(count) {
             tracks: [],
             selectedTrackIndex: null,
         });
+    }
+}
+
+function _makeEmptySlot() {
+    return {
+        id: `slot-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        source: null,
+        tracks: [],
+        selectedTrackIndex: null,
+    };
+}
+
+/**
+ * Ensure there is always a clear (empty) slot at the first and last positions.
+ * Called after every mutation (assign, delete, duplicate, drag, load).
+ */
+function ensureBookendSlots() {
+    // Ensure first slot is clear
+    if (setSlots.length === 0 || setSlots[0].source !== null) {
+        setSlots.unshift(_makeEmptySlot());
+    }
+    // Ensure last slot is clear
+    if (setSlots.length === 0 || setSlots[setSlots.length - 1].source !== null) {
+        setSlots.push(_makeEmptySlot());
     }
 }
 
@@ -187,7 +198,7 @@ async function saveSetState() {
         await fetch("/api/set-workshop/state", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ hours: setHours, slots: setSlots }),
+            body: JSON.stringify({ slots: setSlots }),
         });
     } catch (e) {
         console.error("Failed to save set state:", e);
@@ -199,14 +210,8 @@ async function loadSavedSetState() {
         const res = await fetch("/api/set-workshop/state");
         const data = await res.json();
         if (data && data.slots && data.slots.length > 0) {
-            setHours = data.hours || 1;
             setSlots = data.slots;
-
-            // Update hour selector UI
-            document.querySelectorAll(".set-length-btn").forEach(b => {
-                b.classList.toggle("active", parseInt(b.dataset.hours) === setHours);
-            });
-
+            ensureBookendSlots();
             renderSet();
             // Refresh has_audio flags (saved state may predate this field)
             refreshHasAudioFlags();
@@ -216,8 +221,8 @@ async function loadSavedSetState() {
         console.error("Failed to load set state:", e);
     }
 
-    // Fallback: init empty
-    initEmptySlots(setHours * 20);
+    // Fallback: init empty (2-hour default)
+    initEmptySlots();
     renderSet();
 }
 
@@ -744,13 +749,17 @@ function handleSlotControl(slotId, action) {
                 selectedTrackIndex: orig.selectedTrackIndex,
             };
             setSlots.splice(idx + 1, 0, copy);
+            ensureBookendSlots();
             renderSet();
+            scheduleAutoSave();
             break;
         }
         case "delete": {
             if (setSlots.length <= 1) return;
             setSlots.splice(idx, 1);
+            ensureBookendSlots();
             renderSet();
+            scheduleAutoSave();
             break;
         }
     }
@@ -819,6 +828,7 @@ function onSlotDrop(e, targetSlotId) {
         setSlots.splice(insertIdx, 0, ...groupSlots);
         dragGroupSlotIds = null;
         dragSlotId = null;
+        ensureBookendSlots();
         renderSet();
         scheduleAutoSave();
         return;
@@ -834,7 +844,9 @@ function onSlotDrop(e, targetSlotId) {
     const [moved] = setSlots.splice(fromIdx, 1);
     setSlots.splice(toIdx, 0, moved);
     dragSlotId = null;
+    ensureBookendSlots();
     renderSet();
+    scheduleAutoSave();
 }
 
 
@@ -1138,6 +1150,7 @@ async function assignSource(sourceType, sourceId, treeType, sourceName, anchorTr
         slot.tracks = data.tracks || [];
         slot.selectedTrackIndex = findDefaultSelection(slot.tracks, anchorTrackId);
 
+        ensureBookendSlots();
         renderSet();
         scheduleAutoSave();
 
@@ -1237,7 +1250,9 @@ async function onTrackDrop(e, slotId) {
             bpm_level: replaced ? replaced.bpm_level : dragBpm,
         };
         slot.selectedTrackIndex = bestIdx;
+        ensureBookendSlots();
         renderSet();
+        scheduleAutoSave();
         return;
     }
 
@@ -1275,6 +1290,7 @@ async function onTrackDrop(e, slotId) {
         const dragIdx = slot.tracks.findIndex(t => t && t.id === drag.id);
         slot.selectedTrackIndex = dragIdx >= 0 ? dragIdx : findDefaultSelection(slot.tracks);
 
+        ensureBookendSlots();
         renderSet();
         scheduleAutoSave();
     } catch (e2) {
