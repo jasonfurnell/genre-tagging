@@ -1441,6 +1441,46 @@ tr.ws-seed-selected {
     color: var(--text);
 }
 
+/* -- Mode toggle (Workshop / Play Set) ---------------------------------- */
+.set-mode-toggle {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 2px;
+    border: 1px solid var(--border);
+}
+.set-mode-btn {
+    padding: 4px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+.set-mode-btn:hover:not(:disabled):not(.active) {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+}
+.set-mode-btn.active#set-mode-workshop {
+    background: rgba(78, 204, 163, 0.2);
+    color: var(--success);
+    font-weight: 600;
+}
+.set-mode-btn.active#set-mode-playset {
+    background: rgba(29, 185, 84, 0.25);
+    color: #1db954;
+    font-weight: 600;
+}
+.set-mode-btn:disabled:not(.active) {
+    opacity: 0.4;
+    cursor: default;
+}
+
 /* -- Grid wrapper: horizontal scrolling --------------------------------- */
 .set-grid-wrapper { overflow: visible; }
 .set-grid-scroll {

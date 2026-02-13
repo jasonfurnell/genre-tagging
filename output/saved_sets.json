@@ -10,118 +10,6 @@
         "tracks": []
       },
       {
-        "id": "slot-1770953615731-mau4",
-        "selectedTrackIndex": 1,
-        "source": {
-          "id": "dubstep-lineage-bristol-shadows",
-          "name": "Sub-Frequency Chronicles: UK Bass Weight & Grime's Dark Matter",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Saskia",
-            "bpm": 57.9,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5480,
-            "key": "8M",
-            "title": "You Left Your Soul Behind",
-            "year": 2020
-          },
-          {
-            "artist": "Digital Mystikz",
-            "bpm": 69.5,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4860,
-            "key": "4M",
-            "title": "Misty Winter",
-            "year": 2022
-          },
-          {
-            "artist": "Pablo Dread,Fixate",
-            "bpm": 85,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4004,
-            "key": "8M",
-            "title": "Fyah Burnin' - Fixate Remix",
-            "year": 2019
-          },
-          {
-            "artist": "Fixate",
-            "bpm": 86,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 3930,
-            "key": "4M",
-            "title": "What Goes Around",
-            "year": 2017
-          },
-          {
-            "artist": "Shygirl",
-            "bpm": 98,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 1415,
-            "key": "12D",
-            "title": "UCKERS",
-            "year": 2022
-          },
-          {
-            "artist": "Wiley, Stefflon Don, Sean Paul, Idris Elba",
-            "bpm": 103,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2508,
-            "key": "7M",
-            "title": "Boasty (feat. Idris Elba)",
-            "year": 2019
-          },
-          {
-            "artist": "Pearson Sound",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 1003,
-            "key": "12M",
-            "title": "Rubble",
-            "year": 2012
-          },
-          {
-            "artist": "Metrist",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1833,
-            "key": "11D",
-            "title": "OL Face You Got",
-            "year": 2019
-          },
-          {
-            "artist": "Untold",
-            "bpm": 136,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 3004,
-            "key": "11M",
-            "title": "Fly Girls",
-            "year": 2010
-          },
-          {
-            "artist": "Sully",
-            "bpm": 164,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 5168,
-            "key": "10M",
-            "title": "Soundboy Don't Push Your Luck",
-            "year": 2018
-          }
-        ]
-      },
-      {
         "id": "slot-1770967006836-72dn",
         "selectedTrackIndex": 6,
         "source": {
@@ -401,230 +289,6 @@
             "year": 1973
           },
           null
-        ]
-      },
-      {
-        "id": "slot-1770953615731-r5cd",
-        "selectedTrackIndex": 8,
-        "source": {
-          "id": "baroque-chamber-sophisticates",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "Sade",
-            "bpm": 99.4,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5068,
-            "key": "10M",
-            "title": "Turn My Back On You",
-            "year": 1988
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 109.6,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
-            "key": "10M",
-            "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 135.7,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5890,
-            "key": "9M",
-            "title": "The Sensual World",
-            "year": 1989
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          }
-        ]
-      },
-      {
-        "id": "slot-1770892344453-19",
-        "selectedTrackIndex": 3,
-        "source": {
-          "id": "acid-drenched-revolution-67-77",
-          "name": "Acid-Drenched Revolution: Global Freak-Out '67-'77",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "The Stranglers",
-            "bpm": 71.3,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 577,
-            "key": "7M",
-            "title": "Peaches - 1996 Remaster",
-            "year": 1977
-          },
-          {
-            "artist": "Donovan",
-            "bpm": 76,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 3177,
-            "key": "2M",
-            "title": "Get Thy Bearings",
-            "year": 1968
-          },
-          {
-            "artist": "Queen",
-            "bpm": 80.9,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 827,
-            "key": "1M",
-            "title": "We Will Rock You - Remastered",
-            "year": 1977
-          },
-          {
-            "artist": "The Beatles",
-            "bpm": 94,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5816,
-            "key": "2D",
-            "title": "Blackbird - Remastered 2009",
-            "year": 1968
-          },
-          {
-            "artist": "Foreigner",
-            "bpm": 101.3,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5921,
-            "key": "7M",
-            "title": "Waiting for a Girl like You",
-            "year": 1981
-          },
-          {
-            "artist": "Gilbert O'Sullivan",
-            "bpm": 109.8,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 154,
-            "key": "11M",
-            "title": "Too Much Attention",
-            "year": 1972
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Paul McCartney",
-            "bpm": 128.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5783,
-            "key": "10D",
-            "title": "Coming Up - Remastered 2011",
-            "year": 1980
-          },
-          {
-            "artist": "War",
-            "bpm": 133.5,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 1131,
-            "key": "1M",
-            "title": "Cinco De Mayo",
-            "year": 1975
-          },
-          {
-            "artist": "Faces",
-            "bpm": 149.1,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 572,
-            "key": "3D",
-            "title": "Ooh La La - 2015 Remaster",
-            "year": 1973
-          }
         ]
       },
       {
@@ -1125,88 +789,115 @@
         ]
       },
       {
-        "id": "slot-1770958686883-vcwl",
-        "selectedTrackIndex": 6,
+        "id": "slot-1770953615731-r5cd",
+        "selectedTrackIndex": 8,
         "source": {
-          "id": "golden-age-hip-hop-architects",
-          "name": "Golden Era Foundations: 1987-1994 Boom-Bap & Hip-House Genesis",
-          "tree_type": "genre",
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
           "type": "tree_node"
         },
         "tracks": [
-          null,
-          null,
           {
-            "artist": "KRS-One",
-            "bpm": 95,
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
             "bpm_level": 80,
             "has_audio": true,
-            "id": 1325,
-            "key": "6D",
-            "title": "Sound of da Police",
-            "year": 1993
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
           },
           {
-            "artist": "JVC Force",
-            "bpm": 95.9,
+            "artist": "David McCallum",
+            "bpm": 90.2,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 2556,
-            "key": "6D",
-            "title": "Strong Island",
-            "year": 1988
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
           },
           {
-            "artist": "Stetsasonic",
-            "bpm": 100.9,
+            "artist": "Sade",
+            "bpm": 99.4,
             "bpm_level": 100,
             "has_audio": true,
-            "id": 2409,
-            "key": "1M",
-            "title": "Sally",
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
             "year": 1988
           },
           {
-            "artist": "Rob Base & DJ EZ Rock",
-            "bpm": 111.6,
+            "artist": "Kate Bush",
+            "bpm": 109.6,
             "bpm_level": 110,
             "has_audio": true,
-            "id": 916,
-            "key": "2D",
-            "title": "It Takes Two",
-            "year": 1988
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
           },
           {
-            "artist": "De La Soul",
-            "bpm": 120.5,
+            "artist": "The Doors",
+            "bpm": 119.8,
             "bpm_level": 120,
             "has_audio": true,
-            "id": 4268,
-            "key": "12D",
-            "title": "The Magic Number",
-            "year": 2023
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
           },
           {
-            "artist": "Salt-N-Pepa",
-            "bpm": 127.8,
+            "artist": "Elton John",
+            "bpm": 129.6,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 2679,
-            "key": "1M",
-            "title": "Push It",
-            "year": 1986
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
           },
           {
-            "artist": "Run\u2013D.M.C.",
-            "bpm": 127.8,
+            "artist": "Kate Bush",
+            "bpm": 135.7,
             "bpm_level": 140,
             "has_audio": true,
-            "id": 1215,
-            "key": "1M",
-            "title": "It's Tricky",
-            "year": 1987
+            "id": 5890,
+            "key": "9M",
+            "title": "The Sensual World",
+            "year": 1989
           },
-          null
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          }
         ]
       },
       {
@@ -1278,6 +969,315 @@
             "key": "8M",
             "title": "The Space Between",
             "year": 1982
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969373748-zikg",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "baroque-chamber-sophisticates",
+          "tree_type": "scene",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-19",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "baroque-chamber-sophisticates",
+          "tree_type": "scene",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 102,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5094,
+            "key": "11M",
+            "title": "Why We Cry Why We Die",
+            "year": 2020
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770958686883-vcwl",
+        "selectedTrackIndex": 7,
+        "source": {
+          "type": "tree_node",
+          "id": "baroque-chamber-sophisticates",
+          "tree_type": "scene",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Blue Boy",
+            "bpm": 100.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5252,
+            "key": "8D",
+            "title": "Remember Me - Original Mix",
+            "year": 1997
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
           },
           {
             "artist": "The Doors",
@@ -1426,11 +1426,12 @@
       },
       {
         "id": "slot-1770969306314-m52p",
+        "selectedTrackIndex": 8,
         "source": {
-          "type": "tree_node",
           "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
           "tree_type": "scene",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival"
+          "type": "tree_node"
         },
         "tracks": [
           null,
@@ -1438,13 +1439,14 @@
           null,
           null,
           {
-            "id": 5833,
-            "title": "Groove of the Ghetto - Original Mix",
             "artist": "A Guy Called Gerald",
             "bpm": 0,
+            "bpm_level": 100,
+            "id": 5833,
             "key": "",
+            "title": "Groove of the Ghetto - Original Mix",
             "year": 2013,
-            "bpm_level": 100
+            "has_audio": true
           },
           {
             "artist": "Logic1000",
@@ -1487,17 +1489,16 @@
             "year": 1996
           },
           null
-        ],
-        "selectedTrackIndex": 8
+        ]
       },
       {
         "id": "slot-1770958659880-t7cj",
         "selectedTrackIndex": 0,
         "source": {
-          "type": "tree_node",
           "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
           "tree_type": "scene",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -1570,10 +1571,10 @@
         "id": "slot-1770967037856-d7me",
         "selectedTrackIndex": 5,
         "source": {
-          "type": "tree_node",
           "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
           "tree_type": "scene",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival"
+          "type": "tree_node"
         },
         "tracks": [
           null,
@@ -1625,12 +1626,182 @@
         ]
       },
       {
-        "id": "slot-1770969291374-f9b6",
+        "id": "slot-1770953615731-mau4",
+        "selectedTrackIndex": 1,
+        "source": {
+          "id": "dubstep-lineage-bristol-shadows",
+          "name": "Sub-Frequency Chronicles: UK Bass Weight & Grime's Dark Matter",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Saskia",
+            "bpm": 57.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5480,
+            "key": "8M",
+            "title": "You Left Your Soul Behind",
+            "year": 2020
+          },
+          {
+            "artist": "Digital Mystikz",
+            "bpm": 69.5,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4860,
+            "key": "4M",
+            "title": "Misty Winter",
+            "year": 2022
+          },
+          {
+            "artist": "Pablo Dread,Fixate",
+            "bpm": 85,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4004,
+            "key": "8M",
+            "title": "Fyah Burnin' - Fixate Remix",
+            "year": 2019
+          },
+          {
+            "artist": "Fixate",
+            "bpm": 86,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3930,
+            "key": "4M",
+            "title": "What Goes Around",
+            "year": 2017
+          },
+          {
+            "artist": "Shygirl",
+            "bpm": 98,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 1415,
+            "key": "12D",
+            "title": "UCKERS",
+            "year": 2022
+          },
+          {
+            "artist": "Wiley, Stefflon Don, Sean Paul, Idris Elba",
+            "bpm": 103,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2508,
+            "key": "7M",
+            "title": "Boasty (feat. Idris Elba)",
+            "year": 2019
+          },
+          {
+            "artist": "Pearson Sound",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1003,
+            "key": "12M",
+            "title": "Rubble",
+            "year": 2012
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
+          },
+          {
+            "artist": "Untold",
+            "bpm": 136,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 3004,
+            "key": "11M",
+            "title": "Fly Girls",
+            "year": 2010
+          },
+          {
+            "artist": "Sully",
+            "bpm": 164,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 5168,
+            "key": "10M",
+            "title": "Soundboy Don't Push Your Luck",
+            "year": 2018
+          }
+        ]
+      },
+      {
+        "id": "slot-1770969296883-irf3",
+        "selectedTrackIndex": 6,
         "source": {
           "type": "tree_node",
+          "id": "uk-industrial-dystopia",
+          "tree_type": "scene",
+          "name": "Post-Brexit Brutalism: UK's Dark Industrial Strain"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Phil Kieran, Douglas McCarthy",
+            "bpm": 121,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6245,
+            "key": "4M",
+            "title": "Fall Rise - Druggs Mix",
+            "year": 2019
+          },
+          {
+            "id": 6245,
+            "title": "Fall Rise - Druggs Mix",
+            "artist": "Phil Kieran, Douglas McCarthy",
+            "bpm": 121,
+            "key": "4M",
+            "year": 2019,
+            "bpm_level": 120
+          },
+          {
+            "artist": "Anunaku",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3340,
+            "key": "4M",
+            "title": "Teleported",
+            "year": 2020
+          },
+          {
+            "artist": "Ntel",
+            "bpm": 136,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5056,
+            "key": "8M",
+            "title": "Swarm - Scanner Version",
+            "year": 2020
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969291374-f9b6",
+        "selectedTrackIndex": 0,
+        "source": {
           "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
           "tree_type": "genre",
-          "name": "New Wave & Synth Evolution"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -1733,128 +1904,16 @@
             "title": "Just Like Heaven",
             "year": 1987
           }
-        ],
-        "selectedTrackIndex": 0
-      },
-      {
-        "id": "slot-1770969296883-irf3",
-        "source": {
-          "type": "tree_node",
-          "id": "new-wave-synth-evolution",
-          "tree_type": "genre",
-          "name": "New Wave & Synth Evolution"
-        },
-        "tracks": [
-          {
-            "artist": "KOMPROMAT, Vitalic, Rebeka Warrior",
-            "bpm": 0,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5841,
-            "key": "",
-            "title": "Die tausende Herbst",
-            "year": 2019
-          },
-          {
-            "artist": "Gil Scott-Heron,Jamie xx",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4208,
-            "key": "3M",
-            "title": "NY Is Killing Me",
-            "year": 2011
-          },
-          {
-            "artist": "Ulla Straus",
-            "bpm": 80.1,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1039,
-            "key": "8D",
-            "title": "Sister",
-            "year": 2021
-          },
-          {
-            "artist": "KDMS,Simple Symmetry",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 1114,
-            "key": "2D",
-            "title": "Bones - Simple Symmetry Remix",
-            "year": 2016
-          },
-          {
-            "artist": "Modeselektor, TTC",
-            "bpm": 100,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3151,
-            "key": "5M",
-            "title": "2000007",
-            "year": 2007
-          },
-          {
-            "artist": "MUNKIB",
-            "bpm": 110,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 6128,
-            "key": "12M",
-            "title": "Hurt (Dead Don't Dance Mix)",
-            "year": 2018
-          },
-          {
-            "artist": "Super Drama",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5181,
-            "key": "7M",
-            "title": "Unforgettable Runway",
-            "year": 2019
-          },
-          {
-            "artist": "Metrist",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1833,
-            "key": "11D",
-            "title": "OL Face You Got",
-            "year": 2019
-          },
-          {
-            "artist": "DJ Shiftee",
-            "bpm": 140,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3761,
-            "key": "",
-            "title": "GRIME",
-            "year": 2011
-          },
-          {
-            "artist": "The Cure",
-            "bpm": 150.3,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4585,
-            "key": "3D",
-            "title": "Just Like Heaven",
-            "year": 1987
-          }
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
         "id": "slot-1770969300130-nbyp",
+        "selectedTrackIndex": 0,
         "source": {
-          "type": "tree_node",
           "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
           "tree_type": "genre",
-          "name": "New Wave & Synth Evolution"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -1957,17 +2016,3608 @@
             "title": "Just Like Heaven",
             "year": 1987
           }
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
-        "id": "slot-1770969373748-zikg",
+        "id": "slot-1770969781186-dkp9",
         "source": null,
         "tracks": [],
         "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-13T03:56:40.636218+00:00",
-    "updated_at": "2026-02-13T07:59:10.398733+00:00"
+    "updated_at": "2026-02-13T09:03:23.555672+00:00"
+  },
+  "2c3f707b": {
+    "id": "2c3f707b",
+    "name": "early set",
+    "slots": [
+      {
+        "id": "slot-1770965899981-v9le",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
+        "id": "slot-1770892344453-6",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "southern-crossroads-juke-joint-blues",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Bill Withers",
+            "bpm": 61.4,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5359,
+            "key": "2M",
+            "title": "Railroad Man",
+            "year": 2013
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5694,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "C.W. Stoneking",
+            "bpm": 76.4,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1346,
+            "key": "1M",
+            "title": "The Zombie",
+            "year": 2008
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5594,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Slim Harpo",
+            "bpm": 121.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5542,
+            "key": "9M",
+            "title": "Baby, Scratch My Back",
+            "year": 1957
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          {
+            "artist": "Ruth Brown",
+            "bpm": 151.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5818,
+            "key": "8M",
+            "title": "I Don't Know",
+            "year": 2003
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-1",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "southern-crossroads-juke-joint-blues",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Bill Withers",
+            "bpm": 61.4,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5359,
+            "key": "2M",
+            "title": "Railroad Man",
+            "year": 2013
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5694,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "Junior Parker",
+            "bpm": 77.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5687,
+            "key": "12M",
+            "title": "Taxman",
+            "year": 1991
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5594,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Slim Harpo",
+            "bpm": 121.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5542,
+            "key": "9M",
+            "title": "Baby, Scratch My Back",
+            "year": 1957
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          {
+            "artist": "Ruth Brown",
+            "bpm": 151.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5818,
+            "key": "8M",
+            "title": "I Don't Know",
+            "year": 2003
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-4",
+        "selectedTrackIndex": 3,
+        "source": {
+          "id": "southern-crossroads-juke-joint-blues",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Bill Withers",
+            "bpm": 61.4,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5359,
+            "key": "2M",
+            "title": "Railroad Man",
+            "year": 2013
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5609,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "Charlie Musselwhite",
+            "bpm": 82.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 3028,
+            "key": "10M",
+            "title": "Christo Redemptor",
+            "year": 2006
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.5,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5704,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Slim Harpo",
+            "bpm": 121.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5542,
+            "key": "9M",
+            "title": "Baby, Scratch My Back",
+            "year": 1957
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          {
+            "artist": "Ruth Brown",
+            "bpm": 151.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5818,
+            "key": "8M",
+            "title": "I Don't Know",
+            "year": 2003
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-3",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "southern-crossroads-juke-joint-blues",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Bill Withers",
+            "bpm": 61.4,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5359,
+            "key": "2M",
+            "title": "Railroad Man",
+            "year": 2013
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5694,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "Charlie Musselwhite",
+            "bpm": 82.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 3028,
+            "key": "10M",
+            "title": "Christo Redemptor",
+            "year": 2006
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5594,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Slim Harpo",
+            "bpm": 121.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5542,
+            "key": "9M",
+            "title": "Baby, Scratch My Back",
+            "year": 1957
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          {
+            "artist": "Ruth Brown",
+            "bpm": 151.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5818,
+            "key": "8M",
+            "title": "I Don't Know",
+            "year": 2003
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-16",
+        "selectedTrackIndex": 2,
+        "source": {
+          "id": "southern-crossroads-juke-joint-blues",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5694,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5609,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "John Hammond",
+            "bpm": 76.3,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1055,
+            "key": "12M",
+            "title": "Get Behind The Mule",
+            "year": 1998
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5594,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770967006836-72dn",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "source-material-diggers-paradise",
+          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          {
+            "artist": "Wendy Rene",
+            "bpm": 75.1,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2936,
+            "key": "7M",
+            "title": "Bar-B-Q",
+            "year": 2019
+          },
+          {
+            "artist": "Bill Withers",
+            "bpm": 82.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 969,
+            "key": "2M",
+            "title": "Grandma's Hands",
+            "year": 1971
+          },
+          {
+            "artist": "Jean Knight",
+            "bpm": 92,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2125,
+            "key": "10D",
+            "title": "Mr. Big Stuff",
+            "year": 1971
+          },
+          {
+            "artist": "Lord Echo, Lisa Tomlins",
+            "bpm": 97.6,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2949,
+            "key": "12M",
+            "title": "Low to the Street",
+            "year": 2017
+          },
+          {
+            "artist": "Commodores",
+            "bpm": 110.8,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2077,
+            "key": "2M",
+            "title": "I Feel Sanctified - Single Version",
+            "year": 2001
+          },
+          {
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1185,
+            "key": "1M",
+            "title": "Got To Give It Up - Pt. 1",
+            "year": 1977
+          },
+          {
+            "artist": "Mass Production",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5912,
+            "key": "7M",
+            "title": "Can't You See I'm Fired Up",
+            "year": 1979
+          },
+          {
+            "artist": "The Isley Brothers",
+            "bpm": 125.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2162,
+            "key": "9M",
+            "title": "That Lady, Pts. 1 & 2",
+            "year": 1973
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770961323509-gz3v",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "source-material-diggers-paradise",
+          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          {
+            "artist": "Wendy Rene",
+            "bpm": 75.1,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2936,
+            "key": "7M",
+            "title": "Bar-B-Q",
+            "year": 2019
+          },
+          {
+            "artist": "Bill Withers",
+            "bpm": 82.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 969,
+            "key": "2M",
+            "title": "Grandma's Hands",
+            "year": 1971
+          },
+          {
+            "artist": "Jean Knight",
+            "bpm": 92,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2125,
+            "key": "10D",
+            "title": "Mr. Big Stuff",
+            "year": 1971
+          },
+          {
+            "artist": "Timmy Thomas",
+            "bpm": 100.5,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2182,
+            "key": "3M",
+            "title": "Why Can't We Live Together",
+            "year": 2004
+          },
+          {
+            "artist": "Commodores",
+            "bpm": 110.8,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2077,
+            "key": "2M",
+            "title": "I Feel Sanctified - Single Version",
+            "year": 2001
+          },
+          {
+            "artist": "Cymande",
+            "bpm": 118.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5307,
+            "key": "12M",
+            "title": "Bra",
+            "year": 1972
+          },
+          {
+            "artist": "Mass Production",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5912,
+            "key": "7M",
+            "title": "Can't You See I'm Fired Up",
+            "year": 1979
+          },
+          {
+            "artist": "The Isley Brothers",
+            "bpm": 125.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2162,
+            "key": "9M",
+            "title": "That Lady, Pts. 1 & 2",
+            "year": 1973
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-15",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "source-material-diggers-paradise",
+          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          {
+            "artist": "Wendy Rene",
+            "bpm": 75.1,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2936,
+            "key": "7M",
+            "title": "Bar-B-Q",
+            "year": 2019
+          },
+          {
+            "artist": "Bill Withers",
+            "bpm": 82.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 969,
+            "key": "2M",
+            "title": "Grandma's Hands",
+            "year": 1971
+          },
+          {
+            "artist": "Jean Knight",
+            "bpm": 92,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2125,
+            "key": "10D",
+            "title": "Mr. Big Stuff",
+            "year": 1971
+          },
+          {
+            "artist": "Sharon Jones & The Dap-Kings",
+            "bpm": 104,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2329,
+            "key": "8M",
+            "title": "How Long Do I Have to Wait for You?",
+            "year": 2005
+          },
+          {
+            "artist": "Commodores",
+            "bpm": 110.8,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2077,
+            "key": "2M",
+            "title": "I Feel Sanctified - Single Version",
+            "year": 2001
+          },
+          {
+            "artist": "Cymande",
+            "bpm": 118.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5307,
+            "key": "12M",
+            "title": "Bra",
+            "year": 1972
+          },
+          {
+            "artist": "Mass Production",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5912,
+            "key": "7M",
+            "title": "Can't You See I'm Fired Up",
+            "year": 1979
+          },
+          {
+            "artist": "The Isley Brothers",
+            "bpm": 125.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2162,
+            "key": "9M",
+            "title": "That Lady, Pts. 1 & 2",
+            "year": 1973
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977531543-pb67",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "rio-soul-orchestral-laboratory",
+          "name": "Black Rio Movement: Soul, Funk & MPB's Political Awakening",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Todd Rundgren",
+            "bpm": 61.3,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3207,
+            "key": "1M",
+            "title": "Sometimes I Don't Know What to Feel - 2015 Remaster",
+            "year": 1972
+          },
+          {
+            "artist": "Arthur Verocai",
+            "bpm": 70.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 3276,
+            "key": "3M",
+            "title": "Na boca do sol",
+            "year": 1972
+          },
+          {
+            "artist": "O.V. Wright",
+            "bpm": 79.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5684,
+            "key": "8M",
+            "title": "Let's Straighten It Out",
+            "year": 2009
+          },
+          {
+            "artist": "Tim Maia",
+            "bpm": 88.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5164,
+            "key": "1D",
+            "title": "R\u00e9u Confesso",
+            "year": 1973
+          },
+          {
+            "artist": "Caetano Veloso",
+            "bpm": 99.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5180,
+            "key": "10M",
+            "title": "Tropic\u00e1lia - Remastered 2006",
+            "year": 1967
+          },
+          {
+            "artist": "Erasmo Carlos",
+            "bpm": 110.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3251,
+            "key": "12D",
+            "title": "Coqueiro Verde",
+            "year": 1970
+          },
+          {
+            "artist": "Chicago",
+            "bpm": 117.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5648,
+            "key": "2D",
+            "title": "Does Anybody Really Know What Time It Is?",
+            "year": 1975
+          },
+          {
+            "artist": "Di Melo",
+            "bpm": 126.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2821,
+            "key": "2M",
+            "title": "Kilario",
+            "year": 1975
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969291374-f9b6",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "rio-soul-orchestral-laboratory",
+          "name": "Black Rio Movement: Soul, Funk & MPB's Political Awakening",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Todd Rundgren",
+            "bpm": 61.3,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3207,
+            "key": "1M",
+            "title": "Sometimes I Don't Know What to Feel - 2015 Remaster",
+            "year": 1972
+          },
+          {
+            "artist": "Arthur Verocai",
+            "bpm": 70.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 3276,
+            "key": "3M",
+            "title": "Na boca do sol",
+            "year": 1972
+          },
+          {
+            "artist": "O.V. Wright",
+            "bpm": 79.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5684,
+            "key": "8M",
+            "title": "Let's Straighten It Out",
+            "year": 2009
+          },
+          {
+            "artist": "Tim Maia",
+            "bpm": 88.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5164,
+            "key": "1D",
+            "title": "R\u00e9u Confesso",
+            "year": 1973
+          },
+          {
+            "artist": "Silvio Cesar",
+            "bpm": 103.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3238,
+            "key": "7M",
+            "title": "A Festa",
+            "year": 2006
+          },
+          {
+            "artist": "Erasmo Carlos",
+            "bpm": 110.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3251,
+            "key": "12D",
+            "title": "Coqueiro Verde",
+            "year": 1970
+          },
+          {
+            "artist": "Chicago",
+            "bpm": 117.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5648,
+            "key": "2D",
+            "title": "Does Anybody Really Know What Time It Is?",
+            "year": 1975
+          },
+          {
+            "artist": "Joyce, Gilson Peranzzetta",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3217,
+            "key": "4D",
+            "title": "Aldeia De Ogum",
+            "year": 2000
+          },
+          {
+            "artist": "Di Melo",
+            "bpm": 126.3,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2821,
+            "key": "2M",
+            "title": "Kilario",
+            "year": 1975
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770973655552-mpdp",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "rio-soul-orchestral-laboratory",
+          "name": "Black Rio Movement: Soul, Funk & MPB's Political Awakening",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Todd Rundgren",
+            "bpm": 61.3,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3207,
+            "key": "1M",
+            "title": "Sometimes I Don't Know What to Feel - 2015 Remaster",
+            "year": 1972
+          },
+          {
+            "artist": "Arthur Verocai",
+            "bpm": 70.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 3276,
+            "key": "3M",
+            "title": "Na boca do sol",
+            "year": 1972
+          },
+          {
+            "artist": "O.V. Wright",
+            "bpm": 79.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5684,
+            "key": "8M",
+            "title": "Let's Straighten It Out",
+            "year": 2009
+          },
+          {
+            "artist": "Tim Maia",
+            "bpm": 88.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5164,
+            "key": "1D",
+            "title": "R\u00e9u Confesso",
+            "year": 1973
+          },
+          {
+            "artist": "Tenorio Jr.",
+            "bpm": 101.1,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3225,
+            "key": "1M",
+            "title": "Nebulosa",
+            "year": 1964
+          },
+          {
+            "artist": "Erasmo Carlos",
+            "bpm": 110.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3251,
+            "key": "12D",
+            "title": "Coqueiro Verde",
+            "year": 1970
+          },
+          {
+            "artist": "Chicago",
+            "bpm": 117.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5648,
+            "key": "2D",
+            "title": "Does Anybody Really Know What Time It Is?",
+            "year": 1975
+          },
+          {
+            "artist": "Joyce, Gilson Peranzzetta",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3217,
+            "key": "4D",
+            "title": "Aldeia De Ogum",
+            "year": 2000
+          },
+          {
+            "artist": "Di Melo",
+            "bpm": 126.3,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2821,
+            "key": "2M",
+            "title": "Kilario",
+            "year": 1975
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770953615731-mau4",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "french-touch-afterhours",
+          "name": "French Touch After-Hours: Parisian Disco-House Comedowns",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Gillian Hills",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 723,
+            "key": "1M",
+            "title": "Le paradis pour toi",
+            "year": 1965
+          },
+          {
+            "artist": "Barney Wilen",
+            "bpm": 67.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5698,
+            "key": "6M",
+            "title": "Zombizar",
+            "year": 1968
+          },
+          {
+            "artist": "Fern Kinney",
+            "bpm": 82.8,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2194,
+            "key": "7M",
+            "title": "Baby Let Me Kiss You",
+            "year": 1979
+          },
+          {
+            "artist": "Jacques Satre",
+            "bpm": 88,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 369,
+            "key": "10M",
+            "title": "Anatole Trance - Original",
+            "year": 1999
+          },
+          {
+            "artist": "Hefner, Jos\u00e9e",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6249,
+            "key": "10D",
+            "title": "Dive Into you",
+            "year": 2000
+          },
+          {
+            "artist": "Hercules & Love Affair",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 790,
+            "key": "9M",
+            "title": "Athene",
+            "year": 2008
+          },
+          {
+            "artist": "DJ Mehdi",
+            "bpm": 119,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4147,
+            "key": "10M",
+            "title": "Tunisia Bambaata",
+            "year": 2008
+          },
+          {
+            "artist": "Detroit Grand Pubahs, Joakim",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2967,
+            "key": "8M",
+            "title": "Big Onion - Joakim Slap On It Remix",
+            "year": 2004
+          },
+          {
+            "artist": "Air",
+            "bpm": 150,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5894,
+            "key": "4M",
+            "title": "Cherry Blossom Girl",
+            "year": 2004
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-5",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "french-touch-afterhours",
+          "name": "French Touch After-Hours: Parisian Disco-House Comedowns",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Gillian Hills",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 723,
+            "key": "1M",
+            "title": "Le paradis pour toi",
+            "year": 1965
+          },
+          {
+            "artist": "Barney Wilen",
+            "bpm": 67.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5698,
+            "key": "6M",
+            "title": "Zombizar",
+            "year": 1968
+          },
+          {
+            "artist": "Fern Kinney",
+            "bpm": 82.8,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2194,
+            "key": "7M",
+            "title": "Baby Let Me Kiss You",
+            "year": 1979
+          },
+          {
+            "artist": "Jacques Satre",
+            "bpm": 88,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 369,
+            "key": "10M",
+            "title": "Anatole Trance - Original",
+            "year": 1999
+          },
+          {
+            "artist": "Hefner, Jos\u00e9e",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6249,
+            "key": "10D",
+            "title": "Dive Into you",
+            "year": 2000
+          },
+          {
+            "artist": "Hercules & Love Affair",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 790,
+            "key": "9M",
+            "title": "Athene",
+            "year": 2008
+          },
+          {
+            "artist": "Hercules & Love Affair,Aerea Negrot",
+            "bpm": 116,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 0,
+            "key": "10M",
+            "title": "Answers Come In Dreams",
+            "year": 2008
+          },
+          {
+            "artist": "Detroit Grand Pubahs, Joakim",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2967,
+            "key": "8M",
+            "title": "Big Onion - Joakim Slap On It Remix",
+            "year": 2004
+          },
+          {
+            "artist": "Air",
+            "bpm": 150,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5894,
+            "key": "4M",
+            "title": "Cherry Blossom Girl",
+            "year": 2004
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969296883-irf3",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "french-touch-afterhours",
+          "name": "French Touch After-Hours: Parisian Disco-House Comedowns",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Gillian Hills",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 723,
+            "key": "1M",
+            "title": "Le paradis pour toi",
+            "year": 1965
+          },
+          {
+            "artist": "Barney Wilen",
+            "bpm": 67.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5698,
+            "key": "6M",
+            "title": "Zombizar",
+            "year": 1968
+          },
+          {
+            "artist": "Fern Kinney",
+            "bpm": 82.8,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2194,
+            "key": "7M",
+            "title": "Baby Let Me Kiss You",
+            "year": 1979
+          },
+          {
+            "artist": "Jacques Satre",
+            "bpm": 88,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 369,
+            "key": "10M",
+            "title": "Anatole Trance - Original",
+            "year": 1999
+          },
+          {
+            "artist": "Charlotte Gainsbourg,Soulwax",
+            "bpm": 105,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 424,
+            "key": "4M",
+            "title": "Deadly Valentine (Soulwax Remix)",
+            "year": 2010
+          },
+          {
+            "artist": "Hercules & Love Affair",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 790,
+            "key": "9M",
+            "title": "Athene",
+            "year": 2008
+          },
+          {
+            "artist": "DJ Mehdi",
+            "bpm": 119,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4147,
+            "key": "10M",
+            "title": "Tunisia Bambaata",
+            "year": 2008
+          },
+          {
+            "artist": "Detroit Grand Pubahs, Joakim",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2967,
+            "key": "8M",
+            "title": "Big Onion - Joakim Slap On It Remix",
+            "year": 2004
+          },
+          {
+            "artist": "Air",
+            "bpm": 150,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5894,
+            "key": "4M",
+            "title": "Cherry Blossom Girl",
+            "year": 2004
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770976734682-15mw",
+        "selectedTrackIndex": 3,
+        "source": {
+          "id": "electric-tropicalia-raw-fusion",
+          "name": "Tropic\u00e1lia's Electric Rebellion: Psychedelic Brazil Meets the Avant-Garde",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Azymuth",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 4239,
+            "key": "11M",
+            "title": "May I Have This Dance  (Con\u00e7ede-Me Esta Dan\u00e7a )",
+            "year": 1982
+          },
+          null,
+          {
+            "artist": "Rare Earth",
+            "bpm": 88.4,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2082,
+            "key": "12M",
+            "title": "I Just Want To Celebrate",
+            "year": 2006
+          },
+          {
+            "artist": "Claudia",
+            "bpm": 89.8,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3264,
+            "key": "12D",
+            "title": "Garra",
+            "year": 1971
+          },
+          {
+            "artist": "Caetano Veloso",
+            "bpm": 99.6,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 156,
+            "key": "10M",
+            "title": "Tropic\u00e1lia - Remastered 2006",
+            "year": 1968
+          },
+          {
+            "artist": "Banda Black Rio",
+            "bpm": 111.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3273,
+            "key": "10M",
+            "title": "Miss Cheryl",
+            "year": 1980
+          },
+          {
+            "artist": "CAN",
+            "bpm": 117.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6252,
+            "key": "2M",
+            "title": "Vitamin C",
+            "year": 1972
+          },
+          {
+            "artist": "Marcos Valle",
+            "bpm": 131.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3263,
+            "key": "10M",
+            "title": "Freio Aerodin\u00e2mico",
+            "year": 2004
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977061663-0x54",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "electric-tropicalia-raw-fusion",
+          "name": "Tropic\u00e1lia's Electric Rebellion: Psychedelic Brazil Meets the Avant-Garde",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Azymuth",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 4239,
+            "key": "11M",
+            "title": "May I Have This Dance  (Con\u00e7ede-Me Esta Dan\u00e7a )",
+            "year": 1982
+          },
+          null,
+          {
+            "artist": "Rare Earth",
+            "bpm": 88.4,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2082,
+            "key": "12M",
+            "title": "I Just Want To Celebrate",
+            "year": 2006
+          },
+          {
+            "artist": "Caetano Veloso",
+            "bpm": 98.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 462,
+            "key": "10M",
+            "title": "Tropic\u00e1lia - Remastered 2006",
+            "year": 1968
+          },
+          {
+            "artist": "Banda Black Rio",
+            "bpm": 101.6,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3275,
+            "key": "11M",
+            "title": "Mr. Funky samba",
+            "year": 1977
+          },
+          {
+            "artist": "Banda Black Rio",
+            "bpm": 111.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3273,
+            "key": "10M",
+            "title": "Miss Cheryl",
+            "year": 1980
+          },
+          {
+            "artist": "CAN",
+            "bpm": 117.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6252,
+            "key": "2M",
+            "title": "Vitamin C",
+            "year": 1972
+          },
+          {
+            "artist": "Marcos Valle",
+            "bpm": 131.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3263,
+            "key": "10M",
+            "title": "Freio Aerodin\u00e2mico",
+            "year": 2004
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977069766-sxnz",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "electric-tropicalia-raw-fusion",
+          "name": "Tropic\u00e1lia's Electric Rebellion: Psychedelic Brazil Meets the Avant-Garde",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Azymuth",
+            "bpm": 60.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 4239,
+            "key": "11M",
+            "title": "May I Have This Dance  (Con\u00e7ede-Me Esta Dan\u00e7a )",
+            "year": 1982
+          },
+          null,
+          {
+            "artist": "Rare Earth",
+            "bpm": 88.4,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2082,
+            "key": "12M",
+            "title": "I Just Want To Celebrate",
+            "year": 2006
+          },
+          {
+            "artist": "Caetano Veloso",
+            "bpm": 98.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 462,
+            "key": "10M",
+            "title": "Tropic\u00e1lia - Remastered 2006",
+            "year": 1968
+          },
+          {
+            "artist": "Caetano Veloso",
+            "bpm": 99.6,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 156,
+            "key": "10M",
+            "title": "Tropic\u00e1lia - Remastered 2006",
+            "year": 1968
+          },
+          {
+            "artist": "Banda Black Rio",
+            "bpm": 111.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3273,
+            "key": "10M",
+            "title": "Miss Cheryl",
+            "year": 1980
+          },
+          {
+            "artist": "CAN",
+            "bpm": 117.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6252,
+            "key": "2M",
+            "title": "Vitamin C",
+            "year": 1972
+          },
+          {
+            "artist": "Marcos Valle",
+            "bpm": 131.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3263,
+            "key": "10M",
+            "title": "Freio Aerodin\u00e2mico",
+            "year": 2004
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770953615731-r5cd",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 135.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5890,
+            "key": "9M",
+            "title": "The Sensual World",
+            "year": 1989
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          }
+        ]
+      },
+      {
+        "id": "slot-1770892344453-18",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Roxy Music",
+            "bpm": 113.2,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5411,
+            "key": "8M",
+            "title": "The Space Between",
+            "year": 1982
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969373748-zikg",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-19",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 102,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5094,
+            "key": "11M",
+            "title": "Why We Cry Why We Die",
+            "year": 2020
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770958686883-vcwl",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Blue Boy",
+            "bpm": 100.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5252,
+            "key": "8D",
+            "title": "Remember Me - Original Mix",
+            "year": 1997
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969781186-dkp9",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Blue Boy",
+            "bpm": 100.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5252,
+            "key": "8D",
+            "title": "Remember Me - Original Mix",
+            "year": 1997
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Bryan Ferry",
+            "bpm": 127.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 20,
+            "key": "1M",
+            "title": "Don't Stop The Dance",
+            "year": 1985
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770969306314-m52p",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "A Guy Called Gerald",
+            "bpm": 0,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5833,
+            "key": "",
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
+          },
+          {
+            "artist": "Logic1000",
+            "bpm": 117,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1511,
+            "key": "5D",
+            "title": "Precision",
+            "year": 2020
+          },
+          {
+            "artist": "Parallel Dance Ensemble",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 415,
+            "key": "2M",
+            "title": "Weight Watchers - Original",
+            "year": 2014
+          },
+          {
+            "artist": "Daphni",
+            "bpm": 129,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1538,
+            "key": "7M",
+            "title": "Ye Ye",
+            "year": 2012
+          },
+          {
+            "artist": "Roy Davis Jr.,Peven Everett",
+            "bpm": 128.5,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5420,
+            "key": "5D",
+            "title": "Gabriel - Live Garage Mix",
+            "year": 1996
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770958659880-t7cj",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "A Guy Called Gerald",
+            "bpm": 0,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5833,
+            "key": "",
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
+          },
+          null,
+          null,
+          null,
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 108.1,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3428,
+            "key": "8M",
+            "title": "Shoshana",
+            "year": 1997
+          },
+          {
+            "artist": "Logic1000",
+            "bpm": 117,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1511,
+            "key": "5D",
+            "title": "Precision",
+            "year": 2020
+          },
+          {
+            "artist": "Parallel Dance Ensemble",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 415,
+            "key": "2M",
+            "title": "Weight Watchers - Original",
+            "year": 2014
+          },
+          {
+            "artist": "Daphni",
+            "bpm": 129,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1538,
+            "key": "7M",
+            "title": "Ye Ye",
+            "year": 2012
+          },
+          {
+            "artist": "Yaeji",
+            "bpm": 128,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 452,
+            "key": "3M",
+            "title": "Raingurl",
+            "year": 2016
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770967037856-d7me",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "revival-global-bass-influence",
+          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 108.1,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3428,
+            "key": "8M",
+            "title": "Shoshana",
+            "year": 1997
+          },
+          {
+            "artist": "Parallel Dance Ensemble",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 415,
+            "key": "2M",
+            "title": "Weight Watchers - Original",
+            "year": 2014
+          },
+          {
+            "artist": "Daphni",
+            "bpm": 129,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1538,
+            "key": "7M",
+            "title": "Ye Ye",
+            "year": 2012
+          },
+          {
+            "artist": "Yaeji",
+            "bpm": 128,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 452,
+            "key": "3M",
+            "title": "Raingurl",
+            "year": 2016
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770975974647-dyxg",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "chill-out-room-redux",
+          "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Seelenluft",
+            "bpm": 62.5,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3193,
+            "key": "1M",
+            "title": "Manila",
+            "year": 2004
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4011,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4012,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Steve Cobby",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 4683,
+            "key": "10M",
+            "title": "The World And Your Place In It",
+            "year": 2023
+          },
+          {
+            "artist": "DEMI",
+            "bpm": 100.8,
+            "bpm_level": 100,
+            "has_audio": false,
+            "id": 3649,
+            "key": "6M",
+            "title": "CymbalCrash",
+            "year": 2016
+          },
+          {
+            "artist": "Modern Art",
+            "bpm": 114,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3518,
+            "key": "7M",
+            "title": "Alternative Universe - Edit",
+            "year": 2014
+          },
+          {
+            "artist": "Dream 2 Science",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5390,
+            "key": "2D",
+            "title": "How Do I Love Thee",
+            "year": 2012
+          },
+          {
+            "artist": "Beardyman,Joe Rogan",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1086,
+            "key": "5M",
+            "title": "6am (Ready to Write) (feat. Joe Rogan)",
+            "year": 2015
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770976721417-vu4k",
+        "selectedTrackIndex": 2,
+        "source": {
+          "id": "chill-out-room-redux",
+          "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Seelenluft",
+            "bpm": 62.5,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3193,
+            "key": "1M",
+            "title": "Manila",
+            "year": 2004
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4012,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4011,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Steve Cobby",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 4683,
+            "key": "10M",
+            "title": "The World And Your Place In It",
+            "year": 2023
+          },
+          {
+            "artist": "DEMI",
+            "bpm": 100.8,
+            "bpm_level": 100,
+            "has_audio": false,
+            "id": 3649,
+            "key": "6M",
+            "title": "CymbalCrash",
+            "year": 2016
+          },
+          {
+            "artist": "Modern Art",
+            "bpm": 114,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3518,
+            "key": "7M",
+            "title": "Alternative Universe - Edit",
+            "year": 2014
+          },
+          {
+            "artist": "Mel & Kim",
+            "bpm": 119.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4368,
+            "key": "1M",
+            "title": "Showing Out (Get Fresh At the Weekend) - 7' Version",
+            "year": 1987
+          },
+          {
+            "artist": "Beardyman,Joe Rogan",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1086,
+            "key": "5M",
+            "title": "6am (Ready to Write) (feat. Joe Rogan)",
+            "year": 2015
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977699080-gfkc",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "chill-out-room-redux",
+          "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Seelenluft",
+            "bpm": 62.5,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3193,
+            "key": "1M",
+            "title": "Manila",
+            "year": 2004
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4012,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Steve Cobby",
+            "bpm": 90,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4683,
+            "key": "10M",
+            "title": "The World And Your Place In It",
+            "year": 2023
+          },
+          {
+            "artist": "Chateau Flight",
+            "bpm": 93,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2868,
+            "key": "8M",
+            "title": "Grn Aventurine",
+            "year": 2004
+          },
+          {
+            "artist": "DEMI",
+            "bpm": 100.8,
+            "bpm_level": 100,
+            "has_audio": false,
+            "id": 3649,
+            "key": "6M",
+            "title": "CymbalCrash",
+            "year": 2016
+          },
+          {
+            "artist": "Modern Art",
+            "bpm": 114,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3518,
+            "key": "7M",
+            "title": "Alternative Universe - Edit",
+            "year": 2014
+          },
+          {
+            "artist": "Yello",
+            "bpm": 124,
+            "bpm_level": 120,
+            "id": 6272,
+            "key": "1M",
+            "title": "Tied Up In Red - Remastered 2005",
+            "year": 1988,
+            "has_audio": true
+          },
+          {
+            "artist": "Beardyman,Joe Rogan",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1086,
+            "key": "5M",
+            "title": "6am (Ready to Write) (feat. Joe Rogan)",
+            "year": 2015
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770979034206-2aed",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "chill-out-room-redux",
+          "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Seelenluft",
+            "bpm": 62.5,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3193,
+            "key": "1M",
+            "title": "Manila",
+            "year": 2004
+          },
+          {
+            "artist": "Anna Morgan",
+            "bpm": 80,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4012,
+            "key": "1M",
+            "title": "Grace",
+            "year": 2017
+          },
+          {
+            "artist": "Steve Cobby",
+            "bpm": 90,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4683,
+            "key": "10M",
+            "title": "The World And Your Place In It",
+            "year": 2023
+          },
+          {
+            "artist": "Chateau Flight",
+            "bpm": 93,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2868,
+            "key": "8M",
+            "title": "Grn Aventurine",
+            "year": 2004
+          },
+          {
+            "artist": "DEMI",
+            "bpm": 100.8,
+            "bpm_level": 100,
+            "has_audio": false,
+            "id": 3649,
+            "key": "6M",
+            "title": "CymbalCrash",
+            "year": 2016
+          },
+          {
+            "artist": "Mel & Kim",
+            "bpm": 118.2,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5418,
+            "key": "12M",
+            "title": "That's The Way It Is - Acid House Remix",
+            "year": 1987
+          },
+          {
+            "artist": "Mel & Kim",
+            "bpm": 118.2,
+            "bpm_level": 120,
+            "id": 5418,
+            "key": "12M",
+            "title": "That's The Way It Is - Acid House Remix",
+            "year": 1987,
+            "has_audio": true
+          },
+          {
+            "artist": "Beardyman,Joe Rogan",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1086,
+            "key": "5M",
+            "title": "6am (Ready to Write) (feat. Joe Rogan)",
+            "year": 2015
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977505290-zjwb",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "brazilian-funk-soul-fusion",
+          "name": "Rio's Funk Carioca Sunrise: Samba-Soul Meets Dancefloor Heat 1973-1983",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "The Beginning Of The End",
+            "bpm": 60.7,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 2818,
+            "key": "3M",
+            "title": "Funky Nassau - Full Length Edit",
+            "year": 2018
+          },
+          {
+            "artist": "Tower Of Power",
+            "bpm": 57.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5309,
+            "key": "10M",
+            "title": "Ebony Jam",
+            "year": 1975
+          },
+          null,
+          {
+            "artist": "Sivuca",
+            "bpm": 95.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3242,
+            "key": "9M",
+            "title": "Ain't No Sunshine",
+            "year": 2007
+          },
+          {
+            "artist": "Azymuth",
+            "bpm": 98.3,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5064,
+            "key": "12M",
+            "title": "Seems Like This",
+            "year": 2007
+          },
+          {
+            "artist": "Slave",
+            "bpm": 108.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5627,
+            "key": "12M",
+            "title": "Just a Touch of Love",
+            "year": 1979
+          },
+          {
+            "artist": "Eliana Pittman",
+            "bpm": 123.4,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3285,
+            "key": "12M",
+            "title": "Quem Vai Querer",
+            "year": 1977
+          },
+          {
+            "artist": "Bebeto",
+            "bpm": 128.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3282,
+            "key": "2M",
+            "title": "Princesa Negra De Angola",
+            "year": 1976
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977078837-fpja",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "brazilian-funk-soul-fusion",
+          "name": "Rio's Funk Carioca Sunrise: Samba-Soul Meets Dancefloor Heat 1973-1983",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "The Beginning Of The End",
+            "bpm": 60.7,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 2818,
+            "key": "3M",
+            "title": "Funky Nassau - Full Length Edit",
+            "year": 2018
+          },
+          {
+            "artist": "Tower Of Power",
+            "bpm": 57.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5309,
+            "key": "10M",
+            "title": "Ebony Jam",
+            "year": 1975
+          },
+          null,
+          {
+            "artist": "Sivuca",
+            "bpm": 95.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3242,
+            "key": "9M",
+            "title": "Ain't No Sunshine",
+            "year": 2007
+          },
+          {
+            "artist": "Azymuth",
+            "bpm": 98.3,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5064,
+            "key": "12M",
+            "title": "Seems Like This",
+            "year": 2007
+          },
+          {
+            "artist": "Slave",
+            "bpm": 108.5,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5143,
+            "key": "12M",
+            "title": "Just a Touch of Love",
+            "year": 1979
+          },
+          {
+            "artist": "Eliana Pittman",
+            "bpm": 123.4,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3285,
+            "key": "12M",
+            "title": "Quem Vai Querer",
+            "year": 1977
+          },
+          {
+            "artist": "Bebeto",
+            "bpm": 128.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3282,
+            "key": "2M",
+            "title": "Princesa Negra De Angola",
+            "year": 1976
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770977513593-m2ay",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "brazilian-funk-soul-fusion",
+          "name": "Rio's Funk Carioca Sunrise: Samba-Soul Meets Dancefloor Heat 1973-1983",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "The Beginning Of The End",
+            "bpm": 60.7,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 2818,
+            "key": "3M",
+            "title": "Funky Nassau - Full Length Edit",
+            "year": 2018
+          },
+          {
+            "artist": "Tower Of Power",
+            "bpm": 57.6,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5309,
+            "key": "10M",
+            "title": "Ebony Jam",
+            "year": 1975
+          },
+          null,
+          {
+            "artist": "Sivuca",
+            "bpm": 95.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3242,
+            "key": "9M",
+            "title": "Ain't No Sunshine",
+            "year": 2007
+          },
+          {
+            "artist": "Azymuth",
+            "bpm": 98.3,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5064,
+            "key": "12M",
+            "title": "Seems Like This",
+            "year": 2007
+          },
+          {
+            "artist": "Slave",
+            "bpm": 108.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5627,
+            "key": "12M",
+            "title": "Just a Touch of Love",
+            "year": 1979
+          },
+          {
+            "artist": "Patchworks Ginger Xpress",
+            "bpm": 116,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3968,
+            "key": "9M",
+            "title": "Brothers On The Slide",
+            "year": 1974
+          },
+          {
+            "artist": "Bebeto",
+            "bpm": 128.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3282,
+            "key": "2M",
+            "title": "Princesa Negra De Angola",
+            "year": 1976
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770978873520-ln83",
+        "selectedTrackIndex": 1,
+        "source": {
+          "id": "post-trip-hop-noir-transmissions",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "DEMI",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 3610,
+            "key": "6D",
+            "title": "A3 Kick&Bas&Timbale",
+            "year": 2018
+          },
+          {
+            "artist": "Malia,Boris Blank",
+            "bpm": 75,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 1018,
+            "key": "1M",
+            "title": "Fever",
+            "year": 2011
+          },
+          {
+            "artist": "Martha High,James Brown",
+            "bpm": 81.2,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4288,
+            "key": "11M",
+            "title": "Summertime",
+            "year": 1998
+          },
+          {
+            "artist": "Calypso Valois",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2775,
+            "key": "10M",
+            "title": "Surprise-partie",
+            "year": 2017
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 98.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 194,
+            "key": "11M",
+            "title": "Filthy",
+            "year": 1994
+          },
+          {
+            "artist": "Shadowax",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1830,
+            "key": "3M",
+            "title": "Nikolai Reptile",
+            "year": 2019
+          },
+          {
+            "artist": "River Yarra",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3440,
+            "key": "12M",
+            "title": "Aorsom Wislhs",
+            "year": 2018
+          },
+          {
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3426,
+            "key": "12M",
+            "title": "Patchwork Jazz",
+            "year": 2014
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770979010191-whu8",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "post-trip-hop-noir-transmissions",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "DEMI",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 3610,
+            "key": "6D",
+            "title": "A3 Kick&Bas&Timbale",
+            "year": 2018
+          },
+          {
+            "artist": "Feater",
+            "bpm": 74,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 6186,
+            "key": "12M",
+            "title": "Vento",
+            "year": 2020
+          },
+          {
+            "artist": "Martha High,James Brown",
+            "bpm": 81.2,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4288,
+            "key": "11M",
+            "title": "Summertime",
+            "year": 1998
+          },
+          {
+            "artist": "Calypso Valois",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2775,
+            "key": "10M",
+            "title": "Surprise-partie",
+            "year": 2017
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 98.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 194,
+            "key": "11M",
+            "title": "Filthy",
+            "year": 1994
+          },
+          {
+            "artist": "Shadowax",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1830,
+            "key": "3M",
+            "title": "Nikolai Reptile",
+            "year": 2019
+          },
+          {
+            "artist": "River Yarra",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3440,
+            "key": "12M",
+            "title": "Aorsom Wislhs",
+            "year": 2018
+          },
+          {
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3426,
+            "key": "12M",
+            "title": "Patchwork Jazz",
+            "year": 2014
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770979193900-xjyb",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "post-trip-hop-noir-transmissions",
+          "tree_type": "genre",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions"
+        },
+        "tracks": [
+          {
+            "artist": "DEMI",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 3610,
+            "key": "6D",
+            "title": "A3 Kick&Bas&Timbale",
+            "year": 2018
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 6176,
+            "key": "6M",
+            "title": "Carnt Sleep",
+            "year": 1992
+          },
+          {
+            "artist": "Martha High,James Brown",
+            "bpm": 81.2,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4288,
+            "key": "11M",
+            "title": "Summertime",
+            "year": 1998
+          },
+          {
+            "artist": "Calypso Valois",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2775,
+            "key": "10M",
+            "title": "Surprise-partie",
+            "year": 2017
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 98.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 194,
+            "key": "11M",
+            "title": "Filthy",
+            "year": 1994
+          },
+          {
+            "artist": "Shadowax",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1830,
+            "key": "3M",
+            "title": "Nikolai Reptile",
+            "year": 2019
+          },
+          {
+            "artist": "Dream 2 Science",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5390,
+            "key": "2D",
+            "title": "How Do I Love Thee",
+            "year": 2012
+          },
+          {
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3426,
+            "key": "12M",
+            "title": "Patchwork Jazz",
+            "year": 2014
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770980814473-v2cf",
+        "source": {
+          "type": "tree_node",
+          "id": "post-trip-hop-noir-transmissions",
+          "tree_type": "genre",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions"
+        },
+        "tracks": [
+          {
+            "artist": "DEMI",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 3610,
+            "key": "6D",
+            "title": "A3 Kick&Bas&Timbale",
+            "year": 2018
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 6176,
+            "key": "6M",
+            "title": "Carnt Sleep",
+            "year": 1992
+          },
+          {
+            "artist": "Martha High,James Brown",
+            "bpm": 81.2,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4288,
+            "key": "11M",
+            "title": "Summertime",
+            "year": 1998
+          },
+          {
+            "artist": "Calypso Valois",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2775,
+            "key": "10M",
+            "title": "Surprise-partie",
+            "year": 2017
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 98.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 194,
+            "key": "11M",
+            "title": "Filthy",
+            "year": 1994
+          },
+          {
+            "artist": "The Quantic Soul Orchestra",
+            "bpm": 108.5,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1816,
+            "key": "12M",
+            "title": "She Said What? - Version",
+            "year": 2008
+          },
+          {
+            "artist": "Dream 2 Science",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5390,
+            "key": "2D",
+            "title": "How Do I Love Thee",
+            "year": 2012
+          },
+          {
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3426,
+            "key": "12M",
+            "title": "Patchwork Jazz",
+            "year": 2014
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "slot-1770979029650-c336",
+        "selectedTrackIndex": 2,
+        "source": {
+          "id": "post-trip-hop-noir-transmissions",
+          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "DEMI",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 3610,
+            "key": "6D",
+            "title": "A3 Kick&Bas&Timbale",
+            "year": 2018
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 6176,
+            "key": "6M",
+            "title": "Carnt Sleep",
+            "year": 1992
+          },
+          {
+            "artist": "Laurel and Hardy",
+            "bpm": 76,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5290,
+            "key": "1M",
+            "title": "You're Nicked",
+            "year": 2019
+          },
+          {
+            "artist": "Calypso Valois",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2775,
+            "key": "10M",
+            "title": "Surprise-partie",
+            "year": 2017
+          },
+          {
+            "artist": "Saint Etienne",
+            "bpm": 98.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 194,
+            "key": "11M",
+            "title": "Filthy",
+            "year": 1994
+          },
+          {
+            "artist": "Shadowax",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1830,
+            "key": "3M",
+            "title": "Nikolai Reptile",
+            "year": 2019
+          },
+          {
+            "artist": "River Yarra",
+            "bpm": 121,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3440,
+            "key": "12M",
+            "title": "Aorsom Wislhs",
+            "year": 2018
+          },
+          {
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3426,
+            "key": "12M",
+            "title": "Patchwork Jazz",
+            "year": 2014
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770980859937-qx3b",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      }
+    ],
+    "created_at": "2026-02-13T10:16:41.544715+00:00",
+    "updated_at": "2026-02-13T11:07:51.266929+00:00"
   }
 }
