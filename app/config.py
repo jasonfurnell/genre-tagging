@@ -24,6 +24,9 @@ DEFAULT_CONFIG = {
     "system_prompt": DEFAULT_SYSTEM_PROMPT,
     "user_prompt_template": DEFAULT_USER_PROMPT_TEMPLATE,
     "delay_between_requests": 1.5,
+    "audio_path_map_enabled": False,
+    "audio_path_from": "/Volumes/Macintosh HD/Users/jasonfurnell/Dropbox",
+    "audio_path_to": "/Users/jason.furnell/Dropbox (Personal)",
 }
 
 

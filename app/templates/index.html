@@ -203,7 +203,8 @@
             </div>
             <div class="set-toolbar-right">
                 <button id="set-search-btn" class="btn btn-secondary btn-sm">Search</button>
-                <button id="set-play-all-btn" class="btn btn-secondary btn-sm" disabled>Play All</button>
+                <button id="set-preview-all-btn" class="btn btn-secondary btn-sm" disabled>Preview All</button>
+                <button id="set-play-set-btn" class="btn btn-secondary btn-sm" disabled>Play Set</button>
                 <button id="set-export-btn" class="btn btn-secondary btn-sm" disabled>Export M3U</button>
             </div>
         </div>
@@ -281,13 +282,6 @@
             <div id="set-drawer-detail-tracks" class="set-drawer-track-list"></div>
         </div>
 
-        <!-- Suggest Mode -->
-        <div id="set-drawer-suggest" class="set-drawer-section hidden">
-            <div id="set-drawer-suggest-similar" class="set-drawer-list"></div>
-            <div id="set-drawer-suggest-up" class="set-drawer-list"></div>
-            <div id="set-drawer-suggest-down" class="set-drawer-list"></div>
-        </div>
-
         <!-- Track Search Mode -->
         <div id="set-drawer-search-mode" class="set-drawer-section hidden">
             <input type="text" id="set-drawer-track-search" class="set-drawer-search"
@@ -297,6 +291,41 @@
             <div id="set-drawer-search-context" class="set-drawer-search-context hidden">
                 <div id="set-search-card-genre" class="set-search-card"></div>
                 <div id="set-search-card-scene" class="set-search-card"></div>
+            </div>
+        </div>
+
+        <!-- Now Playing Mode -->
+        <div id="set-drawer-now-playing" class="set-drawer-section hidden">
+            <div class="now-playing-artwork-container">
+                <img id="now-playing-artwork" class="now-playing-artwork" alt="" src="">
+            </div>
+            <div class="now-playing-track-info">
+                <div id="now-playing-title" class="now-playing-title"></div>
+                <div id="now-playing-artist" class="now-playing-artist"></div>
+                <div class="now-playing-meta">
+                    <span id="now-playing-bpm"></span>
+                    <span id="now-playing-key"></span>
+                    <span id="now-playing-year"></span>
+                </div>
+            </div>
+            <div id="now-playing-genre-leaf" class="now-playing-leaf-card"></div>
+            <div id="now-playing-scene-leaf" class="now-playing-leaf-card"></div>
+            <div class="now-playing-controls">
+                <div class="now-playing-progress-container">
+                    <div id="now-playing-progress-bar" class="now-playing-progress-bar">
+                        <div id="now-playing-progress-fill" class="now-playing-progress-fill"></div>
+                    </div>
+                    <div class="now-playing-time">
+                        <span id="now-playing-current-time">0:00</span>
+                        <span id="now-playing-duration">0:00</span>
+                    </div>
+                </div>
+                <div class="now-playing-buttons">
+                    <button id="now-playing-prev" class="now-playing-btn" title="Previous">&#9664;&#9664;</button>
+                    <button id="now-playing-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                    <button id="now-playing-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
+                </div>
+                <div id="now-playing-counter" class="now-playing-counter"></div>
             </div>
         </div>
     </div>
@@ -328,6 +357,18 @@
 
         <label for="cfg-delay">Delay between requests (seconds)</label>
         <input type="number" id="cfg-delay" min="0" step="0.5" value="1.5">
+
+        <hr style="margin: 1rem 0; border-color: var(--border);">
+        <label class="cfg-checkbox-label">
+            <input type="checkbox" id="cfg-path-map-enabled">
+            Map music folder to My G computer
+        </label>
+        <div id="cfg-path-map-fields" class="hidden" style="margin-top: 0.5rem;">
+            <label for="cfg-path-from">From path prefix</label>
+            <input type="text" id="cfg-path-from" style="width:100%; font-size:0.8rem;">
+            <label for="cfg-path-to" style="margin-top:0.4rem;">To path prefix</label>
+            <input type="text" id="cfg-path-to" style="width:100%; font-size:0.8rem;">
+        </div>
 
         <div class="modal-actions">
             <button id="btn-cfg-save" class="btn btn-primary">Save</button>

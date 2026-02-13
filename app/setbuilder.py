@@ -112,57 +112,18 @@ def _sv(val):
     return val
 
 
-def _find_parent(tree, node_id):
-    """Find the parent node of a given node_id in the tree."""
-    for lineage in tree.get("lineages", []):
-        result = _find_parent_in(lineage, node_id)
-        if result:
-            return result
-    return None
-
-
-def _find_parent_in(node, node_id):
-    for child in node.get("children", []):
-        if child.get("id") == node_id:
-            return node
-        result = _find_parent_in(child, node_id)
-        if result:
-            return result
-    return None
-
-
-def _find_lineage_id(tree, node_id):
-    """Find which top-level lineage a node belongs to."""
-    for lineage in tree.get("lineages", []):
-        if _node_contains(lineage, node_id):
-            return lineage.get("id")
-    return None
-
-
-def _node_contains(node, target_id):
-    """Check if target_id is this node or any descendant."""
-    if node.get("id") == target_id:
-        return True
-    for child in node.get("children", []):
-        if _node_contains(child, target_id):
-            return True
-    return False
-
-
-def _collect_leaves(node, leaves):
-    if node.get("is_leaf"):
-        leaves.append(node)
-    for child in node.get("children", []):
-        _collect_leaves(child, leaves)
-
-
-def _track_dict(df, idx, bpm_level=None):
+def _track_dict(df, idx, bpm_level=None, path_mapper=None):
     """Build a JSON-safe track dict from a DataFrame row."""
     if idx not in df.index:
         return None
     row = df.loc[idx]
     bpm = row.get("bpm")
     bpm_val = round(float(bpm), 1) if bpm is not None and not _is_nan(bpm) else None
+    location = _sv(row.get("location", ""))
+    if path_mapper and location:
+        mapped = path_mapper(str(location))
+    else:
+        mapped = str(location) if location else ""
     d = {
         "id": int(idx),
         "title": _sv(row.get("title", "")),
@@ -170,6 +131,7 @@ def _track_dict(df, idx, bpm_level=None):
         "bpm": bpm_val,
         "key": _sv(row.get("key", "")),
         "year": _sv(row.get("year", "")),
+        "has_audio": bool(mapped and mapped != "" and os.path.isfile(mapped)),
     }
     if bpm_level is not None:
         d["bpm_level"] = bpm_level
@@ -242,7 +204,8 @@ def get_source_info(source_type, source_id, tree=None):
 # ---------------------------------------------------------------------------
 
 def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
-                             used_track_ids=None, anchor_track_id=None):
+                             used_track_ids=None, anchor_track_id=None,
+                             path_mapper=None):
     """Pick one best track per BPM level from a source's track pool.
 
     Args:
@@ -318,119 +281,11 @@ def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
     for level in bpm_levels:
         tid = assigned.get(level)
         if tid is not None:
-            result.append(_track_dict(df, tid, bpm_level=level))
+            result.append(_track_dict(df, tid, bpm_level=level, path_mapper=path_mapper))
         else:
             result.append(None)
 
     return result
-
-
-# ---------------------------------------------------------------------------
-# Source Suggestions
-# ---------------------------------------------------------------------------
-
-def suggest_similar_sources(df, tree, current_source_type, current_source_id):
-    """Suggest sources related to the current one.
-
-    Returns {similar: [...], energy_up: [...], energy_down: [...]}.
-    Each item: {id, name, track_count, type, tree_type, relationship}.
-    """
-    similar = []
-    energy_up = []
-    energy_down = []
-
-    if current_source_type != "tree_node" or not tree:
-        return {"similar": similar, "energy_up": energy_up, "energy_down": energy_down}
-
-    node = find_node(tree, current_source_id)
-    if not node:
-        return {"similar": similar, "energy_up": energy_up, "energy_down": energy_down}
-
-    tree_type = tree.get("tree_type", "genre")
-
-    # Compute current node's avg BPM
-    current_avg_bpm = _avg_bpm(df, node.get("track_ids", []))
-
-    # Siblings (same parent's children, excluding self)
-    parent = _find_parent(tree, current_source_id)
-    if parent:
-        for sibling in parent.get("children", []):
-            if sibling.get("id") == current_source_id:
-                continue
-            info = _suggestion_item(df, sibling, tree_type, "sibling")
-            if info:
-                similar.append(info)
-
-    # Parent node itself
-    if parent and parent.get("id"):
-        info = _suggestion_item(df, parent, tree_type, "parent")
-        if info:
-            similar.append(info)
-
-    # Children (if branch node)
-    for child in node.get("children", []):
-        info = _suggestion_item(df, child, tree_type, "child")
-        if info:
-            similar.append(info)
-
-    # Energy up/down: collect all leaves in same lineage, sort by avg BPM
-    lineage_id = _find_lineage_id(tree, current_source_id)
-    if lineage_id:
-        lineage_node = find_node(tree, lineage_id)
-        if lineage_node:
-            all_leaves = []
-            _collect_leaves(lineage_node, all_leaves)
-            for leaf in all_leaves:
-                if leaf.get("id") == current_source_id:
-                    continue
-                avg = _avg_bpm(df, leaf.get("track_ids", []))
-                if avg is None:
-                    continue
-                info = _suggestion_item(df, leaf, tree_type, "")
-                if not info:
-                    continue
-                if current_avg_bpm is not None:
-                    if avg > current_avg_bpm + 5:
-                        info["relationship"] = "higher energy"
-                        energy_up.append((avg, info))
-                    elif avg < current_avg_bpm - 5:
-                        info["relationship"] = "lower energy"
-                        energy_down.append((avg, info))
-
-    # Sort energy_up ascending (closest first), energy_down descending
-    energy_up.sort(key=lambda x: x[0])
-    energy_down.sort(key=lambda x: -x[0])
-    energy_up = [item for _, item in energy_up[:8]]
-    energy_down = [item for _, item in energy_down[:8]]
-
-    return {"similar": similar[:10], "energy_up": energy_up, "energy_down": energy_down}
-
-
-def _suggestion_item(df, node, tree_type, relationship):
-    """Build a suggestion dict from a tree node."""
-    track_ids = node.get("track_ids", [])
-    if not track_ids:
-        return None
-    return {
-        "id": node.get("id", ""),
-        "name": node.get("title", ""),
-        "track_count": node.get("track_count", len(track_ids)),
-        "type": "tree_node",
-        "tree_type": tree_type,
-        "relationship": relationship,
-    }
-
-
-def _avg_bpm(df, track_ids):
-    """Compute average BPM for a set of track IDs."""
-    bpms = []
-    for idx in track_ids:
-        if idx not in df.index:
-            continue
-        bpm = df.loc[idx].get("bpm")
-        if bpm is not None and not _is_nan(bpm):
-            bpms.append(float(bpm))
-    return sum(bpms) / len(bpms) if bpms else None
 
 
 # ---------------------------------------------------------------------------
@@ -505,7 +360,7 @@ def _summarize_node(node, search=""):
 # Source Detail (all tracks for drawer)
 # ---------------------------------------------------------------------------
 
-def get_source_detail(df, source_type, source_id, tree=None):
+def get_source_detail(df, source_type, source_id, tree=None, path_mapper=None):
     """Full source info + all tracks for the drawer detail view.
 
     Returns {id, name, description, track_count, examples, tracks: [...]}.
@@ -517,7 +372,7 @@ def get_source_detail(df, source_type, source_id, tree=None):
     track_ids = get_source_tracks(source_type, source_id, tree)
     tracks = []
     for idx in track_ids:
-        t = _track_dict(df, idx)
+        t = _track_dict(df, idx, path_mapper=path_mapper)
         if t:
             tracks.append(t)
 

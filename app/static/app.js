@@ -754,6 +754,17 @@ async function openSettings() {
     $("#cfg-system-prompt").value = cfg.system_prompt || "";
     $("#cfg-user-prompt").value = cfg.user_prompt_template || "";
     $("#cfg-delay").value = cfg.delay_between_requests ?? 1.5;
+
+    // Path mapping
+    const mapCheck = $("#cfg-path-map-enabled");
+    mapCheck.checked = !!cfg.audio_path_map_enabled;
+    $("#cfg-path-from").value = cfg.audio_path_from || "";
+    $("#cfg-path-to").value = cfg.audio_path_to || "";
+    $("#cfg-path-map-fields").classList.toggle("hidden", !mapCheck.checked);
+    mapCheck.onchange = () => {
+        $("#cfg-path-map-fields").classList.toggle("hidden", !mapCheck.checked);
+    };
+
     modal.classList.remove("hidden");
 }
 
@@ -763,6 +774,9 @@ async function saveSettings() {
         system_prompt: $("#cfg-system-prompt").value,
         user_prompt_template: $("#cfg-user-prompt").value,
         delay_between_requests: parseFloat($("#cfg-delay").value) || 1.5,
+        audio_path_map_enabled: $("#cfg-path-map-enabled").checked,
+        audio_path_from: $("#cfg-path-from").value,
+        audio_path_to: $("#cfg-path-to").value,
     };
     await fetch("/api/config", {
         method: "PUT",

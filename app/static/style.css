@@ -1529,7 +1529,7 @@ tr.ws-seed-selected {
 }
 .set-slot-controls {
     display: flex;
-    gap: 1px;
+    gap: 4px;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.2s;
@@ -1539,16 +1539,23 @@ tr.ws-seed-selected {
 }
 .set-ctrl-btn {
     border: none;
-    background: transparent;
+    background: rgba(255,255,255,0.05);
     color: var(--text-muted);
     cursor: pointer;
-    font-size: 0.55rem;
-    padding: 1px 3px;
+    font-size: 0.65rem;
+    padding: 2px 5px;
     font-family: inherit;
     line-height: 1;
+    border-radius: 3px;
+    transition: color 0.15s, background 0.15s;
 }
 .set-ctrl-btn:hover {
     color: var(--success);
+    background: rgba(78,204,163,0.15);
+}
+.set-ctrl-btn[data-action="delete"]:hover {
+    color: #ff6b6b;
+    background: rgba(255,107,107,0.15);
 }
 
 /* -- Source Group (consecutive same-source slots) ----------------------- */
@@ -1882,7 +1889,7 @@ tr.ws-seed-selected {
     outline: none;
 }
 
-/* Drawer lists (browse, suggest) */
+/* Drawer lists (browse) */
 .set-drawer-list h4 {
     font-size: 0.8rem;
     color: var(--text);
@@ -1916,12 +1923,6 @@ tr.ws-seed-selected {
     color: var(--text-muted);
     flex-shrink: 0;
     margin-left: 0.5rem;
-}
-.set-drawer-source-rel {
-    font-size: 0.6rem;
-    color: var(--success);
-    margin-left: 0.5rem;
-    flex-shrink: 0;
 }
 
 /* Drawer tree browser */
@@ -2153,4 +2154,172 @@ tr.ws-seed-selected {
 }
 .set-drawer-track-meta .set-drawer-track-key {
     margin-left: 0.3rem;
+}
+
+/* -- Now Playing Mode (drawer) ------------------------------------------ */
+.now-playing-artwork-container {
+    text-align: center;
+    padding: 0.5rem 0 0.75rem;
+}
+.now-playing-artwork {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    object-fit: cover;
+    background: rgba(255,255,255,0.04);
+    display: block;
+    margin: 0 auto;
+}
+.now-playing-track-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.now-playing-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.now-playing-artist {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+.now-playing-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Leaf cards in now-playing */
+.now-playing-leaf-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.65rem;
+    margin-bottom: 0.5rem;
+}
+.now-playing-leaf-card:empty {
+    display: none;
+}
+.now-playing-leaf-card .leaf-card-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+}
+.now-playing-leaf-card .leaf-card-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 0.15rem;
+}
+.now-playing-leaf-card .leaf-card-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Playback controls */
+.now-playing-controls {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+}
+.now-playing-progress-container {
+    margin-bottom: 0.5rem;
+}
+.now-playing-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.now-playing-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+.now-playing-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    font-variant-numeric: tabular-nums;
+}
+.now-playing-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.now-playing-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+}
+.now-playing-btn:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--text-muted);
+}
+.now-playing-btn-main {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+    border-color: var(--accent);
+}
+.now-playing-btn-main:hover {
+    background: rgba(233,69,96,0.1);
+    border-color: var(--accent);
+}
+.now-playing-counter {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    padding-bottom: 0.5rem;
+}
+
+/* Play-set active column highlight (green, distinct from preview) */
+.set-column.play-set-active .set-track-slot.selected {
+    border-color: #1db954;
+    box-shadow: 0 0 12px rgba(29,185,84,0.5);
+}
+
+/* Settings checkbox label */
+.cfg-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.cfg-checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
 }

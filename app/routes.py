@@ -37,7 +37,7 @@ from app.tree import (
 )
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
-    get_source_tracks, select_tracks_for_source, suggest_similar_sources,
+    get_source_tracks, select_tracks_for_source,
     build_track_context, save_set_state, load_set_state,
 )
 
@@ -1849,7 +1849,9 @@ def get_preview():
                 best = tracks[0]
 
             preview = best.get("preview", "")
-            cover = best.get("album", {}).get("cover_small", "")
+            album = best.get("album", {})
+            cover = album.get("cover_small", "")
+            cover_big = album.get("cover_big", "") or album.get("cover_medium", "") or cover
             if preview:
                 result = {
                     "preview_url": preview,
@@ -1857,9 +1859,10 @@ def get_preview():
                     "deezer_title": best.get("title", ""),
                     "deezer_artist": best.get("artist", {}).get("name", ""),
                     "cover_url": cover,
+                    "cover_big": cover_big,
                 }
             elif cover:
-                result = {**result, "cover_url": cover}
+                result = {**result, "cover_url": cover, "cover_big": cover_big}
     except Exception:
         logging.exception("Deezer search failed for %s - %s", artist, title)
         return jsonify(result)
@@ -1901,9 +1904,11 @@ def _lookup_artwork(artist, title):
             if best is None:
                 best = tracks[0]
 
-            cover = best.get("album", {}).get("cover_small", "")
+            album = best.get("album", {})
+            cover = album.get("cover_small", "")
+            cover_big = album.get("cover_big", "") or album.get("cover_medium", "") or cover
             if cover:
-                result = {"cover_url": cover, "found": True}
+                result = {"cover_url": cover, "cover_big": cover_big, "found": True}
     except Exception:
         logging.exception("Deezer artwork lookup failed for %s - %s", artist, title)
         return result
@@ -2144,6 +2149,7 @@ def set_workshop_assign_source():
         df, track_ids,
         used_track_ids=used_ids,
         anchor_track_id=anchor_track_id,
+        path_mapper=_map_audio_path,
     )
 
     return jsonify({"source": info, "tracks": tracks})
@@ -2177,6 +2183,7 @@ def set_workshop_drag_track():
         df, track_ids,
         used_track_ids=used_ids,
         anchor_track_id=track_id,
+        path_mapper=_map_audio_path,
     )
 
     # Get source info for name
@@ -2201,28 +2208,12 @@ def set_workshop_source_detail():
     tree_type = request.args.get("tree_type", "genre")
 
     tree = _resolve_tree(tree_type) if source_type == "tree_node" else None
-    detail = get_source_detail(df, source_type, source_id, tree)
+    detail = get_source_detail(df, source_type, source_id, tree,
+                               path_mapper=_map_audio_path)
     if not detail:
         return jsonify({"error": "Source not found"}), 404
 
     return jsonify(detail)
-
-
-@api.route("/api/set-workshop/suggest-sources", methods=["POST"])
-def set_workshop_suggest_sources():
-    """Suggest similar/related sources for the Suggest button."""
-    df = _ensure_parsed()
-    if df is None:
-        return jsonify({"error": "No file uploaded"}), 400
-
-    body = request.get_json() or {}
-    source_type = body.get("source_type", "tree_node")
-    source_id = body.get("source_id", "")
-    tree_type = body.get("tree_type", "genre")
-
-    tree = _resolve_tree(tree_type)
-    result = suggest_similar_sources(df, tree, source_type, source_id)
-    return jsonify(result)
 
 
 @api.route("/api/set-workshop/track-search", methods=["POST"])
@@ -2270,6 +2261,26 @@ def set_workshop_track_context(track_id):
     if not result:
         return jsonify({"error": "Track not found"}), 404
 
+    return jsonify(result)
+
+
+@api.route("/api/set-workshop/check-audio", methods=["POST"])
+def set_workshop_check_audio():
+    """Check which track IDs have playable local audio files."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({}), 200
+    body = request.get_json() or {}
+    track_ids = body.get("track_ids", [])
+    result = {}
+    for tid in track_ids:
+        tid = int(tid)
+        if tid not in df.index:
+            result[str(tid)] = False
+            continue
+        raw_loc = str(df.loc[tid].get("location", ""))
+        mapped = _map_audio_path(raw_loc)
+        result[str(tid)] = bool(mapped and mapped != "nan" and os.path.isfile(mapped))
     return jsonify(result)
 
 
@@ -2321,3 +2332,57 @@ def set_workshop_export_m3u():
     buf = io.BytesIO(content.encode("utf-8"))
     return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
                      download_name=f"{safe_name}.m3u8")
+
+
+# ---------------------------------------------------------------------------
+# Audio path mapping (for playing local files on a different machine)
+# ---------------------------------------------------------------------------
+def _map_audio_path(location):
+    """Apply path prefix mapping from config (never modifies the CSV)."""
+    if not location or location == "nan":
+        return location
+    cfg = load_config()
+    if not cfg.get("audio_path_map_enabled"):
+        return location
+    path_from = cfg.get("audio_path_from", "")
+    path_to = cfg.get("audio_path_to", "")
+    if path_from and location.startswith(path_from):
+        return path_to + location[len(path_from):]
+    return location
+
+
+# ---------------------------------------------------------------------------
+# GET /api/audio/<track_id> — Serve local audio file for full-track playback
+# ---------------------------------------------------------------------------
+_AUDIO_MIME = {
+    ".mp3": "audio/mpeg",
+    ".flac": "audio/flac",
+    ".m4a": "audio/mp4",
+    ".aac": "audio/aac",
+    ".wav": "audio/wav",
+    ".aiff": "audio/aiff",
+    ".aif": "audio/aiff",
+    ".ogg": "audio/ogg",
+}
+
+@api.route("/api/audio/<int:track_id>")
+def serve_audio(track_id):
+    """Serve a local audio file for full-track playback."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+    if track_id not in df.index:
+        return jsonify({"error": "Track not found"}), 404
+
+    raw_location = str(df.loc[track_id].get("location", ""))
+    location = _map_audio_path(raw_location)
+
+    if not location or location == "nan":
+        return jsonify({"error": "No file path for this track"}), 404
+    if not os.path.isfile(location):
+        return jsonify({"error": "Audio file not found on disk"}), 404
+
+    ext = os.path.splitext(location)[1].lower()
+    mimetype = _AUDIO_MIME.get(ext, "application/octet-stream")
+
+    return send_file(location, mimetype=mimetype, conditional=True)
