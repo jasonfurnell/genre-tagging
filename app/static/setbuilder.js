@@ -916,8 +916,8 @@ async function loadDrawerSources(searchTerm) {
         const res = await fetch(`/api/set-workshop/sources?search=${encodeURIComponent(searchTerm || "")}`);
         const data = await res.json();
         renderDrawerPlaylists(data.playlists);
-        renderDrawerTreeSection("set-drawer-genre-tree", "Genre Tree", data.genre_tree, "genre");
         renderDrawerTreeSection("set-drawer-scene-tree", "Scene Explorer", data.scene_tree, "scene");
+        renderDrawerTreeSection("set-drawer-genre-tree", "Genre Tree", data.genre_tree, "genre");
     } catch (e) {
         console.error("Failed to load sources:", e);
     }
@@ -1575,8 +1575,8 @@ async function updateNowPlayingDrawer(track, slotIdx) {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
         if (res.ok) {
             const data = await res.json();
-            renderNowPlayingLeafCard("now-playing-genre-leaf", data.genre_leaf, "Genre");
             renderNowPlayingLeafCard("now-playing-scene-leaf", data.scene_leaf, "Scene");
+            renderNowPlayingLeafCard("now-playing-genre-leaf", data.genre_leaf, "Genre");
         }
     } catch (e) {
         console.error("Failed to load track context:", e);
@@ -1901,8 +1901,8 @@ async function loadTrackContext(track) {
         const genreLeaf = data.genre_leaf && data.genre_leaf.available ? data.genre_leaf : null;
         renderSelectedTrack(selectedDiv, track, genreLeaf);
 
-        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree Leaf", "tree_node", "genre");
         renderSearchCard("set-search-card-scene", data.scene_leaf, "Scene Tree Leaf", "tree_node", "scene");
+        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree Leaf", "tree_node", "genre");
 
         contextDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (e) {

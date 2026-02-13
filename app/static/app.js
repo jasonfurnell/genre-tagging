@@ -552,6 +552,7 @@ async function uploadFile(file) {
         toolbar.classList.remove("hidden");
         summary.classList.remove("hidden");
         $("#tab-bar").classList.remove("hidden");
+        if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
         checkAndWarmArtworkCache();
     } catch (err) {
         alert("Upload error: " + err.message);
@@ -832,6 +833,7 @@ initGrid();
             toolbar.classList.remove("hidden");
             summary.classList.remove("hidden");
             $("#tab-bar").classList.remove("hidden");
+            if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
             checkAndWarmArtworkCache();
         }
     } catch (_) { /* no autosave available */ }
