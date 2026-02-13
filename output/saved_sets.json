@@ -4,10 +4,122 @@
     "name": "Test Set 1",
     "slots": [
       {
-        "id": "slot-1770953615731-r5cd",
+        "id": "slot-1770965899981-v9le",
         "selectedTrackIndex": null,
         "source": null,
         "tracks": []
+      },
+      {
+        "id": "slot-1770953615731-r5cd",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
+          "tree_type": "scene",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Sade",
+            "bpm": 59,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3482,
+            "key": "1M",
+            "title": "Slave Song",
+            "year": 2000
+          },
+          {
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
+            "year": 2001
+          },
+          {
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 109.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2281,
+            "key": "10M",
+            "title": "Running Up That Hill (A Deal With God)",
+            "year": 1985
+          },
+          {
+            "artist": "The Doors",
+            "bpm": 119.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
+          },
+          {
+            "artist": "Elton John",
+            "bpm": 129.6,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Kate Bush",
+            "bpm": 135.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5890,
+            "key": "9M",
+            "title": "The Sensual World",
+            "year": 1989
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
+            "year": 2008
+          }
+        ]
       },
       {
         "id": "slot-1770892344453-19",
@@ -50,13 +162,13 @@
             "year": 1977
           },
           {
-            "artist": "The Turtles",
-            "bpm": 91.1,
+            "artist": "The Beatles",
+            "bpm": 94,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 2572,
-            "key": "12M",
-            "title": "Buzzsaw",
+            "id": 5816,
+            "key": "2D",
+            "title": "Blackbird - Remastered 2009",
             "year": 1968
           },
           {
@@ -123,7 +235,7 @@
       },
       {
         "id": "slot-1770892344453-6",
-        "selectedTrackIndex": 2,
+        "selectedTrackIndex": 0,
         "source": {
           "id": "southern-crossroads-juke-joint-blues",
           "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
@@ -226,7 +338,7 @@
       },
       {
         "id": "slot-1770892344453-1",
-        "selectedTrackIndex": 2,
+        "selectedTrackIndex": 8,
         "source": {
           "id": "southern-crossroads-juke-joint-blues",
           "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
@@ -328,109 +440,6 @@
         ]
       },
       {
-        "id": "slot-1770892344453-0",
-        "selectedTrackIndex": 3,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Charlie Musselwhite",
-            "bpm": 82.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 3028,
-            "key": "10M",
-            "title": "Christo Redemptor",
-            "year": 2006
-          },
-          {
-            "artist": "Screamin' Jay Hawkins",
-            "bpm": 87.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 1566,
-            "key": "9M",
-            "title": "I Put a Spell on You",
-            "year": 1956
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
         "id": "slot-1770892344453-4",
         "selectedTrackIndex": 3,
         "source": {
@@ -476,109 +485,6 @@
             "bpm_level": 90,
             "has_audio": true,
             "id": 5704,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-2",
-        "selectedTrackIndex": 2,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 76.7,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4152,
-            "key": "7M",
-            "title": "Wang Dang Doodle",
-            "year": 1987
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.4,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5594,
             "key": "8M",
             "title": "Voodoo Woman",
             "year": 2002
@@ -740,330 +646,1042 @@
         ]
       },
       {
-        "id": "slot-1770892344453-7",
+        "id": "slot-1770892344453-15",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "source-material-diggers-paradise",
+          "tree_type": "scene",
+          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981"
+        },
+        "tracks": [
+          null,
+          {
+            "artist": "Wendy Rene",
+            "bpm": 75.1,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2936,
+            "key": "7M",
+            "title": "Bar-B-Q",
+            "year": 2019
+          },
+          {
+            "artist": "Bill Withers",
+            "bpm": 82.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 969,
+            "key": "2M",
+            "title": "Grandma's Hands",
+            "year": 1971
+          },
+          {
+            "artist": "Jean Knight",
+            "bpm": 92,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2125,
+            "key": "10D",
+            "title": "Mr. Big Stuff",
+            "year": 1971
+          },
+          {
+            "artist": "Sharon Jones & The Dap-Kings",
+            "bpm": 104,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2329,
+            "key": "8M",
+            "title": "How Long Do I Have to Wait for You?",
+            "year": 2005
+          },
+          {
+            "artist": "Commodores",
+            "bpm": 110.8,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2077,
+            "key": "2M",
+            "title": "I Feel Sanctified - Single Version",
+            "year": 2001
+          },
+          {
+            "artist": "Cymande",
+            "bpm": 118.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5307,
+            "key": "12M",
+            "title": "Bra",
+            "year": 1972
+          },
+          {
+            "artist": "Mass Production",
+            "bpm": 133.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5912,
+            "key": "7M",
+            "title": "Can't You See I'm Fired Up",
+            "year": 1979
+          },
+          {
+            "artist": "The Isley Brothers",
+            "bpm": 125.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 2162,
+            "key": "9M",
+            "title": "That Lady, Pts. 1 & 2",
+            "year": 1973
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-16",
+        "selectedTrackIndex": 2,
+        "source": {
+          "type": "tree_node",
+          "id": "southern-crossroads-juke-joint-blues",
+          "tree_type": "genre",
+          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions"
+        },
+        "tracks": [
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5694,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "Floyd Dixon",
+            "bpm": 70.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5609,
+            "key": "1D",
+            "title": "450 Pound Woman",
+            "year": 1996
+          },
+          {
+            "artist": "John Hammond",
+            "bpm": 76.3,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1055,
+            "key": "12M",
+            "title": "Get Behind The Mule",
+            "year": 1998
+          },
+          {
+            "artist": "Koko Taylor",
+            "bpm": 90.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5594,
+            "key": "8M",
+            "title": "Voodoo Woman",
+            "year": 2002
+          },
+          {
+            "artist": "Etta James",
+            "bpm": 100.2,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5300,
+            "key": "8M",
+            "title": "I Just Want To Make Love To You - Single Version",
+            "year": 1960
+          },
+          {
+            "artist": "Bessie Smith",
+            "bpm": 106.3,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1554,
+            "key": "10M",
+            "title": "Devil's Gonna Git You",
+            "year": 1929
+          },
+          {
+            "artist": "Little Milton",
+            "bpm": 116.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5626,
+            "key": "12D",
+            "title": "If You Love Me",
+            "year": 2023
+          },
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": "slot-1770958686883-vcwl",
         "selectedTrackIndex": 6,
         "source": {
-          "id": "southern-soul-blues-revival",
-          "name": "Grit & Gospel: Southern Soul's Electric Church",
+          "id": "golden-age-hip-hop-architects",
+          "name": "Golden Era Foundations: 1987-1994 Boom-Bap & Hip-House Genesis",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "artist": "KRS-One",
+            "bpm": 95,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1325,
+            "key": "6D",
+            "title": "Sound of da Police",
+            "year": 1993
+          },
+          {
+            "artist": "JVC Force",
+            "bpm": 95.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2556,
+            "key": "6D",
+            "title": "Strong Island",
+            "year": 1988
+          },
+          {
+            "artist": "Stetsasonic",
+            "bpm": 100.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2409,
+            "key": "1M",
+            "title": "Sally",
+            "year": 1988
+          },
+          {
+            "artist": "Rob Base & DJ EZ Rock",
+            "bpm": 111.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 916,
+            "key": "2D",
+            "title": "It Takes Two",
+            "year": 1988
+          },
+          {
+            "artist": "De La Soul",
+            "bpm": 120.5,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4268,
+            "key": "12D",
+            "title": "The Magic Number",
+            "year": 2023
+          },
+          {
+            "artist": "Salt-N-Pepa",
+            "bpm": 127.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2679,
+            "key": "1M",
+            "title": "Push It",
+            "year": 1986
+          },
+          {
+            "artist": "Run\u2013D.M.C.",
+            "bpm": 127.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1215,
+            "key": "1M",
+            "title": "It's Tricky",
+            "year": 1987
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770892344453-18",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "baroque-chamber-sophisticates",
+          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
           "tree_type": "scene",
           "type": "tree_node"
         },
         "tracks": [
           {
-            "artist": "Louis Jordan & His Tympany Five",
-            "bpm": 60.1,
+            "artist": "Sade",
+            "bpm": 59,
             "bpm_level": 60,
             "has_audio": true,
-            "id": 315,
-            "key": "11M",
-            "title": "Early in the Mornin",
-            "year": 1947
-          },
-          {
-            "artist": "Sam Cooke",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 209,
-            "key": "2D",
-            "title": "It's All Right",
-            "year": 1963
-          },
-          {
-            "artist": "Lenny Kravitz",
-            "bpm": 79.8,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4556,
-            "key": "5M",
-            "title": "It Ain't Over 'Til It's Over",
-            "year": 1991
-          },
-          {
-            "artist": "Taylor Swift",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 4583,
-            "key": "12D",
-            "title": "august",
-            "year": 2020
-          },
-          {
-            "artist": "Wajatta",
-            "bpm": 100,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3452,
-            "key": "10M",
-            "title": "Depth Has a Focus",
-            "year": 2020
-          },
-          {
-            "artist": "Stevie Nicks",
-            "bpm": 109.7,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2702,
-            "key": "2M",
-            "title": "Edge of Seventeen - 2016 Remaster",
-            "year": 1981
-          },
-          {
-            "artist": "Tom Waits",
-            "bpm": 118.5,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 523,
-            "key": "12M",
-            "title": "Hang On St. Christopher",
-            "year": 1987
-          },
-          {
-            "artist": "Patrick Cowley",
-            "bpm": 130.2,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 664,
-            "key": "2M",
-            "title": "Surfside Sex",
-            "year": 1982
-          },
-          {
-            "artist": "DJ Shiftee",
-            "bpm": 140,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3745,
-            "key": "",
-            "title": "synth2",
-            "year": 2015
-          },
-          {
-            "artist": "Talking Heads",
-            "bpm": 152.4,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4548,
-            "key": "9M",
-            "title": "The Great Curve - 2005 Remaster",
-            "year": 1980
-          }
-        ]
-      },
-      {
-        "id": "slot-1770892344453-15",
-        "selectedTrackIndex": 1,
-        "source": {
-          "id": "boom-bap-modernists",
-          "name": "Post-Boom-Bap Maximalism: When Underground Met Stadium Sound",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Comfort Fit",
-            "bpm": 62,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3894,
-            "key": "3D",
-            "title": "C_Laser_Hats_01",
-            "year": 2008
-          },
-          {
-            "artist": "Big Mama Thornton",
-            "bpm": 67.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4859,
-            "key": "2M",
-            "title": "Hound Dog",
-            "year": 1989
-          },
-          {
-            "artist": "DJ Shadow,Run The Jewels",
-            "bpm": 80,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1919,
+            "id": 3482,
             "key": "1M",
-            "title": "Nobody Speak",
-            "year": 2016
+            "title": "Slave Song",
+            "year": 2000
           },
           {
-            "artist": "MC Lyte",
-            "bpm": 91.3,
+            "artist": "Procol Harum",
+            "bpm": 74.8,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 469,
+            "key": "1D",
+            "title": "A Whiter Shade of Pale - Original Single Version",
+            "year": 1967
+          },
+          {
+            "artist": "SAULT",
+            "bpm": 76.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5079,
+            "key": "12M",
+            "title": "Masterpiece",
+            "year": 2019
+          },
+          {
+            "artist": "David McCallum",
+            "bpm": 90.2,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 2236,
-            "key": "11D",
-            "title": "Cha Cha Cha",
-            "year": 2009
-          },
-          {
-            "artist": "Cake",
-            "bpm": 100,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 1956,
-            "key": "3M",
-            "title": "Long Line of Cars",
+            "id": 2581,
+            "key": "12M",
+            "title": "The Edge - Remastered",
             "year": 2001
           },
           {
-            "artist": "Q-Tip,Amanda Diva",
-            "bpm": 109.8,
+            "artist": "Sade",
+            "bpm": 99.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5068,
+            "key": "10M",
+            "title": "Turn My Back On You",
+            "year": 1988
+          },
+          {
+            "artist": "Roxy Music",
+            "bpm": 113.2,
             "bpm_level": 110,
             "has_audio": true,
-            "id": 4055,
-            "key": "2M",
-            "title": "ManWomanBoogie",
-            "year": 2008
+            "id": 5411,
+            "key": "8M",
+            "title": "The Space Between",
+            "year": 1982
           },
           {
-            "artist": "Justin Timberlake,Timbaland",
-            "bpm": 117,
+            "artist": "The Doors",
+            "bpm": 119.8,
             "bpm_level": 120,
             "has_audio": true,
-            "id": 597,
-            "key": "1M",
-            "title": "SexyBack (feat. Timbaland)",
-            "year": 2006
+            "id": 578,
+            "key": "3M",
+            "title": "People Are Strange",
+            "year": 1967
           },
           {
-            "artist": "Flo Rida,T-Pain",
-            "bpm": 128,
+            "artist": "Elton John",
+            "bpm": 129.6,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 4681,
-            "key": "7M",
-            "title": "Low (feat. T-Pain)",
+            "id": 3162,
+            "key": "2D",
+            "title": "Amoreena",
+            "year": 1970
+          },
+          {
+            "artist": "Coldplay",
+            "bpm": 138,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4578,
+            "key": "9D",
+            "title": "Viva La Vida",
             "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1770953615731-mau4",
+        "selectedTrackIndex": 1,
+        "source": {
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Yello",
+            "bpm": 60,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5448,
+            "key": "1D",
+            "title": "Frautonium",
+            "year": 2016
+          },
+          {
+            "artist": "Digital Mystikz",
+            "bpm": 69.5,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4860,
+            "key": "4M",
+            "title": "Misty Winter",
+            "year": 2022
+          },
+          {
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
+          },
+          {
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
+          },
+          {
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
           },
           {
             "artist": "DJ Shiftee",
             "bpm": 140,
             "bpm_level": 140,
             "has_audio": false,
-            "id": 3731,
+            "id": 3761,
             "key": "",
-            "title": "Shiftee Smells v4",
-            "year": 2009
+            "title": "GRIME",
+            "year": 2011
           },
           {
-            "artist": "OutKast",
-            "bpm": 159,
+            "artist": "The Cure",
+            "bpm": 150.3,
             "bpm_level": 150,
             "has_audio": true,
-            "id": 318,
-            "key": "2M",
-            "title": "Hey Ya!",
-            "year": 2003
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
           }
         ]
       },
       {
-        "id": "slot-1770892344453-16",
-        "selectedTrackIndex": 4,
+        "id": "slot-1770953624729-u4j4",
+        "selectedTrackIndex": 0,
         "source": {
-          "id": "nationwide-studio-sophistication",
-          "name": "Coast-to-Coast Crossover: When Electro-Funk Conquered Radio",
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
           "tree_type": "genre",
           "type": "tree_node"
         },
         "tracks": [
           {
-            "artist": "Tom Waits",
-            "bpm": 71.6,
+            "artist": "Call Super, Parris",
+            "bpm": 61,
             "bpm_level": 60,
             "has_audio": true,
-            "id": 3495,
-            "key": "3M",
-            "title": "Clap Hands",
-            "year": 1985
+            "id": 3366,
+            "key": "12M",
+            "title": "Majenta",
+            "year": 2019
           },
           {
-            "artist": "Diana Ross",
-            "bpm": 76.2,
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
             "bpm_level": 70,
             "has_audio": true,
-            "id": 5313,
-            "key": "12D",
-            "title": "Now That You're Gone",
-            "year": 1980
+            "id": 4208,
+            "key": "3M",
+            "title": "NY Is Killing Me",
+            "year": 2011
           },
           {
-            "artist": "Ambrosia, Michael Verdick",
-            "bpm": 86.4,
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
             "bpm_level": 80,
             "has_audio": true,
-            "id": 6189,
-            "key": "10M",
-            "title": "Livin' on My Own",
-            "year": 1980
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
           },
           {
-            "artist": "Rare Silk",
-            "bpm": 91.6,
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 3208,
-            "key": "7M",
-            "title": "Storm",
-            "year": 1985
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
           },
           {
-            "artist": "Nona Hendryx",
-            "bpm": 101.1,
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
             "bpm_level": 100,
             "has_audio": true,
-            "id": 155,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
             "key": "7M",
-            "title": "Transformation",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
+          },
+          {
+            "artist": "DJ Shiftee",
+            "bpm": 140,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
+            "year": 2011
+          },
+          {
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
+        ]
+      },
+      {
+        "id": "slot-1770953628544-nado",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Gaznevada",
+            "bpm": 0,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3069,
+            "key": "",
+            "title": "Special Agent Man - Female Version",
             "year": 1983
           },
           {
-            "artist": "Stevie Nicks",
-            "bpm": 109.7,
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4208,
+            "key": "3M",
+            "title": "NY Is Killing Me",
+            "year": 2011
+          },
+          {
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
+          },
+          {
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
+          },
+          {
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
             "bpm_level": 110,
             "has_audio": true,
-            "id": 2702,
-            "key": "2M",
-            "title": "Edge of Seventeen - 2016 Remaster",
-            "year": 1981
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
           },
           {
-            "artist": "Fern Kinney",
-            "bpm": 119.8,
+            "artist": "Super Drama",
+            "bpm": 120,
             "bpm_level": 120,
             "has_audio": true,
-            "id": 5915,
-            "key": "2M",
-            "title": "Love Me Tonight (Love, Love, Love)",
-            "year": 1981
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
           },
           {
-            "artist": "Klymaxx",
-            "bpm": 127.9,
+            "artist": "Metrist",
+            "bpm": 130,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 2213,
-            "key": "4M",
-            "title": "Meeting In The Ladies Room - Radio Edit",
-            "year": 2006
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
           },
           {
-            "artist": "Nelly Furtado",
-            "bpm": 132.8,
+            "artist": "DJ Shiftee",
+            "bpm": 140,
             "bpm_level": 140,
-            "has_audio": true,
-            "id": 1453,
-            "key": "8M",
-            "title": "Maneater",
-            "year": 2006
+            "has_audio": false,
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
+            "year": 2011
           },
-          null
+          {
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
+        ]
+      },
+      {
+        "id": "slot-1770958650645-v2e3",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Lene Lovich",
+            "bpm": 0,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5825,
+            "key": "",
+            "title": "Lucky Number",
+            "year": 2007
+          },
+          {
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4208,
+            "key": "3M",
+            "title": "NY Is Killing Me",
+            "year": 2011
+          },
+          {
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
+          },
+          {
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
+          },
+          {
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
+          },
+          {
+            "artist": "DJ Shiftee",
+            "bpm": 140,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
+            "year": 2011
+          },
+          {
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
+        ]
+      },
+      {
+        "id": "slot-1770958655128-5nvd",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "KOMPROMAT, Vitalic, Rebeka Warrior",
+            "bpm": 0,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5838,
+            "key": "",
+            "title": "Niemand",
+            "year": 2019
+          },
+          {
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4208,
+            "key": "3M",
+            "title": "NY Is Killing Me",
+            "year": 2011
+          },
+          {
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
+          },
+          {
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
+          },
+          {
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
+          },
+          {
+            "artist": "DJ Shiftee",
+            "bpm": 140,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
+            "year": 2011
+          },
+          {
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
+        ]
+      },
+      {
+        "id": "slot-1770958657184-byjf",
+        "selectedTrackIndex": 0,
+        "source": {
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Vitalic",
+            "bpm": 0,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 5843,
+            "key": "",
+            "title": "Lightspeed",
+            "year": 2017
+          },
+          {
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4208,
+            "key": "3M",
+            "title": "NY Is Killing Me",
+            "year": 2011
+          },
+          {
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
+          },
+          {
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
+          },
+          {
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
+          },
+          {
+            "artist": "MUNKIB",
+            "bpm": 110,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6128,
+            "key": "12M",
+            "title": "Hurt (Dead Don't Dance Mix)",
+            "year": 2018
+          },
+          {
+            "artist": "Super Drama",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
+          },
+          {
+            "artist": "Metrist",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
+          },
+          {
+            "artist": "DJ Shiftee",
+            "bpm": 140,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
+            "year": 2011
+          },
+          {
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
         ]
       },
       {
@@ -1179,398 +1797,125 @@
         ]
       },
       {
-        "id": "slot-1770892344453-17",
-        "selectedTrackIndex": 3,
+        "id": "slot-1770958659880-t7cj",
+        "selectedTrackIndex": 0,
         "source": {
-          "id": "golden-age-funk-soul-revolution",
-          "name": "Deep Funk Excavation: Soul Power 1968-1978",
+          "id": "new-wave-synth-evolution",
+          "name": "New Wave & Synth Evolution",
           "tree_type": "genre",
           "type": "tree_node"
         },
         "tracks": [
           {
-            "artist": "Irma Thomas",
-            "bpm": 61.4,
+            "artist": "Perrey and Kingsley",
+            "bpm": 62.9,
             "bpm_level": 60,
             "has_audio": true,
-            "id": 3490,
-            "key": "4D",
-            "title": "Anyone Who Knows What Love Is (Will Understand)",
+            "id": 3113,
+            "key": "1M",
+            "title": "Swan's Splashdown",
             "year": 1966
           },
           {
-            "artist": "Jackie Wilson",
-            "bpm": 73.1,
+            "artist": "Gil Scott-Heron,Jamie xx",
+            "bpm": 70,
             "bpm_level": 70,
             "has_audio": true,
-            "id": 3509,
-            "key": "11M",
-            "title": "No Pity (In The Naked City)",
-            "year": 2006
-          },
-          {
-            "artist": "Brian Auger, Rod Stewart",
-            "bpm": 80.7,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5741,
-            "key": "8D",
-            "title": "Shake",
-            "year": 2015
-          },
-          {
-            "artist": "Jean Knight",
-            "bpm": 92.6,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2579,
-            "key": "10D",
-            "title": "Mr. Big Stuff",
-            "year": 1971
-          },
-          {
-            "artist": "Timmy Thomas",
-            "bpm": 100.5,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 2182,
+            "id": 4208,
             "key": "3M",
-            "title": "Why Can't We Live Together",
-            "year": 2004
+            "title": "NY Is Killing Me",
+            "year": 2011
           },
           {
-            "artist": "Bobby Byrd",
-            "bpm": 111.4,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 5084,
-            "key": "2M",
-            "title": "Hot Pants... I'm Coming I'm Coming",
-            "year": 1988
-          },
-          {
-            "artist": "War",
-            "bpm": 120.5,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 1326,
-            "key": "9M",
-            "title": "Spill the Wine",
-            "year": 1970
-          },
-          {
-            "artist": "Betty Harris",
-            "bpm": 136.8,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 2437,
-            "key": "9M",
-            "title": "Trouble with My Lover",
-            "year": 2010
-          },
-          null,
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-18",
-        "selectedTrackIndex": 3,
-        "source": {
-          "id": "new-york-underground-pulse",
-          "name": "NYC Underground Transmission: Paradise Garage to Bushwick Basements",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Deee-Lite,Sampladelic",
-            "bpm": 58.6,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 4931,
-            "key": "7D",
-            "title": "Goodbeatapella - Remix Version",
-            "year": 1996
-          },
-          {
-            "artist": "Nuyorican Soul",
-            "bpm": 64,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 3423,
-            "key": "6M",
-            "title": "Maw Latin Blues",
-            "year": 1997
-          },
-          {
-            "artist": "DJ Python",
-            "bpm": 92,
+            "artist": "Ulla Straus",
+            "bpm": 80.1,
             "bpm_level": 80,
             "has_audio": true,
-            "id": 1485,
-            "key": "10D",
-            "title": "Descanse",
-            "year": 2017
+            "id": 1039,
+            "key": "8D",
+            "title": "Sister",
+            "year": 2021
           },
           {
-            "artist": "DJ Python,LA Warman",
-            "bpm": 92,
+            "artist": "KDMS,Simple Symmetry",
+            "bpm": 90,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 1475,
-            "key": "7M",
-            "title": "ADMSDP",
-            "year": 2017
+            "id": 1114,
+            "key": "2D",
+            "title": "Bones - Simple Symmetry Remix",
+            "year": 2016
           },
           {
-            "artist": "Platinium Pied Pipers, Bling 47",
-            "bpm": 99.8,
+            "artist": "Modeselektor, TTC",
+            "bpm": 100,
             "bpm_level": 100,
             "has_audio": true,
-            "id": 5967,
-            "key": "1M",
-            "title": "Riding High - Bling 47 Remix",
-            "year": 2005
+            "id": 3151,
+            "key": "5M",
+            "title": "2000007",
+            "year": 2007
           },
           {
-            "artist": "Hercules & Love Affair",
+            "artist": "MUNKIB",
             "bpm": 110,
             "bpm_level": 110,
             "has_audio": true,
-            "id": 1,
-            "key": "9M",
-            "title": "Athene",
-            "year": 2008
-          },
-          {
-            "artist": "Quay Dash",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 1411,
+            "id": 6128,
             "key": "12M",
-            "title": "Queen Of This Shit",
-            "year": 2017
-          },
-          {
-            "artist": "Moxy Edits",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 6289,
-            "key": "12M",
-            "title": "Moxy Edits 001",
-            "year": 2015
-          },
-          {
-            "artist": "Green Velvet",
-            "bpm": 129,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 2983,
-            "key": "12M",
-            "title": "Shake and Pop - Original",
-            "year": 2011
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770953615731-mau4",
-        "selectedTrackIndex": 4,
-        "source": {
-          "id": "a745dd38",
-          "name": "Spectral Minimalism: When Microhouse Met Dub's Infinite Space",
-          "tree_type": null,
-          "type": "playlist"
-        },
-        "tracks": [
-          {
-            "artist": "Marc Houle",
-            "bpm": 62.5,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3659,
-            "key": "4M",
-            "title": "727 Rhythm 1 Straight",
-            "year": 2009
-          },
-          {
-            "artist": "Stewart Walker",
-            "bpm": 63.5,
-            "bpm_level": 70,
-            "has_audio": false,
-            "id": 3591,
-            "key": "11D",
-            "title": "Chilling Laughter",
-            "year": 2003
-          },
-          null,
-          {
-            "artist": "Carlos Per\u00f3n",
-            "bpm": 99.1,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 4071,
-            "key": "1M",
-            "title": "Nothing Is True, Everything Is Permitted",
-            "year": 2013
-          },
-          {
-            "artist": "Gautier Vizioz",
-            "bpm": 103,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 1352,
-            "key": "10M",
-            "title": "Trafic",
+            "title": "Hurt (Dead Don't Dance Mix)",
             "year": 2018
           },
           {
-            "artist": "Matthew Dear",
-            "bpm": 110.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 4324,
-            "key": "6M",
-            "title": "Her Fantasy",
-            "year": 2012
-          },
-          {
-            "artist": "Marc Houle",
+            "artist": "Super Drama",
             "bpm": 120,
             "bpm_level": 120,
-            "has_audio": false,
-            "id": 3663,
-            "key": "10M",
-            "title": "marc drumming3 120 Straight",
-            "year": 2008
+            "has_audio": true,
+            "id": 5181,
+            "key": "7M",
+            "title": "Unforgettable Runway",
+            "year": 2019
           },
           {
-            "artist": "Off The Meds",
+            "artist": "Metrist",
             "bpm": 130,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 3466,
-            "key": "2D",
-            "title": "Karlaplan",
-            "year": 2020
+            "id": 1833,
+            "key": "11D",
+            "title": "OL Face You Got",
+            "year": 2019
           },
           {
-            "artist": "Stewart Walker",
-            "bpm": 127,
+            "artist": "DJ Shiftee",
+            "bpm": 140,
             "bpm_level": 140,
             "has_audio": false,
-            "id": 3599,
-            "key": "4M",
-            "title": "QuestionMotif",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770953624729-u4j4",
-        "selectedTrackIndex": 5,
-        "source": {
-          "id": "a745dd38",
-          "name": "Spectral Minimalism: When Microhouse Met Dub's Infinite Space",
-          "tree_type": null,
-          "type": "playlist"
-        },
-        "tracks": [
-          {
-            "artist": "Marc Houle",
-            "bpm": 62.5,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3659,
-            "key": "4M",
-            "title": "727 Rhythm 1 Straight",
-            "year": 2009
-          },
-          {
-            "artist": "Stewart Walker",
-            "bpm": 63.5,
-            "bpm_level": 70,
-            "has_audio": false,
-            "id": 3591,
-            "key": "11D",
-            "title": "Chilling Laughter",
-            "year": 2003
-          },
-          null,
-          {
-            "artist": "Carlos Per\u00f3n",
-            "bpm": 99.1,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 4071,
-            "key": "1M",
-            "title": "Nothing Is True, Everything Is Permitted",
-            "year": 2013
-          },
-          {
-            "artist": "Discodeine, Matias Aguayo",
-            "bpm": 115,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3053,
-            "key": "1M",
-            "title": "Singular",
+            "id": 3761,
+            "key": "",
+            "title": "GRIME",
             "year": 2011
           },
           {
-            "artist": "Matthew Dear",
-            "bpm": 110.3,
-            "bpm_level": 110,
+            "artist": "The Cure",
+            "bpm": 150.3,
+            "bpm_level": 150,
             "has_audio": true,
-            "id": 4324,
-            "key": "6M",
-            "title": "Her Fantasy",
-            "year": 2012
-          },
-          {
-            "artist": "Marc Houle",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": false,
-            "id": 3663,
-            "key": "10M",
-            "title": "marc drumming3 120 Straight",
-            "year": 2008
-          },
-          {
-            "artist": "Off The Meds",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3466,
-            "key": "2D",
-            "title": "Karlaplan",
-            "year": 2020
-          },
-          {
-            "artist": "Stewart Walker",
-            "bpm": 127,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3599,
-            "key": "4M",
-            "title": "QuestionMotif",
-            "year": 2003
-          },
-          null
+            "id": 4585,
+            "key": "3D",
+            "title": "Just Like Heaven",
+            "year": 1987
+          }
         ]
       },
       {
-        "id": "slot-1770953628544-nado",
+        "id": "slot-1770961323509-gz3v",
         "selectedTrackIndex": null,
         "source": null,
         "tracks": []
       }
     ],
     "created_at": "2026-02-13T03:56:40.636218+00:00",
-    "updated_at": "2026-02-13T03:56:40.636228+00:00"
+    "updated_at": "2026-02-13T07:15:38.985678+00:00"
   }
 }

@@ -1676,6 +1676,10 @@ tr.ws-seed-selected {
     stroke-width: 2.5;
     opacity: 0.5;
 }
+.set-energy-line--alive {
+    opacity: 0.5;
+    filter: drop-shadow(0 0 4px var(--accent));
+}
 .set-energy-fill {
     fill: var(--accent);
     opacity: 0.05;
@@ -2342,7 +2346,15 @@ tr.ws-seed-selected {
 .set-eq-bar {
     flex: 1;
     height: 100%;
-    background: var(--key-raw, #1db954);
+    /* Segmented LED-style bars: colored blocks with dark gaps */
+    background:
+        repeating-linear-gradient(
+            to top,
+            var(--key-raw, #1db954) 0px,
+            var(--key-raw, #1db954) 4px,
+            transparent 4px,
+            transparent 6px
+        );
     border-radius: 2px 2px 0 0;
     transform-origin: bottom;
     animation: eqBar var(--eq-speed) ease-in-out infinite;
