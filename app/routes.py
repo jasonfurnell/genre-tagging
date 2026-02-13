@@ -2026,6 +2026,16 @@ def get_preview():
 # ---------------------------------------------------------------------------
 _NOT_FOUND_RETRY_SECS = 86400      # retry not-found lookups after 24h
 
+def _artwork_url(fname):
+    """Return artwork URL with mtime cache-buster."""
+    fpath = os.path.join(_ARTWORK_DIR, fname)
+    try:
+        v = int(os.path.getmtime(fpath))
+    except OSError:
+        v = 0
+    return f"/artwork/{fname}?v={v}"
+
+
 def _lookup_artwork(artist, title):
     """Look up artwork for a single track. Returns dict with cover_url/found."""
     cache_key = f"{artist.lower()}||{title.lower()}"
@@ -2036,9 +2046,9 @@ def _lookup_artwork(artist, title):
         big_fname = _artwork_filename(cache_key, "big")
         big_path = os.path.join(_ARTWORK_DIR, big_fname)
         result = {
-            "cover_url": f"/artwork/{small_fname}",
-            "cover_big": f"/artwork/{big_fname}" if os.path.exists(big_path)
-                         else f"/artwork/{small_fname}",
+            "cover_url": _artwork_url(small_fname),
+            "cover_big": _artwork_url(big_fname) if os.path.exists(big_path)
+                         else _artwork_url(small_fname),
             "found": True,
         }
         # Repair cache if missing/stale
@@ -2361,9 +2371,9 @@ def get_artwork_batch():
             big_fname = _artwork_filename(key, "big")
             big_path = os.path.join(_ARTWORK_DIR, big_fname)
             results[key] = {
-                "cover_url": f"/artwork/{small_fname}",
-                "cover_big": f"/artwork/{big_fname}" if os.path.exists(big_path)
-                             else f"/artwork/{small_fname}",
+                "cover_url": _artwork_url(small_fname),
+                "cover_big": _artwork_url(big_fname) if os.path.exists(big_path)
+                             else _artwork_url(small_fname),
                 "found": True,
             }
             if key not in _state["_artwork_cache"] or \
@@ -2521,11 +2531,16 @@ def uncached_count():
 @api.route("/artwork/<path:filename>")
 def serve_artwork(filename):
     """Serve locally-cached artwork images."""
-    return send_file(
-        os.path.join(_ARTWORK_DIR, filename),
-        mimetype="image/jpeg",
-        max_age=86400 * 30,     # 30-day browser cache
-    )
+    fpath = os.path.join(_ARTWORK_DIR, filename)
+    resp = send_file(fpath, mimetype="image/jpeg")
+    # Use file mtime as ETag so replaced images bust browser cache
+    try:
+        mtime = int(os.path.getmtime(fpath))
+        resp.headers["ETag"] = f'"{mtime}"'
+        resp.headers["Cache-Control"] = "public, max-age=3600"  # 1h, revalidate via ETag
+    except OSError:
+        pass
+    return resp
 
 
 # ---------------------------------------------------------------------------
