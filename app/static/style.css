@@ -1591,6 +1591,7 @@ tr.ws-seed-selected {
 .set-key-area {
     display: flex;
     align-items: center;
+    margin-top: 48px;
     margin-bottom: 4px;
 }
 .set-key-row {
@@ -1611,6 +1612,11 @@ tr.ws-seed-selected {
     transition: color 0.2s, background-color 0.2s, border-color 0.2s;
     font-weight: 500;
 }
+.set-key-cell.play-set-active {
+    color: var(--key-raw, inherit) !important;
+    background-color: color-mix(in srgb, var(--key-raw, transparent) 20%, transparent) !important;
+    border-color: color-mix(in srgb, var(--key-raw, transparent) 40%, transparent) !important;
+}
 
 /* -- BPM area ----------------------------------------------------------- */
 .set-bpm-area {
@@ -1622,7 +1628,7 @@ tr.ws-seed-selected {
     width: 44px;
     position: relative;
     flex-shrink: 0;
-    height: 550px;
+    height: 492px;
 }
 .set-bpm-label {
     position: absolute;
@@ -1632,17 +1638,17 @@ tr.ws-seed-selected {
     transform: translateY(50%);
     font-variant-numeric: tabular-nums;
 }
-/* BPM labels positioned for 60-150 range with 300px grid + 125px padding */
-.set-bpm-label[data-bpm="150"] { top: 125px; }
-.set-bpm-label[data-bpm="130"] { top: 191px; }
-.set-bpm-label[data-bpm="110"] { top: 258px; }
-.set-bpm-label[data-bpm="90"]  { top: 325px; }
-.set-bpm-label[data-bpm="70"]  { top: 391px; }
+/* BPM labels positioned for 60-150 range with 432px grid + 30px padding */
+.set-bpm-label[data-bpm="150"] { top: 30px; }
+.set-bpm-label[data-bpm="130"] { top: 126px; }
+.set-bpm-label[data-bpm="110"] { top: 222px; }
+.set-bpm-label[data-bpm="90"]  { top: 318px; }
+.set-bpm-label[data-bpm="70"]  { top: 414px; }
 
 .set-bpm-grid {
     flex: none;
     position: relative;
-    height: 550px;
+    height: 492px;
     overflow: visible;
 }
 
@@ -1821,6 +1827,7 @@ tr.ws-seed-selected {
     display: flex;
     align-items: center;
     margin-top: 2px;
+    margin-bottom: 48px;
 }
 .set-time-row {
     display: flex;
@@ -2300,9 +2307,46 @@ tr.ws-seed-selected {
 }
 
 /* Play-set active column highlight (green, distinct from preview) */
+.set-column.play-set-active {
+    background: var(--key-bg, transparent);
+}
 .set-column.play-set-active .set-track-slot.selected {
     border-color: #1db954;
     box-shadow: 0 0 12px rgba(29,185,84,0.5);
+}
+
+/* ── EQ bar animation for playing slot ── */
+@keyframes eqBar {
+    0%   { transform: scaleY(0.08); }
+    25%  { transform: scaleY(0.55); }
+    50%  { transform: scaleY(0.15); }
+    75%  { transform: scaleY(0.75); }
+    100% { transform: scaleY(0.08); }
+}
+.set-eq-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+    padding: 0 6px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.12;
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 70%);
+    mask-image: linear-gradient(to top, black 0%, transparent 70%);
+}
+.set-eq-bar {
+    flex: 1;
+    height: 100%;
+    background: var(--key-raw, #1db954);
+    border-radius: 2px 2px 0 0;
+    transform-origin: bottom;
+    animation: eqBar var(--eq-speed) ease-in-out infinite;
+    animation-delay: var(--eq-delay, 0s);
 }
 
 /* Settings checkbox label */

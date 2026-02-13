@@ -64,9 +64,9 @@ const SET_IMG = 48;
 const SET_PAD = 4;
 const SET_COL_W = SET_IMG + SET_PAD * 2;  // 56
 const SET_GAP = 6;
-const SET_GRID_H = 300;
-const SET_GRID_PAD = 125;
-const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // 550
+const SET_GRID_H = 432;
+const SET_GRID_PAD = 30;
+const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // 492
 const SET_BPM_MIN = 60;
 const SET_BPM_MAX = 150;
 const SET_BPM_LEVELS = [60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
@@ -643,6 +643,7 @@ function renderKeyRow() {
     for (const slot of setSlots) {
         const cell = document.createElement("div");
         cell.className = "set-key-cell";
+        cell.dataset.slotId = slot.id;
         if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
             const key = slot.tracks[slot.selectedTrackIndex].key || "";
             cell.textContent = key;
@@ -651,6 +652,7 @@ function renderKeyRow() {
                 cell.style.color = color;
                 cell.style.backgroundColor = color + "18";
                 cell.style.borderColor = color + "40";
+                cell.style.setProperty("--key-raw", color);
             }
         }
         row.appendChild(cell);
@@ -755,6 +757,7 @@ function renderTrackColumns() {
         const colColor = selTrack ? camelotColor(selTrack.key) : null;
         if (colColor) {
             col.style.setProperty("--key-bg", `linear-gradient(to bottom, transparent, ${colColor}30)`);
+            col.style.setProperty("--key-raw", colColor);
         }
 
         // Draggable for reordering + drop target for tracks
@@ -1691,7 +1694,11 @@ function stopPlaySet() {
         setAudio.src = "";
     }
     document.getElementById("set-play-set-btn").textContent = "Play Set";
+    removeAllEqOverlays();
     document.querySelectorAll(".set-column.play-set-active").forEach(
+        el => el.classList.remove("play-set-active")
+    );
+    document.querySelectorAll(".set-key-cell.play-set-active").forEach(
         el => el.classList.remove("play-set-active")
     );
 
@@ -1734,6 +1741,34 @@ function findPrevPlaySetSlot(fromIdx) {
     return -1;
 }
 
+// ── EQ overlay helpers ──
+const EQ_BAR_COUNT = 7;
+const EQ_SPEEDS  = [1.2, 0.8, 1.5, 0.9, 1.35, 1.05, 1.4];   // seconds
+const EQ_DELAYS  = [0, 0.12, 0.05, 0.18, 0.08, 0.22, 0.03];  // seconds
+
+function createEqOverlay(col) {
+    removeEqOverlay(col);
+    const overlay = document.createElement("div");
+    overlay.className = "set-eq-overlay";
+    for (let i = 0; i < EQ_BAR_COUNT; i++) {
+        const bar = document.createElement("div");
+        bar.className = "set-eq-bar";
+        bar.style.setProperty("--eq-speed", EQ_SPEEDS[i] + "s");
+        bar.style.setProperty("--eq-delay", EQ_DELAYS[i] + "s");
+        overlay.appendChild(bar);
+    }
+    col.appendChild(overlay);
+}
+
+function removeEqOverlay(col) {
+    const existing = col.querySelector(".set-eq-overlay");
+    if (existing) existing.remove();
+}
+
+function removeAllEqOverlays() {
+    document.querySelectorAll(".set-eq-overlay").forEach(el => el.remove());
+}
+
 async function playFullTrack(idx) {
     if (!setPlaySetActive || idx < 0 || idx >= setSlots.length) {
         stopPlaySet();
@@ -1744,15 +1779,22 @@ async function playFullTrack(idx) {
     const slot = setSlots[idx];
     const track = slot.tracks[slot.selectedTrackIndex];
 
-    // Highlight column
-    document.querySelectorAll(".set-column.play-set-active").forEach(
+    // Highlight column + EQ overlay + key cell
+    document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        removeEqOverlay(el);
+        el.classList.remove("play-set-active");
+    });
+    document.querySelectorAll(".set-key-cell.play-set-active").forEach(
         el => el.classList.remove("play-set-active")
     );
     const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (col) {
         col.classList.add("play-set-active");
+        createEqOverlay(col);
         col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
     }
+    const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
+    if (keyCell) keyCell.classList.add("play-set-active");
 
     // Update play/pause button
     document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
