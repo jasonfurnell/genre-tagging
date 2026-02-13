@@ -27,6 +27,7 @@ DEFAULT_CONFIG = {
     "audio_path_map_enabled": False,
     "audio_path_from": "/Volumes/Macintosh HD/Users/jasonfurnell/Dropbox",
     "audio_path_to": "/Users/jason.furnell/Dropbox (Personal)",
+    "dropbox_path_prefix": "",  # prefix to strip from CSV location to get Dropbox path; empty = use audio_path_from
 }
 
 

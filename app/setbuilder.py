@@ -210,7 +210,7 @@ def _sv(val):
     return val
 
 
-def _track_dict(df, idx, bpm_level=None, path_mapper=None):
+def _track_dict(df, idx, bpm_level=None, path_mapper=None, has_audio_fn=None):
     """Build a JSON-safe track dict from a DataFrame row."""
     if idx not in df.index:
         return None
@@ -218,10 +218,14 @@ def _track_dict(df, idx, bpm_level=None, path_mapper=None):
     bpm = row.get("bpm")
     bpm_val = round(float(bpm), 1) if bpm is not None and not _is_nan(bpm) else None
     location = _sv(row.get("location", ""))
-    if path_mapper and location:
-        mapped = path_mapper(str(location))
+    loc_str = str(location) if location else ""
+    if has_audio_fn:
+        has_audio = has_audio_fn(loc_str)
+    elif path_mapper and location:
+        mapped = path_mapper(loc_str)
+        has_audio = bool(mapped and mapped != "" and os.path.isfile(mapped))
     else:
-        mapped = str(location) if location else ""
+        has_audio = bool(loc_str and os.path.isfile(loc_str))
     d = {
         "id": int(idx),
         "title": _sv(row.get("title", "")),
@@ -229,7 +233,7 @@ def _track_dict(df, idx, bpm_level=None, path_mapper=None):
         "bpm": bpm_val,
         "key": _sv(row.get("key", "")),
         "year": _sv(row.get("year", "")),
-        "has_audio": bool(mapped and mapped != "" and os.path.isfile(mapped)),
+        "has_audio": has_audio,
     }
     if bpm_level is not None:
         d["bpm_level"] = bpm_level
@@ -303,7 +307,7 @@ def get_source_info(source_type, source_id, tree=None):
 
 def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
                              used_track_ids=None, anchor_track_id=None,
-                             path_mapper=None):
+                             path_mapper=None, has_audio_fn=None):
     """Pick one best track per BPM level from a source's track pool.
 
     Args:
@@ -379,7 +383,9 @@ def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
     for level in bpm_levels:
         tid = assigned.get(level)
         if tid is not None:
-            result.append(_track_dict(df, tid, bpm_level=level, path_mapper=path_mapper))
+            result.append(_track_dict(df, tid, bpm_level=level,
+                                      path_mapper=path_mapper,
+                                      has_audio_fn=has_audio_fn))
         else:
             result.append(None)
 
@@ -458,7 +464,8 @@ def _summarize_node(node, search=""):
 # Source Detail (all tracks for drawer)
 # ---------------------------------------------------------------------------
 
-def get_source_detail(df, source_type, source_id, tree=None, path_mapper=None):
+def get_source_detail(df, source_type, source_id, tree=None, path_mapper=None,
+                      has_audio_fn=None):
     """Full source info + all tracks for the drawer detail view.
 
     Returns {id, name, description, track_count, examples, tracks: [...]}.
@@ -470,7 +477,8 @@ def get_source_detail(df, source_type, source_id, tree=None, path_mapper=None):
     track_ids = get_source_tracks(source_type, source_id, tree)
     tracks = []
     for idx in track_ids:
-        t = _track_dict(df, idx, path_mapper=path_mapper)
+        t = _track_dict(df, idx, path_mapper=path_mapper,
+                        has_audio_fn=has_audio_fn)
         if t:
             tracks.append(t)
 

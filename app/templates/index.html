@@ -13,6 +13,11 @@
 <header>
     <h1>Genre Tagger</h1>
     <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
+    <div id="dropbox-status" class="dropbox-status">
+        <span id="dropbox-status-text">Dropbox</span>
+        <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
+        <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
+    </div>
     <nav id="tab-bar" class="tab-bar hidden">
         <button class="tab-btn active" data-tab="setbuilder">Set Workshop</button>
         <button class="tab-btn" data-tab="sets">Sets</button>

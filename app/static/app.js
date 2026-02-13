@@ -842,3 +842,74 @@ initGrid();
         }
     } catch (_) { /* no autosave available */ }
 })();
+
+// ── Dropbox Integration ─────────────────────────────────────
+let dropboxConnected = false;
+
+async function checkDropboxStatus() {
+    try {
+        const res = await fetch("/api/dropbox/status");
+        const data = await res.json();
+        dropboxConnected = data.connected;
+        updateDropboxUI(data);
+    } catch (e) {
+        console.error("Failed to check Dropbox status:", e);
+    }
+}
+
+function updateDropboxUI(data) {
+    const statusText = document.getElementById("dropbox-status-text");
+    const connectBtn = document.getElementById("dropbox-connect-btn");
+    const disconnectBtn = document.getElementById("dropbox-disconnect-btn");
+    const statusDiv = document.getElementById("dropbox-status");
+    if (!statusDiv) return;
+
+    if (data.connected) {
+        statusText.textContent = "Dropbox: Connected";
+        statusDiv.classList.add("dropbox-connected");
+        statusDiv.classList.remove("dropbox-disconnected");
+        connectBtn.classList.add("hidden");
+        disconnectBtn.classList.remove("hidden");
+    } else {
+        statusText.textContent = "Dropbox";
+        statusDiv.classList.remove("dropbox-connected");
+        statusDiv.classList.add("dropbox-disconnected");
+        connectBtn.classList.remove("hidden");
+        disconnectBtn.classList.add("hidden");
+    }
+}
+
+async function connectDropbox() {
+    try {
+        const res = await fetch("/api/dropbox/auth-url");
+        const data = await res.json();
+        if (data.error) { alert(data.error); return; }
+        const popup = window.open(data.url, "dropbox-auth",
+            "width=600,height=700,menubar=no,toolbar=no");
+        // Poll for popup close as fallback
+        const pollTimer = setInterval(() => {
+            if (popup && popup.closed) {
+                clearInterval(pollTimer);
+                checkDropboxStatus();
+            }
+        }, 1000);
+    } catch (e) {
+        console.error("Failed to initiate Dropbox auth:", e);
+    }
+}
+
+window.onDropboxConnected = function() {
+    checkDropboxStatus();
+};
+
+async function disconnectDropbox() {
+    if (!confirm("Disconnect Dropbox? Audio playback from Dropbox will stop working.")) return;
+    try {
+        await fetch("/api/dropbox/disconnect", { method: "POST" });
+        await checkDropboxStatus();
+    } catch (e) {
+        console.error("Failed to disconnect Dropbox:", e);
+    }
+}
+
+checkDropboxStatus();

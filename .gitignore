@@ -13,3 +13,6 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# Dropbox tokens (sensitive)
+output/dropbox_tokens.json

@@ -10,7 +10,9 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
-from flask import Blueprint, request, jsonify, Response, send_file
+import dropbox
+from dropbox import DropboxOAuth2Flow
+from flask import Blueprint, request, jsonify, Response, send_file, redirect
 from anthropic import Anthropic
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -68,6 +70,12 @@ _state = {
     "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
     "_artwork_cache": {},          # "artist||title" -> {cover_url, found}
     "_chord_cache": None,          # cached chord diagram data
+    # Dropbox integration
+    "_dropbox_client": None,       # dropbox.Dropbox instance
+    "_dropbox_refresh_token": None,
+    "_dropbox_account_id": None,
+    "_dropbox_exists_cache": {},   # dropbox_path -> bool
+    "_dropbox_oauth_csrf": None,   # CSRF token for OAuth flow
 }
 
 # ---------------------------------------------------------------------------
@@ -100,6 +108,106 @@ def _save_artwork_cache():
 _load_artwork_cache()
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
+
+# ---------------------------------------------------------------------------
+# Persistent Dropbox tokens (survives server restarts)
+# ---------------------------------------------------------------------------
+_DROPBOX_TOKENS_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "output", "dropbox_tokens.json"
+)
+
+def _init_dropbox_client(refresh_token):
+    """Create a Dropbox client from a refresh token."""
+    app_key = os.getenv("DROPBOX_APP_KEY")
+    app_secret = os.getenv("DROPBOX_APP_SECRET")
+    if not app_key or not app_secret:
+        logging.warning("DROPBOX_APP_KEY or DROPBOX_APP_SECRET not set in .env")
+        return
+    try:
+        dbx = dropbox.Dropbox(
+            oauth2_refresh_token=refresh_token,
+            app_key=app_key,
+            app_secret=app_secret,
+        )
+        _state["_dropbox_client"] = dbx
+    except Exception:
+        logging.exception("Failed to initialize Dropbox client")
+
+def _load_dropbox_tokens():
+    """Load persisted Dropbox tokens and initialize client."""
+    try:
+        if os.path.exists(_DROPBOX_TOKENS_FILE):
+            with open(_DROPBOX_TOKENS_FILE, "r") as f:
+                data = json.load(f)
+            refresh_token = data.get("refresh_token")
+            if refresh_token:
+                _state["_dropbox_refresh_token"] = refresh_token
+                _state["_dropbox_account_id"] = data.get("account_id", "")
+                _init_dropbox_client(refresh_token)
+                logging.info("Loaded Dropbox tokens from disk")
+    except Exception:
+        logging.exception("Failed to load Dropbox tokens from disk")
+
+def _save_dropbox_tokens():
+    """Persist Dropbox tokens to disk."""
+    try:
+        os.makedirs(os.path.dirname(_DROPBOX_TOKENS_FILE), exist_ok=True)
+        data = {
+            "refresh_token": _state.get("_dropbox_refresh_token"),
+            "account_id": _state.get("_dropbox_account_id", ""),
+        }
+        with open(_DROPBOX_TOKENS_FILE, "w") as f:
+            json.dump(data, f)
+    except Exception:
+        logging.exception("Failed to save Dropbox tokens to disk")
+
+_load_dropbox_tokens()
+
+# ---------------------------------------------------------------------------
+# Dropbox path helpers
+# ---------------------------------------------------------------------------
+
+def _to_dropbox_path(location):
+    """Convert a CSV location path to a Dropbox-relative path."""
+    if not location or location == "nan":
+        return None
+    cfg = load_config()
+    prefix = cfg.get("dropbox_path_prefix") or cfg.get("audio_path_from", "")
+    if prefix and location.startswith(prefix):
+        return location[len(prefix):]
+    return None
+
+def _dropbox_file_exists(dropbox_path):
+    """Check if a file exists in Dropbox, with in-memory caching."""
+    if not dropbox_path:
+        return False
+    cache = _state.get("_dropbox_exists_cache", {})
+    if dropbox_path in cache:
+        return cache[dropbox_path]
+    dbx = _state.get("_dropbox_client")
+    if not dbx:
+        return False
+    try:
+        dbx.files_get_metadata(dropbox_path)
+        cache[dropbox_path] = True
+    except dropbox.exceptions.ApiError:
+        cache[dropbox_path] = False
+    except Exception:
+        return False
+    _state["_dropbox_exists_cache"] = cache
+    return cache.get(dropbox_path, False)
+
+def _check_has_audio(location):
+    """Check if a track has playable audio (Dropbox first, then local fallback)."""
+    if not location or location == "nan":
+        return False
+    dbx = _state.get("_dropbox_client")
+    if dbx:
+        dropbox_path = _to_dropbox_path(str(location))
+        if dropbox_path and _dropbox_file_exists(dropbox_path):
+            return True
+    mapped = _map_audio_path(str(location))
+    return bool(mapped and mapped != "nan" and os.path.isfile(mapped))
 
 _OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "output")
 
@@ -2151,7 +2259,7 @@ def set_workshop_assign_source():
         df, track_ids,
         used_track_ids=used_ids,
         anchor_track_id=anchor_track_id,
-        path_mapper=_map_audio_path,
+        has_audio_fn=_check_has_audio,
     )
 
     return jsonify({"source": info, "tracks": tracks})
@@ -2185,7 +2293,7 @@ def set_workshop_drag_track():
         df, track_ids,
         used_track_ids=used_ids,
         anchor_track_id=track_id,
-        path_mapper=_map_audio_path,
+        has_audio_fn=_check_has_audio,
     )
 
     # Get source info for name
@@ -2211,7 +2319,7 @@ def set_workshop_source_detail():
 
     tree = _resolve_tree(tree_type) if source_type == "tree_node" else None
     detail = get_source_detail(df, source_type, source_id, tree,
-                               path_mapper=_map_audio_path)
+                               has_audio_fn=_check_has_audio)
     if not detail:
         return jsonify({"error": "Source not found"}), 404
 
@@ -2268,7 +2376,7 @@ def set_workshop_track_context(track_id):
 
 @api.route("/api/set-workshop/check-audio", methods=["POST"])
 def set_workshop_check_audio():
-    """Check which track IDs have playable local audio files."""
+    """Check which track IDs have playable audio (Dropbox or local)."""
     df = _state["df"]
     if df is None:
         return jsonify({}), 200
@@ -2281,8 +2389,7 @@ def set_workshop_check_audio():
             result[str(tid)] = False
             continue
         raw_loc = str(df.loc[tid].get("location", ""))
-        mapped = _map_audio_path(raw_loc)
-        result[str(tid)] = bool(mapped and mapped != "nan" and os.path.isfile(mapped))
+        result[str(tid)] = _check_has_audio(raw_loc)
     return jsonify(result)
 
 
@@ -2385,6 +2492,94 @@ def saved_sets_delete(set_id):
 
 
 # ---------------------------------------------------------------------------
+# Dropbox OAuth2 Integration
+# ---------------------------------------------------------------------------
+
+@api.route("/api/dropbox/status")
+def dropbox_status():
+    connected = _state.get("_dropbox_client") is not None
+    return jsonify({
+        "connected": connected,
+        "account_id": _state.get("_dropbox_account_id", "") if connected else "",
+    })
+
+@api.route("/api/dropbox/auth-url")
+def dropbox_auth_url():
+    app_key = os.getenv("DROPBOX_APP_KEY")
+    app_secret = os.getenv("DROPBOX_APP_SECRET")
+    if not app_key or not app_secret:
+        return jsonify({"error": "DROPBOX_APP_KEY/SECRET not configured in .env"}), 500
+
+    redirect_uri = request.host_url.rstrip("/") + "/api/dropbox/callback"
+    session_store = {}
+    flow = DropboxOAuth2Flow(
+        consumer_key=app_key,
+        consumer_secret=app_secret,
+        redirect_uri=redirect_uri,
+        session=session_store,
+        csrf_token_session_key="dropbox-auth-csrf-token",
+        token_access_type="offline",
+    )
+    authorize_url = flow.start()
+    _state["_dropbox_oauth_csrf"] = session_store.get("dropbox-auth-csrf-token")
+    return jsonify({"url": authorize_url})
+
+@api.route("/api/dropbox/callback")
+def dropbox_callback():
+    app_key = os.getenv("DROPBOX_APP_KEY")
+    app_secret = os.getenv("DROPBOX_APP_SECRET")
+    redirect_uri = request.host_url.rstrip("/") + "/api/dropbox/callback"
+
+    session_store = {
+        "dropbox-auth-csrf-token": _state.get("_dropbox_oauth_csrf", ""),
+    }
+    flow = DropboxOAuth2Flow(
+        consumer_key=app_key,
+        consumer_secret=app_secret,
+        redirect_uri=redirect_uri,
+        session=session_store,
+        csrf_token_session_key="dropbox-auth-csrf-token",
+        token_access_type="offline",
+    )
+    try:
+        result = flow.finish(request.args)
+    except Exception as e:
+        logging.exception("Dropbox OAuth callback failed")
+        return (f"<html><body><h2>Dropbox connection failed</h2>"
+                f"<p>{e}</p>"
+                "<script>setTimeout(()=>window.close(),3000)</script>"
+                "</body></html>")
+
+    _state["_dropbox_refresh_token"] = result.refresh_token
+    _state["_dropbox_account_id"] = result.account_id
+    _state["_dropbox_exists_cache"] = {}
+    _init_dropbox_client(result.refresh_token)
+    _save_dropbox_tokens()
+    logging.info("Dropbox connected: account_id=%s", result.account_id)
+
+    return ("<html><body><h2>Dropbox connected!</h2>"
+            "<p>This window will close automatically.</p>"
+            "<script>"
+            "if(window.opener&&window.opener.onDropboxConnected)"
+            "  window.opener.onDropboxConnected();"
+            "setTimeout(()=>window.close(),1500);"
+            "</script></body></html>")
+
+@api.route("/api/dropbox/disconnect", methods=["POST"])
+def dropbox_disconnect():
+    _state["_dropbox_client"] = None
+    _state["_dropbox_refresh_token"] = None
+    _state["_dropbox_account_id"] = None
+    _state["_dropbox_exists_cache"] = {}
+    try:
+        if os.path.exists(_DROPBOX_TOKENS_FILE):
+            os.remove(_DROPBOX_TOKENS_FILE)
+    except Exception:
+        pass
+    return jsonify({"ok": True})
+
+
+# ---------------------------------------------------------------------------
 # Audio path mapping (for playing local files on a different machine)
 # ---------------------------------------------------------------------------
 def _map_audio_path(location):
@@ -2417,7 +2612,7 @@ _AUDIO_MIME = {
 
 @api.route("/api/audio/<int:track_id>")
 def serve_audio(track_id):
-    """Serve a local audio file for full-track playback."""
+    """Serve audio: redirect to Dropbox temporary link, or fall back to local."""
     df = _state["df"]
     if df is None:
         return jsonify({"error": "No file uploaded"}), 400
@@ -2425,14 +2620,28 @@ def serve_audio(track_id):
         return jsonify({"error": "Track not found"}), 404
 
     raw_location = str(df.loc[track_id].get("location", ""))
-    location = _map_audio_path(raw_location)
 
+    # Try Dropbox first
+    dbx = _state.get("_dropbox_client")
+    if dbx:
+        dropbox_path = _to_dropbox_path(raw_location)
+        if dropbox_path:
+            try:
+                result = dbx.files_get_temporary_link(dropbox_path)
+                return redirect(result.link, 302)
+            except dropbox.exceptions.ApiError as e:
+                logging.warning("Dropbox temp link failed for %s: %s",
+                                dropbox_path, e)
+            except Exception as e:
+                logging.warning("Dropbox error for %s: %s", dropbox_path, e)
+
+    # Fall back to local file
+    location = _map_audio_path(raw_location)
     if not location or location == "nan":
         return jsonify({"error": "No file path for this track"}), 404
     if not os.path.isfile(location):
-        return jsonify({"error": "Audio file not found on disk"}), 404
+        return jsonify({"error": "Audio file not found"}), 404
 
     ext = os.path.splitext(location)[1].lower()
     mimetype = _AUDIO_MIME.get(ext, "application/octet-stream")
-
     return send_file(location, mimetype=mimetype, conditional=True)

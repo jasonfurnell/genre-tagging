@@ -61,6 +61,30 @@ header h1 {
     transition: width 0.3s;
 }
 
+/* ── Dropbox Status ──────────────────────────────────────── */
+.dropbox-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+.dropbox-status.dropbox-connected #dropbox-status-text {
+    color: #4caf50;
+}
+.dropbox-btn, .dropbox-btn-disconnect {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+}
+.dropbox-btn:hover { color: var(--accent); border-color: var(--accent); }
+.dropbox-btn-disconnect:hover { color: #ef5350; border-color: #ef5350; }
+
 /* ── Upload Area ─────────────────────────────────────────── */
 .upload-area {
     border: 2px dashed var(--border);
