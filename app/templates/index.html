@@ -10,22 +10,44 @@
 </head>
 <body>
 
-<header>
-    <h1>Genre Tagger</h1>
-    <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
-    <div id="dropbox-status" class="dropbox-status">
-        <span id="dropbox-status-text">Dropbox</span>
-        <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
-        <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
-    </div>
-    <nav id="tab-bar" class="tab-bar hidden">
+<header id="unified-header" class="unified-header hidden">
+    <nav id="tab-bar" class="tab-bar">
         <button class="tab-btn active" data-tab="setbuilder">Set Workshop</button>
         <button class="tab-btn" data-tab="sets">Sets</button>
         <button class="tab-btn" data-tab="tagger">Tagger</button>
         <button class="tab-btn" data-tab="intersections">Intersections</button>
-        <button class="tab-btn" data-tab="workshop">Playlist Workshop</button>
+        <button class="tab-btn" data-tab="workshop">Playlists</button>
         <button class="tab-btn" data-tab="tree">Collection Tree</button>
     </nav>
+
+    <!-- Tab-specific controls (only active tab's div is visible) -->
+    <div id="tab-controls-setbuilder" class="tab-controls">
+        <span id="set-current-name" class="set-current-name"></span>
+        <button id="set-save-btn" class="hdr-btn hdr-btn-save" style="display:none;">Save</button>
+        <button id="set-save-as-btn" class="hdr-btn hdr-btn-save-as">Save As</button>
+        <span class="hdr-sep"></span>
+        <button id="set-search-btn" class="hdr-btn hdr-btn-search">Search</button>
+        <button id="set-preview-all-btn" class="hdr-btn hdr-btn-preview" disabled>Preview</button>
+        <div class="set-mode-toggle">
+            <button id="set-mode-workshop" class="set-mode-btn active">Workshop</button>
+            <button id="set-mode-playset" class="set-mode-btn" disabled>Play</button>
+        </div>
+        <button id="set-export-btn" class="hdr-btn hdr-btn-export" disabled>Export</button>
+    </div>
+    <div id="tab-controls-sets" class="tab-controls hidden"></div>
+    <div id="tab-controls-tagger" class="tab-controls hidden"></div>
+    <div id="tab-controls-intersections" class="tab-controls hidden"></div>
+    <div id="tab-controls-workshop" class="tab-controls hidden"></div>
+    <div id="tab-controls-tree" class="tab-controls hidden"></div>
+
+    <div class="hdr-status">
+        <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
+        <div id="dropbox-status" class="dropbox-status">
+            <span id="dropbox-status-text">Dropbox</span>
+            <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
+            <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
+        </div>
+    </div>
 </header>
 
 <main>
@@ -207,26 +229,6 @@
 
     <!-- ═══ Tab: Set Workshop ═══ -->
     <div id="tab-setbuilder" class="tab-content">
-
-        <!-- Toolbar -->
-        <div class="set-toolbar">
-            <div class="set-toolbar-left">
-                <span class="set-toolbar-title">Set Workshop</span>
-            </div>
-            <div class="set-toolbar-right">
-                <span id="set-current-name" class="set-current-name"></span>
-                <button id="set-save-btn" class="btn btn-secondary btn-sm" style="display:none;">Save</button>
-                <button id="set-save-as-btn" class="btn btn-secondary btn-sm">Save As</button>
-                <span class="set-toolbar-sep"></span>
-                <button id="set-search-btn" class="btn btn-secondary btn-sm">Search</button>
-                <button id="set-preview-all-btn" class="btn btn-secondary btn-sm" disabled>Preview All</button>
-                <div class="set-mode-toggle">
-                    <button id="set-mode-workshop" class="set-mode-btn active">Workshop Mode</button>
-                    <button id="set-mode-playset" class="set-mode-btn" disabled>Play Mode</button>
-                </div>
-                <button id="set-export-btn" class="btn btn-secondary btn-sm" disabled>Export M3U</button>
-            </div>
-        </div>
 
         <!-- Set Grid: always visible (starts empty) -->
         <div id="set-grid-wrapper" class="set-grid-wrapper">

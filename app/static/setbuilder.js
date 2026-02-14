@@ -1669,7 +1669,7 @@ function previewAllSet() {
 
     setPlayAllActive = true;
     setPlayAllIndex = 0;
-    document.getElementById("set-preview-all-btn").textContent = "Stop Preview";
+    document.getElementById("set-preview-all-btn").textContent = "Stop";
 
     // Find first slot with a selected track
     const first = findNextPreviewableSlot(0);
@@ -1756,7 +1756,7 @@ async function previewTrackAt(idx) {
 
 function stopSetPreviewAll() {
     setPlayAllActive = false;
-    document.getElementById("set-preview-all-btn").textContent = "Preview All";
+    document.getElementById("set-preview-all-btn").textContent = "Preview";
     document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
 
     // Clean up ended listener

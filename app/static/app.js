@@ -649,7 +649,7 @@ async function uploadFile(file) {
         await loadTracks();
         toolbar.classList.remove("hidden");
         summary.classList.remove("hidden");
-        $("#tab-bar").classList.remove("hidden");
+        $("#unified-header").classList.remove("hidden");
         if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
         checkAndWarmArtworkCache();
     } catch (err) {
@@ -897,6 +897,7 @@ $$(".tab-btn").forEach(btn => {
         const target = btn.dataset.tab;
         $$(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
         $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
+        $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
 
         if (target === "intersections" && !intersectionsInitialized) {
             intersectionsInitialized = true;
@@ -934,7 +935,7 @@ initGrid();
             await loadTracks();
             toolbar.classList.remove("hidden");
             summary.classList.remove("hidden");
-            $("#tab-bar").classList.remove("hidden");
+            $("#unified-header").classList.remove("hidden");
             if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
             checkAndWarmArtworkCache();
         }
