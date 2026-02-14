@@ -719,9 +719,16 @@ function renderEnergyWave() {
         return;
     }
 
-    // 3 lines with slightly different tensions for visual depth
-    const tensions = [0.30, 0.25, 0.36];
-    const classes  = ["set-energy-line", "set-energy-line set-energy-line--ghost", "set-energy-line set-energy-line--ghost"];
+    // 6 lines with slightly different tensions for visual depth
+    const tensions = [0.30, 0.25, 0.36, 0.22, 0.40, 0.18];
+    const classes  = [
+        "set-energy-line",
+        "set-energy-line set-energy-line--ghost",
+        "set-energy-line set-energy-line--ghost",
+        "set-energy-line set-energy-line--ghost set-energy-line--ghost-far",
+        "set-energy-line set-energy-line--ghost set-energy-line--ghost-far",
+        "set-energy-line set-energy-line--ghost set-energy-line--ghost-far",
+    ];
 
     const primaryD = catmullRomPath(points, tensions[0]);
     const fillD = primaryD
@@ -814,12 +821,15 @@ function _energyAnimTick() {
     }
     const stroke = _energyLastKeyColor || "var(--accent)";
 
-    // 3 layered lines — each with a different seed offset so they diverge
-    const layerSeeds  = [0, 137, 293];      // phase offsets per layer
+    // 6 layered lines — each with a different seed offset so they diverge
+    const layerSeeds  = [0, 137, 293, 419, 557, 683];      // phase offsets per layer
     const layerClasses = [
         "set-energy-line set-energy-line--alive",
         "set-energy-line set-energy-line--alive set-energy-line--ghost",
         "set-energy-line set-energy-line--alive set-energy-line--ghost",
+        "set-energy-line set-energy-line--alive set-energy-line--ghost set-energy-line--ghost-far",
+        "set-energy-line set-energy-line--alive set-energy-line--ghost set-energy-line--ghost-far",
+        "set-energy-line set-energy-line--alive set-energy-line--ghost set-energy-line--ghost-far",
     ];
 
     let html = "";
@@ -857,8 +867,9 @@ function _energyAnimTick() {
             html += `<path class="set-energy-fill" d="${fillD}" style="fill:${stroke}" />`;
         }
 
+        const glow = li === 0 ? 6 : li <= 2 ? 3 : 2;
         html += `<path class="${layerClasses[li]}" d="${pathD}"
-              style="stroke:${stroke}; filter:drop-shadow(0 0 ${li === 0 ? 6 : 3}px ${stroke})" />`;
+              style="stroke:${stroke}; filter:drop-shadow(0 0 ${glow}px ${stroke})" />`;
     });
 
     svg.innerHTML = html;

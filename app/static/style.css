@@ -1790,6 +1790,13 @@ tr.ws-seed-selected {
 .set-energy-line--ghost.set-energy-line--alive {
     opacity: 0.25;
 }
+.set-energy-line--ghost-far {
+    stroke-width: 1;
+    opacity: 0.12;
+}
+.set-energy-line--ghost-far.set-energy-line--alive {
+    opacity: 0.12;
+}
 .set-energy-fill {
     fill: var(--accent);
     opacity: 0.05;
