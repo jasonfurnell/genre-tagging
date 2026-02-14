@@ -1909,21 +1909,43 @@ const EQ_DELAYS  = [0, 0.12, 0.05, 0.18, 0.08, 0.22, 0.03];  // seconds
 
 function createEqOverlay(col) {
     removeEqOverlay(col);
-    const overlay = document.createElement("div");
-    overlay.className = "set-eq-overlay";
-    for (let i = 0; i < EQ_BAR_COUNT; i++) {
-        const bar = document.createElement("div");
-        bar.className = "set-eq-bar";
-        bar.style.setProperty("--eq-speed", EQ_SPEEDS[i] + "s");
-        bar.style.setProperty("--eq-delay", EQ_DELAYS[i] + "s");
-        overlay.appendChild(bar);
+
+    // Position overlays relative to the selected track
+    const selectedSlot = col.querySelector(".set-track-slot.selected");
+    if (!selectedSlot) return;
+
+    const trackTop = selectedSlot.offsetTop;
+    const trackBottom = trackTop + selectedSlot.offsetHeight;
+
+    function makeBars(overlay) {
+        for (let i = 0; i < EQ_BAR_COUNT; i++) {
+            const bar = document.createElement("div");
+            bar.className = "set-eq-bar";
+            bar.style.setProperty("--eq-speed", EQ_SPEEDS[i] + "s");
+            bar.style.setProperty("--eq-delay", EQ_DELAYS[i] + "s");
+            overlay.appendChild(bar);
+        }
     }
-    col.appendChild(overlay);
+
+    // Top overlay: column top → track top edge, bars project upward
+    const upOverlay = document.createElement("div");
+    upOverlay.className = "set-eq-overlay set-eq-overlay-up";
+    upOverlay.style.top = "0";
+    upOverlay.style.bottom = (col.offsetHeight - trackTop) + "px";
+    makeBars(upOverlay);
+    col.appendChild(upOverlay);
+
+    // Bottom overlay: track bottom edge → column bottom, bars project downward
+    const downOverlay = document.createElement("div");
+    downOverlay.className = "set-eq-overlay set-eq-overlay-down";
+    downOverlay.style.top = trackBottom + "px";
+    downOverlay.style.bottom = "0";
+    makeBars(downOverlay);
+    col.appendChild(downOverlay);
 }
 
 function removeEqOverlay(col) {
-    const existing = col.querySelector(".set-eq-overlay");
-    if (existing) existing.remove();
+    col.querySelectorAll(".set-eq-overlay").forEach(el => el.remove());
 }
 
 function removeAllEqOverlays() {

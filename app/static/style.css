@@ -1750,7 +1750,7 @@ tr.ws-seed-selected {
     cursor: grab;
 }
 .set-column:active { cursor: grabbing; }
-.set-column:hover {
+.set-column:hover:not(.play-set-active) {
     background: var(--key-bg, transparent);
 }
 .set-column.drag-over {
@@ -2359,7 +2359,7 @@ tr.ws-seed-selected {
 
 /* Play-set active column highlight (green, distinct from preview) */
 .set-column.play-set-active {
-    background: var(--key-bg, transparent);
+    background: transparent;
 }
 .set-column.play-set-active .set-track-slot.selected {
     border-color: #1db954;
@@ -2374,26 +2374,36 @@ tr.ws-seed-selected {
     75%  { transform: scaleY(0.75); }
     100% { transform: scaleY(0.08); }
 }
+/* Shared base for both EQ overlays */
 .set-eq-overlay {
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
     display: flex;
-    align-items: flex-end;
     justify-content: center;
     gap: 2px;
     padding: 0 6px;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.12;
+    opacity: 0.35;
     border-radius: 4px;
     overflow: hidden;
+}
+/* Upward-projecting bars (from track top edge upward) */
+.set-eq-overlay-up {
+    align-items: flex-end;
     -webkit-mask-image: linear-gradient(to top, black 0%, transparent 70%);
     mask-image: linear-gradient(to top, black 0%, transparent 70%);
+}
+/* Downward-projecting bars (from track bottom edge downward) */
+.set-eq-overlay-down {
+    align-items: flex-start;
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
 }
 .set-eq-bar {
     flex: 1;
     height: 100%;
-    /* Segmented LED-style bars: colored blocks with dark gaps */
     background:
         repeating-linear-gradient(
             to top,
@@ -2406,6 +2416,19 @@ tr.ws-seed-selected {
     transform-origin: bottom;
     animation: eqBar var(--eq-speed) ease-in-out infinite;
     animation-delay: var(--eq-delay, 0s);
+}
+/* Downward bar variant: mirrored origin + gradient direction */
+.set-eq-overlay-down .set-eq-bar {
+    transform-origin: top;
+    border-radius: 0 0 2px 2px;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            var(--key-raw, #1db954) 0px,
+            var(--key-raw, #1db954) 4px,
+            transparent 4px,
+            transparent 6px
+        );
 }
 
 /* Settings checkbox label */
