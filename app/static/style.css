@@ -2438,12 +2438,19 @@ tr.ws-seed-selected {
 }
 
 /* ── EQ bar animation for playing slot ── */
-@keyframes eqBar {
-    0%   { transform: scaleY(0.08); }
-    25%  { transform: scaleY(0.55); }
-    50%  { transform: scaleY(0.15); }
-    75%  { transform: scaleY(0.75); }
-    100% { transform: scaleY(0.08); }
+@keyframes eqBarUp {
+    0%   { clip-path: inset(92% 0 0 0); }
+    25%  { clip-path: inset(45% 0 0 0); }
+    50%  { clip-path: inset(85% 0 0 0); }
+    75%  { clip-path: inset(25% 0 0 0); }
+    100% { clip-path: inset(92% 0 0 0); }
+}
+@keyframes eqBarDown {
+    0%   { clip-path: inset(0 0 92% 0); }
+    25%  { clip-path: inset(0 0 45% 0); }
+    50%  { clip-path: inset(0 0 85% 0); }
+    75%  { clip-path: inset(0 0 25% 0); }
+    100% { clip-path: inset(0 0 92% 0); }
 }
 /* Shared base for both EQ overlays */
 .set-eq-overlay {
@@ -2484,14 +2491,13 @@ tr.ws-seed-selected {
             transparent 6px
         );
     border-radius: 2px 2px 0 0;
-    transform-origin: bottom;
-    animation: eqBar var(--eq-speed) ease-in-out infinite;
+    animation: eqBarUp var(--eq-speed) ease-in-out infinite;
     animation-delay: var(--eq-delay, 0s);
 }
 /* Downward bar variant: mirrored origin + gradient direction */
 .set-eq-overlay-down .set-eq-bar {
-    transform-origin: top;
     border-radius: 0 0 2px 2px;
+    animation-name: eqBarDown;
     background:
         repeating-linear-gradient(
             to bottom,
