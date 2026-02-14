@@ -666,6 +666,13 @@ function renderKeyRow() {
         }
         row.appendChild(cell);
     }
+
+    // Re-apply play-set-active styling after DOM rebuild
+    if (isPlaySetMode() && setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
+        const activeSlot = setSlots[setPlaySetIndex];
+        const keyCell = row.querySelector(`.set-key-cell[data-slot-id="${activeSlot.id}"]`);
+        if (keyCell) keyCell.classList.add("play-set-active");
+    }
 }
 
 
@@ -919,11 +926,28 @@ function renderTrackColumns() {
         } else {
             // Render tracks at their BPM Y positions
             slot.tracks.forEach((track, ti) => {
-                if (!track) return;
+                if (!track) {
+                    // Loading shimmer placeholder for empty BPM rows
+                    if (slot._loading) {
+                        const ph = document.createElement("div");
+                        ph.className = "set-track-slot set-track-shimmer";
+                        const level = SET_BPM_LEVELS[ti] || 100;
+                        ph.style.top = `${bpmToY(level) - SET_IMG / 2}px`;
+                        col.appendChild(ph);
+                    }
+                    return;
+                }
 
                 const isSelected = ti === slot.selectedTrackIndex;
+                const shouldFadeIn = slot._fadeInExcept && track.id !== slot._fadeInExcept;
                 const el = document.createElement("div");
-                el.className = `set-track-slot${isSelected ? " selected" : ""}`;
+                el.className = `set-track-slot${isSelected ? " selected" : ""}${shouldFadeIn ? " set-track-fade-in" : ""}`;
+                if (shouldFadeIn) {
+                    // Stagger delay: ripple outward from anchor position
+                    const anchorIdx = slot.selectedTrackIndex || 0;
+                    const dist = Math.abs(ti - anchorIdx);
+                    el.style.animationDelay = `${dist * 60}ms`;
+                }
                 el.dataset.trackIdx = ti;
                 el.dataset.slotId = slot.id;
 
@@ -982,6 +1006,16 @@ function renderTrackColumns() {
             delete img.dataset.pendingArtist;
             delete img.dataset.pendingTitle;
         });
+    }
+
+    // Re-apply play-set-active styling after DOM rebuild
+    if (isPlaySetMode() && setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
+        const activeSlot = setSlots[setPlaySetIndex];
+        const col = container.querySelector(`.set-column[data-slot-id="${activeSlot.id}"]`);
+        if (col) {
+            col.classList.add("play-set-active");
+            createEqOverlay(col);
+        }
     }
 }
 
@@ -1411,8 +1445,9 @@ function renderDrawerDetail(data, source) {
         const safeArtist = escHtml(track.artist || "");
         const safeTitle = escHtml(track.title || "");
 
+        row.draggable = true;
         row.innerHTML = `
-            <img class="set-drawer-track-art" alt="" draggable="true">
+            <img class="set-drawer-track-art" alt="" draggable="false">
             <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
             <div class="set-drawer-track-info">
                 <span class="set-drawer-track-title">${safeTitle}</span>
@@ -1430,8 +1465,8 @@ function renderDrawerDetail(data, source) {
             loadArtwork(track.artist, track.title, img);
         }
 
-        // Make artwork draggable
-        img.addEventListener("dragstart", (e) => {
+        // Drag — entire row is draggable, use artwork as drag image
+        row.addEventListener("dragstart", (e) => {
             setDragTrack = {
                 id: track.id,
                 artist: track.artist,
@@ -1445,8 +1480,11 @@ function renderDrawerDetail(data, source) {
             };
             e.dataTransfer.setData("text/plain", String(track.id));
             e.dataTransfer.effectAllowed = "copy";
+            if (img.complete && img.naturalWidth > 0) {
+                e.dataTransfer.setDragImage(img, 18, 18);
+            }
         });
-        img.addEventListener("dragend", () => { setDragTrack = null; });
+        row.addEventListener("dragend", () => { setDragTrack = null; });
 
         // Preview button
         row.querySelector(".btn-preview").addEventListener("click", (e) => {
@@ -1622,6 +1660,38 @@ async function onTrackDrop(e, slotId) {
     // Otherwise, assign as new source via API
     const usedIds = getUsedTrackIds(slotId);
 
+    // ── Update drawer first: clear search results, show track details ──
+    if (drag.from_search && setDrawerMode === "search") {
+        document.getElementById("set-drawer-track-search").value = "";
+        document.getElementById("set-drawer-search-results").innerHTML = "";
+        loadTrackContext(drag);
+    }
+
+    // ── Phase 1: Immediately place anchor track + show loading shimmer ──
+    const anchorBpm = drag.bpm || 100;
+    const bestLevel = SET_BPM_LEVELS.reduce((best, lv) =>
+        Math.abs(lv - anchorBpm) < Math.abs(best - anchorBpm) ? lv : best);
+    const anchorIdx = SET_BPM_LEVELS.indexOf(bestLevel);
+
+    // Build a placeholder tracks array: anchor at its level, null elsewhere
+    const placeholderTracks = SET_BPM_LEVELS.map((lv, i) =>
+        i === anchorIdx ? {
+            id: drag.id, title: drag.title || "", artist: drag.artist || "",
+            bpm: drag.bpm, key: drag.key || "", year: drag.year || "",
+            bpm_level: bestLevel,
+        } : null
+    );
+    slot.source = {
+        type: drag.source_type, id: drag.source_id,
+        tree_type: drag.tree_type, name: drag.name || "",
+    };
+    slot.tracks = placeholderTracks;
+    slot.selectedTrackIndex = anchorIdx;
+    slot._loading = true;
+    ensureBookendSlots();
+    renderSet();
+
+    // ── Phase 2: Fetch full track list from API ──
     try {
         const res = await fetch("/api/set-workshop/drag-track", {
             method: "POST",
@@ -1631,21 +1701,27 @@ async function onTrackDrop(e, slotId) {
                 source_type: drag.source_type,
                 source_id: drag.source_id,
                 tree_type: drag.tree_type || "",
+                track_ids: drag.track_ids || [],
+                name: drag.name || "",
                 used_track_ids: usedIds,
             }),
         });
 
+        slot._loading = false;
+
         if (!res.ok) {
             console.error("Drag track failed:", res.status, await res.text());
+            renderSet();
             return;
         }
         const data = await res.json();
 
+        const src = data.source || {};
         slot.source = {
-            type: drag.source_type,
-            id: drag.source_id,
-            tree_type: drag.tree_type,
-            name: data.source ? data.source.name : "",
+            type: src.type || drag.source_type,
+            id: src.id || drag.source_id,
+            tree_type: src.tree_type || drag.tree_type,
+            name: src.name || "",
         };
         slot.tracks = data.tracks || [];
 
@@ -1653,11 +1729,19 @@ async function onTrackDrop(e, slotId) {
         const dragIdx = slot.tracks.findIndex(t => t && t.id === drag.id);
         slot.selectedTrackIndex = dragIdx >= 0 ? dragIdx : findDefaultSelection(slot.tracks);
 
+        // Mark non-anchor tracks for fade-in animation
+        slot._fadeInExcept = drag.id;
+
         ensureBookendSlots();
         renderSet();
         scheduleAutoSave();
+
+        // Clear fade-in flag after staggered animation completes
+        setTimeout(() => { delete slot._fadeInExcept; }, 900);
     } catch (e2) {
+        slot._loading = false;
         console.error("Drag track failed:", e2);
+        renderSet();
     }
 }
 
@@ -2281,12 +2365,13 @@ function renderSearchResults(tracks) {
     for (const track of tracks) {
         const row = document.createElement("div");
         row.className = "set-drawer-track-row set-search-result-row";
+        row.draggable = true;
 
         const safeArtist = escHtml(track.artist || "");
         const safeTitle = escHtml(track.title || "");
 
         row.innerHTML = `
-            <img class="set-drawer-track-art" alt="" draggable="true">
+            <img class="set-drawer-track-art" alt="" draggable="false">
             <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
             <div class="set-drawer-track-info">
                 <span class="set-drawer-track-title">${safeTitle}</span>
@@ -2305,17 +2390,22 @@ function renderSearchResults(tracks) {
             loadArtwork(track.artist, track.title, img);
         }
 
-        // Drag
-        img.addEventListener("dragstart", (e) => {
+        // Drag — entire row is draggable, use artwork as drag image
+        row.addEventListener("dragstart", (e) => {
             setDragTrack = {
                 id: track.id, artist: track.artist, title: track.title,
                 bpm: track.bpm, key: track.key || "", year: track.year || "",
                 source_type: "adhoc", source_id: null, track_ids: [track.id],
+                from_search: true,
             };
             e.dataTransfer.setData("text/plain", String(track.id));
             e.dataTransfer.effectAllowed = "copy";
+            // Use artwork thumbnail as the drag image
+            if (img.complete && img.naturalWidth > 0) {
+                e.dataTransfer.setDragImage(img, 18, 18);
+            }
         });
-        img.addEventListener("dragend", () => { setDragTrack = null; });
+        row.addEventListener("dragend", () => { setDragTrack = null; });
 
         // Preview
         row.querySelector(".btn-preview").addEventListener("click", (e) => {
@@ -2603,8 +2693,9 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
         const safeArtist = escHtml(track.artist || "");
         const safeTitle = escHtml(track.title || "");
 
+        row.draggable = true;
         row.innerHTML = `
-            <img class="set-drawer-track-art" alt="" draggable="true">
+            <img class="set-drawer-track-art" alt="" draggable="false">
             <button class="btn-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">\u25B6</button>
             <div class="set-drawer-track-info">
                 <span class="set-drawer-track-title">${safeTitle}</span>
@@ -2622,12 +2713,12 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
             loadArtwork(track.artist, track.title, img);
         }
 
-        // Drag — tree leaf cards use tree_node source, similar uses adhoc
+        // Drag — entire row is draggable, use artwork as drag image
         const dragInfo = sourceType === "tree_node" && cardData.node_id
             ? { type: "tree_node", id: cardData.node_id, tree_type: treeType }
             : { type: "adhoc", id: null, track_ids: tracks.map(t => t.id) };
 
-        img.addEventListener("dragstart", (e) => {
+        row.addEventListener("dragstart", (e) => {
             setDragTrack = {
                 id: track.id, artist: track.artist, title: track.title,
                 bpm: track.bpm, key: track.key || "", year: track.year || "",
@@ -2637,8 +2728,11 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
             };
             e.dataTransfer.setData("text/plain", String(track.id));
             e.dataTransfer.effectAllowed = "copy";
+            if (img.complete && img.naturalWidth > 0) {
+                e.dataTransfer.setDragImage(img, 18, 18);
+            }
         });
-        img.addEventListener("dragend", () => { setDragTrack = null; });
+        row.addEventListener("dragend", () => { setDragTrack = null; });
 
         // Preview
         row.querySelector(".btn-preview").addEventListener("click", (e) => {

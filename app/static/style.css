@@ -1883,6 +1883,27 @@ tr.ws-seed-selected {
     filter: brightness(0.85);
 }
 
+/* Loading shimmer for empty BPM rows while filling */
+.set-track-shimmer {
+    background: rgba(255,255,255,0.04);
+    opacity: 0.3;
+    transform: scale(0.90);
+    cursor: default;
+    animation: slotShimmer 1.2s ease-in-out infinite;
+}
+@keyframes slotShimmer {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.35; }
+}
+
+/* Fade-in for newly arrived tracks (staggered via animation-delay in JS) */
+.set-track-fade-in {
+    animation: slotFadeIn 0.3s ease-out backwards;
+}
+@keyframes slotFadeIn {
+    from { opacity: 0; transform: scale(0.65); }
+}
+
 /* Empty slot placeholder in BPM grid */
 .set-empty-slot {
     position: absolute;
@@ -2132,17 +2153,17 @@ tr.ws-seed-selected {
     gap: 0.5rem;
     padding: 0.35rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: grab;
 }
+.set-drawer-track-row:active { cursor: grabbing; }
 .set-drawer-track-art {
     width: 36px;
     height: 36px;
     border-radius: 3px;
     object-fit: cover;
-    cursor: grab;
     flex-shrink: 0;
     background: rgba(255,255,255,0.04);
 }
-.set-drawer-track-art:active { cursor: grabbing; }
 .set-drawer-track-info {
     flex: 1;
     min-width: 0;
@@ -2208,7 +2229,6 @@ tr.ws-seed-selected {
     text-align: center;
 }
 .set-search-result-row {
-    cursor: pointer;
     border-left: 3px solid transparent;
     transition: background 0.15s, border-color 0.15s;
 }

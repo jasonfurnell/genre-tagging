@@ -41,7 +41,7 @@ from app.tree import (
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source,
-    build_track_context, save_set_state, load_set_state,
+    build_track_context, find_leaf_for_track, save_set_state, load_set_state,
     create_saved_set, get_saved_set, list_saved_sets,
     update_saved_set, delete_saved_set,
 )
@@ -2703,6 +2703,17 @@ def set_workshop_drag_track():
 
     if source_type == "adhoc":
         track_ids = body.get("track_ids", [])
+        # For single-track adhoc (e.g. search result drag), auto-expand to
+        # the genre tree leaf so we have a full pool to fill all BPM levels.
+        if len(track_ids) <= 1 and track_id is not None:
+            genre_tree = _resolve_tree("genre")
+            leaf = find_leaf_for_track(genre_tree, track_id)
+            if leaf:
+                track_ids = leaf.get("track_ids", track_ids)
+                source_type = "tree_node"
+                source_id = leaf.get("id", "")
+                tree_type = "genre"
+                tree = genre_tree
     else:
         track_ids = get_source_tracks(source_type, source_id, tree)
 
@@ -2722,6 +2733,10 @@ def set_workshop_drag_track():
                 "description": "", "track_count": len(track_ids), "examples": []}
     else:
         info = get_source_info(source_type, source_id, tree)
+
+    if info:
+        info["type"] = source_type
+        info["tree_type"] = tree_type
 
     return jsonify({"source": info, "tracks": tracks})
 
