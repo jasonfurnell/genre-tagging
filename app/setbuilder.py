@@ -9,6 +9,7 @@ import uuid
 from datetime import datetime, timezone
 from app.tree import find_node
 from app.playlist import get_playlist, list_playlists
+from app.parser import scored_search, parse_all_comments
 
 # ---------------------------------------------------------------------------
 # State Persistence (working copy — crash recovery)
@@ -245,6 +246,117 @@ def _track_dict(df, idx, bpm_level=None, path_mapper=None, has_audio_fn=None):
 # ---------------------------------------------------------------------------
 
 DEFAULT_BPM_LEVELS = [60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
+BPM_TOLERANCE = 20  # ±20 BPM for candidate gathering (vibe scoring handles ranking)
+
+
+# ---------------------------------------------------------------------------
+# Anchor-Seeded Similarity Scoring
+# ---------------------------------------------------------------------------
+
+def _build_anchor_filters(df, anchor_idx):
+    """Build a scored_search filter dict from the anchor track's facets."""
+    if anchor_idx not in df.index:
+        return None
+    parse_all_comments(df)
+    row = df.loc[anchor_idx]
+
+    genres = [g for g in [str(row.get("_genre1", "")), str(row.get("_genre2", ""))]
+              if g.strip()]
+    mood_raw = str(row.get("_mood", "")).strip()
+    mood = [k.strip() for k in mood_raw.split(",") if k.strip()] if mood_raw else []
+    desc_raw = str(row.get("_descriptors", "")).strip()
+    descriptors = [k.strip() for k in desc_raw.split(",") if k.strip()] if desc_raw else []
+    location = [str(row.get("_location", "")).strip()] if str(row.get("_location", "")).strip() else []
+    era = [str(row.get("_era", "")).strip()] if str(row.get("_era", "")).strip() else []
+
+    filters = {}
+    if genres:
+        filters["genres"] = genres
+    if mood:
+        filters["mood"] = mood
+    if descriptors:
+        filters["descriptors"] = descriptors
+    if location:
+        filters["location"] = location
+    if era:
+        filters["era"] = era
+
+    return filters if filters else None
+
+
+def _score_pool_tracks(df, pool_ids, anchor_idx, anchor_key):
+    """Score pool tracks against the anchor using facet similarity + key compatibility.
+
+    Returns dict mapping track_id -> composite_score (float, 0.0-1.0).
+    """
+    filters = _build_anchor_filters(df, anchor_idx)
+    if filters is None:
+        return {tid: 0.0 for tid in pool_ids}
+
+    # Score only pool tracks via a DataFrame subset
+    valid_ids = [tid for tid in pool_ids if tid in df.index]
+    if not valid_ids:
+        return {tid: 0.0 for tid in pool_ids}
+    df_subset = df.loc[valid_ids]
+    results = scored_search(df_subset, filters, min_score=0.0,
+                            max_results=len(df_subset))
+
+    facet_scores = {idx: score for idx, score, _ in results}
+    # Ensure every pool ID has a score
+    for tid in pool_ids:
+        if tid not in facet_scores:
+            facet_scores[tid] = 0.0
+
+    # Apply Camelot key compatibility bonus
+    scores = {}
+    for tid in pool_ids:
+        if tid not in df.index:
+            scores[tid] = 0.0
+            continue
+        track_key = normalize_camelot(str(df.loc[tid].get("key", "")))
+        if anchor_key and track_key:
+            dist = camelot_distance(anchor_key, track_key)
+            if dist == 0:
+                key_bonus = 0.15
+            elif dist == 1:
+                key_bonus = 0.10
+            elif dist == 2:
+                key_bonus = 0.03
+            else:
+                key_bonus = 0.0
+        else:
+            key_bonus = 0.05  # Unknown key — neutral
+        scores[tid] = min(facet_scores[tid] * 0.85 + key_bonus, 1.0)
+
+    return scores
+
+
+def _tiered_sample(candidates, used_in_slot):
+    """Pick one track from scored candidates using tiered random sampling.
+
+    Args:
+        candidates: list of (track_id, composite_score), pre-sorted by score desc.
+        used_in_slot: set of track IDs already assigned in this slot.
+
+    Returns:
+        track_id (int) or None.
+    """
+    available = [(tid, s) for tid, s in candidates if tid not in used_in_slot]
+    if not available:
+        return None
+    if len(available) == 1:
+        return available[0][0]
+
+    # Tier A (strong vibe match) >= 0.55, Tier B (decent) >= 0.25, Tier C (filler)
+    tier_a = [tid for tid, s in available if s >= 0.55]
+    tier_b = [tid for tid, s in available if 0.25 <= s < 0.55]
+    tier_c = [tid for tid, s in available if s < 0.25]
+
+    for tier in (tier_a, tier_b, tier_c):
+        if tier:
+            return random.choice(tier)
+
+    return available[0][0]
 
 
 # ---------------------------------------------------------------------------
@@ -308,7 +420,11 @@ def get_source_info(source_type, source_id, tree=None):
 def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
                              used_track_ids=None, anchor_track_id=None,
                              path_mapper=None, has_audio_fn=None):
-    """Pick one best track per BPM level from a source's track pool.
+    """Pick one best track per BPM level using anchor-seeded similarity scoring.
+
+    Scores source tracks against the anchor's genre/mood/descriptors/location/era
+    facets plus Camelot key compatibility, then uses tiered random sampling to
+    pick one track per BPM level — producing variety across repeated calls.
 
     Args:
         df: DataFrame with track data.
@@ -325,8 +441,11 @@ def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
     if used_track_ids is None:
         used_track_ids = set()
 
+    parse_all_comments(df)  # Ensure facet columns exist (idempotent)
+
     # Build pool of available tracks with their BPMs
-    pool = []
+    pool = []          # [(track_id, bpm_float)]
+    pool_id_set = set()
     for idx in source_track_ids:
         if idx in used_track_ids:
             # Always keep the anchor track even if used in another slot
@@ -336,47 +455,50 @@ def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
             continue
         bpm = df.loc[idx].get("bpm")
         if bpm is not None and not _is_nan(bpm):
-            pool.append((int(idx), float(bpm)))
+            tid = int(idx)
+            pool.append((tid, float(bpm)))
+            pool_id_set.add(tid)
 
-    assigned = {}  # bpm_level → track_id
+    assigned = {}         # bpm_level -> track_id
     used_in_slot = set()
 
-    # If anchor track specified, place it first
-    if anchor_track_id is not None:
+    # Score pool tracks against anchor's vibe profile
+    scores = {}           # track_id -> composite_score (0-1)
+    anchor_key = None
+
+    if anchor_track_id is not None and int(anchor_track_id) in pool_id_set:
+        aid = int(anchor_track_id)
+        anchor_key = normalize_camelot(str(df.loc[aid].get("key", "")))
+        scores = _score_pool_tracks(df, list(pool_id_set), aid, anchor_key)
+
+        # Place anchor at its closest BPM level
         anchor_bpm = None
-        for idx, bpm in pool:
-            if idx == anchor_track_id:
+        for tid, bpm in pool:
+            if tid == aid:
                 anchor_bpm = bpm
                 break
         if anchor_bpm is not None:
-            # Find closest BPM level
             best_level = min(bpm_levels, key=lambda lv: abs(lv - anchor_bpm))
-            assigned[best_level] = anchor_track_id
-            used_in_slot.add(anchor_track_id)
+            assigned[best_level] = aid
+            used_in_slot.add(aid)
 
-    # For each remaining BPM level, find best available track
+    # For each remaining BPM level, gather candidates and sample from tiers
     for level in bpm_levels:
         if level in assigned:
             continue
 
-        best_id = None
-        best_dist = float("inf")
+        # Candidates within BPM tolerance of this level, scored
+        candidates = []
+        for tid, bpm in pool:
+            if abs(bpm - level) <= BPM_TOLERANCE:
+                candidates.append((tid, scores.get(tid, 0.0)))
 
-        # Progressive tolerance: ±5, ±10, ±15
-        for tolerance in (5, 10, 15):
-            for idx, bpm in pool:
-                if idx in used_in_slot:
-                    continue
-                dist = abs(bpm - level)
-                if dist <= tolerance and dist < best_dist:
-                    best_dist = dist
-                    best_id = idx
-            if best_id is not None:
-                break
+        candidates.sort(key=lambda x: x[1], reverse=True)
 
-        if best_id is not None:
-            assigned[level] = best_id
-            used_in_slot.add(best_id)
+        picked = _tiered_sample(candidates, used_in_slot)
+        if picked is not None:
+            assigned[level] = picked
+            used_in_slot.add(picked)
 
     # Build result list aligned to bpm_levels
     result = []

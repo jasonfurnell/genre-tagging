@@ -3119,7 +3119,7 @@
       },
       {
         "id": "slot-1770953615731-mau4",
-        "selectedTrackIndex": 4,
+        "selectedTrackIndex": 7,
         "source": {
           "id": "french-touch-afterhours",
           "name": "French Touch After-Hours: Parisian Disco-House Comedowns",
@@ -4207,7 +4207,7 @@
       },
       {
         "id": "slot-1770969781186-dkp9",
-        "selectedTrackIndex": 4,
+        "selectedTrackIndex": 5,
         "source": {
           "id": "baroque-chamber-sophisticates",
           "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
@@ -4310,7 +4310,7 @@
       },
       {
         "id": "slot-1770969306314-m52p",
-        "selectedTrackIndex": 8,
+        "selectedTrackIndex": 5,
         "source": {
           "id": "revival-global-bass-influence",
           "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
@@ -4793,7 +4793,7 @@
       },
       {
         "id": "slot-1770977505290-zjwb",
-        "selectedTrackIndex": 6,
+        "selectedTrackIndex": 3,
         "source": {
           "id": "brazilian-funk-soul-fusion",
           "name": "Rio's Funk Carioca Sunrise: Samba-Soul Meets Dancefloor Heat 1973-1983",
@@ -4963,7 +4963,7 @@
       },
       {
         "id": "slot-1770977513593-m2ay",
-        "selectedTrackIndex": 6,
+        "selectedTrackIndex": 1,
         "source": {
           "id": "brazilian-funk-soul-fusion",
           "name": "Rio's Funk Carioca Sunrise: Samba-Soul Meets Dancefloor Heat 1973-1983",
@@ -5067,14 +5067,13 @@
             "year": 2018
           },
           {
+            "id": 1018,
+            "title": "Fever",
             "artist": "Malia,Boris Blank",
             "bpm": 75,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 1018,
             "key": "1M",
-            "title": "Fever",
-            "year": 2011
+            "year": 2011,
+            "bpm_level": 70
           },
           {
             "artist": "Martha High,James Brown",
@@ -5379,13 +5378,14 @@
             "year": 2017
           },
           {
-            "id": 4105,
-            "title": "Rush Hour",
             "artist": "Hoosky,La Fine Equipe,oOgo,Chomsk'",
             "bpm": 104,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4105,
             "key": "6D",
-            "year": 2012,
-            "bpm_level": 100
+            "title": "Rush Hour",
+            "year": 2012
           },
           {
             "artist": "The Quantic Soul Orchestra",
@@ -5423,11 +5423,12 @@
       },
       {
         "id": "slot-1770981809241-ob0n",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "playlist",
           "id": "ece99878",
+          "name": "Progressive House Resurgence: The New European Melodic Movement",
           "tree_type": null,
-          "name": "Progressive House Resurgence: The New European Melodic Movement"
+          "type": "playlist"
         },
         "tracks": [
           null,
@@ -5485,17 +5486,16 @@
             "year": 2018
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "slot-1770980859937-qx3b",
         "selectedTrackIndex": 8,
         "source": {
-          "type": "playlist",
           "id": "ece99878",
+          "name": "Progressive House Resurgence: The New European Melodic Movement",
           "tree_type": null,
-          "name": "Progressive House Resurgence: The New European Melodic Movement"
+          "type": "playlist"
         },
         "tracks": [
           null,
@@ -5514,13 +5514,14 @@
             "year": 2019
           },
           {
-            "id": 2320,
-            "title": "EQUILIBRIUM",
             "artist": "Darius, Wayne Snow",
             "bpm": 118,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 2320,
             "key": "7M",
-            "year": 2020,
-            "bpm_level": 120
+            "title": "EQUILIBRIUM",
+            "year": 2020
           },
           {
             "artist": "Marc Spence",
@@ -5547,11 +5548,12 @@
       },
       {
         "id": "slot-1770981849256-a8st",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "playlist",
           "id": "ece99878",
+          "name": "Progressive House Resurgence: The New European Melodic Movement",
           "tree_type": null,
-          "name": "Progressive House Resurgence: The New European Melodic Movement"
+          "type": "playlist"
         },
         "tracks": [
           null,
@@ -5600,17 +5602,298 @@
             "year": 2006
           },
           null
+        ]
+      },
+      {
+        "id": "slot-1771104640829-20ts",
+        "source": {
+          "type": "tree_node",
+          "id": "boogie-nights-cosmic-disco",
+          "tree_type": "genre",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+        },
+        "tracks": [
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 521,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "Barbra Streisand",
+            "bpm": 84.9,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 642,
+            "key": "7M",
+            "title": "Woman in Love",
+            "year": 1980
+          },
+          {
+            "artist": "George McCrae",
+            "bpm": 99.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2079,
+            "key": "11M",
+            "title": "I Get Lifted",
+            "year": 2008
+          },
+          {
+            "artist": "Prophecy",
+            "bpm": 108.5,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5954,
+            "key": "1M",
+            "title": "What Ever's Your Sign (You Got To Be Mine) Part 1",
+            "year": 2023
+          },
+          {
+            "artist": "One Way",
+            "bpm": 111.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6011,
+            "key": "11D",
+            "title": "Mr. Groove",
+            "year": 1984
+          },
+          {
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1206,
+            "key": "10M",
+            "title": "I Feel Love - Edit",
+            "year": 1977
+          },
+          {
+            "artist": "Cerrone",
+            "bpm": 122.5,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 146,
+            "key": "10M",
+            "title": "Supernature",
+            "year": 1977
+          },
+          {
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 160,
+            "key": "10M",
+            "title": "I Feel Love - Edit",
+            "year": 1977
+          },
+          {
+            "artist": "Lindstr\u00f8m & Todd Terje",
+            "bpm": 124,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 134,
+            "key": "11D",
+            "title": "Lanzarote",
+            "year": 2009
+          },
+          null
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "slot-1771104751374-z5fq",
+        "source": {
+          "type": "tree_node",
+          "id": "boogie-nights-cosmic-disco",
+          "tree_type": "genre",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+        },
+        "tracks": [
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 521,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 1187,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "George McCrae",
+            "bpm": 99.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2079,
+            "key": "11M",
+            "title": "I Get Lifted",
+            "year": 2008
+          },
+          {
+            "artist": "Gwen McCrae",
+            "bpm": 107.6,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 6020,
+            "key": "10M",
+            "title": "Doin' It - Remastered Version",
+            "year": 1982
+          },
+          {
+            "artist": "Diana Ross",
+            "bpm": 119.5,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2543,
+            "key": "11D",
+            "title": "My Old Piano",
+            "year": 1980
+          },
+          {
+            "artist": "Lindstr\u00f8m",
+            "bpm": 122,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 55,
+            "key": "9M",
+            "title": "I Feel Space",
+            "year": 2008
+          },
+          {
+            "artist": "Lindstr\u00f8m & Todd Terje",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 134,
+            "key": "11D",
+            "title": "Lanzarote",
+            "year": 2009
+          },
+          {
+            "artist": "Todd Terje",
+            "bpm": 124,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4174,
+            "key": "12M",
+            "title": "Delorean Drums",
+            "year": 2014
+          },
+          {
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1206,
+            "key": "10M",
+            "title": "I Feel Love - Edit",
+            "year": 1977
+          },
+          null
         ],
         "selectedTrackIndex": 6
       },
       {
-        "id": "slot-1770981858751-i94i",
+        "id": "slot-1771104809821-szvn",
+        "source": {
+          "type": "tree_node",
+          "id": "euro-miami-synth-transition",
+          "tree_type": "scene",
+          "name": "Euro-Miami Synth Transition: Continental Disco's Electronic Turn"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "artist": "Silver Convention",
+            "bpm": 100.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2046,
+            "key": "10M",
+            "title": "Fly Robin Fly",
+            "year": 2010
+          },
+          {
+            "artist": "Horse Meat Disco,The Phenomenal Handclap Band,Ray Mang",
+            "bpm": 114,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4107,
+            "key": "7M",
+            "title": "Sanctuary - Ray Mang Remix",
+            "year": 2021
+          },
+          {
+            "artist": "Eruption",
+            "bpm": 108.2,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2074,
+            "key": "7M",
+            "title": "I Can't Stand the Rain",
+            "year": 2011
+          },
+          {
+            "artist": "Diana Ross",
+            "bpm": 119.5,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 2543,
+            "key": "11D",
+            "title": "My Old Piano",
+            "year": 1980
+          },
+          {
+            "artist": "Boney M",
+            "bpm": 126.7,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4544,
+            "key": "3M",
+            "title": "Rasputin",
+            "year": 1994
+          },
+          {
+            "artist": "Boney M",
+            "bpm": 126.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4658,
+            "key": "3M",
+            "title": "Rasputin",
+            "year": 1994
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "slot-1771104877911-91y3",
         "source": null,
         "tracks": [],
         "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-13T11:31:59.255638+00:00"
+    "updated_at": "2026-02-14T21:35:04.970577+00:00"
   }
 }
