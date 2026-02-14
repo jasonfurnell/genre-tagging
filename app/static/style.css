@@ -1720,6 +1720,13 @@ tr.ws-seed-selected {
     opacity: 0.5;
     filter: drop-shadow(0 0 4px var(--accent));
 }
+.set-energy-line--ghost {
+    stroke-width: 1.5;
+    opacity: 0.25;
+}
+.set-energy-line--ghost.set-energy-line--alive {
+    opacity: 0.25;
+}
 .set-energy-fill {
     fill: var(--accent);
     opacity: 0.05;

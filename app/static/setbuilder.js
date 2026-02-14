@@ -719,15 +719,21 @@ function renderEnergyWave() {
         return;
     }
 
-    const pathD = catmullRomPath(points);
-    const fillD = pathD
+    // 3 lines with slightly different tensions for visual depth
+    const tensions = [0.30, 0.25, 0.36];
+    const classes  = ["set-energy-line", "set-energy-line set-energy-line--ghost", "set-energy-line set-energy-line--ghost"];
+
+    const primaryD = catmullRomPath(points, tensions[0]);
+    const fillD = primaryD
         + ` L ${points[points.length - 1].x} ${SET_AREA_H}`
         + ` L ${points[0].x} ${SET_AREA_H} Z`;
 
-    svg.innerHTML = `
-        <path class="set-energy-fill" d="${fillD}" />
-        <path class="set-energy-line" d="${pathD}" />
-    `;
+    let html = `<path class="set-energy-fill" d="${fillD}" />`;
+    tensions.forEach((t, li) => {
+        html += `<path class="${classes[li]}" d="${catmullRomPath(points, t)}" />`;
+    });
+
+    svg.innerHTML = html;
 }
 
 function catmullRomPath(points, tension) {
@@ -798,34 +804,6 @@ function _energyAnimTick() {
 
     const elapsed = (performance.now() - _energyAnimStart) / 1000;
 
-    // EXTREME organic motion — 6 layered sine waves per axis at
-    // irrational frequency ratios, plus X wobble and wild tension swings
-    const animated = points.map((p, i) => {
-        const s = i * 7.31;  // per-point seed
-        const dy = Math.sin(elapsed * 1.17 + s) * 5.0
-                 + Math.sin(elapsed * 0.53 + s * 1.3) * 4.0
-                 + Math.sin(elapsed * 2.71 + s * 0.7) * 3.0
-                 + Math.sin(elapsed * 0.19 + s * 2.1) * 3.5
-                 + Math.sin(elapsed * 3.41 + s * 0.4) * 2.0
-                 + Math.sin(elapsed * 0.07 + s * 3.1) * 5.0;  // ultra-slow drift
-        const dx = Math.sin(elapsed * 0.89 + s * 1.7) * 3.0
-                 + Math.sin(elapsed * 1.61 + s * 0.9) * 2.0
-                 + Math.sin(elapsed * 0.31 + s * 2.3) * 2.5;
-        return { x: p.x + dx, y: p.y + dy };
-    });
-
-    // Tension swings wildly between tight and loose curves
-    const tension = 0.3
-        + Math.sin(elapsed * 0.37) * 0.10
-        + Math.sin(elapsed * 0.83) * 0.08
-        + Math.sin(elapsed * 0.13) * 0.06
-        + Math.sin(elapsed * 1.53) * 0.05;
-
-    const pathD = catmullRomPath(animated, tension);
-    const fillD = pathD
-        + ` L ${animated[animated.length - 1].x} ${SET_AREA_H}`
-        + ` L ${animated[0].x} ${SET_AREA_H} Z`;
-
     // Use the currently-playing track's key color; carry forward if no key
     if (setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
         const ps = setSlots[setPlaySetIndex];
@@ -836,11 +814,54 @@ function _energyAnimTick() {
     }
     const stroke = _energyLastKeyColor || "var(--accent)";
 
-    svg.innerHTML = `
-        <path class="set-energy-fill" d="${fillD}" style="fill:${stroke}" />
-        <path class="set-energy-line set-energy-line--alive" d="${pathD}"
-              style="stroke:${stroke}; filter:drop-shadow(0 0 6px ${stroke})" />
-    `;
+    // 3 layered lines — each with a different seed offset so they diverge
+    const layerSeeds  = [0, 137, 293];      // phase offsets per layer
+    const layerClasses = [
+        "set-energy-line set-energy-line--alive",
+        "set-energy-line set-energy-line--alive set-energy-line--ghost",
+        "set-energy-line set-energy-line--alive set-energy-line--ghost",
+    ];
+
+    let html = "";
+    layerSeeds.forEach((lseed, li) => {
+        // EXTREME organic motion — 6 layered sine waves per axis at
+        // irrational frequency ratios, plus X wobble and wild tension swings
+        const animated = points.map((p, i) => {
+            const s = i * 7.31 + lseed;  // per-point seed + layer offset
+            const dy = Math.sin(elapsed * 1.17 + s) * 5.0
+                     + Math.sin(elapsed * 0.53 + s * 1.3) * 4.0
+                     + Math.sin(elapsed * 2.71 + s * 0.7) * 3.0
+                     + Math.sin(elapsed * 0.19 + s * 2.1) * 3.5
+                     + Math.sin(elapsed * 3.41 + s * 0.4) * 2.0
+                     + Math.sin(elapsed * 0.07 + s * 3.1) * 5.0;
+            const dx = Math.sin(elapsed * 0.89 + s * 1.7) * 3.0
+                     + Math.sin(elapsed * 1.61 + s * 0.9) * 2.0
+                     + Math.sin(elapsed * 0.31 + s * 2.3) * 2.5;
+            return { x: p.x + dx, y: p.y + dy };
+        });
+
+        // Tension swings — layer offset makes each curve bend differently
+        const tension = 0.3
+            + Math.sin(elapsed * 0.37 + lseed) * 0.10
+            + Math.sin(elapsed * 0.83 + lseed * 0.7) * 0.08
+            + Math.sin(elapsed * 0.13 + lseed * 1.3) * 0.06
+            + Math.sin(elapsed * 1.53 + lseed * 0.4) * 0.05;
+
+        const pathD = catmullRomPath(animated, tension);
+
+        // Only the primary layer gets the fill
+        if (li === 0) {
+            const fillD = pathD
+                + ` L ${animated[animated.length - 1].x} ${SET_AREA_H}`
+                + ` L ${animated[0].x} ${SET_AREA_H} Z`;
+            html += `<path class="set-energy-fill" d="${fillD}" style="fill:${stroke}" />`;
+        }
+
+        html += `<path class="${layerClasses[li]}" d="${pathD}"
+              style="stroke:${stroke}; filter:drop-shadow(0 0 ${li === 0 ? 6 : 3}px ${stroke})" />`;
+    });
+
+    svg.innerHTML = html;
 
     _energyAnimFrame = requestAnimationFrame(_energyAnimTick);
 }
