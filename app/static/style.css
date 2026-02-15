@@ -1574,11 +1574,295 @@ tr.ws-seed-selected {
     letter-spacing: 0.04em;
 }
 
+/* -- Phase Row (energy phase indicators) -------------------------------- */
+.set-phase-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.set-phase-row {
+    display: flex;
+    gap: 6px;
+}
+.set-phase-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--phase-color) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--phase-color) 25%, transparent);
+    overflow: hidden;
+    white-space: nowrap;
+}
+.set-phase-name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--phase-color);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+.set-phase-desc {
+    font-size: 0.65rem;
+    color: color-mix(in srgb, var(--phase-color) 60%, var(--text-muted));
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ═══ Phases Tab ════════════════════════════════════════════════════════════ */
+
+.phases-layout {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem;
+    height: calc(100vh - 80px);
+}
+
+/* -- Sidebar (profile list) --------------------------------------------- */
+.phases-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.phases-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.phases-sidebar-header h2 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--text);
+}
+.phases-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+.phases-empty {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* -- Profile cards ------------------------------------------------------ */
+.phase-profile-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.phase-profile-card:hover {
+    border-color: var(--success);
+    box-shadow: 0 0 0 1px rgba(78,204,163,0.15);
+}
+.phase-profile-card.active {
+    border-color: var(--success);
+    background: rgba(78,204,163,0.05);
+}
+.phase-profile-card-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+}
+.phase-profile-card-preview {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.35rem;
+}
+.phase-profile-card-meta {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* -- Default badge ------------------------------------------------------ */
+.phases-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 1px 5px;
+    background: rgba(78,204,163,0.15);
+    color: var(--success);
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+}
+
+/* -- Editor panel ------------------------------------------------------- */
+.phases-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+.phases-editor-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.phases-name-input {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    width: 100%;
+    font-family: inherit;
+}
+.phases-name-input:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+.phases-desc-input {
+    font-size: 0.85rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: inherit;
+}
+.phases-desc-input:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* -- Preview bar (large, in editor) ------------------------------------- */
+.phases-preview-bar {
+    display: flex;
+    height: 44px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.phases-preview-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--phase-color);
+    background: color-mix(in srgb, var(--phase-color) 15%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--phase-color) 30%, var(--border));
+}
+.phases-preview-segment:last-child {
+    border-right: none;
+}
+
+/* -- Phase table -------------------------------------------------------- */
+.phases-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.phases-table {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.phase-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px 36px 2fr 32px;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 8px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+.phase-row input[type="text"],
+.phase-row input[type="number"] {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+.phase-row input[type="text"]:disabled,
+.phase-row input[type="number"]:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+.phase-row input[type="number"] {
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+.phase-row input[type="color"] {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: transparent;
+    padding: 0;
+}
+.phase-row input[type="color"]:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+.phase-row-remove {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.phase-row-remove:hover {
+    color: #e94560;
+}
+
+/* -- Actions bar -------------------------------------------------------- */
+.phases-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+/* -- Additional button variant ------------------------------------------ */
+.btn-success {
+    background: var(--success);
+    color: #000;
+}
+.btn-success:hover {
+    filter: brightness(1.1);
+}
+
 /* -- Slot Headers (source indicator + controls) ------------------------- */
 .set-slot-headers-area {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 4px;
+    margin-bottom: 18px;
 }
 .set-slot-headers {
     display: flex;

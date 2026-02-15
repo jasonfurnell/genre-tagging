@@ -18,6 +18,7 @@
         <button class="tab-btn" data-tab="intersections">Intersections</button>
         <button class="tab-btn" data-tab="workshop">Playlists</button>
         <button class="tab-btn" data-tab="tree">Collection Tree</button>
+        <button class="tab-btn" data-tab="phases">Phases</button>
     </nav>
 
     <!-- Tab-specific controls (only active tab's div is visible) -->
@@ -40,6 +41,7 @@
     <div id="tab-controls-intersections" class="tab-controls hidden"></div>
     <div id="tab-controls-workshop" class="tab-controls hidden"></div>
     <div id="tab-controls-tree" class="tab-controls hidden"></div>
+    <div id="tab-controls-phases" class="tab-controls hidden"></div>
 
     <div class="hdr-status">
         <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
@@ -217,6 +219,51 @@
 
     </div>
 
+    <!-- ═══ Tab: Phase Profiles ═══ -->
+    <div id="tab-phases" class="tab-content hidden">
+        <div class="phases-layout">
+            <!-- Left: profile list -->
+            <div class="phases-sidebar">
+                <div class="phases-sidebar-header">
+                    <h2>Phase Profiles</h2>
+                    <button id="phases-new-btn" class="btn btn-primary btn-sm">New Profile</button>
+                </div>
+                <div id="phases-list" class="phases-list">
+                    <p class="phases-empty">Loading profiles...</p>
+                </div>
+            </div>
+
+            <!-- Right: editor -->
+            <div id="phases-editor" class="phases-editor hidden">
+                <div class="phases-editor-header">
+                    <input type="text" id="phases-name-input" class="phases-name-input"
+                           placeholder="Profile name" disabled>
+                    <span id="phases-default-badge" class="phases-badge hidden">Default</span>
+                </div>
+                <textarea id="phases-desc-input" class="phases-desc-input"
+                          placeholder="Description" rows="2" disabled></textarea>
+
+                <!-- Visual preview bar -->
+                <div id="phases-preview-bar" class="phases-preview-bar"></div>
+
+                <!-- Phase table -->
+                <div class="phases-table-header">
+                    <span>Phases</span>
+                    <button id="phases-add-btn" class="btn btn-sm btn-secondary hidden">+ Add Phase</button>
+                </div>
+                <div id="phases-table" class="phases-table"></div>
+
+                <!-- Actions -->
+                <div class="phases-actions">
+                    <button id="phases-apply-btn" class="btn btn-primary">Apply to Set Workshop</button>
+                    <button id="phases-duplicate-btn" class="btn btn-secondary">Duplicate</button>
+                    <button id="phases-save-btn" class="btn btn-success hidden">Save</button>
+                    <button id="phases-delete-btn" class="btn btn-danger hidden">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ═══ Tab: Saved Sets ═══ -->
     <div id="tab-sets" class="tab-content hidden">
         <div class="sets-header">
@@ -235,6 +282,12 @@
         <div id="set-grid-wrapper" class="set-grid-wrapper">
             <div id="set-grid-scroll" class="set-grid-scroll">
               <div class="set-grid-content">
+
+                <!-- Phase Row (energy phase indicators) -->
+                <div class="set-phase-area">
+                    <div class="set-row-label">Phase</div>
+                    <div id="set-phase-row" class="set-phase-row"></div>
+                </div>
 
                 <!-- Slot Headers (source indicators + controls) -->
                 <div class="set-slot-headers-area">
@@ -419,5 +472,6 @@
 <script src="/static/workshop.js"></script>
 <script src="/static/tree.js"></script>
 <script src="/static/setbuilder.js"></script>
+<script src="/static/phases.js"></script>
 </body>
 </html>

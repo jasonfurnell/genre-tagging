@@ -4299,7 +4299,7 @@
       },
       {
         "id": "slot-1770976721417-vu4k",
-        "selectedTrackIndex": 2,
+        "selectedTrackIndex": 8,
         "source": {
           "id": "chill-out-room-redux",
           "name": "Balearic Transmission: Downtempo Drift & Sunset Sessions",
@@ -6380,13 +6380,14 @@
         ]
       },
       {
+        "_loading": false,
         "id": "slot-1771117770238-bepc",
         "selectedTrackIndex": 7,
         "source": {
-          "type": "tree_node",
           "id": "peak-time-percussive-warehouse",
+          "name": "Warehouse Rituals: Tribal Minimalism & Percussive Transcendence",
           "tree_type": "genre",
-          "name": "Warehouse Rituals: Tribal Minimalism & Percussive Transcendence"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -6489,16 +6490,17 @@
             "title": "Alien Mode",
             "year": 2020
           }
-        ],
-        "_loading": false
+        ]
       },
       {
+        "_loading": false,
         "id": "slot-1771125992339-03jv",
+        "selectedTrackIndex": 8,
         "source": {
-          "type": "tree_node",
           "id": "peak-time-percussive-warehouse",
+          "name": "Warehouse Rituals: Tribal Minimalism & Percussive Transcendence",
           "tree_type": "genre",
-          "name": "Warehouse Rituals: Tribal Minimalism & Percussive Transcendence"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -6601,17 +6603,17 @@
             "title": "Alien Mode",
             "year": 2020
           }
-        ],
-        "selectedTrackIndex": 8,
-        "_loading": false
+        ]
       },
       {
+        "_loading": false,
         "id": "slot-1771125989705-uy4o",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "tree_node",
           "id": "jackin-electro-crossover-2006-2010",
+          "name": "Electro-Jackin' Collision: Festival House Meets Underground Swagger",
           "tree_type": "scene",
-          "name": "Electro-Jackin' Collision: Festival House Meets Underground Swagger"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -6678,18 +6680,132 @@
             "year": 2004
           },
           null
+        ]
+      },
+      {
+        "id": "slot-1771127655269-c483",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "experimental-electronics-balearic-deviation",
+          "tree_type": "genre",
+          "name": "Balearic Mutations: Electronic Eccentrics & Sunset Deviations"
+        },
+        "tracks": [
+          {
+            "artist": "Yello",
+            "bpm": 58,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 4937,
+            "key": "3M",
+            "title": "La Habanera - Remastered 2005",
+            "year": 2021
+          },
+          {
+            "artist": "Yello",
+            "bpm": 60,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5448,
+            "key": "1D",
+            "title": "Frautonium",
+            "year": 2016
+          },
+          {
+            "artist": "Kraftwerk",
+            "bpm": 91,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5029,
+            "key": "11M",
+            "title": "Vitamin - 2009 Remaster",
+            "year": 2003
+          },
+          {
+            "artist": "Wolf M\u00fcller",
+            "bpm": 95,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 227,
+            "key": "1D",
+            "title": "Pfad des Windes",
+            "year": 2014
+          },
+          {
+            "artist": "Yello",
+            "bpm": 104,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6282,
+            "key": "10M",
+            "title": "Star Breath",
+            "year": 2003
+          },
+          {
+            "artist": "Yello",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5430,
+            "key": "2M",
+            "title": "Limbo",
+            "year": 2016
+          },
+          {
+            "artist": "Yello",
+            "bpm": 132.4,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 56,
+            "key": "10M",
+            "title": "Koladi-Ola - Remastered 2005",
+            "year": 1985
+          },
+          {
+            "artist": "Ian Pooley,Daft Punk",
+            "bpm": 127.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1858,
+            "key": "4M",
+            "title": "Ian Pooley ''Chord Memory'' - Daft Punk Remix",
+            "year": 2006
+          },
+          {
+            "artist": "Yello",
+            "bpm": 160,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5444,
+            "key": "4M",
+            "title": "Toy Square",
+            "year": 2016
+          },
+          null
         ],
-        "selectedTrackIndex": 6,
         "_loading": false
       },
       {
-        "id": "slot-1771125939111-26mg",
+        "id": "slot-1771127661017-3xq2",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
+        "id": "slot-1771127663836-6d3m",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
+        "id": "slot-1771152804869-9hsa",
         "source": null,
         "tracks": [],
         "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-15T03:31:43.113599+00:00"
+    "updated_at": "2026-02-15T10:54:22.122036+00:00"
   }
 }

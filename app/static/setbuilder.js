@@ -228,6 +228,7 @@ async function saveSetState() {
                 slots: setSlots,
                 set_id: currentSetId,
                 set_name: currentSetName,
+                phase_profile_id: activePhaseProfileId,
             }),
         });
     } catch (e) {
@@ -244,6 +245,17 @@ async function loadSavedSetState() {
             currentSetId = data.set_id || null;
             currentSetName = data.set_name || null;
             setDirty = false;
+            // Restore phase profile if saved
+            if (data.phase_profile_id) {
+                activePhaseProfileId = data.phase_profile_id;
+                try {
+                    const pRes = await fetch(`/api/phase-profiles/${data.phase_profile_id}`);
+                    if (pRes.ok) {
+                        const prof = await pRes.json();
+                        setActivePhases = prof.phases;
+                    }
+                } catch (_) { /* keep default phases */ }
+            }
             ensureBookendSlots();
             renderSet();
             updateSaveButtons();
@@ -289,7 +301,7 @@ async function saveCurrentSet() {
         const res = await fetch(`/api/saved-sets/${currentSetId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ slots: setSlots, name: currentSetName }),
+            body: JSON.stringify({ slots: setSlots, name: currentSetName, phase_profile_id: activePhaseProfileId }),
         });
         if (res.ok) {
             setDirty = false;
@@ -309,7 +321,7 @@ async function saveSetAs() {
         const res = await fetch("/api/saved-sets", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: name.trim(), slots: setSlots }),
+            body: JSON.stringify({ name: name.trim(), slots: setSlots, phase_profile_id: activePhaseProfileId }),
         });
         if (res.ok) {
             const data = await res.json();
@@ -337,6 +349,17 @@ async function loadSavedSet(setId) {
         currentSetId = data.id;
         currentSetName = data.name;
         setDirty = false;
+        // Restore phase profile if saved with set
+        if (data.phase_profile_id) {
+            activePhaseProfileId = data.phase_profile_id;
+            try {
+                const pRes = await fetch(`/api/phase-profiles/${data.phase_profile_id}`);
+                if (pRes.ok) {
+                    const prof = await pRes.json();
+                    setActivePhases = prof.phases;
+                }
+            } catch (_) { /* keep current phases */ }
+        }
         ensureBookendSlots();
         renderSet();
         updateSaveButtons();
@@ -491,6 +514,7 @@ async function refreshHasAudioFlags() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderSet() {
+    renderPhaseRow();
     renderSlotHeaders();
     renderInsertRow();
     renderKeyRow();
@@ -544,6 +568,60 @@ function buildSourceGroups() {
         }
     }
     return groups;
+}
+
+// ── Phase Row (energy phase indicators) ──
+
+let setActivePhases = [
+    { name: "Opening",    pct: [0, 20],   desc: "Slower BPM, spacious tracks, clearer grooves. Build curiosity rather than intensity.",  color: "#888888" },
+    { name: "Build",      pct: [20, 60],  desc: "Gradually layer in bigger basslines, tighter percussion. The crowd starts to commit.",     color: "#AAAAAA" },
+    { name: "Peak",       pct: [60, 85],  desc: "Full throttle \u2014 your biggest, most powerful tunes. Sustained high energy with minor dips for tension and release.",    color: "#CCCCCC" },
+    { name: "Resolution", pct: [85, 100], desc: "Cool the room with deeper, mellower selections. Let the crowd breathe and land gracefully.",    color: "#999999" },
+];
+let activePhaseProfileId = null;
+
+function setActivePhaseProfile(profileId, phases) {
+    activePhaseProfileId = profileId;
+    setActivePhases = phases;
+    renderPhaseRow();
+    scheduleAutoSave();
+}
+
+function renderPhaseRow() {
+    const row = document.getElementById("set-phase-row");
+    row.innerHTML = "";
+    const total = setSlots.length;
+    if (total === 0) return;
+
+    const slotW = SET_COL_W + SET_GAP;  // 62px per slot
+
+    // Skip bookend empty slots: 1 at start, 3 at end
+    const leadEmpty = 1;
+    const tailEmpty = 3;
+    const contentSlots = Math.max(0, total - leadEmpty - tailEmpty);
+    if (contentSlots <= 0) return;
+
+    // Leading spacer for the first empty slot (subtract flex gap that follows)
+    const leadSpacer = document.createElement("div");
+    leadSpacer.style.width = `${leadEmpty * slotW - SET_GAP}px`;
+    leadSpacer.style.flexShrink = "0";
+    row.appendChild(leadSpacer);
+
+    for (const phase of setActivePhases) {
+        const startSlot = Math.round(contentSlots * phase.pct[0] / 100);
+        const endSlot   = Math.round(contentSlots * phase.pct[1] / 100);
+        const count     = endSlot - startSlot;
+        if (count <= 0) continue;
+
+        const cellW = count * slotW - SET_GAP;
+        const el = document.createElement("div");
+        el.className = "set-phase-cell";
+        el.style.width = `${cellW}px`;
+        el.style.setProperty("--phase-color", phase.color);
+        el.innerHTML = `<span class="set-phase-name">${phase.name}</span>`
+            + `<span class="set-phase-desc">${phase.desc}</span>`;
+        row.appendChild(el);
+    }
 }
 
 // ── Slot Headers ──
@@ -2468,7 +2546,7 @@ function showToast(message) {
     const toast = document.createElement("div");
     toast.className = "set-push-toast";
     toast.textContent = message;
-    document.getElementById("tab-setbuilder").appendChild(toast);
+    document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
 }
 

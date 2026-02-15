@@ -38,6 +38,15 @@ from app.tree import (
     load_tree, save_tree, delete_tree as delete_tree_file,
     find_node, refresh_all_examples, TREE_PROFILES,
 )
+from app.phases import (
+    list_profiles as list_phase_profiles,
+    get_profile as get_phase_profile,
+    create_profile as create_phase_profile,
+    update_profile as update_phase_profile,
+    delete_profile as delete_phase_profile,
+    duplicate_profile as duplicate_phase_profile,
+    validate_phases,
+)
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source,
@@ -3025,6 +3034,73 @@ def saved_sets_delete(set_id):
     if delete_saved_set(set_id):
         return jsonify({"ok": True})
     return jsonify({"error": "Set not found"}), 404
+
+
+# ---------------------------------------------------------------------------
+# Phase Profiles CRUD
+# ---------------------------------------------------------------------------
+
+@api.route("/api/phase-profiles")
+def phase_profiles_list():
+    return jsonify({"profiles": list_phase_profiles()})
+
+
+@api.route("/api/phase-profiles/<profile_id>")
+def phase_profiles_get(profile_id):
+    p = get_phase_profile(profile_id)
+    if not p:
+        return jsonify({"error": "Profile not found"}), 404
+    return jsonify(p)
+
+
+@api.route("/api/phase-profiles", methods=["POST"])
+def phase_profiles_create():
+    body = request.get_json() or {}
+    name = body.get("name", "").strip()
+    phases = body.get("phases")
+    if not name:
+        return jsonify({"error": "Name is required"}), 400
+    if not phases:
+        return jsonify({"error": "Phases are required"}), 400
+    ok, err = validate_phases(phases)
+    if not ok:
+        return jsonify({"error": err}), 400
+    p = create_phase_profile(name, description=body.get("description", ""), phases=phases)
+    return jsonify(p), 201
+
+
+@api.route("/api/phase-profiles/<profile_id>", methods=["PUT"])
+def phase_profiles_update(profile_id):
+    body = request.get_json() or {}
+    phases = body.get("phases")
+    if phases is not None:
+        ok, err = validate_phases(phases)
+        if not ok:
+            return jsonify({"error": err}), 400
+    p = update_phase_profile(profile_id, name=body.get("name"),
+                             description=body.get("description"), phases=phases)
+    if not p:
+        return jsonify({"error": "Profile not found or is a default"}), 404
+    return jsonify(p)
+
+
+@api.route("/api/phase-profiles/<profile_id>", methods=["DELETE"])
+def phase_profiles_delete(profile_id):
+    if delete_phase_profile(profile_id):
+        return jsonify({"ok": True})
+    return jsonify({"error": "Profile not found or is a default"}), 404
+
+
+@api.route("/api/phase-profiles/<profile_id>/duplicate", methods=["POST"])
+def phase_profiles_duplicate(profile_id):
+    body = request.get_json() or {}
+    name = body.get("name", "").strip()
+    if not name:
+        return jsonify({"error": "Name is required"}), 400
+    p = duplicate_phase_profile(profile_id, name)
+    if not p:
+        return jsonify({"error": "Source profile not found"}), 404
+    return jsonify(p), 201
 
 
 # ---------------------------------------------------------------------------
