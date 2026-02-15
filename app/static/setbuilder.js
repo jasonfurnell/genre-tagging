@@ -195,9 +195,15 @@ function ensureBookendSlots() {
     if (setSlots.length === 0 || setSlots[0].source !== null) {
         setSlots.unshift(_makeEmptySlot());
     }
-    // Ensure last slot is clear
-    if (setSlots.length === 0 || setSlots[setSlots.length - 1].source !== null) {
-        setSlots.push(_makeEmptySlot());
+    // Ensure last 3 slots are clear
+    while (true) {
+        let emptyTail = 0;
+        for (let i = setSlots.length - 1; i >= 0; i--) {
+            if (setSlots[i].source === null) emptyTail++;
+            else break;
+        }
+        if (emptyTail < 3) setSlots.push(_makeEmptySlot());
+        else break;
     }
 }
 
