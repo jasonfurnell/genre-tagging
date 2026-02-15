@@ -2185,8 +2185,8 @@ function createEqOverlay(col, bpm) {
     const trackTop = selectedSlot.offsetTop;
     const trackBottom = trackTop + selectedSlot.offsetHeight;
 
-    // BPM-synced pulse: one full opacity cycle per beat
-    const pulseSpeed = bpm ? (60 / bpm) : 0.5;
+    // BPM-synced pulse: one full opacity cycle per two beats
+    const pulseSpeed = bpm ? (120 / bpm) : 1.0;
 
     function makeBars(overlay) {
         for (let i = 0; i < EQ_BAR_COUNT; i++) {

@@ -6199,3 +6199,82 @@ INFO:werkzeug:127.0.0.1 - - [15/Feb/2026 08:52:35] "POST /api/set-workshop/state
 2026-02-15 13:34:13,546 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:34:13] "GET /artwork/9ee79a458e1ea1a752a1b0d98eea7629_small.jpg?v=1771014872 HTTP/1.1" 200 -
 2026-02-15 13:34:13,634 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
 2026-02-15 13:34:13,636 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:34:13] "[32mGET /api/audio/19 HTTP/1.1[0m" 302 -
+2026-02-15 13:35:14,664 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:35:14,681 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:14] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-15 13:35:14,938 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:35:14,940 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:14] "[32mGET /api/audio/5359 HTTP/1.1[0m" 302 -
+2026-02-15 13:35:17,587 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:35:17,596 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:17] "GET /artwork/f2c306f3334b83ed63fc45364987dd35_big.jpg?v=1770985340 HTTP/1.1" 200 -
+2026-02-15 13:35:17,599 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:17] "GET /api/set-workshop/track-context/5542 HTTP/1.1" 200 -
+2026-02-15 13:35:17,767 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:17] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:35:17,771 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:17] "GET /artwork/523fc17913b3beb048f1c07e0e4229cd_small.jpg?v=1770986122 HTTP/1.1" 200 -
+2026-02-15 13:35:17,849 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:35:17,850 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:35:17] "[32mGET /api/audio/5542 HTTP/1.1[0m" 302 -
+2026-02-15 13:36:18,383 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET / HTTP/1.1" 200 -
+2026-02-15 13:36:18,416 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-15 13:36:18,417 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-15 13:36:18,417 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-15 13:36:18,417 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-15 13:36:18,418 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-15 13:36:18,760 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-15 13:36:18,837 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-15 13:36:18,862 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:18] "GET /api/restore HTTP/1.1" 200 -
+2026-02-15 13:36:19,079 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-15 13:36:19,131 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-15 13:36:19,262 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-15 13:36:19,264 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-15 13:36:19,266 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-15 13:36:19,294 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,295 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,303 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-15 13:36:19,310 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,311 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,325 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,330 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,339 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:19,345 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:19] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:20,726 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:20] "GET /api/preview?artist=Di+Melo&title=Kilario HTTP/1.1" 200 -
+2026-02-15 13:36:20,861 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-15 13:36:21,782 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:36:21,796 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:21] "GET /api/set-workshop/track-context/5359 HTTP/1.1" 200 -
+2026-02-15 13:36:21,974 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:21] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:22,036 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:36:22,038 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:22] "[32mGET /api/audio/5359 HTTP/1.1[0m" 302 -
+2026-02-15 13:36:23,560 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "GET /api/artwork?artist=Di%20Melo&title=Kilario HTTP/1.1" 200 -
+2026-02-15 13:36:23,581 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:36:23,582 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "GET /artwork/47247a0e0ed8df160b206eb834866f6c_big.jpg?v=1771016482 HTTP/1.1" 200 -
+2026-02-15 13:36:23,585 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "GET /api/set-workshop/track-context/2821 HTTP/1.1" 200 -
+2026-02-15 13:36:23,768 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:36:23,772 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "GET /artwork/1559b174e3b9f37dae26c735bc369737_small.jpg?v=1770987580 HTTP/1.1" 200 -
+2026-02-15 13:36:23,875 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:36:23,877 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:23] "[32mGET /api/audio/2821 HTTP/1.1[0m" 302 -
+2026-02-15 13:36:30,421 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:30] "GET /api/set-workshop/track-context/3238 HTTP/1.1" 200 -
+2026-02-15 13:36:30,423 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:36:30,687 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:36:30,688 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:30] "[32mGET /api/audio/3238 HTTP/1.1[0m" 302 -
+2026-02-15 13:36:37,344 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:36:37,354 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:37] "GET /api/set-workshop/track-context/5890 HTTP/1.1" 200 -
+2026-02-15 13:36:37,612 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:36:37,614 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:37] "[32mGET /api/audio/5890 HTTP/1.1[0m" 302 -
+2026-02-15 13:36:43,864 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:36:43,869 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:43] "GET /api/set-workshop/track-context/5833 HTTP/1.1" 200 -
+2026-02-15 13:36:44,133 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:36:44,135 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:36:44] "[32mGET /api/audio/5833 HTTP/1.1[0m" 302 -
+2026-02-15 13:37:03,900 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:03] "GET /api/artwork?artist=Modern%20Art&title=Alternative%20Universe%20-%20Edit HTTP/1.1" 200 -
+2026-02-15 13:37:03,916 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:03] "GET /api/set-workshop/track-context/3518 HTTP/1.1" 200 -
+2026-02-15 13:37:03,918 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:37:03,918 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:03] "GET /artwork/fbd8db18874cea5006d50f4c7df3f3af_big.jpg?v=1771014789 HTTP/1.1" 200 -
+2026-02-15 13:37:04,230 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:37:04,232 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:04] "[32mGET /api/audio/3518 HTTP/1.1[0m" 302 -
+2026-02-15 13:37:33,592 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-15 13:37:33,598 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "GET /artwork/da7971908caa3f57a293c603a989176c_big.jpg?v=1771024960 HTTP/1.1" 200 -
+2026-02-15 13:37:33,602 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "GET /api/set-workshop/track-context/3440 HTTP/1.1" 200 -
+2026-02-15 13:37:33,789 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:37:33,795 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "GET /artwork/37c74465a95a29cc0334b5160348eff6_small.jpg?v=1771016472 HTTP/1.1" 200 -
+2026-02-15 13:37:33,796 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "GET /artwork/2d916f045365ea22e1c20069845bcccc_small.jpg?v=1771014831 HTTP/1.1" 200 -
+2026-02-15 13:37:33,796 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "GET /artwork/f4b20728c8dbbef9bbb6cc5bfa4f0b7e_small.jpg?v=1771016474 HTTP/1.1" 200 -
+2026-02-15 13:37:33,848 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-15 13:37:33,849 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:33] "[32mGET /api/audio/3440 HTTP/1.1[0m" 302 -
+2026-02-15 13:37:42,905 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:42] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-15 13:37:42,911 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:42] "GET /artwork/55f58c7ef4dca3d7ef0f2a06138c0d6d_small.jpg?v=1770986142 HTTP/1.1" 200 -
+2026-02-15 13:37:42,912 [INFO] werkzeug: 127.0.0.1 - - [15/Feb/2026 13:37:42] "GET /artwork/71af8b68dfb47208bdeefe99757b8a03_small.jpg?v=1770987325 HTTP/1.1" 200 -
