@@ -1690,6 +1690,87 @@ tr.ws-seed-selected {
     opacity: 1;
 }
 
+/* -- Insert Row (circled "+" buttons between source groups) ------------- */
+.set-insert-row-area {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    margin-bottom: 2px;
+    position: relative;
+    z-index: 3;
+    overflow: visible;
+}
+.set-insert-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    overflow: visible;
+}
+.set-insert-spacer {
+    flex: 0 0 auto;
+    height: 1px;
+}
+.set-insert-col-btn {
+    width: 0;
+    flex: 0 0 0px;
+    margin: 0 -3px;          /* compensate for flex gap on each side */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    cursor: pointer;
+}
+.set-insert-col-btn span {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: var(--bg-surface, #1e1e2e);
+    color: rgba(255,255,255,0.22);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+}
+.set-insert-line {
+    position: absolute;
+    top: 9px;                 /* start at bottom of circle (18/2) */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;              /* hover hit-zone */
+    height: 503px;            /* 9px insert-row + 2px margin + 492px BPM grid */
+    cursor: pointer;
+    background: linear-gradient(to right,
+        transparent calc(50% - 0.5px),
+        rgba(255,255,255,0.06) calc(50% - 0.5px),
+        rgba(255,255,255,0.06) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+    );
+    transition: background 0.2s;
+}
+/* Hover on wrapper (circle or line) → both light up green */
+.set-insert-col-btn:hover span {
+    border-color: var(--success);
+    color: var(--success);
+    background: rgba(78,204,163,0.12);
+    transform: scale(1.15);
+    box-shadow: 0 0 8px rgba(78,204,163,0.3);
+}
+.set-insert-col-btn:hover .set-insert-line {
+    background: linear-gradient(to right,
+        transparent calc(50% - 0.5px),
+        rgba(78,204,163,0.35) calc(50% - 0.5px),
+        rgba(78,204,163,0.35) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+    );
+}
+
 /* -- Key area ----------------------------------------------------------- */
 .set-key-area {
     display: flex;

@@ -486,6 +486,7 @@ async function refreshHasAudioFlags() {
 
 function renderSet() {
     renderSlotHeaders();
+    renderInsertRow();
     renderKeyRow();
     renderBpmGrid();
     renderEnergyWave();
@@ -556,9 +557,18 @@ function renderSlotHeaders() {
             header.dataset.slotId = slot.id;
 
             if (!slot.source) {
-                header.innerHTML = `<button class="set-add-source-btn" title="Assign source">+</button>`;
+                header.innerHTML = `
+                    <button class="set-add-source-btn" title="Assign source">+</button>
+                    <div class="set-slot-controls">
+                        <button class="set-ctrl-btn" data-action="delete" title="Delete">&#10005;</button>
+                    </div>
+                `;
                 header.querySelector(".set-add-source-btn").addEventListener("click", () => {
                     openDrawer("browse", slot.id);
+                });
+                header.querySelector(".set-ctrl-btn[data-action='delete']").addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    handleSlotControl(slot.id, "delete");
                 });
             } else {
                 const safeName = escHtml(slot.source.name || "Source");
@@ -642,6 +652,52 @@ function renderSlotHeaders() {
             row.appendChild(header);
         }
     }
+}
+
+// ── Insert Row (circled "+" buttons between source groups) ──
+
+function renderInsertRow() {
+    const row = document.getElementById("set-insert-row");
+    row.innerHTML = "";
+
+    const groups = buildSourceGroups();
+
+    for (let gi = 0; gi < groups.length; gi++) {
+        const group = groups[gi];
+        // Spacer matching the group's width
+        const spacer = document.createElement("div");
+        spacer.className = "set-insert-spacer";
+        const w = group.count * (SET_COL_W + SET_GAP) - SET_GAP;
+        spacer.style.width = `${w}px`;
+        row.appendChild(spacer);
+
+        // "+" button + vertical line between groups (not after the last one)
+        if (gi < groups.length - 1) {
+            const wrap = document.createElement("div");
+            wrap.className = "set-insert-col-btn";
+            const circle = document.createElement("span");
+            circle.textContent = "+";
+            circle.title = "Insert blank column";
+            const line = document.createElement("div");
+            line.className = "set-insert-line";
+            wrap.appendChild(circle);
+            wrap.appendChild(line);
+            const insertIdx = group.startIdx + group.count;
+            wrap.addEventListener("click", () => insertBlankColumn(insertIdx));
+            row.appendChild(wrap);
+        }
+    }
+}
+
+function insertBlankColumn(atIdx) {
+    const blank = _makeEmptySlot();
+    const idx = Math.max(0, Math.min(atIdx, setSlots.length));
+    setSlots.splice(idx, 0, blank);
+    // Adjust play-set index if inserting before current playing slot
+    if (isPlaySetMode() && idx <= setPlaySetIndex) setPlaySetIndex++;
+    ensureBookendSlots();
+    renderSet();
+    scheduleAutoSave();
 }
 
 
