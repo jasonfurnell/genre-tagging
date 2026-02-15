@@ -102,6 +102,7 @@ async function initSetBuilder() {
     document.getElementById("set-mode-workshop").addEventListener("click", () => switchMode("workshop"));
     document.getElementById("set-mode-playset").addEventListener("click", () => switchMode("playset"));
     document.getElementById("set-export-btn").addEventListener("click", exportSet);
+    document.getElementById("set-refill-btn").addEventListener("click", refillAllBpm);
 
     // Play Set: dedicated Audio element (separate from previewAudio)
     setAudio = new Audio();
@@ -505,6 +506,7 @@ function updateToolbarState() {
     document.getElementById("set-preview-all-btn").disabled = !hasSelection || isPlaySetMode();
     document.getElementById("set-mode-playset").disabled = !hasAudioTracks;
     document.getElementById("set-export-btn").disabled = !hasSelection;
+    document.getElementById("set-refill-btn").disabled = !hasSelection || isPlaySetMode();
 }
 
 
@@ -1743,6 +1745,120 @@ async function onTrackDrop(e, slotId) {
         console.error("Drag track failed:", e2);
         renderSet();
     }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Refill BPM — re-run BPM fill for all slots using current anchors
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function refillAllBpm() {
+    const btn = document.getElementById("set-refill-btn");
+    if (btn.disabled) return;
+
+    // Count slots that will be processed
+    const filled = setSlots.filter(s => s.source && s.tracks.length > 0 && s.selectedTrackIndex != null);
+    if (filled.length === 0) return;
+
+    btn.disabled = true;
+    btn.textContent = "Refilling…";
+
+    // Mark all filled slots as loading (shimmer)
+    for (const slot of setSlots) {
+        if (!slot.source || !slot.tracks.length || slot.selectedTrackIndex == null) continue;
+        const anchor = slot.tracks[slot.selectedTrackIndex];
+        if (!anchor) continue;
+
+        // Keep only the anchor, null out the rest
+        const anchorBpm = anchor.bpm || 100;
+        const bestLevel = SET_BPM_LEVELS.reduce((best, lv) =>
+            Math.abs(lv - anchorBpm) < Math.abs(best - anchorBpm) ? lv : best);
+        const anchorIdx = SET_BPM_LEVELS.indexOf(bestLevel);
+
+        slot.tracks = SET_BPM_LEVELS.map((lv, i) =>
+            i === anchorIdx ? { ...anchor, bpm_level: bestLevel } : null
+        );
+        slot.selectedTrackIndex = anchorIdx;
+        slot._loading = true;
+    }
+    renderSet();
+
+    // Stream results via SSE
+    try {
+        const res = await fetch("/api/set-workshop/refill-bpm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ slots: setSlots.map(s => ({
+                source: s.source,
+                tracks: s.tracks,
+                selectedTrackIndex: s.selectedTrackIndex,
+            })) }),
+        });
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+                if (!line.startsWith("data: ")) continue;
+                const data = JSON.parse(line.slice(6));
+
+                if (data.done) break;
+
+                const slot = setSlots[data.slot_index];
+                if (!slot) continue;
+
+                // Update source if it was auto-upgraded
+                if (data.source) {
+                    slot.source = {
+                        type: data.source.type || slot.source.type,
+                        id: data.source.id || slot.source.id,
+                        tree_type: data.source.tree_type || slot.source.tree_type,
+                        name: data.source.name || slot.source.name,
+                    };
+                }
+
+                // Find the anchor track ID (the one we kept)
+                const anchorTrack = slot.tracks.find(t => t !== null);
+                const anchorId = anchorTrack ? anchorTrack.id : null;
+
+                slot.tracks = data.tracks || [];
+                slot._loading = false;
+
+                // Select the anchor
+                const anchorIdx = slot.tracks.findIndex(t => t && t.id === anchorId);
+                slot.selectedTrackIndex = anchorIdx >= 0 ? anchorIdx : findDefaultSelection(slot.tracks);
+
+                // Staggered fade-in for non-anchor tracks
+                slot._fadeInExcept = anchorId;
+                renderSet();
+                setTimeout(() => { delete slot._fadeInExcept; }, 900);
+
+                btn.textContent = `Refilling… ${data.progress}/${data.total}`;
+            }
+        }
+    } catch (e) {
+        console.error("Refill BPM failed:", e);
+    }
+
+    // Clean up
+    for (const slot of setSlots) {
+        delete slot._loading;
+        delete slot._fadeInExcept;
+    }
+    btn.textContent = "Refill BPM";
+    updateToolbarState();
+    renderSet();
+    scheduleAutoSave();
+    showToast("BPM refill complete");
 }
 
 

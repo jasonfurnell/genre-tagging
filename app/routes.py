@@ -2741,6 +2741,107 @@ def set_workshop_drag_track():
     return jsonify({"source": info, "tracks": tracks})
 
 
+@api.route("/api/set-workshop/refill-bpm", methods=["POST"])
+def set_workshop_refill_bpm():
+    """Re-run BPM fill for every non-empty slot in the current set (SSE stream).
+
+    For each slot, uses the selected track as anchor and the slot's source to
+    fill all 10 BPM levels.  Streams one JSON event per slot so the frontend
+    can update progressively.
+    """
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    body = request.get_json() or {}
+    slots = body.get("slots", [])
+
+    def generate():
+        used_global = set()  # accumulate used tracks across slots
+        total = len(slots)
+        done = 0
+
+        for si, slot in enumerate(slots):
+            source = slot.get("source")
+            tracks = slot.get("tracks") or []
+            sel_idx = slot.get("selectedTrackIndex")
+
+            # Skip empty slots
+            if not source or not tracks or sel_idx is None:
+                done += 1
+                continue
+
+            # Find anchor (the currently selected track)
+            anchor = tracks[sel_idx] if 0 <= sel_idx < len(tracks) and tracks[sel_idx] else None
+            if not anchor or anchor.get("id") is None:
+                done += 1
+                continue
+
+            anchor_id = anchor["id"]
+            src_type = source.get("type", "adhoc")
+            src_id = source.get("id")
+            tree_type = source.get("tree_type", "genre")
+
+            tree = _resolve_tree(tree_type) if src_type == "tree_node" else None
+
+            # Resolve source track pool
+            if src_type == "adhoc":
+                pool_ids = [t["id"] for t in tracks if t and t.get("id") is not None]
+                # Auto-expand single-track adhoc via genre leaf
+                if len(pool_ids) <= 1:
+                    genre_tree = _resolve_tree("genre")
+                    leaf = find_leaf_for_track(genre_tree, anchor_id)
+                    if leaf:
+                        pool_ids = leaf.get("track_ids", pool_ids)
+                        src_type = "tree_node"
+                        src_id = leaf.get("id", "")
+                        tree_type = "genre"
+                        tree = genre_tree
+            else:
+                pool_ids = get_source_tracks(src_type, src_id, tree)
+
+            if not pool_ids:
+                done += 1
+                continue
+
+            new_tracks = select_tracks_for_source(
+                df, pool_ids,
+                used_track_ids=used_global,
+                anchor_track_id=anchor_id,
+                has_audio_fn=_check_has_audio,
+            )
+
+            # Track used IDs to avoid duplicates across slots
+            for t in new_tracks:
+                if t and t.get("id") is not None:
+                    used_global.add(t["id"])
+
+            # Build source info
+            if src_type == "adhoc":
+                info = {"id": src_id, "name": source.get("name", "Ad-hoc"),
+                        "type": src_type, "tree_type": tree_type}
+            else:
+                info = get_source_info(src_type, src_id, tree) or {}
+                info["type"] = src_type
+                info["tree_type"] = tree_type
+
+            done += 1
+            event = json.dumps({
+                "slot_index": si,
+                "source": info,
+                "tracks": new_tracks,
+                "progress": done,
+                "total": total,
+            })
+            yield f"data: {event}\n\n"
+
+        yield "data: {\"done\": true}\n\n"
+
+    return Response(generate(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache",
+                             "X-Accel-Buffering": "no"})
+
+
 @api.route("/api/set-workshop/source-detail")
 def set_workshop_source_detail():
     """Get detailed info + all tracks for a source (drawer detail view)."""

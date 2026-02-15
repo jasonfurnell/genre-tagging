@@ -5067,13 +5067,14 @@
             "year": 2018
           },
           {
-            "id": 1018,
-            "title": "Fever",
             "artist": "Malia,Boris Blank",
             "bpm": 75,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 1018,
             "key": "1M",
-            "year": 2011,
-            "bpm_level": 70
+            "title": "Fever",
+            "year": 2011
           },
           {
             "artist": "Martha High,James Brown",
@@ -5235,95 +5236,95 @@
       },
       {
         "id": "slot-1770979193900-xjyb",
-        "selectedTrackIndex": 5,
+        "selectedTrackIndex": 7,
         "source": {
-          "id": "post-trip-hop-noir-transmissions",
-          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
-          "tree_type": "genre",
+          "id": "global-regional-hybrids",
+          "name": "Diaspora Frequencies: Global Hip-Hop's Localized Mutations",
+          "tree_type": "scene",
           "type": "tree_node"
         },
         "tracks": [
+          null,
           {
-            "artist": "DEMI",
-            "bpm": 63,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3610,
-            "key": "6D",
-            "title": "A3 Kick&Bas&Timbale",
-            "year": 2018
-          },
-          {
-            "artist": "Saint Etienne",
-            "bpm": 70,
+            "artist": "Kyle Exum",
+            "bpm": 86.5,
             "bpm_level": 70,
             "has_audio": true,
-            "id": 6176,
-            "key": "6M",
-            "title": "Carnt Sleep",
-            "year": 1992
-          },
-          {
-            "artist": "Martha High,James Brown",
-            "bpm": 81.2,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4288,
-            "key": "11M",
-            "title": "Summertime",
-            "year": 1998
-          },
-          {
-            "artist": "Calypso Valois",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2775,
-            "key": "10M",
-            "title": "Surprise-partie",
-            "year": 2017
-          },
-          {
-            "artist": "Saint Etienne",
-            "bpm": 98.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 194,
-            "key": "11M",
-            "title": "Filthy",
-            "year": 1994
-          },
-          {
-            "artist": "Shadowax",
-            "bpm": 110,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1830,
-            "key": "3M",
-            "title": "Nikolai Reptile",
+            "id": 4143,
+            "key": "9M",
+            "title": "TikTokin'",
             "year": 2019
           },
           {
-            "artist": "Dream 2 Science",
-            "bpm": 121,
-            "bpm_level": 120,
+            "artist": "Sampa the Great",
+            "bpm": 96,
+            "bpm_level": 80,
             "has_audio": true,
-            "id": 5390,
-            "key": "2D",
-            "title": "How Do I Love Thee",
-            "year": 2012
+            "id": 2903,
+            "key": "2M",
+            "title": "Final Form",
+            "year": 2019
           },
           {
-            "artist": "Cro-Magnon",
-            "bpm": 125.1,
+            "artist": "N.E.R.D,Rihanna,Drake",
+            "bpm": 95,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1237,
+            "key": "4M",
+            "title": "Lemon - Drake Remix",
+            "year": 2018
+          },
+          {
+            "artist": "bbno$,Rich Brian",
+            "bpm": 106,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4922,
+            "key": "3M",
+            "title": "edamame",
+            "year": 2021
+          },
+          {
+            "artist": "Doja Cat,Gucci Mane",
+            "bpm": 106,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1685,
+            "key": "3D",
+            "title": "Like That (feat. Gucci Mane)",
+            "year": 2020
+          },
+          {
+            "artist": "Doja Cat,Gucci Mane",
+            "bpm": 106,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1686,
+            "key": "3D",
+            "title": "Like That (feat. Gucci Mane)",
+            "year": 2020
+          },
+          {
+            "artist": "Sampa the Great",
+            "bpm": 127,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 3426,
-            "key": "12M",
-            "title": "Patchwork Jazz",
-            "year": 2014
+            "id": 5701,
+            "key": "2M",
+            "title": "OMG",
+            "year": 2019
           },
-          null,
+          {
+            "artist": "Doja Cat",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 124,
+            "key": "7M",
+            "title": "Boss Bitch",
+            "year": 2020
+          },
           null
         ]
       },
@@ -5331,91 +5332,82 @@
         "id": "slot-1770980814473-v2cf",
         "selectedTrackIndex": 4,
         "source": {
-          "id": "post-trip-hop-noir-transmissions",
-          "name": "Post-Trip-Hop Noir: UK & European Transmissions",
-          "tree_type": "genre",
+          "id": "global-regional-hybrids",
+          "name": "Diaspora Frequencies: Global Hip-Hop's Localized Mutations",
+          "tree_type": "scene",
           "type": "tree_node"
         },
         "tracks": [
+          null,
           {
-            "artist": "DEMI",
-            "bpm": 63,
-            "bpm_level": 60,
-            "has_audio": false,
-            "id": 3610,
-            "key": "6D",
-            "title": "A3 Kick&Bas&Timbale",
+            "artist": "Kyle Exum",
+            "bpm": 86.5,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 4143,
+            "key": "9M",
+            "title": "TikTokin'",
+            "year": 2019
+          },
+          {
+            "artist": "bbno$,lentra",
+            "bpm": 98,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1404,
+            "key": "5M",
+            "title": "moves",
+            "year": 2019
+          },
+          {
+            "artist": "Miss Kaninna",
+            "bpm": 103,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5112,
+            "key": "4M",
+            "title": "Blak Britney",
+            "year": 2023
+          },
+          {
+            "artist": "Miss Kaninna",
+            "bpm": 103,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4834,
+            "key": "4M",
+            "title": "Blak Britney",
+            "year": 2023
+          },
+          {
+            "artist": "N.E.R.D,Rihanna,Drake",
+            "bpm": 95,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1237,
+            "key": "4M",
+            "title": "Lemon - Drake Remix",
             "year": 2018
           },
           {
-            "artist": "Saint Etienne",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 6176,
-            "key": "6M",
-            "title": "Carnt Sleep",
-            "year": 1992
-          },
-          {
-            "artist": "Martha High,James Brown",
-            "bpm": 81.2,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4288,
-            "key": "11M",
-            "title": "Summertime",
-            "year": 1998
-          },
-          {
-            "artist": "Calypso Valois",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2775,
-            "key": "10M",
-            "title": "Surprise-partie",
-            "year": 2017
-          },
-          {
-            "artist": "Hoosky,La Fine Equipe,oOgo,Chomsk'",
-            "bpm": 104,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 4105,
-            "key": "6D",
-            "title": "Rush Hour",
-            "year": 2012
-          },
-          {
-            "artist": "The Quantic Soul Orchestra",
-            "bpm": 108.5,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1816,
-            "key": "12M",
-            "title": "She Said What? - Version",
-            "year": 2008
-          },
-          {
-            "artist": "Dream 2 Science",
-            "bpm": 121,
+            "artist": "Tkay Maidza",
+            "bpm": 106,
             "bpm_level": 120,
             "has_audio": true,
-            "id": 5390,
-            "key": "2D",
-            "title": "How Do I Love Thee",
-            "year": 2012
+            "id": 2857,
+            "key": "10M",
+            "title": "Syrup",
+            "year": 2021
           },
           {
-            "artist": "Cro-Magnon",
-            "bpm": 125.1,
+            "artist": "Doja Cat",
+            "bpm": 126,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 3426,
-            "key": "12M",
-            "title": "Patchwork Jazz",
-            "year": 2014
+            "id": 124,
+            "key": "7M",
+            "title": "Boss Bitch",
+            "year": 2020
           },
           null,
           null
@@ -5606,11 +5598,12 @@
       },
       {
         "id": "slot-1771104640829-20ts",
+        "selectedTrackIndex": 7,
         "source": {
-          "type": "tree_node",
           "id": "boogie-nights-cosmic-disco",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos",
           "tree_type": "genre",
-          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -5704,16 +5697,16 @@
             "year": 2009
           },
           null
-        ],
-        "selectedTrackIndex": 7
+        ]
       },
       {
         "id": "slot-1771104751374-z5fq",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "tree_node",
           "id": "boogie-nights-cosmic-disco",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos",
           "tree_type": "genre",
-          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -5807,93 +5800,819 @@
             "year": 1977
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
-        "id": "slot-1771104809821-szvn",
+        "id": "slot-1771104877911-91y3",
+        "selectedTrackIndex": 1,
         "source": {
-          "type": "tree_node",
-          "id": "euro-miami-synth-transition",
+          "id": "global-rhythm-experimentalism",
+          "name": "Post-Internet Art Club: Global Dancefloor Deconstruction",
           "tree_type": "scene",
-          "name": "Euro-Miami Synth Transition: Continental Disco's Electronic Turn"
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "FKA twigs",
+            "bpm": 55,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 1074,
+            "key": "1D",
+            "title": "Two Weeks",
+            "year": 2014
+          },
+          {
+            "artist": "FKA twigs",
+            "bpm": 55,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 631,
+            "key": "1D",
+            "title": "Two Weeks",
+            "year": 2014
+          },
+          {
+            "artist": "Andrea Laszlo De Simone",
+            "bpm": 95,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1270,
+            "key": "1M",
+            "title": "Mistero",
+            "year": 2017
+          },
+          {
+            "artist": "DJ Overdose",
+            "bpm": 98,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 4092,
+            "key": "10M",
+            "title": "RZ-1-DMX",
+            "year": 2019
+          },
+          {
+            "artist": "Parallel Dance Ensemble",
+            "bpm": 109,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 10,
+            "key": "1M",
+            "title": "Shopping Cart",
+            "year": 2018
+          },
+          {
+            "artist": "DJ Python",
+            "bpm": 92,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1485,
+            "key": "10D",
+            "title": "Descanse",
+            "year": 2017
+          },
+          {
+            "artist": "Mutant Beat Dance",
+            "bpm": 116,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4099,
+            "key": "12M",
+            "title": "Revival 80s",
+            "year": 2018
+          },
+          {
+            "artist": "Kelly Lee Owens",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1917,
+            "key": "1M",
+            "title": "Kingsize - Kelly Lee Owens Rework",
+            "year": 2016
+          },
+          {
+            "artist": "Jamie xx",
+            "bpm": 139.5,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1425,
+            "key": "7M",
+            "title": "Gosh",
+            "year": 2015
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1771105839193-15jv",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "classic-bristol-archives",
+          "name": "Bristol Transmissions: Trip-Hop's Foundational Years '94-'98",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Little Denise / Yvonne Fair",
+            "bpm": 62.2,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 2948,
+            "key": "2M",
+            "title": "Little Denise - Check Me Out",
+            "year": 2007
+          },
+          {
+            "artist": "Sleepy's Theme",
+            "bpm": 83,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5003,
+            "key": "2M",
+            "title": "Choked Out Saturday Night",
+            "year": 1998
+          },
+          {
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 215,
+            "key": "10M",
+            "title": "Lately - 2012 Mix Master",
+            "year": 2012
+          },
+          {
+            "artist": "Rico",
+            "bpm": 74.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2358,
+            "key": "10M",
+            "title": "Take Five",
+            "year": 1995
+          },
+          {
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6174,
+            "key": "3M",
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "year": 1992
+          },
+          {
+            "artist": "Hot Chocolate",
+            "bpm": 111.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 159,
+            "key": "1M",
+            "title": "Heaven Is in the Back Seat of My Cadillac",
+            "year": 1976
+          },
+          {
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1066,
+            "key": "2D",
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "year": 2010
+          },
+          {
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5006,
+            "key": "10M",
+            "title": "Song for My Father",
+            "year": 2016
+          },
+          {
+            "artist": "Blue Boy",
+            "bpm": 120.9,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5439,
+            "key": "10M",
+            "title": "Sandman - Original 12' Mix",
+            "year": 1995
+          },
+          {
+            "artist": "Olive",
+            "bpm": 134.2,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6187,
+            "key": "11M",
+            "title": "You're Not Alone",
+            "year": 1997
+          }
+        ]
+      },
+      {
+        "_loading": false,
+        "id": "slot-1771106064138-obcg",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "sheffield-electronic-sophistication",
+          "name": "Cold Steel & Circuits: Sheffield's Synth-Pop Revolution",
+          "tree_type": "scene",
+          "type": "tree_node"
         },
         "tracks": [
           null,
           null,
-          null,
           {
-            "artist": "Silver Convention",
-            "bpm": 100.2,
+            "artist": "Tubeway Army",
+            "bpm": 93.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2638,
+            "key": "12D",
+            "title": "Are 'Friends' Electric?",
+            "year": 1979
+          },
+          {
+            "artist": "The Human League",
+            "bpm": 108.3,
             "bpm_level": 90,
             "has_audio": true,
-            "id": 2046,
-            "key": "10M",
-            "title": "Fly Robin Fly",
-            "year": 2010
-          },
-          {
-            "artist": "Horse Meat Disco,The Phenomenal Handclap Band,Ray Mang",
-            "bpm": 114,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 4107,
-            "key": "7M",
-            "title": "Sanctuary - Ray Mang Remix",
-            "year": 2021
-          },
-          {
-            "artist": "Eruption",
-            "bpm": 108.2,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2074,
-            "key": "7M",
-            "title": "I Can't Stand the Rain",
-            "year": 2011
-          },
-          {
-            "artist": "Diana Ross",
-            "bpm": 119.5,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 2543,
-            "key": "11D",
-            "title": "My Old Piano",
+            "id": 2641,
+            "key": "1M",
+            "title": "Being Boiled",
             "year": 1980
           },
           {
-            "artist": "Boney M",
-            "bpm": 126.7,
+            "artist": "Visage",
+            "bpm": 112.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 22,
+            "key": "1M",
+            "title": "Fade To Grey",
+            "year": 1980
+          },
+          {
+            "artist": "Blancmange",
+            "bpm": 115.5,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5930,
+            "key": "3M",
+            "title": "Living On The Ceiling",
+            "year": 1982
+          },
+          {
+            "artist": "Yazoo",
+            "bpm": 126.2,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 2646,
+            "key": "8M",
+            "title": "Don't Go",
+            "year": 1982
+          },
+          {
+            "artist": "Gary Numan",
+            "bpm": 130.5,
             "bpm_level": 130,
             "has_audio": true,
-            "id": 4544,
+            "id": 19,
+            "key": "12M",
+            "title": "Cars",
+            "year": 1979
+          },
+          {
+            "artist": "Oingo Boingo",
+            "bpm": 128.1,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6199,
             "key": "3M",
-            "title": "Rasputin",
+            "title": "Weird Science",
+            "year": 1985
+          },
+          {
+            "artist": "Soft Cell",
+            "bpm": 144.7,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 36,
+            "key": "11M",
+            "title": "Tainted Love",
+            "year": 1981
+          }
+        ]
+      },
+      {
+        "_loading": false,
+        "id": "slot-1771106859284-9jcc",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "millennial-indie-rock-explosion",
+          "name": "Millennial Malaise: Art Rock's Digital Dawn",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "The Rolling Stones,The Neptunes",
+            "bpm": 57.8,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 609,
+            "key": "2M",
+            "title": "Sympathy For The Devil - Neptunes Full Length Remix",
+            "year": 2003
+          },
+          {
+            "artist": "Fiona Apple",
+            "bpm": 72.1,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2480,
+            "key": "11M",
+            "title": "Sleep to Dream",
+            "year": 1996
+          },
+          {
+            "artist": "Cake",
+            "bpm": 100,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1244,
+            "key": "3M",
+            "title": "Long Line of Cars",
+            "year": 1996
+          },
+          {
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1133,
+            "key": "2D",
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "year": 2010
+          },
+          {
+            "artist": "Cake",
+            "bpm": 100,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 218,
+            "key": "3M",
+            "title": "Long Line of Cars",
+            "year": 1996
+          },
+          {
+            "artist": "Weezer",
+            "bpm": 121.2,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4553,
+            "key": "8D",
+            "title": "Buddy Holly",
             "year": 1994
           },
           {
-            "artist": "Boney M",
-            "bpm": 126.7,
+            "artist": "Fuzz",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": false,
+            "id": 4951,
+            "key": "10M",
+            "title": "Otis\u00b2",
+            "year": 2023
+          },
+          {
+            "artist": "Fleetwood Mac",
+            "bpm": 129,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5919,
+            "key": "12D",
+            "title": "Rhiannon",
+            "year": 1975
+          },
+          {
+            "artist": "Ween",
+            "bpm": 122.8,
             "bpm_level": 140,
             "has_audio": true,
-            "id": 4658,
-            "key": "3M",
-            "title": "Rasputin",
-            "year": 1994
+            "id": 3510,
+            "key": "5D",
+            "title": "Ocean Man",
+            "year": 1997
           },
-          null
-        ],
-        "selectedTrackIndex": 6
+          {
+            "artist": "Paul Revere & The Raiders,The Raiders",
+            "bpm": 131.7,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 2097,
+            "key": "12M",
+            "title": "Indian Reservation (The Lament of the Cherokee Reservation Indian)",
+            "year": 1971
+          }
+        ]
       },
       {
-        "id": "slot-1771104877911-91y3",
+        "_loading": false,
+        "id": "slot-1771107967980-sja5",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "boom-bap-blueprint-ny-metro",
+          "tree_type": "genre",
+          "name": "Empire State of Drums: NYC Boom-Bap's Late Golden Run"
+        },
+        "tracks": [
+          {
+            "artist": "House Of Pain",
+            "bpm": 55.5,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 2419,
+            "key": "2M",
+            "title": "Top O' the Morning to Ya",
+            "year": 1994
+          },
+          {
+            "artist": "De La Soul",
+            "bpm": 82,
+            "bpm_level": 70,
+            "has_audio": false,
+            "id": 4270,
+            "key": "2D",
+            "title": "Transmitting Live from Mars",
+            "year": 2023
+          },
+          {
+            "artist": "DJ Format,Abdominal",
+            "bpm": 95,
+            "bpm_level": 80,
+            "has_audio": false,
+            "id": 833,
+            "key": "1M",
+            "title": "Dirt",
+            "year": 2005
+          },
+          {
+            "artist": "Del The Funky Homosapien,Amp Live",
+            "bpm": 97,
+            "bpm_level": 90,
+            "has_audio": false,
+            "id": 844,
+            "key": "12D",
+            "title": "Sit Ya Ass Down",
+            "year": 2009
+          },
+          {
+            "artist": "EPMD",
+            "bpm": 101.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6194,
+            "key": "7M",
+            "title": "Crossover",
+            "year": 1992
+          },
+          {
+            "artist": "House Of Pain",
+            "bpm": 97.6,
+            "bpm_level": 110,
+            "has_audio": false,
+            "id": 5033,
+            "key": "4M",
+            "title": "Back From The Dead",
+            "year": 1994
+          },
+          {
+            "artist": "Busta Rhymes,Mary J. Blige,Rah Digga,Missy Elliott,Lloyd Banks,Papoose,DMX",
+            "bpm": 102,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1351,
+            "key": "8M",
+            "title": "Touch It - Remix Featuring Mary J. Blige, Rah Digga, Missy Elliot, Lloyd Banks, Papoose & DMX (Edited)",
+            "year": 2006
+          },
+          {
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "bpm_level": 130,
+            "has_audio": false,
+            "id": 3890,
+            "key": "5M",
+            "title": "A_Comfort_Snare_03",
+            "year": 2003
+          },
+          {
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 3889,
+            "key": "5D",
+            "title": "A_Comfort_Snare_02",
+            "year": 2005
+          },
+          null
+        ]
+      },
+      {
+        "_loading": false,
+        "id": "slot-1771108095254-f10r",
+        "selectedTrackIndex": 6,
+        "source": {
+          "type": "tree_node",
+          "id": "west-coast-funk-architects",
+          "tree_type": "genre",
+          "name": "California Funk Transmission: The P-Funk Disciples"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "artist": "Young MC",
+            "bpm": 95,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5720,
+            "key": "11M",
+            "title": "Got More Rhymes - MEN RMX",
+            "year": 1989
+          },
+          {
+            "artist": "Digital Underground",
+            "bpm": 103.5,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1342,
+            "key": "10D",
+            "title": "The Humpty Dance",
+            "year": 1990
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 116.8,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4929,
+            "key": "11M",
+            "title": "Know How",
+            "year": 1989
+          },
+          {
+            "artist": "Tone-Loc",
+            "bpm": 125.5,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1371,
+            "key": "9D",
+            "title": "Wild Thing",
+            "year": 1988
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 116.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 80,
+            "key": "11M",
+            "title": "Know How",
+            "year": 1989
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 121.6,
+            "bpm_level": 130,
+            "has_audio": false,
+            "id": 4495,
+            "key": "12M",
+            "title": "Pick Up The Pace",
+            "year": 1989
+          },
+          {
+            "artist": "Afrika Bambaataa,The Soulsonic Force",
+            "bpm": 127.2,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 302,
+            "key": "3M",
+            "title": "Planet Rock - Original 12\" Version",
+            "year": 1982
+          },
+          null
+        ]
+      },
+      {
+        "_loading": false,
+        "id": "slot-1771108119784-22o0",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "east-coast-breakbeat-blueprint",
+          "name": "Breakbeat Science: The NYC Boom-Bap Laboratory",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          {
+            "artist": "Dead Prez",
+            "bpm": 76.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 4023,
+            "key": "1M",
+            "title": "Hip-Hop",
+            "year": 2000
+          },
+          {
+            "artist": "De La Soul",
+            "bpm": 88.5,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2291,
+            "key": "3D",
+            "title": "The Grind Date",
+            "year": 2004
+          },
+          {
+            "artist": "Jungle Brothers",
+            "bpm": 100,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2555,
+            "key": "2D",
+            "title": "Straight Out The Jungle",
+            "year": 1988
+          },
+          {
+            "artist": "Cash Money & Marvelous",
+            "bpm": 106.5,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1907,
+            "key": "11M",
+            "title": "The Mighty Hard Rocker",
+            "year": 1988
+          },
+          {
+            "artist": "Brand Nubian",
+            "bpm": 107.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2523,
+            "key": "1D",
+            "title": "Grand Puba, Positive and L.G.",
+            "year": 1990
+          },
+          {
+            "artist": "Mantronix",
+            "bpm": 105.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5651,
+            "key": "8D",
+            "title": "Got To Have Your Love",
+            "year": 1990
+          },
+          {
+            "artist": "Run\u2013D.M.C.",
+            "bpm": 105.6,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 579,
+            "key": "12M",
+            "title": "Peter Piper",
+            "year": 1986
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 117.5,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 882,
+            "key": "1M",
+            "title": "Bust A Move",
+            "year": 1989
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 121.6,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4819,
+            "key": "12M",
+            "title": "Pick Up The Pace",
+            "year": 1989
+          },
+          null
+        ]
+      },
+      {
+        "_loading": false,
+        "id": "slot-1771108140584-jedq",
+        "selectedTrackIndex": 4,
+        "source": {
+          "id": "golden-age-hip-hop-architects",
+          "name": "Golden Era Foundations: 1987-1994 Boom-Bap & Hip-House Genesis",
+          "tree_type": "genre",
+          "type": "tree_node"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "artist": "KRS-One",
+            "bpm": 95,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1325,
+            "key": "6D",
+            "title": "Sound of da Police",
+            "year": 1993
+          },
+          {
+            "artist": "Stetsasonic",
+            "bpm": 107.9,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2414,
+            "key": "1M",
+            "title": "Talkin' All That Jazz",
+            "year": 1988
+          },
+          {
+            "artist": "EPMD",
+            "bpm": 102.1,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 1323,
+            "key": "1M",
+            "title": "So Wat Cha Sayin'",
+            "year": 1989
+          },
+          {
+            "artist": "Run\u2013D.M.C.",
+            "bpm": 127.8,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 361,
+            "key": "1M",
+            "title": "It's Tricky",
+            "year": 1987
+          },
+          {
+            "artist": "Beastie Boys",
+            "bpm": 101.7,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5319,
+            "key": "11D",
+            "title": "Hey Ladies",
+            "year": 1989
+          },
+          {
+            "artist": "Run\u2013D.M.C.",
+            "bpm": 127.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1215,
+            "key": "1M",
+            "title": "It's Tricky",
+            "year": 1987
+          },
+          {
+            "artist": "Young MC",
+            "bpm": 121.6,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4086,
+            "key": "12M",
+            "title": "Pick Up The Pace",
+            "year": 1989
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1771108169952-0dvv",
+        "selectedTrackIndex": null,
         "source": null,
-        "tracks": [],
-        "selectedTrackIndex": null
+        "tracks": []
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-14T21:35:04.970577+00:00"
+    "updated_at": "2026-02-14T23:17:30.190116+00:00"
   }
 }
