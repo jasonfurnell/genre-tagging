@@ -2553,6 +2553,13 @@ tr.ws-seed-selected {
     75%  { clip-path: inset(0 0 25% 0); }
     100% { clip-path: inset(0 0 92% 0); }
 }
+/* BPM-synced pulse on EQ overlay opacity */
+@keyframes eqPulse {
+    0%   { opacity: 0.18; }
+    50%  { opacity: 0.45; }
+    100% { opacity: 0.18; }
+}
+
 /* Shared base for both EQ overlays */
 .set-eq-overlay {
     position: absolute;
@@ -2567,6 +2574,7 @@ tr.ws-seed-selected {
     opacity: 0.35;
     border-radius: 4px;
     overflow: hidden;
+    animation: eqPulse var(--eq-pulse-speed, 0.5s) ease-in-out infinite;
 }
 /* Upward-projecting bars (from track top edge upward) */
 .set-eq-overlay-up {

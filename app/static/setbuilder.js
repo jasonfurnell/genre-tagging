@@ -1072,7 +1072,8 @@ function renderTrackColumns() {
         const col = container.querySelector(`.set-column[data-slot-id="${activeSlot.id}"]`);
         if (col) {
             col.classList.add("play-set-active");
-            createEqOverlay(col);
+            const activeTrack = activeSlot.tracks[activeSlot.selectedTrackIndex];
+            createEqOverlay(col, activeTrack ? activeTrack.bpm : null);
         }
     }
 }
@@ -2174,7 +2175,7 @@ const EQ_BAR_COUNT = 7;
 const EQ_SPEEDS  = [1.2, 0.8, 1.5, 0.9, 1.35, 1.05, 1.4];   // seconds
 const EQ_DELAYS  = [0, 0.12, 0.05, 0.18, 0.08, 0.22, 0.03];  // seconds
 
-function createEqOverlay(col) {
+function createEqOverlay(col, bpm) {
     removeEqOverlay(col);
 
     // Position overlays relative to the selected track
@@ -2183,6 +2184,9 @@ function createEqOverlay(col) {
 
     const trackTop = selectedSlot.offsetTop;
     const trackBottom = trackTop + selectedSlot.offsetHeight;
+
+    // BPM-synced pulse: one full opacity cycle per beat
+    const pulseSpeed = bpm ? (60 / bpm) : 0.5;
 
     function makeBars(overlay) {
         for (let i = 0; i < EQ_BAR_COUNT; i++) {
@@ -2199,6 +2203,7 @@ function createEqOverlay(col) {
     upOverlay.className = "set-eq-overlay set-eq-overlay-up";
     upOverlay.style.top = "0";
     upOverlay.style.bottom = (col.offsetHeight - trackTop) + "px";
+    upOverlay.style.setProperty("--eq-pulse-speed", pulseSpeed + "s");
     makeBars(upOverlay);
     col.appendChild(upOverlay);
 
@@ -2207,6 +2212,7 @@ function createEqOverlay(col) {
     downOverlay.className = "set-eq-overlay set-eq-overlay-down";
     downOverlay.style.top = trackBottom + "px";
     downOverlay.style.bottom = "0";
+    downOverlay.style.setProperty("--eq-pulse-speed", pulseSpeed + "s");
     makeBars(downOverlay);
     col.appendChild(downOverlay);
 }
@@ -2245,7 +2251,7 @@ async function playFullTrack(idx) {
     const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (col) {
         col.classList.add("play-set-active");
-        createEqOverlay(col);
+        createEqOverlay(col, track.bpm);
         col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
