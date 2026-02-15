@@ -3961,13 +3961,13 @@
           null,
           {
             "artist": "Kate Bush",
-            "bpm": 109.6,
+            "bpm": 108.4,
             "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
+            "id": 2681,
             "key": "10M",
             "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
+            "year": 1985,
+            "has_audio": true
           },
           null,
           null,
@@ -6683,13 +6683,14 @@
         ]
       },
       {
+        "_loading": false,
         "id": "slot-1771127655269-c483",
         "selectedTrackIndex": 4,
         "source": {
-          "type": "tree_node",
           "id": "experimental-electronics-balearic-deviation",
+          "name": "Balearic Mutations: Electronic Eccentrics & Sunset Deviations",
           "tree_type": "genre",
-          "name": "Balearic Mutations: Electronic Eccentrics & Sunset Deviations"
+          "type": "tree_node"
         },
         "tracks": [
           {
@@ -6783,29 +6784,833 @@
             "year": 2016
           },
           null
+        ]
+      },
+      {
+        "id": "slot-1771157942950-ta1h",
+        "source": {
+          "type": "tree_node",
+          "id": "continental-disco-machines",
+          "tree_type": "genre",
+          "name": "Balearic Reverie: Nordic Space Disco & Mediterranean Dreams"
+        },
+        "tracks": [
+          {
+            "artist": "Clap! Clap!",
+            "bpm": 60,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3442,
+            "key": "1M",
+            "title": "Ar-Raqis",
+            "year": 2017
+          },
+          {
+            "artist": "Roxy Music,Lindstr\u00f8m & Prins Thomas",
+            "bpm": 68.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 5381,
+            "key": "11M",
+            "title": "Avalon - Lindstr\u00f8m & Prins Thomas Version",
+            "year": 2012
+          },
+          {
+            "artist": "Altin G\u00fcn",
+            "bpm": 98,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 6201,
+            "key": "12M",
+            "title": "\u015eeker O\u011flan",
+            "year": 2018
+          },
+          {
+            "artist": "John Grant",
+            "bpm": 82,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1046,
+            "key": "1D",
+            "title": "You Don't Have To",
+            "year": 2013
+          },
+          {
+            "artist": "DJ Irwan, Ghetto Flow, Kalibwoy, Kempi, FRNKIE",
+            "bpm": 96,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2788,
+            "key": "7M",
+            "title": "Wip Wap",
+            "year": 2018
+          },
+          {
+            "artist": "Todd Terje",
+            "bpm": 126,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4078,
+            "key": "10M",
+            "title": "Oh Joy - Disco Mix",
+            "year": 2014
+          },
+          {
+            "artist": "Todd Terje",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 126,
+            "key": "12M",
+            "title": "Delorean Dynamite - Disco Mix",
+            "year": 2012
+          },
+          {
+            "artist": "Roxy Music,Lindstr\u00f8m & Prins Thomas",
+            "bpm": 136.7,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5470,
+            "key": "11M",
+            "title": "Avalon - Lindstr\u00f8m & Prins Thomas Version",
+            "year": 2012
+          },
+          {
+            "artist": "15 16 17",
+            "bpm": 150.9,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5072,
+            "key": "2M",
+            "title": "Emotions",
+            "year": 2023
+          },
+          null
+        ],
+        "selectedTrackIndex": 1,
+        "_loading": false
+      },
+      {
+        "id": "slot-1771152928948-6sed",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "chicago-house-music-birth-1984-1992",
+          "tree_type": "scene",
+          "name": "Warehouse Communion: Chicago House Genesis"
+        },
+        "tracks": [
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 64,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3423,
+            "key": "6M",
+            "title": "Maw Latin Blues",
+            "year": 1997
+          },
+          null,
+          {
+            "artist": "Kris Baha",
+            "bpm": 97,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 255,
+            "key": "2M",
+            "title": "Fuels a Liar",
+            "year": 2018
+          },
+          {
+            "artist": "Gorillaz,Mos Def",
+            "bpm": 100,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1330,
+            "key": "10M",
+            "title": "Stylo (feat. Mos Def and Bobby Womack)",
+            "year": 2010
+          },
+          {
+            "artist": "Bacao Rhythm & Steel Band",
+            "bpm": 95,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4848,
+            "key": "3M",
+            "title": "Nuthin\u2019 But A G Thang",
+            "year": 2023
+          },
+          {
+            "artist": "I-Robots, Harry Dennis",
+            "bpm": 126,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2932,
+            "key": "8M",
+            "title": "Perfect Logic Circle (feat. Harry Dennis)",
+            "year": 2020
+          },
+          {
+            "artist": "IDIOTAPE",
+            "bpm": 112,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 2598,
+            "key": "1M",
+            "title": "Sorry to Greta",
+            "year": 2020
+          },
+          {
+            "artist": "Yaeji",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1307,
+            "key": "3M",
+            "title": "Raingurl",
+            "year": 2016
+          },
+          {
+            "artist": "International Dateline,Make A Dance",
+            "bpm": 122,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4649,
+            "key": "5M",
+            "title": "Acidisco - Make a Dance Desert Dub",
+            "year": 2023
+          },
+          null
         ],
         "_loading": false
       },
       {
-        "id": "slot-1771127661017-3xq2",
-        "selectedTrackIndex": null,
-        "source": null,
-        "tracks": []
+        "id": "slot-1771156963250-phgo",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "chicago-house-music-birth-1984-1992",
+          "tree_type": "scene",
+          "name": "Warehouse Communion: Chicago House Genesis"
+        },
+        "tracks": [
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 64,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3423,
+            "key": "6M",
+            "title": "Maw Latin Blues",
+            "year": 1997
+          },
+          null,
+          {
+            "artist": "Gorillaz,Mos Def",
+            "bpm": 100,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 1330,
+            "key": "10M",
+            "title": "Stylo (feat. Mos Def and Bobby Womack)",
+            "year": 2010
+          },
+          {
+            "artist": "Janet Jackson",
+            "bpm": 102.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 1649,
+            "key": "7M",
+            "title": "Go Deep",
+            "year": 1998
+          },
+          {
+            "artist": "Tommy Mcgee",
+            "bpm": 98.7,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4072,
+            "key": "2M",
+            "title": "Now That I Have You (Original 86 'Hip Kik' Version) - Bonus",
+            "year": 2020
+          },
+          {
+            "artist": "Earth People,Pal Joey",
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5025,
+            "key": "1M",
+            "title": "Dance-Beats Mix",
+            "year": 2008
+          },
+          {
+            "artist": "Yaeji",
+            "bpm": 128,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1307,
+            "key": "3M",
+            "title": "Raingurl",
+            "year": 2016
+          },
+          {
+            "artist": "Alex Guesta",
+            "bpm": 123,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1967,
+            "key": "7D",
+            "title": "Kayamba - Tribal Mix",
+            "year": 2017
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6064,
+            "key": "12D",
+            "title": "Feelin' Alright",
+            "year": 2020
+          },
+          null
+        ],
+        "_loading": false
       },
       {
-        "id": "slot-1771127663836-6d3m",
-        "selectedTrackIndex": null,
-        "source": null,
-        "tracks": []
+        "id": "slot-1771156972531-3042",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "chicago-house-music-birth-1984-1992",
+          "tree_type": "scene",
+          "name": "Warehouse Communion: Chicago House Genesis"
+        },
+        "tracks": [
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 64,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3423,
+            "key": "6M",
+            "title": "Maw Latin Blues",
+            "year": 1997
+          },
+          null,
+          {
+            "artist": "Tommy Mcgee",
+            "bpm": 98.7,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4072,
+            "key": "2M",
+            "title": "Now That I Have You (Original 86 'Hip Kik' Version) - Bonus",
+            "year": 2020
+          },
+          {
+            "artist": "Kris Baha",
+            "bpm": 97,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 255,
+            "key": "2M",
+            "title": "Fuels a Liar",
+            "year": 2018
+          },
+          {
+            "artist": "Engelwood",
+            "bpm": 96,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5219,
+            "key": "11D",
+            "title": "Tasty Jam",
+            "year": 2020
+          },
+          {
+            "artist": "Kerri Chandler",
+            "bpm": 126,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3308,
+            "key": "7M",
+            "title": "Bar A Thym",
+            "year": 2005
+          },
+          {
+            "artist": "Mr. Fingers",
+            "bpm": 117.6,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 999,
+            "key": "12D",
+            "title": "Washing Machine",
+            "year": 1986
+          },
+          {
+            "artist": "Larry Heard",
+            "bpm": 114.8,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5472,
+            "key": "1M",
+            "title": "Can You Feel It - Instrumental",
+            "year": 1986
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6064,
+            "key": "12D",
+            "title": "Feelin' Alright",
+            "year": 2020
+          },
+          null
+        ],
+        "_loading": false
       },
       {
-        "id": "slot-1771152804869-9hsa",
+        "id": "slot-1771157643129-x4x6",
+        "source": {
+          "type": "tree_node",
+          "id": "boogie-nights-cosmic-disco",
+          "tree_type": "genre",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+        },
+        "tracks": [
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 521,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 1187,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "Gwen Guthrie",
+            "bpm": 96.7,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5866,
+            "key": "1D",
+            "title": "(They Long To Be) Close To You",
+            "year": 1986
+          },
+          {
+            "artist": "Dennis Edwards, Siedah Garrett",
+            "bpm": 95.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2647,
+            "key": "1M",
+            "title": "Don't Look Any Further",
+            "year": 1984
+          },
+          {
+            "artist": "Chemise",
+            "bpm": 114.7,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 1391,
+            "key": "12D",
+            "title": "She Can't Love You",
+            "year": 1982
+          },
+          {
+            "artist": "Prophecy",
+            "bpm": 108.5,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5954,
+            "key": "1M",
+            "title": "What Ever's Your Sign (You Got To Be Mine) Part 1",
+            "year": 2023
+          },
+          {
+            "artist": "Steve Monite",
+            "bpm": 118.1,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6258,
+            "key": "1M",
+            "title": "Only You - Disco Jam",
+            "year": 2022
+          },
+          {
+            "artist": "Steve Monite",
+            "bpm": 116.2,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6266,
+            "key": "2M",
+            "title": "Things Fall Apart - Vocal",
+            "year": 2022
+          },
+          {
+            "artist": "Player 1",
+            "bpm": 126.1,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5888,
+            "key": "1M",
+            "title": "Space Invaders",
+            "year": 1980
+          },
+          null
+        ],
+        "selectedTrackIndex": 6,
+        "_loading": false
+      },
+      {
+        "id": "slot-1771157886290-bloo",
+        "source": {
+          "type": "tree_node",
+          "id": "chicago-house-music-birth-1984-1992",
+          "tree_type": "scene",
+          "name": "Warehouse Communion: Chicago House Genesis"
+        },
+        "tracks": [
+          {
+            "artist": "Nuyorican Soul",
+            "bpm": 64,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3423,
+            "key": "6M",
+            "title": "Maw Latin Blues",
+            "year": 1997
+          },
+          null,
+          {
+            "artist": "Tommy Mcgee",
+            "bpm": 98.7,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4072,
+            "key": "2M",
+            "title": "Now That I Have You (Original 86 'Hip Kik' Version) - Bonus",
+            "year": 2020
+          },
+          {
+            "artist": "Art Feynman",
+            "bpm": 104,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 4844,
+            "key": "1M",
+            "title": "Desperately Free - Radio Edit",
+            "year": 2023
+          },
+          {
+            "artist": "Larry Heard",
+            "bpm": 114.8,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5382,
+            "key": "1M",
+            "title": "Can You Feel It - Instrumental",
+            "year": 1986
+          },
+          {
+            "artist": "Roy Ayers",
+            "bpm": 105.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2117,
+            "key": "1M",
+            "title": "Love Will Bring Us Back Together",
+            "year": 2001
+          },
+          {
+            "artist": "Azealia Banks",
+            "bpm": 126,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6250,
+            "key": "8M",
+            "title": "Liquorice",
+            "year": 2012
+          },
+          {
+            "artist": "I-Robots, Harry Dennis",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2932,
+            "key": "8M",
+            "title": "Perfect Logic Circle (feat. Harry Dennis)",
+            "year": 2020
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6064,
+            "key": "12D",
+            "title": "Feelin' Alright",
+            "year": 2020
+          },
+          null
+        ],
+        "selectedTrackIndex": 5,
+        "_loading": false
+      },
+      {
+        "id": "slot-1771157903365-png8",
+        "source": {
+          "type": "tree_node",
+          "id": "late-70s-yacht-rock-sophistication",
+          "tree_type": "genre",
+          "name": "Yacht Rock Elegance: California's Studio-Polished Sunset"
+        },
+        "tracks": [
+          {
+            "artist": "Neil Diamond",
+            "bpm": 62.8,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 4595,
+            "key": "6D",
+            "title": "Sweet Caroline",
+            "year": 1969
+          },
+          {
+            "artist": "Daryl Hall & John Oates",
+            "bpm": 75.3,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 2143,
+            "key": "12D",
+            "title": "Sara Smile",
+            "year": 1975
+          },
+          {
+            "artist": "Tina Turner",
+            "bpm": 97.9,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 5962,
+            "key": "5M",
+            "title": "What's Love Got to Do with It",
+            "year": 1993
+          },
+          {
+            "artist": "James Taylor",
+            "bpm": 109.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 4380,
+            "key": "2D",
+            "title": "How Sweet It Is (To Be Loved by You)",
+            "year": 2014
+          },
+          {
+            "artist": "Kim Carnes",
+            "bpm": 117,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 481,
+            "key": "12D",
+            "title": "Bette Davis Eyes",
+            "year": 1981
+          },
+          {
+            "artist": "Starbuck",
+            "bpm": 106.1,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5942,
+            "key": "12M",
+            "title": "A Fool in Line - Re-Recorded",
+            "year": 2018
+          },
+          {
+            "artist": "Paul Simon",
+            "bpm": 118.7,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 5145,
+            "key": "12D",
+            "title": "Late in the Evening",
+            "year": 1980
+          },
+          {
+            "artist": "Paul Simon",
+            "bpm": 120.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4040,
+            "key": "12D",
+            "title": "Late in the Evening",
+            "year": 1980
+          },
+          {
+            "artist": "Alessi Brothers",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5255,
+            "key": "10D",
+            "title": "Seabird",
+            "year": 1998
+          },
+          {
+            "artist": "Daryl Hall & John Oates",
+            "bpm": 167.3,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 2699,
+            "key": "12D",
+            "title": "You Make My Dreams (Come True)",
+            "year": 1980
+          }
+        ],
+        "selectedTrackIndex": 6,
+        "_loading": false
+      },
+      {
+        "id": "slot-1771157751497-x8de",
+        "source": {
+          "type": "tree_node",
+          "id": "boogie-nights-cosmic-disco",
+          "tree_type": "genre",
+          "name": "Space Boogie Odyssey: Synthesized Soul from Studio 54 to Lagos"
+        },
+        "tracks": [
+          {
+            "artist": "Barbra Streisand,Barry Gibb",
+            "bpm": 75.9,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 521,
+            "key": "1M",
+            "title": "Guilty (feat. Barry Gibb)",
+            "year": 1980
+          },
+          {
+            "artist": "Barbra Streisand",
+            "bpm": 84.9,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 642,
+            "key": "7M",
+            "title": "Woman in Love",
+            "year": 1980
+          },
+          {
+            "artist": "George McCrae",
+            "bpm": 99.6,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 2079,
+            "key": "11M",
+            "title": "I Get Lifted",
+            "year": 2008
+          },
+          {
+            "artist": "Dennis Edwards, Siedah Garrett",
+            "bpm": 95.4,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 2647,
+            "key": "1M",
+            "title": "Don't Look Any Further",
+            "year": 1984
+          },
+          {
+            "artist": "William Onyeabor",
+            "bpm": 116.4,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2368,
+            "key": "6M",
+            "title": "Atomic Bomb",
+            "year": 2013
+          },
+          {
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1206,
+            "key": "10M",
+            "title": "I Feel Love - Edit",
+            "year": 1977
+          },
+          {
+            "artist": "Cerrone",
+            "bpm": 122.5,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 146,
+            "key": "10M",
+            "title": "Supernature",
+            "year": 1977
+          },
+          {
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 160,
+            "key": "10M",
+            "title": "I Feel Love - Edit",
+            "year": 1977
+          },
+          {
+            "artist": "Todd Terje",
+            "bpm": 124,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4174,
+            "key": "12M",
+            "title": "Delorean Drums",
+            "year": 2014
+          },
+          null
+        ],
+        "selectedTrackIndex": 7,
+        "_loading": false
+      },
+      {
+        "id": "slot-1771158076083-pz1g",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      },
+      {
+        "id": "slot-1771159288811-25pw",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      },
+      {
+        "id": "slot-1771159385109-6luf",
         "source": null,
         "tracks": [],
         "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-15T10:54:22.122036+00:00"
+    "updated_at": "2026-02-15T12:54:01.771755+00:00"
   }
 }

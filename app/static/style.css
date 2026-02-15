@@ -2717,6 +2717,16 @@ tr.ws-seed-selected {
     justify-content: center;
     gap: 1rem;
 }
+.now-playing-comment {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+.now-playing-comment:empty {
+    display: none;
+}
 
 /* Playback controls */
 .now-playing-controls {

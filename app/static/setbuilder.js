@@ -2342,6 +2342,10 @@ async function updateNowPlayingDrawer(track, slotIdx) {
     artImg.src = "";
     loadNowPlayingArtwork(track.artist, track.title, artImg);
 
+    // Comment
+    const commentEl = document.getElementById("now-playing-comment");
+    commentEl.textContent = "";
+
     // Fetch tree context (genre leaf + scene leaf)
     const genreDiv = document.getElementById("now-playing-genre-leaf");
     const sceneDiv = document.getElementById("now-playing-scene-leaf");
@@ -2351,6 +2355,7 @@ async function updateNowPlayingDrawer(track, slotIdx) {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
         if (res.ok) {
             const data = await res.json();
+            if (data.comment) commentEl.textContent = data.comment;
             renderSearchCard("now-playing-scene-leaf", data.scene_leaf, "Scene Tree", "tree_node", "scene");
             renderSearchCard("now-playing-genre-leaf", data.genre_leaf, "Genre Tree", "tree_node", "genre");
         }

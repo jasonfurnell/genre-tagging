@@ -650,7 +650,10 @@ def build_track_context(df, track_id, genre_tree, scene_tree):
     genre_leaf = _build_leaf_card(df, genre_tree, track_id, "genre")
     scene_leaf = _build_leaf_card(df, scene_tree, track_id, "scene")
 
-    return {"genre_leaf": genre_leaf, "scene_leaf": scene_leaf}
+    row = df.loc[track_id]
+    comment = _sv(row.get("comment", ""))
+
+    return {"genre_leaf": genre_leaf, "scene_leaf": scene_leaf, "comment": comment}
 
 
 def _build_leaf_card(df, tree, track_id, tree_type):
@@ -671,8 +674,6 @@ def _build_leaf_card(df, tree, track_id, tree_type):
         t = _track_dict(df, tid)
         if t:
             sample_tracks.append(t)
-        if len(sample_tracks) >= 10:
-            break
 
     return {
         "available": True,
