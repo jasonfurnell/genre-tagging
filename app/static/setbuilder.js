@@ -188,7 +188,7 @@ function _makeEmptySlot() {
 
 /**
  * Ensure there is always a clear (empty) slot at the first and last positions.
- * Called after every mutation (assign, delete, duplicate, drag, load).
+ * Called after every mutation (assign, delete, drag, load).
  */
 function ensureBookendSlots() {
     // Ensure first slot is clear
@@ -565,34 +565,17 @@ function renderSlotHeaders() {
             if (!slot.source) {
                 header.innerHTML = `
                     <button class="set-add-source-btn" title="Assign source">+</button>
-                    <div class="set-slot-controls">
-                        <button class="set-ctrl-btn" data-action="delete" title="Delete">&#10005;</button>
-                    </div>
                 `;
                 header.querySelector(".set-add-source-btn").addEventListener("click", () => {
                     openDrawer("browse", slot.id);
-                });
-                header.querySelector(".set-ctrl-btn[data-action='delete']").addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    handleSlotControl(slot.id, "delete");
                 });
             } else {
                 const safeName = escHtml(slot.source.name || "Source");
                 header.innerHTML = `
                     <div class="set-source-name" title="${safeName}">${safeName}</div>
-                    <div class="set-slot-controls">
-                        <button class="set-ctrl-btn" data-action="duplicate" title="Duplicate">&#10697;</button>
-                        <button class="set-ctrl-btn" data-action="delete" title="Delete">&#10005;</button>
-                    </div>
                 `;
                 header.querySelector(".set-source-name").addEventListener("click", () => {
                     openDrawer("detail", slot.id);
-                });
-                header.querySelectorAll(".set-ctrl-btn").forEach(btn => {
-                    btn.addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        handleSlotControl(slot.id, btn.dataset.action);
-                    });
                 });
             }
 
@@ -618,30 +601,12 @@ function renderSlotHeaders() {
             header.dataset.slotId = group.slotIds[0]; // primary for drop target
 
             const safeName = escHtml(group.source.name || "Source");
-            let controlsHtml = `<div class="set-group-slot-row">`;
-            for (let si = 0; si < group.count; si++) {
-                const slotId = group.slotIds[si];
-                controlsHtml += `
-                    <div class="set-slot-controls" style="width:${SET_COL_W}px" data-slot-id="${slotId}">
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="duplicate" title="Duplicate">&#10697;</button>
-                        <button class="set-ctrl-btn" data-slot-id="${slotId}" data-action="delete" title="Delete">&#10005;</button>
-                    </div>`;
-            }
-            controlsHtml += `</div>`;
-
             header.innerHTML = `
                 <div class="set-source-name set-group-label" title="${safeName}">${safeName}</div>
-                ${controlsHtml}
             `;
 
             header.querySelector(".set-group-label").addEventListener("click", () => {
                 openDrawer("detail", group.slotIds[0]);
-            });
-            header.querySelectorAll(".set-ctrl-btn").forEach(btn => {
-                btn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    handleSlotControl(btn.dataset.slotId, btn.dataset.action);
-                });
             });
 
             // Drag entire group
@@ -670,11 +635,23 @@ function renderInsertRow() {
 
     for (let gi = 0; gi < groups.length; gi++) {
         const group = groups[gi];
-        // Spacer matching the group's width
+        // Container for delete buttons matching the group's width
         const spacer = document.createElement("div");
         spacer.className = "set-insert-spacer";
         const w = group.count * (SET_COL_W + SET_GAP) - SET_GAP;
         spacer.style.width = `${w}px`;
+
+        // Add a delete button per column within this group
+        for (let si = 0; si < group.count; si++) {
+            const slotId = group.slotIds[si];
+            const delBtn = document.createElement("span");
+            delBtn.className = "set-delete-col-btn";
+            delBtn.textContent = "\u2715";
+            delBtn.title = "Delete column";
+            delBtn.addEventListener("click", () => handleSlotControl(slotId, "delete"));
+            spacer.appendChild(delBtn);
+        }
+
         row.appendChild(spacer);
 
         // "+" button + vertical line between groups (not after the last one)
@@ -1185,22 +1162,6 @@ function handleSlotControl(slotId, action) {
     if (idx === -1) return;
 
     switch (action) {
-        case "duplicate": {
-            const orig = setSlots[idx];
-            const copy = {
-                id: `slot-${Date.now()}`,
-                source: orig.source ? { ...orig.source } : null,
-                tracks: orig.tracks.map(t => t ? { ...t } : null),
-                selectedTrackIndex: orig.selectedTrackIndex,
-            };
-            setSlots.splice(idx + 1, 0, copy);
-            // Adjust play index if duplicating before/at current playing slot
-            if (isPlaySetMode() && idx <= setPlaySetIndex) setPlaySetIndex++;
-            ensureBookendSlots();
-            renderSet();
-            scheduleAutoSave();
-            break;
-        }
         case "delete": {
             if (setSlots.length <= 1) return;
             const wasCurrent = isPlaySetMode() && idx === setPlaySetIndex;

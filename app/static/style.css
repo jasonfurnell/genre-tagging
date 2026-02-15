@@ -1612,8 +1612,9 @@ tr.ws-seed-selected {
     transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 .set-source-name:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.15);
+    color: var(--success);
+    background: rgba(78,204,163,0.06);
+    border-color: rgba(78,204,163,0.25);
 }
 .set-add-source-btn {
     width: 100%;
@@ -1631,36 +1632,6 @@ tr.ws-seed-selected {
     border-color: var(--success);
     color: var(--success);
 }
-.set-slot-controls {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-.set-slot-header:hover .set-slot-controls {
-    opacity: 1;
-}
-.set-ctrl-btn {
-    border: none;
-    background: rgba(255,255,255,0.05);
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 0.65rem;
-    padding: 2px 5px;
-    font-family: inherit;
-    line-height: 1;
-    border-radius: 3px;
-    transition: color 0.15s, background 0.15s;
-}
-.set-ctrl-btn:hover {
-    color: var(--success);
-    background: rgba(78,204,163,0.15);
-}
-.set-ctrl-btn[data-action="delete"]:hover {
-    color: #ff6b6b;
-    background: rgba(255,107,107,0.15);
-}
 
 /* -- Source Group (consecutive same-source slots) ----------------------- */
 .set-source-group {
@@ -1677,17 +1648,6 @@ tr.ws-seed-selected {
     max-width: 100%;
     border: 1px solid rgba(78, 204, 163, 0.25);
     background: rgba(78, 204, 163, 0.06);
-}
-.set-group-slot-row {
-    display: flex;
-    gap: 6px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-.set-source-group:hover .set-slot-controls {
-    opacity: 1;
 }
 
 /* -- Insert Row (circled "+" buttons between source groups) ------------- */
@@ -1708,7 +1668,30 @@ tr.ws-seed-selected {
 }
 .set-insert-spacer {
     flex: 0 0 auto;
-    height: 1px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.set-delete-col-btn {
+    border: none;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    font-family: inherit;
+    line-height: 1;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    flex: 0 0 auto;
+}
+.set-delete-col-btn:hover {
+    color: #ff6b6b;
+    background: rgba(255,107,107,0.15);
 }
 .set-insert-col-btn {
     width: 0;
