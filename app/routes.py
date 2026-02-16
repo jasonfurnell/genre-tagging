@@ -35,8 +35,11 @@ from app.playlist import (
 )
 from app.tree import (
     build_collection_tree, expand_tree_from_ungrouped,
+    build_curated_collection,
     load_tree, save_tree, delete_tree as delete_tree_file,
     find_node, refresh_all_examples, TREE_PROFILES,
+    COLLECTION_TREE_MODELS, _COLLECTION_TREE_FILE,
+    _COLLECTION_CHECKPOINT_FILE, _clear_checkpoint,
 )
 from app.phases import (
     list_profiles as list_phase_profiles,
@@ -77,6 +80,11 @@ _state = {
     "scene_tree_thread": None,
     "scene_tree_stop_flag": threading.Event(),
     "scene_tree_progress_listeners": [],
+    # Collection Tree (curated cross-reference)
+    "collection_tree": None,
+    "collection_tree_thread": None,
+    "collection_tree_stop_flag": threading.Event(),
+    "collection_tree_progress_listeners": [],
     "_preview_cache": {},          # "artist||title" -> {preview_url, found, ...}
     "_artwork_cache": {},          # "artist||title" -> {cover_url, found}
     "_chord_cache": None,          # cached chord diagram data
@@ -1966,6 +1974,306 @@ def scene_tree_node_export_m3u(node_id):
 def scene_tree_delete():
     _state["scene_tree"] = None
     deleted = delete_tree_file(file_path=_SCENE_PROFILE["file"])
+    return jsonify({"deleted": deleted})
+
+
+# ===========================================================================
+# Collection Tree (curated cross-reference of Genre + Scene trees)
+# ===========================================================================
+
+def _collection_tree_broadcast(data):
+    _tree_broadcast(data, listeners_key="collection_tree_progress_listeners")
+
+
+# ---------------------------------------------------------------------------
+# GET /api/collection-tree
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree")
+def get_collection_tree():
+    tree = _state.get("collection_tree")
+    if tree is None:
+        tree = load_tree(file_path=_COLLECTION_TREE_FILE)
+        if tree:
+            _state["collection_tree"] = tree
+    if tree is None:
+        # Check if there's a checkpoint to resume from
+        has_checkpoint = os.path.exists(_COLLECTION_CHECKPOINT_FILE)
+        checkpoint_phase = 0
+        if has_checkpoint:
+            try:
+                with open(_COLLECTION_CHECKPOINT_FILE) as f:
+                    cp = json.load(f)
+                checkpoint_phase = cp.get("phase_completed", 0)
+            except Exception:
+                pass
+        return jsonify({"tree": None, "has_checkpoint": has_checkpoint,
+                        "checkpoint_phase": checkpoint_phase})
+    return jsonify({"tree": tree})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/collection-tree/build
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/build", methods=["POST"])
+def collection_tree_build():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    # Prerequisite: both genre and scene trees must exist
+    genre_tree = _state.get("tree") or load_tree()
+    scene_tree = _state.get("scene_tree") or load_tree(
+        file_path=TREE_PROFILES["scene"]["file"])
+    if not genre_tree:
+        return jsonify({"error": "Genre tree must be built first"}), 400
+    if not scene_tree:
+        return jsonify({"error": "Scene tree must be built first"}), 400
+
+    t = _state.get("collection_tree_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Collection tree build already in progress"}), 409
+
+    _state["collection_tree_stop_flag"].clear()
+    _state["collection_tree"] = None
+
+    config = load_config()
+    model_config = {
+        "creative": config.get("creative_model",
+                                COLLECTION_TREE_MODELS["creative"]),
+        "mechanical": config.get("mechanical_model",
+                                  COLLECTION_TREE_MODELS["mechanical"]),
+    }
+    client = _get_client("anthropic")  # Both models are Anthropic
+    delay = 0  # No delay needed — parallel phases manage their own concurrency
+
+    def progress_callback(phase, detail, pct):
+        _collection_tree_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    test_mode = request.args.get("test", "").lower() in ("1", "true")
+
+    def worker():
+        try:
+            tree = build_curated_collection(
+                df=df,
+                client=client,
+                model_config=model_config,
+                delay=delay,
+                progress_cb=progress_callback,
+                stop_flag=_state["collection_tree_stop_flag"],
+                test_mode=test_mode,
+            )
+            _state["collection_tree"] = tree
+            _collection_tree_broadcast({
+                "event": "done", "phase": "complete", "percent": 100,
+            })
+        except Exception as e:
+            logging.exception("Collection tree build failed")
+            _collection_tree_broadcast({
+                "event": "error", "phase": "error",
+                "detail": str(e), "percent": 0,
+            })
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["collection_tree_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True}), 202
+
+
+# ---------------------------------------------------------------------------
+# GET /api/collection-tree/progress  (SSE)
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/progress")
+def collection_tree_progress():
+    import queue
+    q = queue.Queue(maxsize=100)
+    _state["collection_tree_progress_listeners"].append(q)
+
+    def stream():
+        try:
+            while True:
+                try:
+                    data = q.get(timeout=30)
+                except queue.Empty:
+                    yield ":\n\n"
+                    continue
+                yield f"data: {json.dumps(data)}\n\n"
+                if data.get("event") in ("done", "error", "stopped"):
+                    break
+        finally:
+            if q in _state["collection_tree_progress_listeners"]:
+                _state["collection_tree_progress_listeners"].remove(q)
+
+    return Response(stream(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache",
+                             "X-Accel-Buffering": "no"})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/collection-tree/stop
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/stop", methods=["POST"])
+def collection_tree_stop():
+    _state["collection_tree_stop_flag"].set()
+    return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# GET /api/collection-tree/ungrouped
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/ungrouped")
+def collection_tree_ungrouped():
+    tree = _state.get("collection_tree") or load_tree(
+        file_path=_COLLECTION_TREE_FILE)
+    if not tree:
+        return jsonify({"error": "No collection tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    ungrouped_ids = tree.get("ungrouped_track_ids", [])
+    tracks = _tracks_from_ids(df, ungrouped_ids)
+    return jsonify({"count": len(tracks), "tracks": tracks})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/collection-tree/create-playlist
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/create-playlist", methods=["POST"])
+def collection_tree_create_playlist():
+    tree = _state.get("collection_tree") or load_tree(
+        file_path=_COLLECTION_TREE_FILE)
+    if not tree:
+        return jsonify({"error": "No collection tree built"}), 404
+
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    data = request.get_json()
+    node_id = data.get("node_id")
+    if not node_id:
+        return jsonify({"error": "node_id is required"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    track_ids = node.get("track_ids", [])
+    name = node.get("title", "Untitled")
+    description = node.get("description", "")
+    filters = node.get("filters", {})
+
+    config = load_config()
+    model = config.get("model", "gpt-4")
+    provider = _provider_for_model(model)
+    client = _get_client(provider)
+    target_count = min(25, len(track_ids))
+
+    valid_ids = [tid for tid in track_ids if tid in df.index]
+    candidates = _tracks_from_ids(df, valid_ids[:80])
+
+    method = "direct"
+    final_ids = valid_ids
+
+    if candidates and len(candidates) > 5:
+        try:
+            result = rerank_tracks(
+                candidates, name, description,
+                client, model, provider, target_count,
+            )
+            reranked_ids = [t["id"] for t in result["tracks"]]
+            final_ids = [tid for tid in reranked_ids if tid in df.index]
+            method = "smart"
+        except Exception:
+            logging.exception("LLM rerank failed for collection tree leaf")
+            final_ids = valid_ids[:target_count]
+            method = "scored_fallback"
+
+    playlist = create_playlist(name, description, filters, final_ids,
+                                "collection-tree")
+    return jsonify({"playlist": playlist, "method": method}), 201
+
+
+# ---------------------------------------------------------------------------
+# POST /api/collection-tree/create-all-playlists
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/create-all-playlists", methods=["POST"])
+def collection_tree_create_all_playlists():
+    tree = _state.get("collection_tree") or load_tree(
+        file_path=_COLLECTION_TREE_FILE)
+    if not tree:
+        return jsonify({"error": "No collection tree built"}), 404
+
+    created = []
+    for cat in tree.get("categories", []):
+        for leaf in cat.get("leaves", []):
+            playlist = create_playlist(
+                name=leaf.get("title", "Untitled"),
+                description=leaf.get("description", ""),
+                filters=leaf.get("filters", {}),
+                track_ids=leaf.get("track_ids", []),
+                source="collection-tree",
+            )
+            created.append(playlist)
+
+    return jsonify({"playlists": created, "count": len(created)}), 201
+
+
+# ---------------------------------------------------------------------------
+# GET /api/collection-tree/node/<node_id>/export/m3u
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree/node/<node_id>/export/m3u")
+def collection_tree_node_export_m3u(node_id):
+    tree = _state.get("collection_tree") or load_tree(
+        file_path=_COLLECTION_TREE_FILE)
+    if not tree:
+        return jsonify({"error": "No collection tree built"}), 404
+
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    node = find_node(tree, node_id)
+    if not node:
+        return jsonify({"error": f"Node '{node_id}' not found"}), 404
+
+    track_ids = node.get("track_ids", [])
+    title = node.get("title", "Untitled")
+
+    lines = ["#EXTM3U", f"#PLAYLIST:{title}"]
+    for tid in track_ids:
+        if tid not in df.index:
+            continue
+        row = df.loc[tid]
+        artist = str(row.get("artist", "Unknown"))
+        track_title = str(row.get("title", "Unknown"))
+        location = str(row.get("location", ""))
+        lines.append(f"#EXTINF:-1,{artist} - {track_title}")
+        if location and location != "nan":
+            lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    name = title.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{name}.m3u8")
+
+
+# ---------------------------------------------------------------------------
+# DELETE /api/collection-tree
+# ---------------------------------------------------------------------------
+@api.route("/api/collection-tree", methods=["DELETE"])
+def collection_tree_delete():
+    _state["collection_tree"] = None
+    deleted = delete_tree_file(file_path=_COLLECTION_TREE_FILE)
+    _clear_checkpoint()
     return jsonify({"deleted": deleted})
 
 

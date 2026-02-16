@@ -17,6 +17,13 @@ const treeState = {
         createdPlaylistNodeIds: new Set(),
         apiPrefix: "/api/scene-tree",
     },
+    collection: {
+        data: null,
+        expandedNodes: new Set(),
+        createdPlaylistNodeIds: new Set(),
+        apiPrefix: "/api/collection-tree",
+        activeCategory: null,
+    },
 };
 
 // Active aliases (swapped on type switch)
@@ -39,6 +46,11 @@ const TREE_TYPE_INFO = {
         description: "Map your collection by musical scenes — cohesive cultural moments anchored to specific places and times. Discover the geographic and temporal movements that shaped the music you love.",
         buildLabel: "Build Scene Tree",
     },
+    collection: {
+        title: "Collection",
+        description: "A curated map of your collection built by cross-referencing genre lineages with cultural scenes. Reveals the unique intersections and identities in your music. Requires both Genre and Scene trees to be built first.",
+        buildLabel: "Build Collection",
+    },
 };
 
 // DOM refs (lazy, tab may not exist yet)
@@ -49,11 +61,23 @@ function apiUrl(path) {
 }
 
 function findTreeNode(nodeId) {
-    if (!treeData || !treeData.lineages) return null;
-    for (const lineage of treeData.lineages) {
-        if (lineage.id === nodeId) return lineage;
-        const found = _findInChildren(lineage, nodeId);
-        if (found) return found;
+    if (!treeData) return null;
+    // Standard hierarchical tree search
+    if (treeData.lineages) {
+        for (const lineage of treeData.lineages) {
+            if (lineage.id === nodeId) return lineage;
+            const found = _findInChildren(lineage, nodeId);
+            if (found) return found;
+        }
+    }
+    // Flat collection tree search
+    if (treeData.categories) {
+        for (const cat of treeData.categories) {
+            if (cat.id === nodeId) return cat;
+            for (const leaf of (cat.leaves || [])) {
+                if (leaf.id === nodeId) return leaf;
+            }
+        }
     }
     return null;
 }
@@ -70,7 +94,9 @@ function _findInChildren(node, nodeId) {
 
 async function initTree() {
     // Wire up buttons
-    _t("#tree-build-btn").addEventListener("click", startTreeBuild);
+    _t("#tree-build-btn").addEventListener("click", () => startTreeBuild(false));
+    _t("#tree-resume-btn").addEventListener("click", () => startTreeBuild(false));
+    _t("#tree-test-btn").addEventListener("click", () => startTreeBuild(true));
     _t("#tree-stop-btn").addEventListener("click", stopTreeBuild);
     _t("#tree-create-all-btn").addEventListener("click", createAllPlaylists);
     _t("#tree-rebuild-btn").addEventListener("click", rebuildTree);
@@ -125,6 +151,16 @@ function switchTreeType(type) {
     if (descEl) descEl.textContent = info.description;
     _t("#tree-build-btn").textContent = info.buildLabel;
 
+    // Show/hide test + resume buttons (only for collection builds)
+    const testBtn = _t("#tree-test-btn");
+    const resumeBtn = _t("#tree-resume-btn");
+    if (type === "collection") {
+        if (testBtn) testBtn.classList.remove("hidden");
+    } else {
+        if (testBtn) testBtn.classList.add("hidden");
+        if (resumeBtn) resumeBtn.classList.add("hidden");
+    }
+
     // Show the right view
     if (treeData) {
         showTreeView();
@@ -141,6 +177,10 @@ async function loadTreeForType(type) {
     _t("#tree-build-btn").disabled = false;
     _t("#tree-progress").classList.add("hidden");
 
+    // Hide resume button by default
+    const resumeBtn = _t("#tree-resume-btn");
+    if (resumeBtn) resumeBtn.classList.add("hidden");
+
     try {
         const res = await fetch(treeState[type].apiPrefix);
         const data = await res.json();
@@ -148,6 +188,13 @@ async function loadTreeForType(type) {
             treeData = data.tree;
             treeState[type].data = data.tree;
             showTreeView();
+        } else if (data.has_checkpoint && type === "collection" && resumeBtn) {
+            // Show resume button with checkpoint info
+            const phaseNames = ["", "Intersections", "Naming", "Reassignment",
+                                "Quality", "Grouping", "Descriptions", "Enrichment"];
+            const phaseName = phaseNames[data.checkpoint_phase] || "?";
+            resumeBtn.textContent = `Resume (from ${phaseName})`;
+            resumeBtn.classList.remove("hidden");
         }
     } catch (e) {
         console.error("Failed to load tree:", e);
@@ -156,28 +203,203 @@ async function loadTreeForType(type) {
 
 // ── Build ───────────────────────────────────────────────────
 
-async function startTreeBuild() {
+// Collection tree phase definitions for the timeline
+const COLLECTION_PHASES = [
+    { key: "intersection_matrix", label: "Intersections", icon: "1" },
+    { key: "cluster_naming",      label: "Naming",        icon: "2" },
+    { key: "reassignment",        label: "Reassigning",   icon: "3" },
+    { key: "quality_scoring",     label: "Quality",       icon: "4" },
+    { key: "grouping",            label: "Grouping",      icon: "5" },
+    { key: "final_descriptions",  label: "Descriptions",  icon: "6" },
+    { key: "enrichment",          label: "Enrichment",    icon: "7" },
+];
+
+// Narrative descriptions for each collection build phase
+const PHASE_NARRATIVES = {
+    intersection_matrix: {
+        title: "Finding natural clusters",
+        body: "Your Genre tree organises tracks by musical lineage — House, Techno, Breaks. " +
+              "Your Scene tree organises by cultural moment — Berlin Minimal, Balearic Summers. " +
+              "Right now, we're cross-referencing every leaf from both trees to find tracks that " +
+              "live at the intersection of both a genre identity and a cultural context. These " +
+              "intersections reveal natural clusters — groups of tracks that share something deeper " +
+              "than just a genre label.",
+    },
+    cluster_naming: {
+        title: "Giving each cluster its identity",
+        body: "Each intersection is now a seed cluster — a group of tracks that share both a genre " +
+              "lineage and a cultural scene. We're sending sample tracks from each cluster to the " +
+              "LLM, asking it to listen to the pattern and give it a name that captures the vibe: " +
+              "not just \"Deep House\" but something like \"Late-Night Tokyo Micro-House\" or " +
+              "\"Berlin Dub Techno After-Hours\". The LLM also scores each cluster's coherence and " +
+              "flags tracks that don't quite fit.",
+    },
+    reassignment: {
+        title: "Making sure every track finds its home",
+        body: "Some tracks appeared in multiple seed clusters (a track can sit at the intersection " +
+              "of several genre/scene pairs). Others weren't in any cluster at all. This phase " +
+              "resolves that: every track gets assigned to exactly one cluster. We run multiple " +
+              "passes — each time, the LLM looks at orphaned or poorly-fit tracks and finds them " +
+              "a better home. We stop when less than 5% of tracks are moving between passes.",
+    },
+    quality_scoring: {
+        title: "Refining the collection",
+        body: "Now we quality-check every cluster. The LLM scores each one for coherence — do these " +
+              "tracks actually belong together? Clusters that are too similar get merged. Clusters " +
+              "that are too diverse or too large get split into more focused sub-groups. This " +
+              "iterates up to three times, converging toward ~150 tightly-curated collections " +
+              "where every cluster scores 7/10 or higher.",
+    },
+    grouping: {
+        title: "Organising into browsable categories",
+        body: "With ~150 refined clusters, we now need a way to browse them. The LLM groups " +
+              "related clusters into 8-12 top-level categories — like a world-class record store " +
+              "organising its sections. The grouping is bottom-up: based on shared musical DNA, " +
+              "cultural affinity, and dancefloor energy rather than rigid genre boundaries.",
+    },
+    final_descriptions: {
+        title: "Writing the liner notes",
+        body: "Each collection now gets the full treatment: a rich, evocative description that " +
+              "captures the sound, the cultural moment, and what connects these tracks beyond " +
+              "simple genre labels. The LLM also picks 7 exemplar tracks per collection — the " +
+              "most representative tracks that best capture the essence of that particular corner " +
+              "of your music library.",
+    },
+    enrichment: {
+        title: "Suggesting metadata improvements",
+        body: "The final phase looks at each track in the context of its collection and suggests " +
+              "ways to improve your metadata: more specific sub-genres, scene tags you might be " +
+              "missing, production descriptors, or more precise era information. These suggestions " +
+              "are saved for your review — nothing is changed automatically. Only high-confidence " +
+              "suggestions (70%+) are kept.",
+    },
+    complete: {
+        title: "Collection built!",
+        body: "Your collection tree is ready to explore. Every track has been assigned to exactly " +
+              "one collection, grouped into browsable categories. You can create playlists from " +
+              "any collection, push them to the Set Workshop, or review the metadata suggestions.",
+    },
+};
+
+let _currentNarrativePhase = null;
+
+let _buildStartTime = null;
+
+function _initProgressUI() {
+    const phasesEl = _t("#tree-progress-phases");
+    const logEl = _t("#tree-progress-log");
+    const errorEl = _t("#tree-progress-error");
+    const logEntries = _t("#tree-progress-log-entries");
+
+    const narrativeEl = _t("#tree-progress-narrative");
+
+    if (currentTreeType === "collection") {
+        // Show phase timeline + narrative for collection builds
+        phasesEl.classList.remove("hidden");
+        logEl.classList.remove("hidden");
+        narrativeEl.classList.remove("hidden");
+        phasesEl.innerHTML = COLLECTION_PHASES.map(p =>
+            `<div class="progress-phase-step" data-phase="${p.key}">` +
+            `<span class="progress-phase-icon">${p.icon}</span>` +
+            `<span class="progress-phase-label">${p.label}</span>` +
+            `</div>`
+        ).join("");
+        _currentNarrativePhase = null;
+    } else {
+        phasesEl.classList.add("hidden");
+        logEl.classList.add("hidden");
+        narrativeEl.classList.add("hidden");
+    }
+    errorEl.classList.add("hidden");
+    errorEl.textContent = "";
+    if (logEntries) logEntries.innerHTML = "";
+    _buildStartTime = Date.now();
+}
+
+function _addLogEntry(detail, isError = false) {
+    const logEntries = _t("#tree-progress-log-entries");
+    if (!logEntries) return;
+    const elapsed = _buildStartTime ? Math.round((Date.now() - _buildStartTime) / 1000) : 0;
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    const timestamp = `${mins}:${String(secs).padStart(2, "0")}`;
+    const entry = document.createElement("div");
+    entry.className = "progress-log-entry" + (isError ? " log-error" : "");
+    entry.innerHTML = `<span class="log-time">${timestamp}</span> ${detail}`;
+    logEntries.appendChild(entry);
+    logEntries.scrollTop = logEntries.scrollHeight;
+
+    // Keep only last 50 entries
+    while (logEntries.children.length > 50) {
+        logEntries.removeChild(logEntries.firstChild);
+    }
+}
+
+function _updateNarrative(phase) {
+    if (phase === _currentNarrativePhase) return;
+    _currentNarrativePhase = phase;
+    const narrative = PHASE_NARRATIVES[phase];
+    const titleEl = _t("#tree-progress-narrative-title");
+    const bodyEl = _t("#tree-progress-narrative-body");
+    if (!narrative || !titleEl || !bodyEl) return;
+
+    // Fade transition
+    const container = _t("#tree-progress-narrative");
+    container.classList.add("narrative-fading");
+    setTimeout(() => {
+        titleEl.textContent = narrative.title;
+        bodyEl.textContent = narrative.body;
+        container.classList.remove("narrative-fading");
+    }, 200);
+}
+
+function _updatePhaseTimeline(currentPhase) {
+    const steps = document.querySelectorAll("#tree-progress-phases .progress-phase-step");
+    let foundCurrent = false;
+    for (let i = steps.length - 1; i >= 0; i--) {
+        const step = steps[i];
+        const key = step.dataset.phase;
+        if (key === currentPhase) {
+            step.classList.add("active");
+            step.classList.remove("done");
+            foundCurrent = true;
+        } else if (foundCurrent) {
+            // Phases before current are done
+            step.classList.add("done");
+            step.classList.remove("active");
+        } else {
+            // Phases after current are pending
+            step.classList.remove("active", "done");
+        }
+    }
+}
+
+async function startTreeBuild(testMode = false) {
     const buildBtn = _t("#tree-build-btn");
+    const resumeBtn = _t("#tree-resume-btn");
+    const testBtn = _t("#tree-test-btn");
     const progress = _t("#tree-progress");
 
     buildBtn.disabled = true;
+    if (resumeBtn) resumeBtn.disabled = true;
+    if (testBtn) testBtn.disabled = true;
     progress.classList.remove("hidden");
     treeBuilding = true;
+    _initProgressUI();
 
+    const buildUrl = testMode ? apiUrl("/build?test=1") : apiUrl("/build");
     try {
-        const res = await fetch(apiUrl("/build"), { method: "POST" });
+        const res = await fetch(buildUrl, { method: "POST" });
         const data = await res.json();
         if (!res.ok) {
-            alert(data.error || "Failed to start build");
+            _showBuildError(data.error || "Failed to start build");
             buildBtn.disabled = false;
-            progress.classList.add("hidden");
             treeBuilding = false;
             return;
         }
     } catch (e) {
-        alert("Failed to start tree build: " + e.message);
+        _showBuildError("Failed to start tree build: " + e.message);
         buildBtn.disabled = false;
-        progress.classList.add("hidden");
         treeBuilding = false;
         return;
     }
@@ -192,21 +414,30 @@ async function startTreeBuild() {
         }
 
         if (msg.event === "done") {
+            _addLogEntry("Build complete!");
             finishTreeBuild();
         }
 
         if (msg.event === "error") {
-            alert("Tree build error: " + (msg.detail || "Unknown error"));
+            _showBuildError(msg.detail || "Unknown error");
+            _addLogEntry("ERROR: " + (msg.detail || "Unknown error"), true);
             finishTreeBuild();
         }
 
         if (msg.event === "stopped") {
+            _addLogEntry("Build stopped by user");
             finishTreeBuild();
         }
     };
     treeEventSource.onerror = () => {
         finishTreeBuild();
     };
+}
+
+function _showBuildError(message) {
+    const errorEl = _t("#tree-progress-error");
+    errorEl.classList.remove("hidden");
+    errorEl.textContent = message;
 }
 
 function updateBuildProgress(phase, detail, percent) {
@@ -221,11 +452,26 @@ function updateBuildProgress(phase, detail, percent) {
         "lineage_examples": "Selecting Exemplar Tracks",
         "branch_examples": "Selecting Branch Exemplars",
         "refreshing_examples": "Refreshing Exemplar Tracks",
+        // Collection tree phases
+        "intersection_matrix": "Computing Intersections",
+        "cluster_naming": "Naming Clusters",
+        "reassignment": "Reassigning Tracks",
+        "quality_scoring": "Scoring Cluster Quality",
+        "grouping": "Grouping Categories",
+        "final_descriptions": "Writing Descriptions",
+        "enrichment": "Enriching Metadata",
         "complete": "Complete!",
     };
     _t("#tree-progress-phase").textContent = phaseLabels[phase] || phase;
     _t("#tree-progress-detail").textContent = detail || "";
     _t("#tree-progress-bar").style.width = (percent || 0) + "%";
+
+    // Update phase timeline, narrative + activity log for collection builds
+    if (currentTreeType === "collection") {
+        _updatePhaseTimeline(phase);
+        _updateNarrative(phase);
+        _addLogEntry(detail);
+    }
 }
 
 async function finishTreeBuild() {
@@ -234,6 +480,7 @@ async function finishTreeBuild() {
         treeEventSource = null;
     }
     treeBuilding = false;
+    _buildStartTime = null;
 
     // Load the tree
     try {
@@ -244,13 +491,30 @@ async function finishTreeBuild() {
             treeState[currentTreeType].data = data.tree;
             showTreeView();
         } else {
-            // No tree built (error or stopped early)
+            // No tree built (error or stopped early) — check for checkpoint
             _t("#tree-build-btn").disabled = false;
-            _t("#tree-progress").classList.add("hidden");
+            const testBtn = _t("#tree-test-btn");
+            if (testBtn) testBtn.disabled = false;
+            const resumeBtn = _t("#tree-resume-btn");
+            if (resumeBtn) {
+                resumeBtn.disabled = false;
+                if (data.has_checkpoint && currentTreeType === "collection") {
+                    const phaseNames = ["", "Intersections", "Naming", "Reassignment",
+                                        "Quality", "Grouping", "Descriptions", "Enrichment"];
+                    const phaseName = phaseNames[data.checkpoint_phase] || "?";
+                    resumeBtn.textContent = `Resume (from ${phaseName})`;
+                    resumeBtn.classList.remove("hidden");
+                } else {
+                    resumeBtn.classList.add("hidden");
+                }
+            }
         }
     } catch (e) {
         _t("#tree-build-btn").disabled = false;
-        _t("#tree-progress").classList.add("hidden");
+        const testBtn = _t("#tree-test-btn");
+        if (testBtn) testBtn.disabled = false;
+        const resumeBtn = _t("#tree-resume-btn");
+        if (resumeBtn) resumeBtn.disabled = false;
     }
 }
 
@@ -276,6 +540,8 @@ async function rebuildTree() {
     _t("#tree-build-section").style.display = "";
     _t("#tree-build-btn").disabled = false;
     _t("#tree-progress").classList.add("hidden");
+    const resumeBtn = _t("#tree-resume-btn");
+    if (resumeBtn) resumeBtn.classList.add("hidden");
 }
 
 // ── Display ─────────────────────────────────────────────────
@@ -283,9 +549,25 @@ async function rebuildTree() {
 function showTreeView() {
     _t("#tree-build-section").style.display = "none";
     _t("#tree-view-section").classList.remove("hidden");
-    renderTreeHeader();
-    renderTreeGrid();
-    renderUngrouped();
+
+    if (currentTreeType === "collection") {
+        // Hide standard tree elements, show collection view
+        _t("#tree-header").classList.add("hidden");
+        _t("#tree-grid").classList.add("hidden");
+        _t("#tree-ungrouped").innerHTML = "";
+        const cv = _t("#collection-view");
+        if (cv) cv.classList.remove("hidden");
+        renderCollectionTreeView();
+    } else {
+        // Hide collection view, show standard tree
+        const cv = _t("#collection-view");
+        if (cv) cv.classList.add("hidden");
+        _t("#tree-header").classList.remove("hidden");
+        _t("#tree-grid").classList.remove("hidden");
+        renderTreeHeader();
+        renderTreeGrid();
+        renderUngrouped();
+    }
 }
 
 function renderTreeHeader() {
@@ -903,7 +1185,13 @@ async function createPlaylistFromLeaf(nodeId, btn) {
 }
 
 async function createAllPlaylists() {
-    const leafCount = countLeaves(treeData.lineages);
+    let leafCount;
+    if (currentTreeType === "collection" && treeData.categories) {
+        leafCount = treeData.categories.reduce(
+            (sum, c) => sum + (c.leaves || []).length, 0);
+    } else {
+        leafCount = countLeaves(treeData.lineages);
+    }
     if (!confirm(`Create ${leafCount} playlists from all leaf nodes?`)) return;
 
     const btn = _t("#tree-create-all-btn");
@@ -918,9 +1206,17 @@ async function createAllPlaylists() {
             btn.classList.remove("btn-primary");
             btn.classList.add("btn-secondary");
             // Mark all leaves as created
-            markAllLeavesCreated(treeData.lineages);
-            // Re-render to update buttons
-            renderTreeGrid();
+            if (currentTreeType === "collection" && treeData.categories) {
+                for (const cat of treeData.categories) {
+                    for (const leaf of (cat.leaves || [])) {
+                        createdPlaylistNodeIds.add(leaf.id);
+                    }
+                }
+                renderCollectionTreeView();
+            } else {
+                markAllLeavesCreated(treeData.lineages);
+                renderTreeGrid();
+            }
         } else {
             alert(data.error || "Failed to create playlists");
             btn.disabled = false;
@@ -962,4 +1258,202 @@ function esc(str) {
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+}
+
+
+// ══════════════════════════════════════════════════════════════════════
+// Collection Tree — category sidebar + flat card grid
+// ══════════════════════════════════════════════════════════════════════
+
+function renderCollectionTreeView() {
+    const tree = treeData;
+    if (!tree || !tree.categories) return;
+
+    // Stats header
+    const totalLeaves = tree.categories.reduce(
+        (sum, c) => sum + (c.leaves || []).length, 0);
+    const headerEl = _t("#collection-header");
+    if (headerEl) {
+        headerEl.innerHTML = `
+            <div class="tree-stats">
+                <div class="tree-stat">
+                    <span class="tree-stat-number">${tree.total_tracks}</span>
+                    <span class="tree-stat-label">Total Tracks</span>
+                </div>
+                <div class="tree-stat">
+                    <span class="tree-stat-number">${tree.categories.length}</span>
+                    <span class="tree-stat-label">Categories</span>
+                </div>
+                <div class="tree-stat">
+                    <span class="tree-stat-number">${totalLeaves}</span>
+                    <span class="tree-stat-label">Collections</span>
+                </div>
+                <div class="tree-stat">
+                    <span class="tree-stat-number">${tree.assigned_tracks}</span>
+                    <span class="tree-stat-label">Assigned</span>
+                </div>
+            </div>`;
+    }
+
+    // Category sidebar
+    const sidebar = _t("#collection-categories");
+    if (!sidebar) return;
+    sidebar.innerHTML = "";
+
+    for (const cat of tree.categories) {
+        const btn = document.createElement("button");
+        btn.className = "collection-category-btn";
+        btn.dataset.categoryId = cat.id;
+        const leafCount = (cat.leaves || []).length;
+        btn.innerHTML = `
+            <span class="cc-title">${esc(cat.title)}</span>
+            <span class="cc-count">${leafCount} collection${leafCount !== 1 ? "s" : ""}</span>`;
+        btn.addEventListener("click", () => selectCategory(cat.id));
+        sidebar.appendChild(btn);
+    }
+
+    // Select active or first category
+    const activeCat = treeState.collection.activeCategory || tree.categories[0]?.id;
+    if (activeCat) selectCategory(activeCat);
+}
+
+function selectCategory(categoryId) {
+    treeState.collection.activeCategory = categoryId;
+
+    // Update sidebar active state
+    document.querySelectorAll(".collection-category-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.categoryId === categoryId);
+    });
+
+    // Find category
+    const cat = treeData.categories.find(c => c.id === categoryId);
+    if (!cat) return;
+
+    renderCollectionLeaves(cat);
+}
+
+function renderCollectionLeaves(category) {
+    const container = _t("#collection-leaves");
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="collection-category-header">
+            <h2>${esc(category.title)}</h2>
+            <p>${esc(category.description)}</p>
+            <div class="collection-category-actions">
+                <span class="cc-track-count">${category.track_count} tracks</span>
+            </div>
+        </div>
+        <div class="collection-cards-grid" id="collection-cards"></div>`;
+
+    const grid = container.querySelector("#collection-cards");
+
+    for (const leaf of (category.leaves || [])) {
+        const card = document.createElement("div");
+        card.className = "collection-card";
+
+        // Exemplar tracks
+        let examplesHtml = "";
+        if (leaf.examples && leaf.examples.length > 0) {
+            examplesHtml = `<div class="collection-card-examples">
+                <div class="tree-examples-title">Exemplar Tracks
+                    <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button>
+                </div>`;
+            for (const ex of leaf.examples.slice(0, 5)) {
+                examplesHtml += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" alt="">
+                    <button class="btn-preview" data-artist="${esc(ex.artist)}" data-title="${esc(ex.title)}" title="Play 30s preview">\u25B6</button>
+                    <span class="tree-track-title">${esc(ex.title)}</span>
+                    <span class="tree-track-artist">${esc(ex.artist)}</span>
+                    ${ex.year ? `<span class="tree-track-year">${ex.year}</span>` : ""}
+                </div>`;
+            }
+            examplesHtml += `</div>`;
+        }
+
+        // Context tags
+        const contextTags = [];
+        if (leaf.genre_context) {
+            contextTags.push(`<span class="cc-tag cc-genre">${esc(leaf.genre_context)}</span>`);
+        }
+        if (leaf.scene_context) {
+            contextTags.push(`<span class="cc-tag cc-scene">${esc(leaf.scene_context)}</span>`);
+        }
+        const tagsHtml = contextTags.length
+            ? `<div class="collection-card-tags">${contextTags.join("")}</div>` : "";
+
+        // Metadata badge
+        const enrichCount = (leaf.metadata_suggestions || []).length;
+        const enrichBadge = enrichCount > 0
+            ? `<span class="cc-enrich-badge" title="${enrichCount} metadata suggestions">${enrichCount} suggestions</span>`
+            : "";
+
+        const isCreated = createdPlaylistNodeIds.has(leaf.id);
+        card.innerHTML = `
+            <div class="collection-card-header">
+                <h3>${esc(leaf.title)}</h3>
+                <span class="tree-node-count">${leaf.track_count} tracks</span>
+            </div>
+            ${tagsHtml}
+            <p class="collection-card-desc">${esc(leaf.description)}</p>
+            ${examplesHtml}
+            <div class="collection-card-actions">
+                <button class="btn btn-primary btn-sm tree-create-pl-btn"
+                    data-node-id="${leaf.id}"
+                    ${isCreated ? 'disabled style="opacity:0.5"' : ""}>
+                    ${isCreated ? "Playlist Created" : "Create Playlist"}
+                </button>
+                <button class="btn btn-sm btn-secondary tree-push-set-btn"
+                    data-node-id="${leaf.id}">Push to Set</button>
+                ${enrichBadge}
+            </div>`;
+
+        grid.appendChild(card);
+
+        // Wire artwork loading
+        card.querySelectorAll(".track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
+        });
+
+        // Wire preview buttons
+        card.querySelectorAll(".btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            });
+        });
+
+        // Wire play-all
+        const playAllBtn = card.querySelector(".tree-play-all-btn");
+        if (playAllBtn) {
+            playAllBtn.addEventListener("click", () => {
+                const exContainer = card.querySelector(".collection-card-examples");
+                if (exContainer) startPlayAll(exContainer);
+            });
+        }
+
+        // Wire create playlist
+        const createBtn = card.querySelector(".tree-create-pl-btn");
+        if (createBtn && !isCreated) {
+            createBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                createPlaylistFromLeaf(leaf.id, createBtn);
+            });
+        }
+
+        // Wire push to set
+        const pushBtn = card.querySelector(".tree-push-set-btn");
+        if (pushBtn) {
+            pushBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const n = findTreeNode(leaf.id);
+                if (n && n.track_ids && n.track_ids.length > 0) {
+                    pushToSetWorkshop(n.track_ids, n.title || leaf.id,
+                        "tree_node", n.id, "collection");
+                } else {
+                    alert("No tracks found for this collection.");
+                }
+            });
+        }
+    }
 }

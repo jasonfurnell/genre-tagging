@@ -83,11 +83,11 @@ def _extract_json(text):
     return json.loads(text.strip())
 
 
-def _call_llm(client, model, provider, system_prompt, user_prompt):
+def _call_llm(client, model, provider, system_prompt, user_prompt, max_tokens=4096):
     if provider == "anthropic":
         response = client.messages.create(
             model=model,
-            max_tokens=4096,
+            max_tokens=max_tokens,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
         )
@@ -1283,11 +1283,20 @@ def refresh_all_examples(tree, df, client, model, provider, delay,
 # ---------------------------------------------------------------------------
 
 def find_node(tree, node_id):
-    """Find a node by ID anywhere in the tree. Returns the node dict or None."""
+    """Find a node by ID anywhere in the tree. Returns the node dict or None.
+    Supports both hierarchical trees (lineages/children) and flat collection
+    trees (categories/leaves)."""
     for lineage in tree.get("lineages", []):
         result = _find_in_subtree(lineage, node_id)
         if result:
             return result
+    # Flat collection tree search
+    for category in tree.get("categories", []):
+        if category.get("id") == node_id:
+            return category
+        for leaf in category.get("leaves", []):
+            if leaf.get("id") == node_id:
+                return leaf
     return None
 
 
@@ -1299,3 +1308,1369 @@ def _find_in_subtree(node, node_id):
         if result:
             return result
     return None
+
+
+# ===========================================================================
+# Collection Tree — curated cross-reference of Genre + Scene trees
+# ===========================================================================
+
+_COLLECTION_TREE_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "output", "curated_collection.json"
+)
+_COLLECTION_CHECKPOINT_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "output", "collection_checkpoint.json"
+)
+
+
+def _save_checkpoint(phase_completed, data):
+    """Save intermediate pipeline state after a phase completes."""
+    checkpoint = {"phase_completed": phase_completed, **data}
+    with open(_COLLECTION_CHECKPOINT_FILE, "w") as f:
+        json.dump(checkpoint, f)
+    logger.info("[collection] Checkpoint saved after phase %d", phase_completed)
+
+
+def _load_checkpoint():
+    """Load checkpoint if it exists, return (phase_completed, data) or (0, {})."""
+    if not os.path.exists(_COLLECTION_CHECKPOINT_FILE):
+        return 0, {}
+    try:
+        with open(_COLLECTION_CHECKPOINT_FILE) as f:
+            data = json.load(f)
+        phase = data.pop("phase_completed", 0)
+        logger.info("[collection] Checkpoint found — resuming from phase %d", phase)
+        return phase, data
+    except Exception:
+        logger.exception("Failed to load checkpoint")
+        return 0, {}
+
+
+def _clear_checkpoint():
+    """Remove checkpoint file after successful completion."""
+    if os.path.exists(_COLLECTION_CHECKPOINT_FILE):
+        os.remove(_COLLECTION_CHECKPOINT_FILE)
+        logger.info("[collection] Checkpoint cleared")
+
+# Model tiering defaults
+COLLECTION_TREE_MODELS = {
+    "creative": "claude-sonnet-4-5-20250929",
+    "mechanical": "claude-3-5-haiku-20241022",
+}
+
+
+def _get_tiered_model(tier, model_config=None):
+    """Return (model_name, provider) for a given tier ('creative' or 'mechanical')."""
+    config = model_config or COLLECTION_TREE_MODELS
+    model = config.get(tier, config.get("creative"))
+    provider = "anthropic" if model.startswith("claude") else "openai"
+    return model, provider
+
+
+# ---------------------------------------------------------------------------
+# Collection Tree prompts
+# ---------------------------------------------------------------------------
+
+_COLLECTION_SYSTEM_PROMPT = (
+    "You are a music curator with encyclopedic knowledge of genres, scenes, and "
+    "cultural movements. You create vivid, evocative playlist descriptions that "
+    "capture the feeling of a specific corner of music. You think about what "
+    "connects tracks beyond simple genre labels — mood, era, geography, production "
+    "style, cultural context, and dancefloor energy.\n\n"
+    "You must respond with valid JSON only. No markdown, no code fences, no "
+    "additional text before or after the JSON."
+)
+
+_CLUSTER_NAMING_PROMPT = """You are naming and describing music clusters. Each cluster is an
+intersection of a genre lineage and a cultural scene — tracks that belong to both.
+
+For each cluster:
+1. Create an evocative, specific name (NOT generic — think "Late-Night NYC Boogie Revival"
+   not "Dance Music"). The name should capture the unique identity of this intersection.
+2. Write a rich scene description (3-4 sentences) that captures:
+   - The sound and production style
+   - The cultural moment, place, and era
+   - What connects these tracks beyond just genre
+   - Influential artists or movements (even if not in the collection)
+3. Flag any tracks that seem like poor fits for this specific intersection
+4. Assign a coherence score (1-10) — how well do these tracks belong together?
+
+Clusters to name:
+{clusters_json}
+
+Return a JSON array:
+[{{
+  "id": "<cluster-id>",
+  "title": "Evocative Cluster Name",
+  "description": "Rich 3-4 sentence scene description capturing sound, culture, and feeling...",
+  "coherence_score": 8,
+  "poor_fit_track_ids": []
+}}]"""
+
+_REASSIGNMENT_PROMPT = """Assign each track to the single best-matching cluster based on its
+genre tags, descriptors, mood, location, and era. Choose the cluster where the track would
+feel most at home musically and culturally.
+
+Available clusters:
+{cluster_summary}
+
+Tracks to assign:
+{tracks_json}
+
+For each track, return the best cluster. If truly no cluster fits at all, use "unassigned".
+
+Return a JSON array:
+[{{
+  "track_id": 123,
+  "cluster_id": "best-matching-cluster-id",
+  "confidence": 0.85
+}}]"""
+
+_QUALITY_SCORING_PROMPT = """Evaluate these music clusters for quality and coherence.
+
+For each cluster, score 1-10 on:
+- Musical coherence: Do the tracks share a sound, style, or production approach?
+- Thematic unity: Is there a clear unifying concept (scene, movement, era)?
+- Distinctiveness: Is this cluster clearly different from others?
+
+Also identify:
+- MERGE candidates: pairs of clusters that are too similar and should be combined
+- SPLIT candidates: clusters that are too diverse (>60 tracks) or contain distinct sub-groups
+
+Clusters:
+{clusters_json}
+
+Return JSON:
+{{
+  "scores": [{{ "id": "cluster-id", "score": 8, "reason": "brief explanation" }}],
+  "merge_suggestions": [{{ "ids": ["id-a", "id-b"], "reason": "why these are too similar" }}],
+  "split_suggestions": [{{ "id": "cluster-id", "into": 2, "reason": "why this should split" }}]
+}}"""
+
+_SPLIT_CLUSTER_PROMPT = """This music cluster needs to be split into {split_count} distinct
+sub-clusters because it's too diverse.
+
+Cluster: {cluster_title}
+Description: {cluster_description}
+Track count: {track_count}
+
+Track landscape:
+{mini_landscape}
+
+Create {split_count} focused sub-clusters. Each should have:
+- A distinct identity within the parent cluster
+- Clear filter criteria to assign tracks
+
+{filter_help}
+
+Return a JSON array:
+[{{
+  "id": "kebab-case-id",
+  "title": "Sub-cluster Name",
+  "description": "What makes this sub-group distinct",
+  "filters": {{ "genres": [...], "mood": [...], "descriptors": [...], "location": [...], "era": [...] }}
+}}]"""
+
+_GROUPING_PROMPT = """Group these {count} music collections into 8-12 natural families/categories.
+
+Each family should:
+- Group collections that share musical DNA, cultural affinity, or dancefloor energy
+- Have an evocative family name and 2-3 sentence description
+- Contain roughly 10-20 collections each (aim for balance, but prioritise coherence)
+- Feel like a curated section in a world-class record store
+
+Collections:
+{clusters_json}
+
+Return a JSON array:
+[{{
+  "id": "kebab-case-id",
+  "title": "Family Name",
+  "description": "2-3 sentence description of what unifies this family...",
+  "cluster_ids": ["cluster-id-1", "cluster-id-2", ...]
+}}]"""
+
+_COLLECTION_LEAF_PROMPT = """Write rich, evocative descriptions for each of these music
+collections. Think like a passionate DJ and cultural historian describing their favourite
+corners of music to an enthusiastic listener.
+
+For each collection:
+1. Refine the title if a better one emerges from the tracks
+2. Write a vivid paragraph (4-6 sentences) describing:
+   - The sound: production style, rhythms, textures
+   - The scene: where and when this music lives
+   - The feeling: what it's like to hear this on a dancefloor or in headphones
+   - The lineage: who pioneered this sound, what influenced it, where it led
+   - Artists or tracks that define this corner (even if not in the collection)
+3. Select 7 exemplar tracks from the candidates provided — tracks that best
+   represent the essence of this collection
+
+Collections:
+{nodes_json}
+
+Return a JSON array:
+[{{
+  "id": "collection-id",
+  "title": "Refined Title",
+  "description": "A rich paragraph — evocative, knowledgeable, vivid...",
+  "examples": [
+    {{"title": "Track Title", "artist": "Artist Name", "year": 2001}},
+    ...
+  ]
+}}]"""
+
+_ENRICHMENT_PROMPT = """Analyse these tracks in the context of their collection cluster and
+suggest metadata improvements. Only suggest changes where you're confident they improve
+accuracy and specificity.
+
+Cluster: {cluster_title}
+Cluster description: {cluster_description}
+
+Tracks:
+{tracks_json}
+
+For each track, suggest improvements to its comment metadata:
+- genre_refinement: a more specific sub-genre than the current tags (or null)
+- scene_tags: cultural/geographic/temporal tags to add (or null)
+- descriptors: production or sonic descriptors to add (or null)
+- era_refinement: more precise era information (or null)
+
+Return a JSON array:
+[{{
+  "track_id": 123,
+  "suggestions": {{
+    "genre_refinement": "Acid House" or null,
+    "scene_tags": ["Chicago warehouse", "1987 Summer of Love"] or null,
+    "descriptors": ["303 squelch", "hypnotic"] or null,
+    "era_refinement": "late 1980s" or null
+  }},
+  "confidence": 0.9,
+  "reasoning": "Brief explanation"
+}}]"""
+
+
+# ---------------------------------------------------------------------------
+# Phase 1: Intersection Matrix (pure Python)
+# ---------------------------------------------------------------------------
+
+def _build_intersection_matrix(genre_tree, scene_tree, min_tracks=5):
+    """Compute intersections between genre and scene tree leaves.
+
+    Returns list of seed cluster dicts sorted by track count descending.
+    """
+    genre_leaves = []
+    _collect_leaves(genre_tree.get("lineages", []), genre_leaves)
+    scene_leaves = []
+    _collect_leaves(scene_tree.get("lineages", []), scene_leaves)
+
+    # Pre-build sets for O(1) intersection
+    genre_sets = {}
+    genre_info = {}
+    for leaf in genre_leaves:
+        lid = leaf["id"]
+        genre_sets[lid] = set(leaf.get("track_ids", []))
+        genre_info[lid] = {
+            "id": lid,
+            "title": leaf.get("title", ""),
+            "description": leaf.get("description", ""),
+            "filters": leaf.get("filters", {}),
+        }
+
+    scene_sets = {}
+    scene_info = {}
+    for leaf in scene_leaves:
+        lid = leaf["id"]
+        scene_sets[lid] = set(leaf.get("track_ids", []))
+        scene_info[lid] = {
+            "id": lid,
+            "title": leaf.get("title", ""),
+            "description": leaf.get("description", ""),
+            "filters": leaf.get("filters", {}),
+        }
+
+    seeds = []
+    for g_id, g_set in genre_sets.items():
+        for s_id, s_set in scene_sets.items():
+            intersection = g_set & s_set
+            if len(intersection) >= min_tracks:
+                seeds.append({
+                    "id": f"{g_id}__{s_id}",
+                    "genre_leaf": genre_info[g_id],
+                    "scene_leaf": scene_info[s_id],
+                    "track_ids": sorted(intersection),
+                    "track_count": len(intersection),
+                })
+
+    seeds.sort(key=lambda s: s["track_count"], reverse=True)
+    return seeds
+
+
+# ---------------------------------------------------------------------------
+# Phase 2: Cluster Naming (creative model)
+# ---------------------------------------------------------------------------
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_name_cluster_batch(clusters_for_llm, client, model, provider):
+    prompt = _CLUSTER_NAMING_PROMPT.format(
+        clusters_json=json.dumps(clusters_for_llm, indent=2)
+    )
+    raw = _call_llm(client, model, provider, _COLLECTION_SYSTEM_PROMPT, prompt,
+                    max_tokens=8192)
+    return _extract_json(raw)
+
+
+def _name_all_clusters(seeds, df, client, model_config, delay,
+                       progress, should_stop):
+    """Phase 2: Name and describe all seed clusters using creative model.
+    Runs up to 4 LLM calls in parallel for speed."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    model, provider = _get_tiered_model("creative", model_config)
+    batch_size = 8  # bigger batches = fewer calls
+    max_workers = 4
+    named_clusters = []
+    total = len(seeds)
+    completed = [0]  # mutable counter for progress
+
+    def _prepare_batch(batch):
+        """Build LLM payload for a batch of seed clusters."""
+        clusters_for_llm = []
+        for cluster in batch:
+            valid_ids = [tid for tid in cluster["track_ids"] if tid in df.index]
+            sample_tracks = []
+            for tid in valid_ids[:20]:
+                row = df.loc[tid]
+                sample_tracks.append({
+                    "title": str(row.get("title", "?")),
+                    "artist": str(row.get("artist", "?")),
+                    "year": int(row["year"]) if pd.notna(row.get("year")) else None,
+                    "comment": str(row.get("comment", ""))[:150],
+                })
+            clusters_for_llm.append({
+                "id": cluster["id"],
+                "genre_context": f"{cluster['genre_leaf']['title']}: "
+                                 f"{cluster['genre_leaf']['description'][:200]}",
+                "scene_context": f"{cluster['scene_leaf']['title']}: "
+                                 f"{cluster['scene_leaf']['description'][:200]}",
+                "track_count": cluster["track_count"],
+                "sample_tracks": sample_tracks,
+            })
+        return clusters_for_llm
+
+    def _call_and_parse(batch, clusters_for_llm):
+        """Call LLM and return named cluster dicts."""
+        results_list = []
+        try:
+            results = _llm_name_cluster_batch(clusters_for_llm, client, model, provider)
+            result_map = {r["id"]: r for r in results}
+            for cluster in batch:
+                res = result_map.get(cluster["id"], {})
+                results_list.append({
+                    "id": cluster["id"],
+                    "title": res.get("title", cluster["genre_leaf"]["title"]),
+                    "description": res.get("description", ""),
+                    "coherence_score": res.get("coherence_score", 5),
+                    "poor_fit_track_ids": [
+                        (p["track_id"] if isinstance(p, dict) else p)
+                        for p in res.get("poor_fit_track_ids", [])
+                    ],
+                    "track_ids": cluster["track_ids"],
+                    "track_count": cluster["track_count"],
+                    "genre_context": cluster["genre_leaf"]["title"],
+                    "scene_context": cluster["scene_leaf"]["title"],
+                    "filters": {
+                        **cluster["genre_leaf"].get("filters", {}),
+                        **cluster["scene_leaf"].get("filters", {}),
+                    },
+                })
+        except Exception as exc:
+            logger.exception("Failed to name cluster batch")
+            for cluster in batch:
+                results_list.append({
+                    "id": cluster["id"],
+                    "title": f"{cluster['genre_leaf']['title']} × "
+                             f"{cluster['scene_leaf']['title']}",
+                    "description": "",
+                    "coherence_score": 5,
+                    "poor_fit_track_ids": [],
+                    "track_ids": cluster["track_ids"],
+                    "track_count": cluster["track_count"],
+                    "genre_context": cluster["genre_leaf"]["title"],
+                    "scene_context": cluster["scene_leaf"]["title"],
+                    "filters": {},
+                })
+        return results_list
+
+    # Build all batches first
+    batches = []
+    for batch_start in range(0, total, batch_size):
+        batch = seeds[batch_start:batch_start + batch_size]
+        payload = _prepare_batch(batch)
+        batches.append((batch_start, batch, payload))
+
+    progress("cluster_naming",
+             f"Naming {total} clusters in {len(batches)} batches "
+             f"({max_workers} parallel)...", 5)
+
+    # Submit in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {}
+        for batch_start, batch, payload in batches:
+            if should_stop():
+                break
+            fut = pool.submit(_call_and_parse, batch, payload)
+            futures[fut] = batch_start
+
+        for fut in as_completed(futures):
+            if should_stop():
+                break
+            results_list = fut.result()
+            named_clusters.extend(results_list)
+            completed[0] += len(results_list)
+            pct = 5 + int((completed[0] / total) * 20)
+            progress("cluster_naming",
+                     f"Named {completed[0]} of {total} clusters...", pct)
+
+    return named_clusters
+
+
+# ---------------------------------------------------------------------------
+# Phase 3: Deduplicate & Reassign (mechanical model)
+# ---------------------------------------------------------------------------
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_reassign_batch(cluster_summary, tracks_json, client, model, provider):
+    prompt = _REASSIGNMENT_PROMPT.format(
+        cluster_summary=cluster_summary,
+        tracks_json=tracks_json,
+    )
+    raw = _call_llm(client, model, provider, _COLLECTION_SYSTEM_PROMPT, prompt,
+                    max_tokens=8192)
+    return _extract_json(raw)
+
+
+def _deduplicate_and_reassign(named_clusters, df, all_track_ids, client,
+                               model_config, delay, progress, should_stop):
+    """Phase 3: Ensure every track is in exactly one cluster.
+
+    Steps:
+    1. Greedy dedup — assign each track to highest-scoring cluster
+    2. LLM reassignment for poor-fit + orphan tracks (multi-pass)
+
+    Returns: list of clusters with deduplicated track_ids
+    """
+    import time
+    model, provider = _get_tiered_model("mechanical", model_config)
+
+    progress("reassignment", "Deduplicating track assignments...", 26)
+
+    # --- Step 1: greedy dedup ---
+    # Build track → cluster assignments, prioritising higher coherence clusters
+    # Sort clusters by coherence score descending so better clusters win
+    sorted_clusters = sorted(named_clusters, key=lambda c: c["coherence_score"],
+                              reverse=True)
+    track_to_cluster = {}  # track_id -> cluster_id
+    for cluster in sorted_clusters:
+        for tid in cluster["track_ids"]:
+            if tid not in track_to_cluster:
+                track_to_cluster[tid] = cluster["id"]
+
+    # Rebuild cluster track_ids from assignments
+    cluster_map = {c["id"]: c for c in named_clusters}
+    for c in named_clusters:
+        c["track_ids"] = []
+    for tid, cid in track_to_cluster.items():
+        if cid in cluster_map:
+            cluster_map[cid]["track_ids"].append(tid)
+    for c in named_clusters:
+        c["track_ids"].sort()
+        c["track_count"] = len(c["track_ids"])
+
+    # Remove empty clusters
+    named_clusters = [c for c in named_clusters if c["track_count"] > 0]
+
+    # --- Step 2: identify orphans + poor fits ---
+    assigned = set(track_to_cluster.keys())
+    orphans = sorted(set(all_track_ids) - assigned)
+
+    poor_fits = set()
+    for c in named_clusters:
+        for tid in c.get("poor_fit_track_ids", []):
+            if tid in assigned:
+                poor_fits.add(tid)
+
+    tracks_to_reassign = sorted(set(orphans) | poor_fits)
+    progress("reassignment",
+             f"{len(orphans)} orphans, {len(poor_fits)} poor fits to reassign", 28)
+
+    if not tracks_to_reassign:
+        return named_clusters
+
+    # --- Step 3: LLM-based reassignment (multi-pass) ---
+    # Build compact cluster summary
+    cluster_summary = json.dumps([
+        {"id": c["id"], "title": c["title"], "track_count": c["track_count"]}
+        for c in named_clusters
+    ], indent=1)
+
+    batch_size = 80
+    max_passes = 3
+    for pass_num in range(max_passes):
+        if should_stop() or not tracks_to_reassign:
+            break
+
+        total_in_pass = len(tracks_to_reassign)
+        num_batches = (total_in_pass + batch_size - 1) // batch_size
+        progress("reassignment",
+                 f"Pass {pass_num + 1}: reassigning {total_in_pass} tracks "
+                 f"in {num_batches} batches...",
+                 28 + pass_num * 4)
+
+        moved = 0
+        for batch_start in range(0, total_in_pass, batch_size):
+            if should_stop():
+                break
+            batch_num = batch_start // batch_size + 1
+            pct = 28 + pass_num * 4 + int((batch_num / num_batches) * 3)
+            progress("reassignment",
+                     f"Pass {pass_num + 1}: batch {batch_num}/{num_batches} "
+                     f"({moved} moved so far)...", pct)
+            batch_ids = tracks_to_reassign[batch_start:batch_start + batch_size]
+            valid_ids = [tid for tid in batch_ids if tid in df.index]
+            if not valid_ids:
+                continue
+
+            tracks_json = json.dumps([
+                {
+                    "track_id": int(tid),
+                    "title": str(df.loc[tid].get("title", "?")),
+                    "artist": str(df.loc[tid].get("artist", "?")),
+                    "comment": str(df.loc[tid].get("comment", ""))[:150],
+                }
+                for tid in valid_ids
+            ], indent=1)
+
+            try:
+                results = _llm_reassign_batch(cluster_summary, tracks_json,
+                                               client, model, provider)
+                if delay > 0:
+                    time.sleep(delay)
+
+                for res in results:
+                    tid = res.get("track_id")
+                    cid = res.get("cluster_id")
+                    if tid is None or cid == "unassigned" or cid not in cluster_map:
+                        continue
+                    # Remove from current cluster if poor fit
+                    old_cid = track_to_cluster.get(tid)
+                    if old_cid and old_cid in cluster_map and tid in cluster_map[old_cid]["track_ids"]:
+                        cluster_map[old_cid]["track_ids"].remove(tid)
+                        cluster_map[old_cid]["track_count"] = len(cluster_map[old_cid]["track_ids"])
+                    # Add to new cluster
+                    cluster_map[cid]["track_ids"].append(tid)
+                    cluster_map[cid]["track_count"] = len(cluster_map[cid]["track_ids"])
+                    track_to_cluster[tid] = cid
+                    moved += 1
+            except Exception as exc:
+                logger.exception("Reassignment batch failed at %d pass %d",
+                                 batch_start, pass_num)
+                progress("reassignment",
+                         f"Batch {batch_start + 1} pass {pass_num + 1} failed: {exc}",
+                         28 + pass_num * 4)
+
+        # Check stability — stop if fewer than 5% of tracks moved
+        if moved < max(1, len(tracks_to_reassign) * 0.05):
+            break
+
+        # Recalculate remaining orphans for next pass
+        assigned = set(track_to_cluster.keys())
+        tracks_to_reassign = sorted(set(all_track_ids) - assigned)
+
+    # Final cleanup: assign any remaining orphans to nearest cluster by scored_search
+    assigned = set(track_to_cluster.keys())
+    final_orphans = sorted(set(all_track_ids) - assigned)
+    if final_orphans:
+        progress("reassignment",
+                 f"Assigning {len(final_orphans)} remaining orphans by scoring...", 38)
+        for tid in final_orphans:
+            if tid not in df.index:
+                continue
+            best_cluster = None
+            best_score = -1
+            track_row = df.loc[[tid]]
+            for c in named_clusters:
+                if not c.get("filters"):
+                    continue
+                results = scored_search(track_row, c["filters"],
+                                         min_score=0.0, max_results=1)
+                if results and results[0][1] > best_score:
+                    best_score = results[0][1]
+                    best_cluster = c["id"]
+            if best_cluster and best_cluster in cluster_map:
+                cluster_map[best_cluster]["track_ids"].append(tid)
+                cluster_map[best_cluster]["track_count"] = len(
+                    cluster_map[best_cluster]["track_ids"])
+                track_to_cluster[tid] = best_cluster
+
+    # Remove empty clusters again
+    named_clusters = [c for c in named_clusters if c["track_count"] > 0]
+    progress("reassignment",
+             f"Reassignment complete — {len(named_clusters)} clusters", 40)
+    return named_clusters
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: Quality scoring & merge/split (mechanical model)
+# ---------------------------------------------------------------------------
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_score_clusters(clusters_json, client, model, provider):
+    prompt = _QUALITY_SCORING_PROMPT.format(clusters_json=clusters_json)
+    raw = _call_llm(client, model, provider, _COLLECTION_SYSTEM_PROMPT, prompt,
+                    max_tokens=8192)
+    return _extract_json(raw)
+
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_split_cluster(cluster, mini_landscape, split_count, client, model, provider):
+    prompt = _SPLIT_CLUSTER_PROMPT.format(
+        cluster_title=cluster["title"],
+        cluster_description=cluster.get("description", ""),
+        track_count=cluster["track_count"],
+        mini_landscape=mini_landscape,
+        split_count=split_count,
+        filter_help=_FILTER_FIELDS_HELP,
+    )
+    raw = _call_llm(client, model, provider, _COLLECTION_SYSTEM_PROMPT, prompt)
+    return _extract_json(raw)
+
+
+def _quality_pass(clusters, df, client, model_config, delay,
+                  progress, should_stop):
+    """Phase 4: Score cluster quality, merge similar, split diverse. Iterate."""
+    import time
+    model_mech, provider_mech = _get_tiered_model("mechanical", model_config)
+    model_cre, provider_cre = _get_tiered_model("creative", model_config)
+    max_iterations = 3
+    batch_size = 15
+
+    for iteration in range(max_iterations):
+        if should_stop():
+            break
+
+        pct = 40 + iteration * 5
+        progress("quality_scoring",
+                 f"Iteration {iteration + 1}: scoring {len(clusters)} clusters...", pct)
+
+        # --- Score all clusters in batches ---
+        all_scores = {}
+        merge_suggestions = []
+        split_suggestions = []
+
+        num_batches = (len(clusters) + batch_size - 1) // batch_size
+        for batch_start in range(0, len(clusters), batch_size):
+            if should_stop():
+                break
+            batch_num = batch_start // batch_size + 1
+            progress("quality_scoring",
+                     f"Iteration {iteration + 1}: scoring batch {batch_num}/{num_batches} "
+                     f"({len(all_scores)} scored so far)...", pct)
+            batch = clusters[batch_start:batch_start + batch_size]
+            clusters_for_scoring = [
+                {
+                    "id": c["id"],
+                    "title": c["title"],
+                    "description": c.get("description", "")[:200],
+                    "track_count": c["track_count"],
+                }
+                for c in batch
+            ]
+
+            try:
+                result = _llm_score_clusters(
+                    json.dumps(clusters_for_scoring, indent=1),
+                    client, model_mech, provider_mech,
+                )
+                if delay > 0:
+                    time.sleep(delay)
+
+                for s in result.get("scores", []):
+                    raw_score = s.get("score", 5)
+                    # Normalize: LLM sometimes returns {"score": {...}} instead of int
+                    if isinstance(raw_score, dict):
+                        raw_score = raw_score.get("score", raw_score.get("value", 5))
+                    try:
+                        raw_score = int(raw_score)
+                    except (TypeError, ValueError):
+                        raw_score = 5
+                    all_scores[s["id"]] = raw_score
+                merge_suggestions.extend(result.get("merge_suggestions", []))
+                split_suggestions.extend(result.get("split_suggestions", []))
+            except Exception as exc:
+                logger.exception("Quality scoring batch failed at %d", batch_start)
+                progress("quality_scoring",
+                         f"Scoring batch {batch_start + 1} failed: {exc}",
+                         pct)
+
+        # Check if all scores are good enough
+        low_scores = [cid for cid, score in all_scores.items() if score < 7]
+        if not low_scores and not merge_suggestions and not split_suggestions:
+            break  # All clusters are good
+
+        # --- Execute merges ---
+        cluster_map = {c["id"]: c for c in clusters}
+        merged_ids = set()
+        for merge in merge_suggestions[:5]:  # Cap at 5 merges per iteration
+            if should_stop():
+                break
+            ids = merge.get("ids", [])
+            if len(ids) < 2:
+                continue
+            existing = [cid for cid in ids if cid in cluster_map and cid not in merged_ids]
+            if len(existing) < 2:
+                continue
+
+            # Merge into first cluster
+            target = cluster_map[existing[0]]
+            for cid in existing[1:]:
+                source = cluster_map[cid]
+                target["track_ids"].extend(source["track_ids"])
+                merged_ids.add(cid)
+            target["track_ids"] = sorted(set(target["track_ids"]))
+            target["track_count"] = len(target["track_ids"])
+            # Re-name merged cluster with creative model
+            try:
+                valid_ids = [tid for tid in target["track_ids"][:20] if tid in df.index]
+                sample = [
+                    {
+                        "title": str(df.loc[tid].get("title", "?")),
+                        "artist": str(df.loc[tid].get("artist", "?")),
+                        "comment": str(df.loc[tid].get("comment", ""))[:100],
+                    }
+                    for tid in valid_ids
+                ]
+                rename_result = _llm_name_cluster_batch(
+                    [{"id": target["id"], "genre_context": target.get("genre_context", ""),
+                      "scene_context": target.get("scene_context", ""),
+                      "track_count": target["track_count"], "sample_tracks": sample}],
+                    client, model_cre, provider_cre,
+                )
+                if rename_result:
+                    r = rename_result[0]
+                    target["title"] = r.get("title", target["title"])
+                    target["description"] = r.get("description", target["description"])
+                if delay > 0:
+                    time.sleep(delay)
+            except Exception as exc:
+                logger.exception("Failed to rename merged cluster %s", target["id"])
+                progress("quality_scoring",
+                         f"Rename failed for {target['id']}: {exc}", pct)
+
+        clusters = [c for c in clusters if c["id"] not in merged_ids]
+
+        # --- Execute splits ---
+        new_clusters = []
+        split_ids = set()
+        for split in split_suggestions[:3]:  # Cap at 3 splits per iteration
+            if should_stop():
+                break
+            cid = split.get("id")
+            split_count = split.get("into", 2)
+            if cid not in cluster_map or cid in split_ids:
+                continue
+            cluster = cluster_map[cid]
+            if cluster["track_count"] < 30:  # Don't split small clusters
+                continue
+
+            valid_ids = [tid for tid in cluster["track_ids"] if tid in df.index]
+            if not valid_ids:
+                continue
+
+            df_subset = df.loc[valid_ids]
+            mini_land = build_mini_landscape(df_subset)
+
+            try:
+                sub_defs = _llm_split_cluster(
+                    cluster, mini_land, split_count,
+                    client, model_mech, provider_mech,
+                )
+                if delay > 0:
+                    time.sleep(delay)
+
+                # Assign tracks to sub-clusters
+                assignments, _ = assign_tracks_to_branches(df_subset, sub_defs,
+                                                            min_score=0.01)
+                for sub_def in sub_defs:
+                    tids = assignments.get(sub_def["id"], [])
+                    if tids:
+                        new_clusters.append({
+                            "id": sub_def["id"],
+                            "title": sub_def.get("title", "Untitled"),
+                            "description": sub_def.get("description", ""),
+                            "track_ids": sorted(tids),
+                            "track_count": len(tids),
+                            "genre_context": cluster.get("genre_context", ""),
+                            "scene_context": cluster.get("scene_context", ""),
+                            "filters": sub_def.get("filters", {}),
+                            "coherence_score": 5,
+                            "poor_fit_track_ids": [],
+                        })
+                split_ids.add(cid)
+            except Exception as exc:
+                logger.exception("Failed to split cluster %s", cid)
+                progress("quality_scoring",
+                         f"Split failed for {cid}: {exc}", pct)
+
+        clusters = [c for c in clusters if c["id"] not in split_ids]
+        clusters.extend(new_clusters)
+
+        progress("quality_scoring",
+                 f"Iteration {iteration + 1} done: {len(merged_ids)} merged, "
+                 f"{len(split_ids)} split — {len(clusters)} clusters remain", pct + 3)
+
+    return clusters
+
+
+# ---------------------------------------------------------------------------
+# Phase 5: Top-level grouping (creative model)
+# ---------------------------------------------------------------------------
+
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(3),
+       retry=retry_if_exception_type(Exception))
+def _llm_group_categories(clusters_json, count, client, model, provider):
+    prompt = _GROUPING_PROMPT.format(clusters_json=clusters_json, count=count)
+    raw = _call_llm(client, model, provider, _COLLECTION_SYSTEM_PROMPT, prompt,
+                    max_tokens=8192)
+    return _extract_json(raw)
+
+
+def _group_into_categories(clusters, client, model_config, delay,
+                            progress, should_stop):
+    """Phase 5: Group clusters into 8-12 top-level categories."""
+    import time
+    model, provider = _get_tiered_model("creative", model_config)
+
+    progress("grouping",
+             f"Grouping {len(clusters)} collections into categories...", 56)
+
+    # Build compact summary for LLM
+    summaries = [
+        {
+            "id": c["id"],
+            "title": c["title"],
+            "description": c.get("description", "")[:150],
+            "track_count": c["track_count"],
+            "genre_context": c.get("genre_context", ""),
+            "scene_context": c.get("scene_context", ""),
+        }
+        for c in clusters
+    ]
+
+    try:
+        categories = _llm_group_categories(
+            json.dumps(summaries, indent=1), len(clusters),
+            client, model, provider,
+        )
+        if delay > 0:
+            time.sleep(delay)
+    except Exception:
+        logger.exception("Failed to group into categories")
+        # Fallback: single category with all clusters
+        categories = [{
+            "id": "all-collections",
+            "title": "All Collections",
+            "description": "All music collections in your library.",
+            "cluster_ids": [c["id"] for c in clusters],
+        }]
+
+    # Validate: ensure every cluster is assigned to exactly one category
+    cluster_map = {c["id"]: c for c in clusters}
+    assigned_cluster_ids = set()
+    for cat in categories:
+        cat_cluster_ids = cat.get("cluster_ids", [])
+        # Only keep valid cluster IDs
+        cat["cluster_ids"] = [cid for cid in cat_cluster_ids if cid in cluster_map]
+        assigned_cluster_ids.update(cat["cluster_ids"])
+
+    # Any unassigned clusters go into an "Other" category or the largest category
+    unassigned = set(cluster_map.keys()) - assigned_cluster_ids
+    if unassigned:
+        if categories:
+            # Add to largest category
+            largest = max(categories, key=lambda c: len(c.get("cluster_ids", [])))
+            largest["cluster_ids"].extend(sorted(unassigned))
+        else:
+            categories.append({
+                "id": "uncategorised",
+                "title": "Uncategorised",
+                "description": "",
+                "cluster_ids": sorted(unassigned),
+            })
+
+    progress("grouping",
+             f"Created {len(categories)} categories", 64)
+    return categories
+
+
+# ---------------------------------------------------------------------------
+# Phase 6: Final descriptions & exemplars (creative model)
+# ---------------------------------------------------------------------------
+
+def _finalize_collection_leaves(categories, cluster_map, df, client,
+                                 model_config, delay, progress, should_stop):
+    """Phase 6: Write rich descriptions and pick exemplars for all leaves.
+    Runs up to 4 LLM calls in parallel for speed."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    model, provider = _get_tiered_model("creative", model_config)
+    batch_size = 5
+    max_workers = 4
+
+    # Collect all leaves
+    all_leaves = []
+    for cat in categories:
+        for cid in cat.get("cluster_ids", []):
+            if cid in cluster_map:
+                all_leaves.append(cluster_map[cid])
+
+    total = len(all_leaves)
+    completed = [0]
+
+    def _process_batch(batch):
+        """Prepare data + call LLM for one batch, return (shortlists, finalized)."""
+        nodes_for_llm = []
+        shortlists = {}
+
+        for cluster in batch:
+            valid_ids = [tid for tid in cluster["track_ids"] if tid in df.index]
+            if not valid_ids:
+                continue
+            df_subset = df.loc[valid_ids]
+            filters = cluster.get("filters", {})
+            if filters:
+                results = scored_search(df_subset, filters,
+                                         min_score=0.01, max_results=50)
+            else:
+                results = [(idx, 0.5, {}) for idx in valid_ids[:50]]
+
+            candidates = []
+            fallback = []
+            for idx, score, _ in results[:50]:
+                if idx not in df.index:
+                    continue
+                row = df.loc[idx]
+                track = {
+                    "title": str(row.get("title", "?")),
+                    "artist": str(row.get("artist", "?")),
+                    "year": int(row["year"]) if pd.notna(row.get("year")) else None,
+                    "comment": str(row.get("comment", ""))[:150],
+                }
+                candidates.append(track)
+                if len(fallback) < 7:
+                    fallback.append({
+                        "title": track["title"],
+                        "artist": track["artist"],
+                        "year": track["year"],
+                    })
+
+            shortlists[cluster["id"]] = fallback
+            nodes_for_llm.append({
+                "id": cluster["id"],
+                "title": cluster["title"],
+                "description": cluster.get("description", ""),
+                "track_count": cluster["track_count"],
+                "candidates": candidates[:30],
+            })
+
+        if not nodes_for_llm:
+            return shortlists, None
+
+        try:
+            finalized = _llm_finalize_leaves(
+                json.dumps(nodes_for_llm, indent=2),
+                client, model, provider,
+                profile={"leaf_prompt": _COLLECTION_LEAF_PROMPT,
+                          "system_prompt": _COLLECTION_SYSTEM_PROMPT},
+            )
+            return shortlists, finalized
+        except Exception as exc:
+            logger.exception("Failed to finalize leaf batch")
+            return shortlists, None
+
+    # Build all batches
+    batch_items = []
+    for batch_start in range(0, total, batch_size):
+        batch = all_leaves[batch_start:batch_start + batch_size]
+        batch_items.append(batch)
+
+    progress("final_descriptions",
+             f"Writing descriptions for {total} collections in {len(batch_items)} "
+             f"batches ({max_workers} parallel)...", 66)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {}
+        for batch in batch_items:
+            if should_stop():
+                break
+            fut = pool.submit(_process_batch, batch)
+            futures[fut] = batch
+
+        for fut in as_completed(futures):
+            if should_stop():
+                break
+            batch = futures[fut]
+            shortlists, finalized = fut.result()
+
+            if finalized:
+                fin_map = {f["id"]: f for f in finalized}
+                for cluster in batch:
+                    fin = fin_map.get(cluster["id"])
+                    if fin:
+                        cluster["title"] = fin.get("title", cluster["title"])
+                        cluster["description"] = fin.get("description",
+                                                          cluster["description"])
+                        cluster["examples"] = fin.get("examples", [])[:7]
+                    elif cluster["id"] in shortlists:
+                        cluster["examples"] = shortlists[cluster["id"]]
+            else:
+                for cluster in batch:
+                    if cluster["id"] in shortlists:
+                        cluster["examples"] = shortlists.get(cluster["id"], [])
+
+            completed[0] += len(batch)
+            pct = 66 + int((completed[0] / total) * 19)
+            progress("final_descriptions",
+                     f"Described {completed[0]} of {total} collections...", pct)
+
+
+# ---------------------------------------------------------------------------
+# Phase 7: Metadata enrichment (creative model)
+# ---------------------------------------------------------------------------
+
+def _enrich_metadata(categories, cluster_map, df, client, model_config,
+                     delay, progress, should_stop):
+    """Phase 7: Suggest metadata improvements for tracks in each cluster.
+    Runs up to 4 LLM calls in parallel for speed."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    model, provider = _get_tiered_model("creative", model_config)
+    max_workers = 4
+
+    all_leaves = []
+    for cat in categories:
+        for cid in cat.get("cluster_ids", []):
+            if cid in cluster_map:
+                all_leaves.append(cluster_map[cid])
+
+    total = len(all_leaves)
+    completed = [0]
+
+    def _enrich_one(cluster):
+        """Enrich a single cluster, return (cluster_id, suggestions)."""
+        valid_ids = [tid for tid in cluster["track_ids"] if tid in df.index]
+        if not valid_ids:
+            return cluster["id"], []
+
+        tracks_json = json.dumps([
+            {
+                "track_id": int(tid),
+                "title": str(df.loc[tid].get("title", "?")),
+                "artist": str(df.loc[tid].get("artist", "?")),
+                "comment": str(df.loc[tid].get("comment", ""))[:200],
+            }
+            for tid in valid_ids[:30]
+        ], indent=1)
+
+        prompt = _ENRICHMENT_PROMPT.format(
+            cluster_title=cluster["title"],
+            cluster_description=cluster.get("description", "")[:300],
+            tracks_json=tracks_json,
+        )
+
+        try:
+            raw = _call_llm(client, model, provider,
+                            _COLLECTION_SYSTEM_PROMPT, prompt,
+                            max_tokens=8192)
+            suggestions = _extract_json(raw)
+            return cluster["id"], [
+                s for s in suggestions
+                if s.get("confidence", 0) >= 0.7
+            ]
+        except Exception as exc:
+            logger.exception("Enrichment failed for cluster %s", cluster["id"])
+            return cluster["id"], []
+
+    progress("enrichment",
+             f"Enriching metadata for {total} collections "
+             f"({max_workers} parallel)...", 86)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {}
+        for cluster in all_leaves:
+            if should_stop():
+                break
+            fut = pool.submit(_enrich_one, cluster)
+            futures[fut] = cluster
+
+        for fut in as_completed(futures):
+            if should_stop():
+                break
+            cluster = futures[fut]
+            cid, suggestions = fut.result()
+            cluster["metadata_suggestions"] = suggestions
+            completed[0] += 1
+            pct = 86 + int((completed[0] / total) * 12)
+            progress("enrichment",
+                     f"Enriched {completed[0]} of {total} collections...", pct)
+
+
+# ---------------------------------------------------------------------------
+# Main orchestrator
+# ---------------------------------------------------------------------------
+
+def build_curated_collection(df, client, model_config, delay,
+                              progress_cb=None, stop_flag=None,
+                              test_mode=False):
+    """Build the curated Collection Tree by cross-referencing Genre + Scene trees.
+
+    Args:
+        df: DataFrame with parsed facet columns
+        client: Anthropic client (used for both model tiers)
+        model_config: dict with 'creative' and 'mechanical' model names
+        delay: seconds between LLM calls
+        progress_cb: callable(phase, detail, percent) for SSE updates
+        stop_flag: threading.Event for graceful stop
+        test_mode: if True, cap seeds at 20 and skip Phase 7 for fast validation
+
+    Returns:
+        tree dict with flat categories/leaves structure
+    """
+    import time
+    parse_all_comments(df)
+    total_tracks = len(df)
+    all_track_ids = sorted(df.index.tolist())
+
+    def progress(phase, detail, pct):
+        logger.info("[collection] %s (%d%%) — %s", phase, pct, detail)
+        if progress_cb:
+            progress_cb(phase, detail, pct)
+
+    def should_stop():
+        return stop_flag and stop_flag.is_set()
+
+    # --- Load source trees ---
+    genre_tree = load_tree(TREE_PROFILES["genre"]["file"])
+    scene_tree = load_tree(TREE_PROFILES["scene"]["file"])
+    if not genre_tree or not scene_tree:
+        raise ValueError("Both Genre and Scene trees must be built first")
+
+    # --- Check for checkpoint to resume from ---
+    checkpoint_phase, checkpoint_data = _load_checkpoint() if not test_mode else (0, {})
+    named_clusters = checkpoint_data.get("named_clusters")
+    clusters = checkpoint_data.get("clusters")
+    categories = checkpoint_data.get("categories")
+
+    if checkpoint_phase > 0:
+        progress("intersection_matrix",
+                 f"Resuming from checkpoint (phase {checkpoint_phase} complete)", 5)
+
+    # === Phase 1: Intersection Matrix ===
+    if checkpoint_phase < 1:
+        progress("intersection_matrix", "Computing genre × scene intersections...", 1)
+        seeds = _build_intersection_matrix(genre_tree, scene_tree, min_tracks=5)
+        if test_mode:
+            full_count = len(seeds)
+            seeds = seeds[:20]
+            test_track_ids = set()
+            for s in seeds:
+                test_track_ids.update(s["track_ids"])
+            all_track_ids = sorted(test_track_ids & set(all_track_ids))
+            total_tracks = len(all_track_ids)
+            progress("intersection_matrix",
+                     f"TEST MODE: using top 20 of {full_count} seeds "
+                     f"({total_tracks} tracks) for fast validation", 5)
+        else:
+            progress("intersection_matrix",
+                     f"Found {len(seeds)} seed clusters from leaf intersections", 5)
+    else:
+        seeds = None  # Not needed — Phase 2 already done
+
+    if should_stop():
+        return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+
+    # === Phase 2: Cluster Naming ===
+    if checkpoint_phase < 2:
+        named_clusters = _name_all_clusters(
+            seeds, df, client, model_config, delay, progress, should_stop,
+        )
+        if should_stop():
+            return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+        progress("cluster_naming",
+                 f"Named {len(named_clusters)} clusters", 25)
+        if not test_mode:
+            _save_checkpoint(2, {"named_clusters": named_clusters,
+                                  "all_track_ids": all_track_ids})
+    else:
+        all_track_ids = checkpoint_data.get("all_track_ids", all_track_ids)
+        progress("cluster_naming",
+                 "Skipped — loaded from checkpoint", 25)
+
+    # === Phase 3: Deduplicate & Reassign ===
+    if checkpoint_phase < 3:
+        clusters = _deduplicate_and_reassign(
+            named_clusters, df, all_track_ids, client,
+            model_config, delay, progress, should_stop,
+        )
+        if should_stop():
+            return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+        if not test_mode:
+            _save_checkpoint(3, {"clusters": clusters,
+                                  "all_track_ids": all_track_ids})
+    else:
+        progress("reassignment",
+                 f"Skipped — {len(clusters)} clusters from checkpoint", 40)
+
+    # === Phase 4: Quality Scoring ===
+    if checkpoint_phase < 4:
+        clusters = _quality_pass(
+            clusters, df, client, model_config, delay, progress, should_stop,
+        )
+        if should_stop():
+            return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+        progress("quality_scoring",
+                 f"Quality pass complete — {len(clusters)} clusters", 55)
+        if not test_mode:
+            _save_checkpoint(4, {"clusters": clusters,
+                                  "all_track_ids": all_track_ids})
+    else:
+        progress("quality_scoring",
+                 f"Skipped — {len(clusters)} clusters from checkpoint", 55)
+
+    # === Phase 5: Top-Level Grouping ===
+    if checkpoint_phase < 5:
+        categories = _group_into_categories(
+            clusters, client, model_config, delay, progress, should_stop,
+        )
+        if should_stop():
+            return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+        if not test_mode:
+            _save_checkpoint(5, {"clusters": clusters, "categories": categories,
+                                  "all_track_ids": all_track_ids})
+    else:
+        progress("grouping",
+                 f"Skipped — {len(categories)} categories from checkpoint", 64)
+
+    # Build cluster lookup for phases 6 & 7
+    cluster_map = {c["id"]: c for c in clusters}
+
+    # === Phase 6: Final Descriptions & Exemplars ===
+    if checkpoint_phase < 6:
+        _finalize_collection_leaves(
+            categories, cluster_map, df, client,
+            model_config, delay, progress, should_stop,
+        )
+        if should_stop():
+            return _make_collection_tree(total_tracks, [], "stopped", genre_tree, scene_tree)
+        if not test_mode:
+            _save_checkpoint(6, {"clusters": clusters, "categories": categories,
+                                  "all_track_ids": all_track_ids})
+    else:
+        progress("final_descriptions",
+                 f"Skipped — descriptions from checkpoint", 85)
+
+    # === Phase 7: Metadata Enrichment ===
+    if test_mode:
+        progress("enrichment", "TEST MODE: skipping enrichment phase", 98)
+    elif checkpoint_phase < 7:
+        _enrich_metadata(
+            categories, cluster_map, df, client,
+            model_config, delay, progress, should_stop,
+        )
+    else:
+        progress("enrichment", "Skipped — enrichment from checkpoint", 98)
+
+    # === Assemble final tree ===
+    progress("complete", "Assembling final collection tree...", 98)
+
+    # Build category objects with nested leaves
+    final_categories = []
+    all_assigned = set()
+    for cat in categories:
+        cat_leaves = []
+        cat_track_ids = []
+        for cid in cat.get("cluster_ids", []):
+            c = cluster_map.get(cid)
+            if not c:
+                continue
+            leaf = {
+                "id": c["id"],
+                "title": c["title"],
+                "description": c.get("description", ""),
+                "track_ids": c["track_ids"],
+                "track_count": c["track_count"],
+                "examples": c.get("examples", []),
+                "genre_context": c.get("genre_context", ""),
+                "scene_context": c.get("scene_context", ""),
+                "metadata_suggestions": c.get("metadata_suggestions", []),
+            }
+            cat_leaves.append(leaf)
+            cat_track_ids.extend(c["track_ids"])
+            all_assigned.update(c["track_ids"])
+
+        final_categories.append({
+            "id": cat["id"],
+            "title": cat["title"],
+            "description": cat.get("description", ""),
+            "track_ids": sorted(set(cat_track_ids)),
+            "track_count": len(set(cat_track_ids)),
+            "leaves": cat_leaves,
+        })
+
+    ungrouped = sorted(set(all_track_ids) - all_assigned)
+
+    tree = {
+        "id": str(uuid.uuid4())[:8],
+        "tree_type": "collection",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "total_tracks": total_tracks,
+        "assigned_tracks": total_tracks - len(ungrouped),
+        "ungrouped_track_ids": ungrouped,
+        "source_trees": {
+            "genre": {
+                "id": genre_tree.get("id", ""),
+                "created_at": genre_tree.get("created_at", ""),
+            },
+            "scene": {
+                "id": scene_tree.get("id", ""),
+                "created_at": scene_tree.get("created_at", ""),
+            },
+        },
+        "categories": final_categories,
+        "status": "complete",
+    }
+
+    save_tree(tree, file_path=_COLLECTION_TREE_FILE)
+    _clear_checkpoint()
+    progress("complete", "Collection tree built!", 100)
+    return tree
+
+
+def _make_collection_tree(total_tracks, categories, status,
+                           genre_tree=None, scene_tree=None):
+    """Build a partial/stopped collection tree."""
+    return {
+        "id": str(uuid.uuid4())[:8],
+        "tree_type": "collection",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "total_tracks": total_tracks,
+        "assigned_tracks": 0,
+        "ungrouped_track_ids": [],
+        "source_trees": {
+            "genre": {"id": genre_tree.get("id", "") if genre_tree else "",
+                       "created_at": genre_tree.get("created_at", "") if genre_tree else ""},
+            "scene": {"id": scene_tree.get("id", "") if scene_tree else "",
+                       "created_at": scene_tree.get("created_at", "") if scene_tree else ""},
+        },
+        "categories": categories,
+        "status": status,
+    }
