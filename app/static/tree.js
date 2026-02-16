@@ -1,7 +1,7 @@
 /* ── Collection Tree — Frontend ───────────────────────────── */
 
 // Current tree type
-let currentTreeType = "genre";
+let currentTreeType = "collection";
 
 // Per-type state
 const treeState = {
@@ -108,13 +108,13 @@ async function initTree() {
         });
     });
 
-    // Load the default (genre) tree
+    // Load the default (collection) tree
     try {
         const res = await fetch(apiUrl());
         const data = await res.json();
         if (data.tree) {
             treeData = data.tree;
-            treeState.genre.data = data.tree;
+            treeState.collection.data = data.tree;
             showTreeView();
         }
     } catch (e) {
@@ -1295,48 +1295,24 @@ function renderCollectionTreeView() {
             </div>`;
     }
 
-    // Category sidebar
-    const sidebar = _t("#collection-categories");
-    if (!sidebar) return;
-    sidebar.innerHTML = "";
-
-    for (const cat of tree.categories) {
-        const btn = document.createElement("button");
-        btn.className = "collection-category-btn";
-        btn.dataset.categoryId = cat.id;
-        const leafCount = (cat.leaves || []).length;
-        btn.innerHTML = `
-            <span class="cc-title">${esc(cat.title)}</span>
-            <span class="cc-count">${leafCount} collection${leafCount !== 1 ? "s" : ""}</span>`;
-        btn.addEventListener("click", () => selectCategory(cat.id));
-        sidebar.appendChild(btn);
-    }
-
-    // Select active or first category
-    const activeCat = treeState.collection.activeCategory || tree.categories[0]?.id;
-    if (activeCat) selectCategory(activeCat);
-}
-
-function selectCategory(categoryId) {
-    treeState.collection.activeCategory = categoryId;
-
-    // Update sidebar active state
-    document.querySelectorAll(".collection-category-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.categoryId === categoryId);
-    });
-
-    // Find category
-    const cat = treeData.categories.find(c => c.id === categoryId);
-    if (!cat) return;
-
-    renderCollectionLeaves(cat);
-}
-
-function renderCollectionLeaves(category) {
+    // Render all categories inline
     const container = _t("#collection-leaves");
     if (!container) return;
+    container.innerHTML = "";
 
-    container.innerHTML = `
+    for (const cat of tree.categories) {
+        renderCollectionLeaves(cat, container);
+    }
+}
+
+
+function renderCollectionLeaves(category, parentContainer) {
+    const container = parentContainer || _t("#collection-leaves");
+    if (!container) return;
+
+    const section = document.createElement("div");
+    section.className = "collection-category-section";
+    section.innerHTML = `
         <div class="collection-category-header">
             <h2>${esc(category.title)}</h2>
             <p>${esc(category.description)}</p>
@@ -1344,9 +1320,10 @@ function renderCollectionLeaves(category) {
                 <span class="cc-track-count">${category.track_count} tracks</span>
             </div>
         </div>
-        <div class="collection-cards-grid" id="collection-cards"></div>`;
+        <div class="collection-cards-grid"></div>`;
+    container.appendChild(section);
 
-    const grid = container.querySelector("#collection-cards");
+    const grid = section.querySelector(".collection-cards-grid");
 
     for (const leaf of (category.leaves || [])) {
         const card = document.createElement("div");

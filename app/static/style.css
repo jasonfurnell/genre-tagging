@@ -1580,53 +1580,9 @@ tr.ws-seed-selected {
 .collection-view { }
 .collection-header { margin-bottom: 1rem; }
 
-.collection-layout {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 1.5rem;
-    min-height: 60vh;
+.collection-category-section {
+    margin-bottom: 2rem;
 }
-
-.collection-categories {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    position: sticky;
-    top: 0;
-    align-self: start;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.collection-category-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    text-align: left;
-    color: var(--text);
-    transition: all 0.15s;
-    font-family: inherit;
-    font-size: inherit;
-}
-.collection-category-btn:hover {
-    border-color: var(--success);
-    background: rgba(78, 204, 163, 0.06);
-}
-.collection-category-btn.active {
-    background: var(--success);
-    color: #111;
-    border-color: var(--success);
-    font-weight: 600;
-}
-
-.cc-title { font-weight: 500; font-size: 0.85rem; }
-.cc-count { font-size: 0.72rem; opacity: 0.7; white-space: nowrap; margin-left: 8px; }
-.collection-category-btn.active .cc-count { opacity: 0.8; }
 
 .collection-category-header { margin-bottom: 1.5rem; }
 .collection-category-header h2 {
@@ -1742,18 +1698,6 @@ tr.ws-seed-selected {
     .tree-stats {
         flex-direction: column;
         gap: 0.75rem;
-    }
-    .collection-layout {
-        grid-template-columns: 1fr;
-    }
-    .collection-categories {
-        flex-direction: row;
-        overflow-x: auto;
-        max-height: none;
-        position: static;
-    }
-    .collection-category-btn {
-        flex-shrink: 0;
     }
 }
 

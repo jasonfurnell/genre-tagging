@@ -182,20 +182,20 @@
 
         <!-- Tree type selector -->
         <div class="tree-type-selector">
-            <button class="tree-type-btn active" data-tree-type="genre">Genre Tree</button>
+            <button class="tree-type-btn active" data-tree-type="collection">Collection</button>
+            <button class="tree-type-btn" data-tree-type="genre">Genre Tree</button>
             <button class="tree-type-btn" data-tree-type="scene">Scene Tree</button>
-            <button class="tree-type-btn" data-tree-type="collection">Collection</button>
         </div>
 
         <!-- Build state: shown when no tree exists -->
         <div id="tree-build-section">
             <div class="tree-intro">
-                <h2 id="tree-intro-title">Genre Tree</h2>
-                <p id="tree-intro-desc">Build an interactive map of the musical lineages and evolutionary paths in your collection. Organises by genre family trees — broad traditions that branch into sub-genres and movements.</p>
+                <h2 id="tree-intro-title">Collection</h2>
+                <p id="tree-intro-desc">A curated map of your collection built by cross-referencing genre lineages with cultural scenes. Reveals the unique intersections and identities in your music. Requires both Genre and Scene trees to be built first.</p>
                 <div class="tree-build-actions">
-                    <button id="tree-build-btn" class="btn btn-primary btn-lg">Build Genre Tree</button>
+                    <button id="tree-build-btn" class="btn btn-primary btn-lg">Build Collection</button>
                     <button id="tree-resume-btn" class="btn btn-primary btn-lg tree-resume-btn hidden">Resume</button>
-                    <button id="tree-test-btn" class="btn btn-sm tree-test-btn hidden">Test Run (20 clusters)</button>
+                    <button id="tree-test-btn" class="btn btn-sm tree-test-btn">Test Run (20 clusters)</button>
                 </div>
             </div>
             <!-- Progress: shown during build -->
@@ -238,10 +238,7 @@
             <!-- Collection Tree: flat category + card layout -->
             <div id="collection-view" class="collection-view hidden">
                 <div id="collection-header" class="collection-header"></div>
-                <div class="collection-layout">
-                    <div id="collection-categories" class="collection-categories"></div>
-                    <div id="collection-leaves" class="collection-leaves"></div>
-                </div>
+                <div id="collection-leaves" class="collection-leaves"></div>
             </div>
         </div>
 
