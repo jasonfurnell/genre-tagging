@@ -518,10 +518,10 @@ def select_tracks_for_source(df, source_track_ids, bpm_levels=None,
 # Browse Sources (for drawer)
 # ---------------------------------------------------------------------------
 
-def get_browse_sources(genre_tree=None, scene_tree=None, search_term=""):
+def get_browse_sources(collection_tree=None, search_term=""):
     """Return available sources for the drawer's browse mode.
 
-    Returns {playlists: [...], genre_tree: {...}, scene_tree: {...}}.
+    Returns {playlists: [...], collection_leaves: [...]}.
     """
     search = search_term.strip().lower()
 
@@ -539,46 +539,25 @@ def get_browse_sources(genre_tree=None, scene_tree=None, search_term=""):
             "source": pl.get("source", ""),
         })
 
-    # Tree summaries (lightweight — no track_ids)
-    def _tree_summary(tree):
-        if not tree:
-            return {"available": False, "lineages": []}
-        lineages = []
-        for lin in tree.get("lineages", []):
-            lineages.append(_summarize_node(lin, search))
-        if search:
-            lineages = [l for l in lineages if l is not None]
-        return {"available": True, "lineages": lineages}
+    # Collection leaves — flat list from categories
+    leaves = []
+    if collection_tree:
+        for category in collection_tree.get("categories", []):
+            for leaf in category.get("leaves", []):
+                title = leaf.get("title", "")
+                desc = leaf.get("description", "")
+                if search and search not in title.lower() and search not in desc.lower():
+                    continue
+                leaves.append({
+                    "id": leaf.get("id", ""),
+                    "title": title,
+                    "description": desc,
+                    "track_count": leaf.get("track_count", len(leaf.get("track_ids", []))),
+                })
 
     return {
         "playlists": playlists,
-        "genre_tree": _tree_summary(genre_tree),
-        "scene_tree": _tree_summary(scene_tree),
-    }
-
-
-def _summarize_node(node, search=""):
-    """Recursively build a lightweight tree summary (no track_ids)."""
-    title = node.get("title", "")
-    children_summaries = []
-    for child in node.get("children", []):
-        s = _summarize_node(child, search)
-        if s is not None:
-            children_summaries.append(s)
-
-    # If searching, include node only if it matches or has matching children
-    if search:
-        self_match = search in title.lower()
-        if not self_match and not children_summaries:
-            return None
-
-    return {
-        "id": node.get("id", ""),
-        "title": title,
-        "description": node.get("description", ""),
-        "track_count": node.get("track_count", len(node.get("track_ids", []))),
-        "is_leaf": node.get("is_leaf", False),
-        "children": children_summaries,
+        "collection_leaves": leaves,
     }
 
 
@@ -616,55 +595,63 @@ def get_source_detail(df, source_type, source_id, tree=None, path_mapper=None,
 # ---------------------------------------------------------------------------
 
 def find_leaf_for_track(tree, track_id):
-    """Return the leaf node whose track_ids contains track_id, or None."""
+    """Return the collection leaf whose track_ids contains track_id, or None."""
     if not tree:
         return None
-    for lineage in tree.get("lineages", []):
-        result = _find_leaf_with_track(lineage, track_id)
-        if result:
-            return result
+    for category in tree.get("categories", []):
+        for leaf in category.get("leaves", []):
+            if track_id in leaf.get("track_ids", []):
+                return leaf
     return None
 
 
-def _find_leaf_with_track(node, track_id):
-    """Recursively find a leaf that contains track_id."""
-    if node.get("is_leaf") or not node.get("children"):
-        if track_id in node.get("track_ids", []):
-            return node
-        return None
-    for child in node.get("children", []):
-        result = _find_leaf_with_track(child, track_id)
-        if result:
-            return result
-    return None
+def find_all_leaves_for_track(tree, track_id):
+    """Return ALL collection leaves containing track_id."""
+    if not tree:
+        return []
+    results = []
+    for category in tree.get("categories", []):
+        for leaf in category.get("leaves", []):
+            if track_id in leaf.get("track_ids", []):
+                results.append(leaf)
+    return results
 
 
-def build_track_context(df, track_id, genre_tree, scene_tree):
-    """Build the 2-card context for a selected track (genre leaf + scene leaf).
+def build_track_context(df, track_id, collection_tree):
+    """Build context for a selected track (collection leaf + also-appears-in).
 
-    Returns {genre_leaf: {...}, scene_leaf: {...}}.
+    Returns {collection_leaf: {...}, also_in: [...], comment: "..."}.
     """
     if track_id not in df.index:
         return None
 
-    genre_leaf = _build_leaf_card(df, genre_tree, track_id, "genre")
-    scene_leaf = _build_leaf_card(df, scene_tree, track_id, "scene")
+    collection_leaf = _build_leaf_card(df, collection_tree, track_id)
+
+    # "Also appears in" — other leaves containing this track
+    also_in = []
+    primary_id = collection_leaf.get("node_id") if collection_leaf.get("available") else None
+    for leaf in find_all_leaves_for_track(collection_tree, track_id):
+        if leaf.get("id") != primary_id:
+            also_in.append({
+                "id": leaf.get("id", ""),
+                "title": leaf.get("title", ""),
+                "track_count": leaf.get("track_count", len(leaf.get("track_ids", []))),
+            })
 
     row = df.loc[track_id]
     comment = _sv(row.get("comment", ""))
 
-    return {"genre_leaf": genre_leaf, "scene_leaf": scene_leaf, "comment": comment}
+    return {"collection_leaf": collection_leaf, "also_in": also_in, "comment": comment}
 
 
-def _build_leaf_card(df, tree, track_id, tree_type):
-    """Build a card dict for the leaf node containing track_id."""
-    label = "Genre" if tree_type == "genre" else "Scene"
+def _build_leaf_card(df, tree, track_id):
+    """Build a card dict for the collection leaf containing track_id."""
     if not tree:
-        return {"available": False, "reason": f"{label} tree not built"}
+        return {"available": False, "reason": "Collection tree not built"}
 
     leaf = find_leaf_for_track(tree, track_id)
     if not leaf:
-        return {"available": False, "reason": f"Track not assigned in {label.lower()} tree"}
+        return {"available": False, "reason": "Track not assigned in collection tree"}
 
     leaf_track_ids = leaf.get("track_ids", [])
     sample_tracks = []
@@ -681,7 +668,7 @@ def _build_leaf_card(df, tree, track_id, tree_type):
         "name": leaf.get("title", "Unknown"),
         "description": leaf.get("description", ""),
         "track_count": len(leaf_track_ids),
-        "tree_type": tree_type,
+        "tree_type": "collection",
         "tracks": sample_tracks,
         "examples": leaf.get("examples", []),
     }

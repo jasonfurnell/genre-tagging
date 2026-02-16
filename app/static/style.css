@@ -2997,6 +2997,10 @@ tr.ws-seed-selected {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .set-search-card-tracks {
+    /* tracks expand naturally by default */
+}
+/* Constrain height only in search-context cards */
+.set-drawer-search-context .set-search-card-tracks {
     max-height: 260px;
     overflow-y: auto;
 }
@@ -3013,6 +3017,28 @@ tr.ws-seed-selected {
 }
 .set-drawer-track-meta .set-drawer-track-key {
     margin-left: 0.3rem;
+}
+
+/* -- Also Appears In ---------------------------------------------------- */
+.now-playing-also-in {
+    padding: 0.5rem 0.75rem;
+}
+.also-in-header {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.also-in-link {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--accent);
+    padding: 0.15rem 0;
+    text-decoration: none;
+}
+.also-in-link:hover {
+    text-decoration: underline;
 }
 
 /* -- Now Playing Mode (drawer) ------------------------------------------ */

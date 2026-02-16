@@ -1429,8 +1429,7 @@ async function loadDrawerSources(searchTerm) {
         const res = await fetch(`/api/set-workshop/sources?search=${encodeURIComponent(searchTerm || "")}`);
         const data = await res.json();
         renderDrawerPlaylists(data.playlists);
-        renderDrawerTreeSection("set-drawer-scene-tree", "Scene Explorer", data.scene_tree, "scene");
-        renderDrawerTreeSection("set-drawer-genre-tree", "Genre Tree", data.genre_tree, "genre");
+        renderDrawerCollectionLeaves(data.collection_leaves);
     } catch (e) {
         console.error("Failed to load sources:", e);
     }
@@ -1455,60 +1454,23 @@ function renderDrawerPlaylists(playlists) {
     }
 }
 
-function renderDrawerTreeSection(containerId, title, treeData, treeType) {
-    const div = document.getElementById(containerId);
-    div.innerHTML = `<h4>${escHtml(title)}</h4>`;
-    if (!treeData || !treeData.available || !treeData.lineages || treeData.lineages.length === 0) {
-        div.innerHTML += `<div style="font-size:0.75rem;color:var(--text-muted);padding:0.3rem 0.5rem;">Not available</div>`;
+function renderDrawerCollectionLeaves(leaves) {
+    const div = document.getElementById("set-drawer-collection-leaves");
+    div.innerHTML = "<h4>Collections</h4>";
+    if (!leaves || leaves.length === 0) {
+        div.innerHTML += `<div style="font-size:0.75rem;color:var(--text-muted);padding:0.3rem 0.5rem;">No collections available</div>`;
         return;
     }
-    for (const lineage of treeData.lineages) {
-        renderDrawerTreeNode(div, lineage, treeType, 0);
+    for (const leaf of leaves) {
+        const item = document.createElement("div");
+        item.className = "set-drawer-source-item";
+        item.innerHTML = `
+            <span class="set-drawer-source-name">${escHtml(leaf.title)}</span>
+            <span class="set-drawer-source-count">${leaf.track_count} tracks</span>
+        `;
+        item.addEventListener("click", () => assignSource("tree_node", leaf.id, "collection", leaf.title));
+        div.appendChild(item);
     }
-}
-
-function renderDrawerTreeNode(parentEl, node, treeType, depth) {
-    const hasChildren = node.children && node.children.length > 0;
-
-    const row = document.createElement("div");
-    row.className = "set-drawer-tree-node";
-    row.style.paddingLeft = `${depth * 14 + 4}px`;
-
-    row.innerHTML = `
-        <span class="set-drawer-tree-toggle">${hasChildren ? "\u25B6" : "\u00B7"}</span>
-        <span class="set-drawer-tree-title">${escHtml(node.title)}</span>
-        <span class="set-drawer-tree-count">${node.track_count}</span>
-    `;
-
-    let childContainer = null;
-    if (hasChildren) {
-        childContainer = document.createElement("div");
-        childContainer.className = "set-drawer-tree-children collapsed";
-        for (const child of node.children) {
-            renderDrawerTreeNode(childContainer, child, treeType, depth + 1);
-        }
-    }
-
-    const toggle = row.querySelector(".set-drawer-tree-toggle");
-
-    // Click on title → assign source
-    row.querySelector(".set-drawer-tree-title").addEventListener("click", (e) => {
-        e.stopPropagation();
-        assignSource("tree_node", node.id, treeType, node.title);
-    });
-
-    // Click on toggle → expand/collapse
-    if (hasChildren) {
-        toggle.style.cursor = "pointer";
-        toggle.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const collapsed = childContainer.classList.toggle("collapsed");
-            toggle.textContent = collapsed ? "\u25B6" : "\u25BC";
-        });
-    }
-
-    parentEl.appendChild(row);
-    if (childContainer) parentEl.appendChild(childContainer);
 }
 
 
@@ -2346,21 +2308,43 @@ async function updateNowPlayingDrawer(track, slotIdx) {
     const commentEl = document.getElementById("now-playing-comment");
     commentEl.textContent = "";
 
-    // Fetch tree context (genre leaf + scene leaf)
-    const genreDiv = document.getElementById("now-playing-genre-leaf");
-    const sceneDiv = document.getElementById("now-playing-scene-leaf");
-    genreDiv.innerHTML = "";
-    sceneDiv.innerHTML = "";
+    // Fetch collection tree context
+    const collDiv = document.getElementById("now-playing-collection-leaf");
+    const alsoInDiv = document.getElementById("now-playing-also-in");
+    collDiv.innerHTML = "";
+    alsoInDiv.innerHTML = "";
     try {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
         if (res.ok) {
             const data = await res.json();
             if (data.comment) commentEl.textContent = data.comment;
-            renderSearchCard("now-playing-scene-leaf", data.scene_leaf, "Scene Tree", "tree_node", "scene");
-            renderSearchCard("now-playing-genre-leaf", data.genre_leaf, "Genre Tree", "tree_node", "genre");
+            renderSearchCard("now-playing-collection-leaf", data.collection_leaf, "Collection", "tree_node", "collection");
+            renderAlsoAppearsIn(alsoInDiv, data.also_in || []);
         }
     } catch (e) {
         console.error("Failed to load track context:", e);
+    }
+}
+
+function renderAlsoAppearsIn(container, leaves) {
+    container.innerHTML = "";
+    if (!leaves || leaves.length === 0) return;
+
+    const header = document.createElement("div");
+    header.className = "also-in-header";
+    header.textContent = "Also appears in\u2026";
+    container.appendChild(header);
+
+    for (const leaf of leaves) {
+        const link = document.createElement("a");
+        link.className = "also-in-link";
+        link.href = "#";
+        link.textContent = `${leaf.title} (${leaf.track_count})`;
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            assignSource("tree_node", leaf.id, "collection", leaf.title);
+        });
+        container.appendChild(link);
     }
 }
 
@@ -2662,7 +2646,7 @@ async function loadTrackContext(track) {
     // Clean up previous search playback
     if (selectedDiv._searchCleanup) selectedDiv._searchCleanup();
 
-    // Show selected track immediately (drag source updated once genre leaf loads)
+    // Show selected track immediately (drag source updated once collection leaf loads)
     selectedDiv.classList.remove("hidden");
     renderSelectedTrack(selectedDiv, track, null);
 
@@ -2672,9 +2656,8 @@ async function loadTrackContext(track) {
     contextDiv.classList.remove("hidden");
 
     // Loading state
-    ["set-search-card-genre", "set-search-card-scene"].forEach(id => {
-        document.getElementById(id).innerHTML = `<div class="set-search-card-loading">Loading\u2026</div>`;
-    });
+    document.getElementById("set-search-card-collection").innerHTML =
+        `<div class="set-search-card-loading">Loading\u2026</div>`;
 
     try {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
@@ -2684,12 +2667,11 @@ async function loadTrackContext(track) {
         }
         const data = await res.json();
 
-        // Re-render selected track with genre leaf as drag source
-        const genreLeaf = data.genre_leaf && data.genre_leaf.available ? data.genre_leaf : null;
-        renderSelectedTrack(selectedDiv, track, genreLeaf);
+        // Re-render selected track with collection leaf as drag source
+        const collLeaf = data.collection_leaf && data.collection_leaf.available ? data.collection_leaf : null;
+        renderSelectedTrack(selectedDiv, track, collLeaf);
 
-        renderSearchCard("set-search-card-scene", data.scene_leaf, "Scene Tree", "tree_node", "scene");
-        renderSearchCard("set-search-card-genre", data.genre_leaf, "Genre Tree", "tree_node", "genre");
+        renderSearchCard("set-search-card-collection", data.collection_leaf, "Collection", "tree_node", "collection");
     } catch (e) {
         console.error("Track context failed:", e);
         contextDiv.innerHTML = `<div class="set-drawer-empty">Failed to load context</div>`;
@@ -2697,7 +2679,7 @@ async function loadTrackContext(track) {
 }
 
 
-function renderSelectedTrack(container, track, genreLeaf) {
+function renderSelectedTrack(container, track, collectionLeaf) {
     container.innerHTML = "";
 
     const safeArtist = escHtml(track.artist || "");
@@ -2739,16 +2721,16 @@ function renderSelectedTrack(container, track, genreLeaf) {
     const img = hero.querySelector(".selected-track-art-big");
     loadNowPlayingArtwork(track.artist, track.title, img);
 
-    // Drag — source is the genre leaf (so slot gets filled from that leaf's track pool)
+    // Drag — source is the collection leaf (so slot gets filled from that leaf's track pool)
     img.addEventListener("dragstart", (e) => {
         setDragTrack = {
             id: track.id, artist: track.artist, title: track.title,
             bpm: track.bpm, key: track.key || "", year: track.year || "",
-            source_type: genreLeaf ? "tree_node" : "adhoc",
-            source_id: genreLeaf ? genreLeaf.node_id : null,
-            tree_type: genreLeaf ? "genre" : "",
-            track_ids: genreLeaf ? [] : [track.id],
-            name: genreLeaf ? genreLeaf.name : safeTitle,
+            source_type: collectionLeaf ? "tree_node" : "adhoc",
+            source_id: collectionLeaf ? collectionLeaf.node_id : null,
+            tree_type: collectionLeaf ? "collection" : "",
+            track_ids: collectionLeaf ? [] : [track.id],
+            name: collectionLeaf ? collectionLeaf.name : safeTitle,
         };
         e.dataTransfer.setData("text/plain", String(track.id));
         e.dataTransfer.effectAllowed = "copy";

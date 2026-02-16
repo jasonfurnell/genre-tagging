@@ -53,7 +53,8 @@ from app.phases import (
 from app.setbuilder import (
     get_browse_sources, get_source_detail, get_source_info,
     get_source_tracks, select_tracks_for_source,
-    build_track_context, find_leaf_for_track, save_set_state, load_set_state,
+    build_track_context, find_leaf_for_track, find_all_leaves_for_track,
+    save_set_state, load_set_state,
     create_saved_set, get_saved_set, list_saved_sets,
     update_saved_set, delete_saved_set,
 )
@@ -2944,7 +2945,10 @@ def download_all_status():
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _resolve_tree(tree_type):
-    """Helper: load genre or scene tree from state or disk."""
+    """Helper: load genre, scene, or collection tree from state or disk."""
+    if tree_type == "collection":
+        return _state.get("collection_tree") or load_tree(
+            file_path=_COLLECTION_TREE_FILE)
     if tree_type == "scene":
         return _state.get("scene_tree") or load_tree(
             file_path=TREE_PROFILES["scene"]["file"])
@@ -2955,10 +2959,8 @@ def _resolve_tree(tree_type):
 def set_workshop_sources():
     """Return available sources for the drawer's browse mode."""
     search = request.args.get("search", "")
-    genre_tree = _state.get("tree") or load_tree()
-    scene_tree = _state.get("scene_tree") or load_tree(
-        file_path=TREE_PROFILES["scene"]["file"])
-    result = get_browse_sources(genre_tree, scene_tree, search)
+    collection_tree = _resolve_tree("collection")
+    result = get_browse_sources(collection_tree, search)
     return jsonify(result)
 
 
@@ -3021,16 +3023,16 @@ def set_workshop_drag_track():
     if source_type == "adhoc":
         track_ids = body.get("track_ids", [])
         # For single-track adhoc (e.g. search result drag), auto-expand to
-        # the genre tree leaf so we have a full pool to fill all BPM levels.
+        # the collection tree leaf so we have a full pool to fill all BPM levels.
         if len(track_ids) <= 1 and track_id is not None:
-            genre_tree = _resolve_tree("genre")
-            leaf = find_leaf_for_track(genre_tree, track_id)
+            coll_tree = _resolve_tree("collection")
+            leaf = find_leaf_for_track(coll_tree, track_id)
             if leaf:
                 track_ids = leaf.get("track_ids", track_ids)
                 source_type = "tree_node"
                 source_id = leaf.get("id", "")
-                tree_type = "genre"
-                tree = genre_tree
+                tree_type = "collection"
+                tree = coll_tree
     else:
         track_ids = get_source_tracks(source_type, source_id, tree)
 
@@ -3104,16 +3106,16 @@ def set_workshop_refill_bpm():
             # Resolve source track pool
             if src_type == "adhoc":
                 pool_ids = [t["id"] for t in tracks if t and t.get("id") is not None]
-                # Auto-expand single-track adhoc via genre leaf
+                # Auto-expand single-track adhoc via collection leaf
                 if len(pool_ids) <= 1:
-                    genre_tree = _resolve_tree("genre")
-                    leaf = find_leaf_for_track(genre_tree, anchor_id)
+                    coll_tree = _resolve_tree("collection")
+                    leaf = find_leaf_for_track(coll_tree, anchor_id)
                     if leaf:
                         pool_ids = leaf.get("track_ids", pool_ids)
                         src_type = "tree_node"
                         src_id = leaf.get("id", "")
-                        tree_type = "genre"
-                        tree = genre_tree
+                        tree_type = "collection"
+                        tree = coll_tree
             else:
                 pool_ids = get_source_tracks(src_type, src_id, tree)
 
@@ -3208,7 +3210,7 @@ def set_workshop_track_search():
 
 @api.route("/api/set-workshop/track-context/<int:track_id>")
 def set_workshop_track_context(track_id):
-    """Return 3-card context (similar, genre leaf, scene leaf) for a track."""
+    """Return collection leaf context for a track."""
     df = _ensure_parsed()
     if df is None:
         return jsonify({"error": "No file uploaded"}), 400
@@ -3216,11 +3218,9 @@ def set_workshop_track_context(track_id):
     if track_id not in df.index:
         return jsonify({"error": "Track not found"}), 404
 
-    genre_tree = _state.get("tree") or load_tree()
-    scene_tree = _state.get("scene_tree") or load_tree(
-        file_path=TREE_PROFILES["scene"]["file"])
+    collection_tree = _resolve_tree("collection")
 
-    result = build_track_context(df, track_id, genre_tree, scene_tree)
+    result = build_track_context(df, track_id, collection_tree)
     if not result:
         return jsonify({"error": "Track not found"}), 404
 
