@@ -641,15 +641,106 @@ vibeInput.addEventListener("keydown", (e) => {
     }
 });
 
+// ── Loading status messages ──────────────────────────────────
+const _suggestionStatusMessages = {
+    explore: [
+        "Scanning your collection for hidden patterns...",
+        "Mapping genre intersections and mood clusters...",
+        "Identifying tracks that belong together...",
+        "Asking the AI to find thematic groupings...",
+        "Scoring tracks against candidate playlists...",
+        "Curating the best matches for each playlist...",
+        "Almost there \u2014 finalising playlist suggestions...",
+    ],
+    vibe: [
+        "Interpreting your vibe description...",
+        "Searching for tracks that match the mood...",
+        "Cross-referencing genres, descriptors and energy...",
+        "Asking the AI to build playlist concepts...",
+        "Scoring your collection against each concept...",
+        "Picking the strongest matches...",
+        "Polishing the results \u2014 almost done...",
+    ],
+    seed: [
+        "Analysing the DNA of your seed tracks...",
+        "Finding common threads across your selection...",
+        "Searching for tracks with similar energy...",
+        "Building playlist concepts from shared traits...",
+        "Scoring candidates against each concept...",
+        "Selecting the best fits...",
+        "Wrapping up \u2014 almost ready...",
+    ],
+    intersection: [
+        "Exploring where these genres overlap...",
+        "Looking for tracks that bridge both worlds...",
+        "Building playlist concepts from the intersection...",
+        "Scoring tracks against each concept...",
+        "Curating the strongest candidates...",
+        "Finalising your intersection playlists...",
+    ],
+};
+
+function _startStatusRotation(container, mode) {
+    const messages = _suggestionStatusMessages[mode] || _suggestionStatusMessages.explore;
+    let idx = 0;
+    const el = container.querySelector(".ws-loading-status");
+    if (!el) return null;
+    el.textContent = messages[0];
+    return setInterval(() => {
+        idx = Math.min(idx + 1, messages.length - 1);
+        el.textContent = messages[idx];
+    }, 5000);
+}
+
+// ── Drawer loading state (for Push to Workshop) ─────────────
+const _drawerLoadingMessages = [
+    "Creating your playlist with AI curation...",
+    "Searching your collection for matching tracks...",
+    "Scoring candidates by genre, mood and energy...",
+    "Sending tracks to the AI for reranking...",
+    "The AI is selecting the best track order...",
+    "Building the final playlist...",
+    "Almost ready \u2014 loading tracks into the workshop...",
+];
+let _drawerLoadingTimer = null;
+
+function _showDrawerLoading(name) {
+    const header = document.getElementById("set-drawer-detail-header");
+    const tracks = document.getElementById("set-drawer-detail-tracks");
+    if (header) {
+        header.innerHTML = `
+            <h4>${typeof escHtml === "function" ? escHtml(name) : escapeHtml(name)}</h4>
+            <div class="ws-loading" style="padding:2rem 0;">
+                <div class="ws-loading-spinner"></div>
+                <p class="ws-loading-status">${_drawerLoadingMessages[0]}</p>
+            </div>`;
+    }
+    if (tracks) tracks.innerHTML = "";
+    let idx = 0;
+    const el = header ? header.querySelector(".ws-loading-status") : null;
+    if (el) {
+        _drawerLoadingTimer = setInterval(() => {
+            idx = Math.min(idx + 1, _drawerLoadingMessages.length - 1);
+            el.textContent = _drawerLoadingMessages[idx];
+        }, 5000);
+    }
+}
+
+function _clearDrawerLoading() {
+    if (_drawerLoadingTimer) {
+        clearInterval(_drawerLoadingTimer);
+        _drawerLoadingTimer = null;
+    }
+}
+
 async function generateSuggestions(mode, extra) {
     const list = $("#ws-suggestions-list");
-    const modeLabels = {
-        explore: "Generating playlist ideas",
-        vibe: "Creating playlists from your vibe",
-        seed: "Analyzing seed tracks",
-        intersection: "Exploring genre intersection",
-    };
-    list.innerHTML = `<p class="ws-placeholder ws-loading">${modeLabels[mode] || "Generating"}... (this may take a moment)</p>`;
+    list.innerHTML = `<div class="ws-placeholder ws-loading">
+        <div class="ws-loading-spinner"></div>
+        <p class="ws-loading-status"></p>
+    </div>`;
+    const statusTimer = _startStatusRotation(list, mode);
+
     btnSuggest.disabled = true;
     const vibeBtn = document.getElementById("ws-btn-vibe-suggest");
     if (vibeBtn) vibeBtn.disabled = true;
@@ -685,6 +776,7 @@ async function generateSuggestions(mode, extra) {
     } catch (err) {
         list.innerHTML = `<p class="ws-placeholder ws-error">Error: ${escapeHtml(err.message)}</p>`;
     } finally {
+        if (statusTimer) clearInterval(statusTimer);
         btnSuggest.disabled = false;
         if (vibeBtn) vibeBtn.disabled = false;
     }
@@ -697,31 +789,83 @@ function renderSuggestions(suggestions) {
         return;
     }
 
+    // Toolbar spans full grid width
     list.innerHTML = `
         <div class="ws-suggestions-toolbar">
             <button class="btn btn-secondary btn-sm" id="ws-btn-save-all">Save All as Playlists</button>
-        </div>
-    ` + suggestions.map((s, idx) => `
-        <div class="ws-suggestion-card">
-            <h3>${escapeHtml(s.name)}</h3>
-            <p class="ws-suggestion-desc">${escapeHtml(s.description)}</p>
-            <p class="ws-suggestion-meta">
-                <span class="ws-suggestion-count">${s.track_count || 0} matching tracks</span>
-                <span class="ws-suggestion-rationale" title="${escapeHtml(s.rationale)}">Why?</span>
-            </p>
-            ${s.sample_tracks && s.sample_tracks.length > 0 ? `
-                <div class="ws-suggestion-samples">
-                    ${s.sample_tracks.map(t => `<span class="ws-sample-track">${escapeHtml(t.artist)} &mdash; ${escapeHtml(t.title)}${t.score ? ` (${Math.round(t.score * 100)}%)` : ''}</span>`).join("")}
-                </div>
-            ` : ""}
-            <div class="ws-suggestion-actions">
-                <button class="btn btn-primary btn-sm" data-action="create" data-idx="${idx}">Create Playlist</button>
-                <button class="btn btn-secondary btn-sm" data-action="search" data-idx="${idx}">Search</button>
-            </div>
-        </div>
-    `).join("");
+        </div>`;
 
-    // Wire Save All button (uses smart-create for each playlist)
+    // Build cards using collection-card structure
+    for (let idx = 0; idx < suggestions.length; idx++) {
+        const s = suggestions[idx];
+        const card = document.createElement("div");
+        card.className = "collection-card";
+
+        // Exemplar tracks
+        let examplesHtml = "";
+        if (s.sample_tracks && s.sample_tracks.length > 0) {
+            examplesHtml = `<div class="collection-card-examples">
+                <div class="tree-examples-title">Exemplar Tracks
+                    <button class="btn btn-sm btn-secondary tree-play-all-btn">Play All</button>
+                </div>`;
+            for (const t of s.sample_tracks.slice(0, 5)) {
+                const yr = t.year && t.year !== "0" && t.year !== 0
+                    ? `<span class="tree-track-year">${Math.round(parseFloat(t.year))}</span>` : "";
+                examplesHtml += `<div class="tree-example-track">
+                    <img class="track-artwork" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" alt="">
+                    <button class="btn-preview" data-artist="${escapeHtml(t.artist)}" data-title="${escapeHtml(t.title)}" title="Play 30s preview">\u25B6</button>
+                    <span class="tree-track-title">${escapeHtml(t.title)}</span>
+                    <span class="tree-track-artist">${escapeHtml(t.artist)}</span>
+                    ${yr}
+                </div>`;
+            }
+            examplesHtml += `</div>`;
+        }
+
+        // Rationale tag
+        const rationaleTag = s.rationale
+            ? `<div class="collection-card-tags"><span class="cc-tag cc-scene" title="${escapeHtml(s.rationale)}">${escapeHtml(s.rationale)}</span></div>`
+            : "";
+
+        card.innerHTML = `
+            <div class="collection-card-header">
+                <h3>${escapeHtml(s.name)}</h3>
+                <span class="tree-node-count">${s.track_count || 0} tracks</span>
+            </div>
+            ${rationaleTag}
+            <p class="collection-card-desc">${escapeHtml(s.description)}</p>
+            ${examplesHtml}
+            <div class="collection-card-actions">
+                <button class="btn btn-primary btn-sm" data-action="create" data-idx="${idx}">Create Playlist</button>
+                <button class="btn btn-sm btn-secondary" data-action="push-workshop" data-idx="${idx}">Push to Workshop</button>
+            </div>`;
+
+        list.appendChild(card);
+
+        // Wire artwork loading
+        card.querySelectorAll(".track-artwork").forEach(img => {
+            loadArtwork(img.dataset.artist, img.dataset.title, img);
+        });
+
+        // Wire preview buttons
+        card.querySelectorAll(".btn-preview").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            });
+        });
+
+        // Wire play-all
+        const playAllBtn = card.querySelector(".tree-play-all-btn");
+        if (playAllBtn) {
+            playAllBtn.addEventListener("click", () => {
+                const exContainer = card.querySelector(".collection-card-examples");
+                if (exContainer) startPlayAll(exContainer);
+            });
+        }
+    }
+
+    // Wire Save All button
     document.getElementById("ws-btn-save-all").addEventListener("click", async () => {
         const btn = document.getElementById("ws-btn-save-all");
         btn.disabled = true;
@@ -751,20 +895,66 @@ function renderSuggestions(suggestions) {
 
     // Wire up per-card buttons
     list.querySelectorAll("[data-action=create]").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
             const s = suggestions[parseInt(btn.dataset.idx)];
             btn.disabled = true;
             btn.textContent = "Creating...";
-            createPlaylistFromSuggestion(s).finally(() => {
+            try {
+                await createPlaylistFromSuggestion(s);
+                btn.textContent = "Playlist Created";
+                btn.style.opacity = "0.5";
+            } catch (err) {
                 btn.disabled = false;
                 btn.textContent = "Create Playlist";
-            });
+            }
         });
     });
-    list.querySelectorAll("[data-action=search]").forEach(btn => {
-        btn.addEventListener("click", () => {
+    list.querySelectorAll("[data-action=push-workshop]").forEach(btn => {
+        btn.addEventListener("click", async () => {
             const s = suggestions[parseInt(btn.dataset.idx)];
-            runScoredSearch(s.filters, s.name, s.description);
+            btn.disabled = true;
+            btn.textContent = "Pushed";
+            // Also mark the create button as done (playlist will be created)
+            const createBtn = btn.closest(".collection-card-actions")
+                .querySelector("[data-action=create]");
+            if (createBtn) {
+                createBtn.disabled = true;
+                createBtn.textContent = "Playlist Created";
+                createBtn.style.opacity = "0.5";
+            }
+
+            // Immediately switch to workshop and show loading in drawer
+            if (typeof switchToTab === "function") switchToTab("setbuilder");
+            await new Promise(r => setTimeout(r, 100));
+            openDrawer("detail", null);
+            _showDrawerLoading(s.name);
+
+            try {
+                const res = await fetch("/api/workshop/playlists/smart-create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: s.name,
+                        description: s.description,
+                        filters: s.filters,
+                        target_count: 25,
+                    }),
+                });
+                if (!res.ok) throw new Error("Failed to create playlist");
+                const data = await res.json();
+                await loadPlaylists();
+                _clearDrawerLoading();
+                loadDrawerSourceDetail({
+                    type: "playlist",
+                    id: data.playlist.id,
+                    tree_type: null,
+                });
+                showToast(`"${s.name}" loaded \u2014 drag tracks to slots`);
+            } catch (err) {
+                _clearDrawerLoading();
+                const header = document.getElementById("set-drawer-detail-header");
+                if (header) header.innerHTML = `<p style="color:var(--accent);padding:1rem;">Failed to create playlist: ${escapeHtml(err.message)}</p>`;
+            }
         });
     });
 }
@@ -790,6 +980,7 @@ async function createPlaylistFromSuggestion(suggestion) {
         selectPlaylist(data.playlist.id);
     } catch (err) {
         alert("Failed to create playlist: " + err.message);
+        throw err;
     }
 }
 

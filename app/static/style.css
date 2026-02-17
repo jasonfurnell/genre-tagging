@@ -432,7 +432,31 @@ body {
     font-size: 0.85rem;
     padding: 0.5rem 0;
 }
-.ws-loading { font-style: italic; }
+.ws-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2.5rem 1rem;
+    grid-column: 1 / -1;
+}
+.ws-loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: ws-spin 0.8s linear infinite;
+}
+@keyframes ws-spin { to { transform: rotate(360deg); } }
+.ws-loading-status {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    transition: opacity 0.3s;
+}
 .ws-error { color: var(--accent); }
 
 /* ── Chord Diagram ─────────────────────────────────────── */
@@ -561,60 +585,8 @@ body {
 }
 .ws-suggestions-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.75rem;
-}
-.ws-suggestion-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.85rem;
-}
-.ws-suggestion-card h3 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    color: var(--accent);
-}
-.ws-suggestion-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
-    line-height: 1.4;
-}
-.ws-suggestion-meta {
-    font-size: 0.75rem;
-    color: var(--success);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
-}
-.ws-suggestion-rationale {
-    color: var(--text-muted);
-    cursor: help;
-    text-decoration: underline dotted;
-    font-size: 0.7rem;
-}
-.ws-suggestion-samples {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: 0.5rem;
-    padding: 0.4rem;
-    background: rgba(255,255,255,0.02);
-    border-radius: 4px;
-}
-.ws-sample-track {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.ws-suggestion-actions {
-    display: flex;
-    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
 }
 
 /* ── Chord Popover ──────────────────────────────────────── */
