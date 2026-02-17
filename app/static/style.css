@@ -2374,6 +2374,7 @@ tr.ws-seed-selected {
     left: 0;
     pointer-events: none;
     z-index: 1;
+    overflow: visible;
 }
 .set-energy-line {
     fill: none;
