@@ -3087,6 +3087,203 @@ tr.ws-seed-selected {
     padding-bottom: 0.5rem;
 }
 
+/* -- Base Drawer (bottom slide-up, horizontal now-playing) -------------- */
+.base-drawer {
+    position: fixed;
+    left: 0;
+    bottom: -250px;
+    width: 100%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    z-index: 210;
+    transition: bottom 0.35s ease;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    padding: 0.75rem 1.25rem;
+}
+.base-drawer.open {
+    bottom: 0;
+}
+
+/* Push content up when base drawer is open */
+#tab-setbuilder.base-drawer-open {
+    padding-bottom: 180px;
+}
+
+/* Three-panel layout */
+.base-drawer-panels {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    min-height: 105px;
+}
+.base-drawer-panel {
+    display: flex;
+    align-items: center;
+}
+
+/* Left panel: artwork + track info + comment */
+.base-drawer-left {
+    flex: 1;
+    gap: 0.75rem;
+    min-width: 0;
+}
+.base-np-artwork {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius);
+    object-fit: cover;
+    background: rgba(255,255,255,0.04);
+    flex-shrink: 0;
+}
+.base-np-info {
+    min-width: 0;
+    flex: 1;
+}
+.base-np-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.base-np-artist-line {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0.1rem;
+}
+.base-np-comment {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.35;
+}
+.base-np-comment:empty {
+    display: none;
+}
+
+/* Center panel: controls + progress (anchored to screen center) */
+.base-drawer-center {
+    flex: 0 0 280px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+}
+.base-np-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.base-np-controls .now-playing-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.65rem;
+}
+.base-np-controls .now-playing-btn-main {
+    width: 42px;
+    height: 42px;
+    font-size: 0.95rem;
+}
+.base-drawer-progress {
+    width: 100%;
+}
+.base-np-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+    font-variant-numeric: tabular-nums;
+}
+.base-np-counter {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Right panel: collection source + side drawer button */
+.base-drawer-right {
+    flex: 1;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    min-width: 0;
+}
+.base-np-source {
+    min-width: 0;
+    flex: 1;
+    text-align: right;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.base-np-source:hover {
+    opacity: 0.8;
+}
+.base-np-collection-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.base-np-collection-title:empty {
+    display: none;
+}
+.base-np-collection-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+    margin-top: 0.15rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.base-np-collection-desc:empty {
+    display: none;
+}
+.base-np-also-in {
+    font-size: 0.65rem;
+    color: var(--accent);
+    margin-top: 0.15rem;
+}
+.base-np-also-in:empty {
+    display: none;
+}
+.base-drawer-dig-btn {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.base-drawer-dig-btn:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
 /* Play-set active column highlight (green, distinct from preview) */
 .set-column.play-set-active {
     background: transparent;

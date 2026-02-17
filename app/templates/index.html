@@ -438,6 +438,50 @@
     </div>
 </div>
 
+<!-- Base Drawer (bottom slide-up, horizontal now-playing) -->
+<div id="base-drawer" class="base-drawer">
+    <div class="base-drawer-panels">
+        <!-- Left panel: artwork + track info -->
+        <div class="base-drawer-panel base-drawer-left">
+            <img id="base-np-artwork" class="base-np-artwork" alt="" src="">
+            <div class="base-np-info">
+                <div id="base-np-title" class="base-np-title"></div>
+                <div id="base-np-artist-line" class="base-np-artist-line"></div>
+                <div id="base-np-comment" class="base-np-comment"></div>
+            </div>
+        </div>
+
+        <!-- Center panel: controls + progress -->
+        <div class="base-drawer-panel base-drawer-center">
+            <div class="base-np-controls">
+                <button id="base-np-prev" class="now-playing-btn" title="Previous">&#9664;&#9664;</button>
+                <button id="base-np-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                <button id="base-np-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
+            </div>
+            <div class="base-drawer-progress">
+                <div id="base-np-progress-bar" class="now-playing-progress-bar">
+                    <div id="base-np-progress-fill" class="now-playing-progress-fill"></div>
+                </div>
+                <div class="base-np-time">
+                    <span id="base-np-current-time">0:00</span>
+                    <span id="base-np-duration">0:00</span>
+                </div>
+            </div>
+            <div id="base-np-counter" class="base-np-counter"></div>
+        </div>
+
+        <!-- Right panel: collection source + side drawer button -->
+        <div class="base-drawer-panel base-drawer-right">
+            <div id="base-np-source" class="base-np-source">
+                <div id="base-np-collection" class="base-np-collection-title"></div>
+                <div id="base-np-collection-desc" class="base-np-collection-desc"></div>
+                <div id="base-np-also-in" class="base-np-also-in"></div>
+            </div>
+            <button id="base-drawer-expand" class="base-drawer-dig-btn">Dig Deeper<br>Open the draw<br>Grab some more</button>
+        </div>
+    </div>
+</div>
+
 <!-- Settings Modal -->
 <div id="settings-modal" class="modal-overlay hidden">
     <div class="modal">

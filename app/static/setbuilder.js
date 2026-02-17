@@ -11,6 +11,7 @@ const SET_DEFAULT_SLOTS = 40;  // 2-hour set (40 × 3 min)
 let setDrawerOpen = false;
 let setDrawerMode = null;         // "browse" | "detail" | "search" | "now-playing"
 let setDrawerTargetSlotId = null; // which slot the drawer is acting on
+let baseDrawerOpen = false;       // bottom base-drawer state
 
 // ── Drag State ──
 let setDragTrack = null;          // track being dragged from drawer
@@ -124,6 +125,19 @@ async function initSetBuilder() {
 
     // Drawer close
     document.getElementById("set-drawer-close").addEventListener("click", closeDrawer);
+
+    // Base drawer controls
+    document.getElementById("base-np-play-pause").addEventListener("click", togglePlaySetPause);
+    document.getElementById("base-np-prev").addEventListener("click", playSetPrev);
+    document.getElementById("base-np-next").addEventListener("click", playSetNext);
+    document.getElementById("base-np-progress-bar").addEventListener("click", (e) => {
+        if (!setAudio || !setAudio.duration) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        setAudio.currentTime = pct * setAudio.duration;
+    });
+    document.getElementById("base-drawer-expand").addEventListener("click", expandFromBaseDrawer);
+    document.getElementById("base-np-source").addEventListener("click", expandFromBaseDrawer);
 
     // Drawer source search (debounced)
     let searchTimer = null;
@@ -1393,7 +1407,13 @@ function openDrawer(mode, targetSlotId) {
     } else if (mode === "now-playing") {
         document.getElementById("set-drawer-now-playing").classList.remove("hidden");
         document.getElementById("set-drawer-title").textContent = "Now Playing";
+        // Close base drawer if open (expanding back from base)
+        if (baseDrawerOpen) closeBaseDrawer();
     }
+
+    // Change close button text based on mode
+    const closeBtn = document.getElementById("set-drawer-close");
+    closeBtn.textContent = (mode === "now-playing") ? "Base Drawer" : "Close";
 
     // After layout shift, keep the target slot visible
     if (targetSlotId) {
@@ -1406,9 +1426,13 @@ function openDrawer(mode, targetSlotId) {
 
 function closeDrawer() {
     // In Play Mode: closing an edit drawer (browse/search/detail) returns
-    // to Now Playing; closing Now Playing itself just hides the drawer.
+    // to Now Playing; closing Now Playing itself transitions to base drawer.
     if (isPlaySetMode() && setDrawerMode !== "now-playing") {
         openDrawer("now-playing", null);
+        return;
+    }
+    if (isPlaySetMode() && setDrawerMode === "now-playing") {
+        transitionToBaseDrawer();
         return;
     }
     setDrawerOpen = false;
@@ -1419,6 +1443,92 @@ function closeDrawer() {
     // Restore full content width
     const tab = document.getElementById("tab-setbuilder");
     if (tab) tab.classList.remove("drawer-open");
+}
+
+// ── Base Drawer (bottom slide-up) ──
+
+function transitionToBaseDrawer() {
+    // Close the right drawer
+    setDrawerOpen = false;
+    setDrawerTargetSlotId = null;
+    setDrawerMode = null;
+    document.getElementById("set-drawer").classList.remove("open");
+    const tab = document.getElementById("tab-setbuilder");
+    if (tab) {
+        tab.classList.remove("drawer-open");
+        tab.classList.add("base-drawer-open");
+    }
+
+    // Open the base drawer after right drawer starts sliding out
+    setTimeout(() => {
+        baseDrawerOpen = true;
+        document.getElementById("base-drawer").classList.add("open");
+    }, 150);
+
+    // Sync current now-playing data to base drawer
+    syncBaseDrawer();
+}
+
+function closeBaseDrawer() {
+    baseDrawerOpen = false;
+    document.getElementById("base-drawer").classList.remove("open");
+    const tab = document.getElementById("tab-setbuilder");
+    if (tab) tab.classList.remove("base-drawer-open");
+}
+
+function expandFromBaseDrawer() {
+    // Transition back: close base drawer, open right drawer in now-playing
+    openDrawer("now-playing", null);
+}
+
+function syncBaseDrawer() {
+    // Copy current now-playing data to base drawer elements
+    document.getElementById("base-np-title").textContent =
+        document.getElementById("now-playing-title").textContent;
+    document.getElementById("base-np-comment").textContent =
+        document.getElementById("now-playing-comment").textContent;
+    document.getElementById("base-np-counter").textContent =
+        document.getElementById("now-playing-counter").textContent;
+
+    // Build comma-separated artist line from right drawer
+    const artist = document.getElementById("now-playing-artist").textContent;
+    const bpm = document.getElementById("now-playing-bpm").textContent;
+    const key = document.getElementById("now-playing-key").textContent;
+    const year = document.getElementById("now-playing-year").textContent;
+    document.getElementById("base-np-artist-line").textContent =
+        [artist, bpm, key, year].filter(Boolean).join(", ");
+
+    // Artwork
+    const srcArt = document.getElementById("now-playing-artwork").src;
+    if (srcArt) document.getElementById("base-np-artwork").src = srcArt;
+
+    // Collection leaf title + description from the right drawer card
+    const collSrc = document.getElementById("now-playing-collection-leaf");
+    const leafH4 = collSrc.querySelector("h4");
+    document.getElementById("base-np-collection").textContent = leafH4 ? leafH4.textContent : "";
+    const descEl = collSrc.querySelector(".set-search-card-desc");
+    if (descEl) {
+        const fullText = descEl.textContent.replace(/Show (More|Less)/g, "").trim();
+        document.getElementById("base-np-collection-desc").textContent = fullText;
+    }
+
+    // Also appears in (compact)
+    const alsoSrc = document.getElementById("now-playing-also-in");
+    const alsoDst = document.getElementById("base-np-also-in");
+    const links = alsoSrc.querySelectorAll(".also-in-link");
+    alsoDst.textContent = links.length ? "Also in " + links.length + " more" : "";
+
+    // Sync play/pause icon
+    const mainIcon = document.getElementById("now-playing-play-pause").innerHTML;
+    document.getElementById("base-np-play-pause").innerHTML = mainIcon;
+
+    // Sync progress
+    document.getElementById("base-np-progress-fill").style.width =
+        document.getElementById("now-playing-progress-fill").style.width;
+    document.getElementById("base-np-current-time").textContent =
+        document.getElementById("now-playing-current-time").textContent;
+    document.getElementById("base-np-duration").textContent =
+        document.getElementById("now-playing-duration").textContent;
 }
 
 
@@ -2138,6 +2248,10 @@ function exitPlaySetMode() {
     document.getElementById("now-playing-current-time").textContent = "0:00";
     document.getElementById("now-playing-duration").textContent = "0:00";
     document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+    document.getElementById("base-np-progress-fill").style.width = "0%";
+    document.getElementById("base-np-current-time").textContent = "0:00";
+    document.getElementById("base-np-duration").textContent = "0:00";
+    document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
 
     // Close drawer if in now-playing mode
     if (setDrawerMode === "now-playing") {
@@ -2148,6 +2262,9 @@ function exitPlaySetMode() {
         const tab = document.getElementById("tab-setbuilder");
         if (tab) tab.classList.remove("drawer-open");
     }
+
+    // Close base drawer if open
+    if (baseDrawerOpen) closeBaseDrawer();
 }
 
 function syncPlaySetIndex(slotId) {
@@ -2266,6 +2383,7 @@ async function playFullTrack(idx) {
 
     // Update play/pause button
     document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
+    document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
 
     // Set audio source to the backend streaming endpoint
     setAudio.src = `/api/audio/${track.id}`;
@@ -2296,17 +2414,34 @@ async function updateNowPlayingDrawer(track, slotIdx) {
         return t && t.has_audio;
     });
     const currentNum = playable.findIndex(s => setSlots.indexOf(s) === slotIdx) + 1;
-    document.getElementById("now-playing-counter").textContent =
-        `Track ${currentNum} of ${playable.length}`;
+    const counterText = `Track ${currentNum} of ${playable.length}`;
+    document.getElementById("now-playing-counter").textContent = counterText;
 
     // Large artwork
     const artImg = document.getElementById("now-playing-artwork");
     artImg.src = "";
     loadNowPlayingArtwork(track.artist, track.title, artImg);
 
+    // Also load artwork for base drawer
+    const baseArtImg = document.getElementById("base-np-artwork");
+    baseArtImg.src = "";
+    loadNowPlayingArtwork(track.artist, track.title, baseArtImg);
+
     // Comment
     const commentEl = document.getElementById("now-playing-comment");
     commentEl.textContent = "";
+
+    // Sync base drawer basic info
+    document.getElementById("base-np-title").textContent = track.title || "";
+    const bpmText = track.bpm ? Math.round(track.bpm) + " BPM" : "";
+    const artistLine = [track.artist || "", bpmText, track.key || "", track.year || ""]
+        .filter(Boolean).join(", ");
+    document.getElementById("base-np-artist-line").textContent = artistLine;
+    document.getElementById("base-np-counter").textContent = counterText;
+    document.getElementById("base-np-comment").textContent = "";
+    document.getElementById("base-np-collection").textContent = "";
+    document.getElementById("base-np-collection-desc").textContent = "";
+    document.getElementById("base-np-also-in").textContent = "";
 
     // Fetch collection tree context
     const collDiv = document.getElementById("now-playing-collection-leaf");
@@ -2317,9 +2452,21 @@ async function updateNowPlayingDrawer(track, slotIdx) {
         const res = await fetch(`/api/set-workshop/track-context/${track.id}`);
         if (res.ok) {
             const data = await res.json();
-            if (data.comment) commentEl.textContent = data.comment;
+            if (data.comment) {
+                commentEl.textContent = data.comment;
+                document.getElementById("base-np-comment").textContent = data.comment;
+            }
             renderSearchCard("now-playing-collection-leaf", data.collection_leaf, "Collection", "tree_node", "collection");
             renderAlsoAppearsIn(alsoInDiv, data.also_in || []);
+            // Base drawer: collection name + description
+            if (data.collection_leaf && data.collection_leaf.name) {
+                document.getElementById("base-np-collection").textContent = data.collection_leaf.name;
+                document.getElementById("base-np-collection-desc").textContent =
+                    data.collection_leaf.description || "";
+            }
+            if (data.also_in && data.also_in.length) {
+                document.getElementById("base-np-also-in").textContent = "Also in " + data.also_in.length + " more";
+            }
         }
     } catch (e) {
         console.error("Failed to load track context:", e);
@@ -2363,9 +2510,11 @@ function togglePlaySetPause() {
     if (setAudio.paused) {
         setAudio.play();
         document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
+        document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
     } else {
         setAudio.pause();
         document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+        document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
     }
 }
 
@@ -2391,6 +2540,10 @@ function updatePlaySetProgress() {
     document.getElementById("now-playing-progress-fill").style.width = pct + "%";
     document.getElementById("now-playing-current-time").textContent = formatPlaySetTime(setAudio.currentTime);
     document.getElementById("now-playing-duration").textContent = formatPlaySetTime(setAudio.duration);
+    // Sync base drawer progress
+    document.getElementById("base-np-progress-fill").style.width = pct + "%";
+    document.getElementById("base-np-current-time").textContent = formatPlaySetTime(setAudio.currentTime);
+    document.getElementById("base-np-duration").textContent = formatPlaySetTime(setAudio.duration);
 }
 
 function formatPlaySetTime(seconds) {
