@@ -31,7 +31,7 @@ from app.playlist import (
     delete_playlist, add_tracks_to_playlist, remove_tracks_from_playlist,
     generate_playlist_suggestions, generate_vibe_suggestions,
     generate_seed_suggestions, generate_intersection_suggestions,
-    rerank_tracks, export_m3u, export_csv,
+    rerank_tracks, export_m3u, export_csv, import_m3u,
 )
 from app.tree import (
     build_collection_tree, expand_tree_from_ungrouped,
@@ -1183,6 +1183,34 @@ def workshop_export_csv(playlist_id):
 
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name=f"{name}.csv")
+
+
+# ---------------------------------------------------------------------------
+# Import
+# ---------------------------------------------------------------------------
+
+@api.route("/api/workshop/playlists/import", methods=["POST"])
+def workshop_import_playlist():
+    """Import an M3U/M3U8 playlist file."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded — load your collection first"}), 400
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files["file"]
+    fname = file.filename or ""
+    if not fname.lower().endswith((".m3u", ".m3u8")):
+        return jsonify({"error": "Only .m3u / .m3u8 files are supported"}), 400
+
+    content = file.read().decode("utf-8", errors="replace")
+    result = import_m3u(content, fname, df)
+
+    if "error" in result:
+        return jsonify(result), 400
+
+    return jsonify(result)
 
 
 # ═══════════════════════════════════════════════════════════════════════════

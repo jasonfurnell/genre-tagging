@@ -700,6 +700,13 @@ function _startStatusRotation(container, mode) {
 
 // ── Drawer loading state (for Push to Workshop) ─────────────
 const _drawerLoadingMessages = [
+    "Loading tracks into the workshop...",
+    "Fetching track details and metadata...",
+    "Loading artwork and BPM data...",
+    "Preparing the drawer view...",
+    "Almost ready...",
+];
+const _drawerAiLoadingMessages = [
     "Creating your playlist with AI curation...",
     "Searching your collection for matching tracks...",
     "Scoring candidates by genre, mood and energy...",
@@ -710,7 +717,8 @@ const _drawerLoadingMessages = [
 ];
 let _drawerLoadingTimer = null;
 
-function _showDrawerLoading(name) {
+function _showDrawerLoading(name, messages) {
+    const msgs = messages || _drawerLoadingMessages;
     const header = document.getElementById("set-drawer-detail-header");
     const tracks = document.getElementById("set-drawer-detail-tracks");
     if (header) {
@@ -718,7 +726,7 @@ function _showDrawerLoading(name) {
             <h4>${typeof escHtml === "function" ? escHtml(name) : escapeHtml(name)}</h4>
             <div class="ws-loading" style="padding:2rem 0;">
                 <div class="ws-loading-spinner"></div>
-                <p class="ws-loading-status">${_drawerLoadingMessages[0]}</p>
+                <p class="ws-loading-status">${msgs[0]}</p>
             </div>`;
     }
     if (tracks) tracks.innerHTML = "";
@@ -726,8 +734,8 @@ function _showDrawerLoading(name) {
     const el = header ? header.querySelector(".ws-loading-status") : null;
     if (el) {
         _drawerLoadingTimer = setInterval(() => {
-            idx = Math.min(idx + 1, _drawerLoadingMessages.length - 1);
-            el.textContent = _drawerLoadingMessages[idx];
+            idx = Math.min(idx + 1, msgs.length - 1);
+            el.textContent = msgs[idx];
         }, 5000);
     }
 }
@@ -933,7 +941,7 @@ function renderSuggestions(suggestions) {
             if (typeof switchToTab === "function") switchToTab("setbuilder");
             await new Promise(r => setTimeout(r, 100));
             openDrawer("detail", null);
-            _showDrawerLoading(s.name);
+            _showDrawerLoading(s.name, _drawerAiLoadingMessages);
 
             try {
                 const res = await fetch("/api/workshop/playlists/smart-create", {
@@ -1867,5 +1875,42 @@ $("#ws-btn-new-playlist").addEventListener("click", async () => {
         selectPlaylist(data.playlist.id);
     } catch (err) {
         alert("Failed to create playlist: " + err.message);
+    }
+});
+
+// Import M3U playlist
+$("#ws-btn-import-playlist").addEventListener("click", () => {
+    $("#ws-import-file").click();
+});
+
+$("#ws-import-file").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = "";  // reset so same file can be re-imported
+
+    const form = new FormData();
+    form.append("file", file);
+
+    try {
+        const res = await fetch("/api/workshop/playlists/import", {
+            method: "POST",
+            body: form,
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            alert(data.error || "Import failed");
+            return;
+        }
+
+        await loadPlaylists();
+        selectPlaylist(data.playlist.id);
+
+        let msg = `Imported "${data.playlist.name}" — ${data.matched_count} tracks matched`;
+        if (data.unmatched_count > 0) {
+            msg += `, ${data.unmatched_count} not found`;
+        }
+        showToast(msg);
+    } catch (err) {
+        alert("Import failed: " + err.message);
     }
 });

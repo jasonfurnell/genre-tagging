@@ -1592,8 +1592,10 @@ async function loadDrawerSourceDetail(source) {
         const res = await fetch(`/api/set-workshop/source-detail?${qs}`);
         if (!res.ok) return;
         const data = await res.json();
+        if (typeof _clearDrawerLoading === "function") _clearDrawerLoading();
         renderDrawerDetail(data, source);
     } catch (e) {
+        if (typeof _clearDrawerLoading === "function") _clearDrawerLoading();
         console.error("Failed to load source detail:", e);
     }
 }
@@ -2638,9 +2640,13 @@ async function pushToSetWorkshop(trackIds, name, sourceType, sourceId, treeType)
 
     await new Promise(r => setTimeout(r, 100));
 
-    // Open drawer in detail mode — user drags tracks to slots
+    // Open drawer in detail mode — show loading status while fetching
     openDrawer("detail", null);
-    loadDrawerSourceDetail({
+    if (typeof _showDrawerLoading === "function") {
+        _showDrawerLoading(name || "Source");
+    }
+
+    await loadDrawerSourceDetail({
         type: sourceType || "adhoc",
         id: sourceId || null,
         tree_type: treeType || null,

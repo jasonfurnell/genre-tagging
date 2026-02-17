@@ -460,3 +460,116 @@ def export_csv(playlist_id, df):
     subset[export_cols].to_csv(buf, index=False)
     buf.seek(0)
     return buf
+
+
+# ---------------------------------------------------------------------------
+# Import
+# ---------------------------------------------------------------------------
+
+def import_m3u(file_content, filename, df):
+    """Import an M3U/M3U8 playlist file, matching tracks to the DataFrame.
+
+    Match strategy (in priority order):
+      1. Exact match on 'location' column (file path)
+      2. Filename-only match (basename, case-insensitive)
+      3. Artist + title case-insensitive match
+
+    Returns dict with: playlist, matched_count, unmatched_count, unmatched_tracks
+    """
+    lines = file_content.splitlines()
+
+    # Extract playlist name from #PLAYLIST tag or filename
+    playlist_name = os.path.splitext(filename)[0]
+    for line in lines:
+        if line.startswith("#PLAYLIST:"):
+            playlist_name = line[len("#PLAYLIST:"):].strip()
+            break
+
+    # Parse EXTINF entries: collect (artist_title_str, file_path) pairs
+    entries = []
+    pending_info = None
+    for line in lines:
+        line = line.strip()
+        if not line or line == "#EXTM3U":
+            continue
+        if line.startswith("#EXTINF:"):
+            # Format: #EXTINF:duration,Artist - Title
+            after_tag = line[len("#EXTINF:"):]
+            comma_idx = after_tag.find(",")
+            if comma_idx >= 0:
+                pending_info = after_tag[comma_idx + 1:].strip()
+            else:
+                pending_info = after_tag.strip()
+        elif line.startswith("#"):
+            # Other comment/tag lines — skip but don't clear pending_info
+            continue
+        else:
+            # This is a file path line
+            entries.append((pending_info or "", line))
+            pending_info = None
+
+    if not entries:
+        return {"error": "No tracks found in the playlist file"}
+
+    # Build lookup indexes from the DataFrame
+    loc_index = {}       # full path -> track id
+    basename_index = {}  # lowercase basename -> list of track ids
+    for tid in df.index:
+        loc = str(df.at[tid, "location"]) if "location" in df.columns else ""
+        if loc and loc != "nan":
+            loc_index[loc] = tid
+            bn = os.path.basename(loc).lower()
+            basename_index.setdefault(bn, []).append(tid)
+
+    matched_ids = []
+    unmatched_tracks = []
+
+    for info_str, filepath in entries:
+        matched_id = None
+
+        # Strategy 1: exact location match
+        if filepath in loc_index:
+            matched_id = loc_index[filepath]
+
+        # Strategy 2: basename match
+        if matched_id is None:
+            bn = os.path.basename(filepath).lower()
+            candidates = basename_index.get(bn, [])
+            if len(candidates) == 1:
+                matched_id = candidates[0]
+            elif len(candidates) > 1:
+                # Multiple basename matches — pick first (could refine later)
+                matched_id = candidates[0]
+
+        # Strategy 3: artist + title match
+        if matched_id is None and info_str:
+            # Parse "Artist - Title" from EXTINF info
+            parts = info_str.split(" - ", 1)
+            if len(parts) == 2:
+                m3u_artist = parts[0].strip().lower()
+                m3u_title = parts[1].strip().lower()
+                for tid in df.index:
+                    row_artist = str(df.at[tid, "artist"]).lower() if "artist" in df.columns else ""
+                    row_title = str(df.at[tid, "title"]).lower() if "title" in df.columns else ""
+                    if m3u_artist in row_artist and m3u_title in row_title:
+                        matched_id = tid
+                        break
+
+        if matched_id is not None:
+            if matched_id not in matched_ids:
+                matched_ids.append(int(matched_id) if hasattr(matched_id, 'item') else matched_id)
+        else:
+            unmatched_tracks.append(info_str or filepath)
+
+    playlist = create_playlist(
+        name=playlist_name,
+        track_ids=matched_ids,
+        source="import",
+    )
+
+    return {
+        "playlist": playlist,
+        "matched_count": len(matched_ids),
+        "unmatched_count": len(unmatched_tracks),
+        "unmatched_tracks": unmatched_tracks,
+    }

@@ -423,6 +423,11 @@ body {
     color: var(--text);
     margin: 0;
 }
+.ws-header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
 .ws-status-text {
     font-size: 0.75rem;
     color: var(--text-muted);

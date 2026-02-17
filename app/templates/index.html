@@ -140,7 +140,11 @@
         <section class="ws-section">
             <div class="ws-section-header">
                 <h2>Playlist Suggestions</h2>
-                <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Explore Collection</button>
+                <div class="ws-header-actions">
+                    <button id="ws-btn-import-playlist" class="btn btn-primary btn-sm">Import Playlist M3U</button>
+                    <input type="file" id="ws-import-file" accept=".m3u,.m3u8" hidden>
+                    <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Explore Collection</button>
+                </div>
             </div>
             <div class="ws-vibe-input">
                 <label for="ws-vibe-text">Describe a vibe:</label>
