@@ -2553,7 +2553,7 @@ async function searchTracks(query) {
         });
         if (!res.ok) return;
         const data = await res.json();
-        renderSearchResults(data.tracks);
+        renderDrawerSearchResults(data.tracks);
         const selDiv = document.getElementById("set-drawer-selected-track");
         if (selDiv._searchCleanup) selDiv._searchCleanup();
         selDiv.classList.add("hidden");
@@ -2565,7 +2565,7 @@ async function searchTracks(query) {
 }
 
 
-function renderSearchResults(tracks) {
+function renderDrawerSearchResults(tracks) {
     const container = document.getElementById("set-drawer-search-results");
     container.innerHTML = "";
 

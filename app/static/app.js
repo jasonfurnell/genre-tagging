@@ -24,6 +24,7 @@ let gridApi = null;
 let genreCounts = {};
 let intersectionsInitialized = false;
 let workshopInitialized = false;
+let tracksInitialized = false;
 let treeInitialized = false;
 let setBuilderInitialized = false;
 
@@ -906,6 +907,10 @@ $$(".tab-btn").forEach(btn => {
         if (target === "workshop" && !workshopInitialized) {
             workshopInitialized = true;
             if (typeof initWorkshop === "function") initWorkshop();
+        }
+        if (target === "tracks" && !tracksInitialized) {
+            tracksInitialized = true;
+            if (typeof initTracks === "function") initTracks();
         }
         if (target === "tree" && !treeInitialized) {
             treeInitialized = true;

@@ -100,8 +100,16 @@ async function initIntersections() {
 }
 
 async function initWorkshop() {
-    renderFilterBar([]);
     loadPlaylists();
+}
+
+async function initTracks() {
+    if (wsAnalysis) {
+        renderFilterBar(wsAnalysis.facet_options);
+    } else {
+        renderFilterBar([]);
+        loadAnalysis();
+    }
 }
 
 // ── Analysis (facet data for Workshop filters) ───────────────
@@ -406,7 +414,6 @@ function showChordPopover(event, lineage1, lineage2, sharedCount) {
 
     popover.querySelector("[data-pop-action=browse]").addEventListener("click", () => {
         popover.remove();
-        switchToTab("workshop");
         // Merge filters from both lineages for a broad scored search
         const merged = mergeLineageFilters(lineage1.filters, lineage2.filters);
         applyFilters(merged);
@@ -562,9 +569,8 @@ function renderIntersectionCards(suggestions, genre1, genre2) {
             if (playAllBtn) playAllBtn.addEventListener("click", () => startPlayAll(examplesEl));
         }
 
-        // Wire search button → go to workshop with filters
+        // Wire search button → go to tracks tab with filters
         card.querySelector(".ix-search-btn").addEventListener("click", () => {
-            switchToTab("workshop");
             applyFilters(s.filters || { genres: [genre1, genre2] });
         });
 
@@ -1093,6 +1099,8 @@ function getFilters() {
 }
 
 function applyFilters(filters) {
+    switchToTab("tracks");
+
     // Set genre selections
     const genreSelect = document.getElementById("ws-f-genre");
     if (genreSelect && filters.genres) {
@@ -1489,6 +1497,7 @@ function renderSearchResults(resultTracks, isSorted) {
     document.getElementById("ws-btn-seed-generate").addEventListener("click", () => {
         if (wsSelectedSeeds.size === 0) return;
         generateSuggestions("seed", { seed_track_ids: Array.from(wsSelectedSeeds) });
+        switchToTab("workshop");
         document.getElementById("ws-suggestions-list").scrollIntoView({ behavior: "smooth" });
     });
 }

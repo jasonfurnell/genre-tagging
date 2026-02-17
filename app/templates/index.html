@@ -17,6 +17,7 @@
         <button class="tab-btn" data-tab="tagger">Tagger</button>
         <button class="tab-btn" data-tab="intersections">Intersections</button>
         <button class="tab-btn" data-tab="workshop">Playlists</button>
+        <button class="tab-btn" data-tab="tracks">Tracks</button>
         <button class="tab-btn" data-tab="tree">Trees</button>
         <button class="tab-btn" data-tab="phases">Phases</button>
     </nav>
@@ -40,6 +41,7 @@
     <div id="tab-controls-tagger" class="tab-controls hidden"></div>
     <div id="tab-controls-intersections" class="tab-controls hidden"></div>
     <div id="tab-controls-workshop" class="tab-controls hidden"></div>
+    <div id="tab-controls-tracks" class="tab-controls hidden"></div>
     <div id="tab-controls-tree" class="tab-controls hidden"></div>
     <div id="tab-controls-phases" class="tab-controls hidden"></div>
 
@@ -152,15 +154,6 @@
             </div>
         </section>
 
-        <!-- Faceted Search Section -->
-        <section class="ws-section">
-            <div class="ws-section-header">
-                <h2>Search Tracks</h2>
-            </div>
-            <div id="ws-filters" class="ws-filters"></div>
-            <div id="ws-search-results" class="ws-search-results"></div>
-        </section>
-
         <!-- Playlist Builder Section -->
         <section class="ws-section">
             <div class="ws-section-header">
@@ -175,6 +168,17 @@
             </div>
         </section>
 
+    </div>
+
+    <!-- ═══ Tab: Tracks ═══ -->
+    <div id="tab-tracks" class="tab-content hidden">
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Search Tracks</h2>
+            </div>
+            <div id="ws-filters" class="ws-filters"></div>
+            <div id="ws-search-results" class="ws-search-results"></div>
+        </section>
     </div>
 
     <!-- ═══ Tab: Collection Tree ═══ -->
