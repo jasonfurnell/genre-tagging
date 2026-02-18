@@ -9011,1748 +9011,93 @@
     "name": "Auto Set \u2014 Rave it!!!!!!!",
     "slots": [
       {
+        "id": "slot-1771392499329-2q6d",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      },
+      {
         "id": "autoset-slot-0",
+        "selectedTrackIndex": 4,
         "source": {
-          "type": "autoset",
           "id": "act-0",
-          "name": "Warm-Up"
+          "name": "Warm-Up",
+          "type": "autoset"
         },
         "tracks": [
           null,
           null,
           null,
           {
-            "id": 5711,
-            "title": "Back To Life",
             "artist": "Soul II Soul, Caron Wheeler",
             "bpm": 101.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5711,
             "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
+            "title": "Back To Life",
+            "year": 1998
           },
           {
-            "id": 2797,
-            "title": "Pullu Pum",
             "artist": "Shabba Ranks",
-            "bpm": 98.0,
+            "bpm": 98,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 2797,
             "key": "4M",
-            "year": 2003,
-            "has_audio": false,
-            "bpm_level": 100
+            "title": "Pullu Pum",
+            "year": 2003
           },
           {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
             "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
+            "bpm": 126,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6050,
             "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
           },
           {
-            "id": 6109,
-            "title": "Don't Scandalize Mine - 1988",
             "artist": "Sugar Bear",
             "bpm": 116.8,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 2852,
-            "title": "Party People",
-            "artist": "Vince Staples",
-            "bpm": 120.0,
-            "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 5062,
-            "title": "Marmelade - Rusty J. Remix",
-            "artist": "Lullabies,Karin",
-            "bpm": 123.0,
-            "key": "9M",
-            "year": 2007,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-1",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6068,
-            "title": "It\u2019s All In My Mind",
-            "artist": "Yulia Niko, Mommo G",
-            "bpm": 122.0,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6042,
-            "title": "Relax Shiva",
-            "artist": "Red Axes",
-            "bpm": 122.0,
-            "key": "10M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6066,
-            "title": "Go - Claude VonStroke Remix",
-            "artist": "The Chemical Brothers, Claude VonStroke",
-            "bpm": 125.0,
-            "key": "11M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6113,
-            "title": "Rhythm Takes Control - Remastered",
-            "artist": "Unique 3, Karin Minott",
-            "bpm": 125.7,
-            "key": "8M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-2",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Warm-Up"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 5711,
-            "title": "Back To Life",
-            "artist": "Soul II Soul, Caron Wheeler",
-            "bpm": 101.1,
-            "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 4837,
-            "title": "Can't Do Nuttin' For Ya, Man!",
-            "artist": "Public Enemy",
-            "bpm": 117.6,
-            "key": "1M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 2852,
-            "title": "Party People",
-            "artist": "Vince Staples",
-            "bpm": 120.0,
-            "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 1916,
-            "title": "Bring The Noise - Agami Remix",
-            "artist": "Public Enemy,Agami Music",
-            "bpm": 120.0,
-            "key": "9M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
-            "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 5062,
-            "title": "Marmelade - Rusty J. Remix",
-            "artist": "Lullabies,Karin",
-            "bpm": 123.0,
-            "key": "9M",
-            "year": 2007,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-3",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Warm-Up"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 5711,
-            "title": "Back To Life",
-            "artist": "Soul II Soul, Caron Wheeler",
-            "bpm": 101.1,
-            "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3448,
-            "title": "Control Myself",
-            "artist": "LL Cool J, Jennifer Lopez",
-            "bpm": 120.0,
-            "key": "1D",
-            "year": 2006,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1903,
-            "title": "Queen Of This Shit",
-            "artist": "Quay Dash",
-            "bpm": 120.0,
-            "key": "3D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 5062,
-            "title": "Marmelade - Rusty J. Remix",
-            "artist": "Lullabies,Karin",
-            "bpm": 123.0,
-            "key": "9M",
-            "year": 2007,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 2852,
-            "title": "Party People",
-            "artist": "Vince Staples",
-            "bpm": 120.0,
-            "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
-            "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-4",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Warm-Up"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 5711,
-            "title": "Back To Life",
-            "artist": "Soul II Soul, Caron Wheeler",
-            "bpm": 101.1,
-            "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 4837,
-            "title": "Can't Do Nuttin' For Ya, Man!",
-            "artist": "Public Enemy",
-            "bpm": 117.6,
-            "key": "1M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 2852,
-            "title": "Party People",
-            "artist": "Vince Staples",
-            "bpm": 120.0,
-            "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
+            "bpm_level": 120,
+            "has_audio": true,
             "id": 6109,
+            "key": "3D",
             "title": "Don't Scandalize Mine - 1988",
-            "artist": "Sugar Bear",
-            "bpm": 116.8,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
+            "year": 2024
           },
           {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
-            "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          null,
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-5",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Warm-Up"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 5711,
-            "title": "Back To Life",
-            "artist": "Soul II Soul, Caron Wheeler",
-            "bpm": 101.1,
-            "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3448,
-            "title": "Control Myself",
-            "artist": "LL Cool J, Jennifer Lopez",
-            "bpm": 120.0,
-            "key": "1D",
-            "year": 2006,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 4837,
-            "title": "Can't Do Nuttin' For Ya, Man!",
-            "artist": "Public Enemy",
-            "bpm": 117.6,
-            "key": "1M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 1903,
-            "title": "Queen Of This Shit",
-            "artist": "Quay Dash",
-            "bpm": 120.0,
-            "key": "3D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 2852,
-            "title": "Party People",
             "artist": "Vince Staples",
-            "bpm": 120.0,
-            "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
-            "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-6",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Warm-Up"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 5711,
-            "title": "Back To Life",
-            "artist": "Soul II Soul, Caron Wheeler",
-            "bpm": 101.1,
-            "key": "1D",
-            "year": 1998,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3448,
-            "title": "Control Myself",
-            "artist": "LL Cool J, Jennifer Lopez",
-            "bpm": 120.0,
-            "key": "1D",
-            "year": 2006,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 4837,
-            "title": "Can't Do Nuttin' For Ya, Man!",
-            "artist": "Public Enemy",
-            "bpm": 117.6,
-            "key": "1M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
+            "bpm": 120,
+            "bpm_level": 130,
+            "has_audio": true,
             "id": 2852,
-            "title": "Party People",
-            "artist": "Vince Staples",
-            "bpm": 120.0,
             "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Party People",
+            "year": 2017
           },
           {
-            "id": 6050,
-            "title": "Groove of the Ghetto - Original Mix",
-            "artist": "A Guy Called Gerald",
-            "bpm": 126.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          null,
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-7",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6066,
-            "title": "Go - Claude VonStroke Remix",
-            "artist": "The Chemical Brothers, Claude VonStroke",
-            "bpm": 125.0,
-            "key": "11M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 1289,
-            "title": "Okay - Original Mix",
-            "artist": "Shiba San",
-            "bpm": 123.0,
-            "key": "12M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6030,
-            "title": "Animalistic",
-            "artist": "Lubelski",
-            "bpm": 126.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 1897,
-            "title": "Joys - Nic Fanciulli Re-Edit",
-            "artist": "Roberto Surace,Nic Fanciulli",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-8",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6063,
-            "title": "Collider",
-            "artist": "Jon Hopkins",
-            "bpm": 115.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 4174,
-            "title": "Delorean Drums",
-            "artist": "Todd Terje",
-            "bpm": 124.0,
-            "key": "12M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 3921,
-            "title": "Fake",
-            "artist": "Jesse Perez",
-            "bpm": 126.0,
-            "key": "5M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6055,
-            "title": "Poison Lips",
-            "artist": "Vitalic",
-            "bpm": 126.3,
-            "key": "8M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6044,
-            "title": "Snakes Crawl - East Village Mix",
-            "artist": "Phil Kieran, Bush Tetras",
-            "bpm": 127.0,
-            "key": "3D",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-9",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6057,
-            "title": "Welcome Theremin",
-            "artist": "MEZERG",
-            "bpm": 126.4,
-            "key": "12M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 4907,
-            "title": "Stay Missing",
-            "artist": "Michael Bibi",
-            "bpm": 122.0,
-            "key": "6M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6030,
-            "title": "Animalistic",
-            "artist": "Lubelski",
-            "bpm": 126.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6060,
-            "title": "Drop It",
-            "artist": "Catz 'n Dogz",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-10",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 4892,
-            "title": "Let Me in Fellas - Edit",
-            "artist": "Skizzo",
-            "bpm": 124.0,
-            "key": "12M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6036,
-            "title": "Funked Up",
-            "artist": "The Sponges",
-            "bpm": 124.0,
-            "key": "5M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 4907,
-            "title": "Stay Missing",
-            "artist": "Michael Bibi",
-            "bpm": 122.0,
-            "key": "6M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 5085,
-            "title": "I'm Gonna Get You - Original Remix Version",
-            "artist": "Bizarre Inc",
-            "bpm": 126.9,
-            "key": "1D",
-            "year": 1996,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-11",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 1897,
-            "title": "Joys - Nic Fanciulli Re-Edit",
-            "artist": "Roberto Surace,Nic Fanciulli",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 4907,
-            "title": "Stay Missing",
-            "artist": "Michael Bibi",
-            "bpm": 122.0,
-            "key": "6M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6066,
-            "title": "Go - Claude VonStroke Remix",
-            "artist": "The Chemical Brothers, Claude VonStroke",
-            "bpm": 125.0,
-            "key": "11M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6034,
-            "title": "Down To Earth",
-            "artist": "Armand Van Helden, Mark Knight",
-            "bpm": 126.0,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-12",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6047,
-            "title": "Testimony",
-            "artist": "Prok & Fitch",
-            "bpm": 127.0,
-            "key": "12D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6104,
-            "title": "Don't Hold Back",
-            "artist": "Blapps Posse",
-            "bpm": 124.1,
-            "key": "12D",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 4906,
-            "title": "Sippin' Yak",
-            "artist": "Cloonee",
-            "bpm": 127.0,
-            "key": "6M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6034,
-            "title": "Down To Earth",
-            "artist": "Armand Van Helden, Mark Knight",
-            "bpm": 126.0,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-13",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 5085,
-            "title": "I'm Gonna Get You - Original Remix Version",
-            "artist": "Bizarre Inc",
-            "bpm": 126.9,
-            "key": "1D",
-            "year": 1996,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6104,
-            "title": "Don't Hold Back",
-            "artist": "Blapps Posse",
-            "bpm": 124.1,
-            "key": "12D",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6051,
-            "title": "In My Arms",
-            "artist": "Disclosure",
-            "bpm": 126.3,
-            "key": "7M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6057,
-            "title": "Welcome Theremin",
-            "artist": "MEZERG",
-            "bpm": 126.4,
-            "key": "12M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-14",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6068,
-            "title": "It\u2019s All In My Mind",
-            "artist": "Yulia Niko, Mommo G",
-            "bpm": 122.0,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6056,
-            "title": "Space Funk '75",
-            "artist": "The Sponges",
-            "bpm": 124.0,
-            "key": "7D",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6057,
-            "title": "Welcome Theremin",
-            "artist": "MEZERG",
-            "bpm": 126.4,
-            "key": "12M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6098,
-            "title": "DJs Take Control",
-            "artist": "SL2",
-            "bpm": 127.0,
-            "key": "8M",
-            "year": 2008,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-15",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6057,
-            "title": "Welcome Theremin",
-            "artist": "MEZERG",
-            "bpm": 126.4,
-            "key": "12M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 1293,
-            "title": "Ooey",
-            "artist": "Vitalic",
-            "bpm": 126.0,
-            "key": "2M",
-            "year": 2008,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6064,
-            "title": "Feelin' Alright",
-            "artist": "The Sponges",
-            "bpm": 126.0,
-            "key": "12D",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6060,
-            "title": "Drop It",
-            "artist": "Catz 'n Dogz",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-16",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 946,
-            "title": "Sofi Needs A Ladder",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "10M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6054,
-            "title": "Passion - Naked Edit",
-            "artist": "Gat Decor",
-            "bpm": 124.9,
+            "artist": "Lullabies,Karin",
+            "bpm": 123,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5062,
             "key": "9M",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Marmelade - Rusty J. Remix",
+            "year": 2007
           },
-          {
-            "id": 6072,
-            "title": "House of God - Azzido Da Bass Edit",
-            "artist": "D.H.S., Azzido Da Bass",
-            "bpm": 132.0,
-            "key": "8M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6082,
-            "title": "Xoh",
-            "artist": "Eden Burns",
-            "bpm": 131.0,
-            "key": "8M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6089,
-            "title": "Extender",
-            "artist": "Oldboy",
-            "bpm": 135.0,
-            "key": "7M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-17",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 3335,
-            "title": "Sometimes Things Get, Whatever",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "4M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6072,
-            "title": "House of God - Azzido Da Bass Edit",
-            "artist": "D.H.S., Azzido Da Bass",
-            "bpm": 132.0,
-            "key": "8M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6095,
-            "title": "All My Love (feat. Robyn)",
-            "artist": "Louie Vega, Robyn",
-            "bpm": 127.0,
-            "key": "7M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 4641,
-            "title": "My House - Acapella",
-            "artist": "Rhythm Control",
-            "bpm": 140.3,
-            "key": "7M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6091,
-            "title": "Maximum Style (Lover To Lover)",
-            "artist": "Tom & Jerry",
-            "bpm": 159.0,
-            "key": "10M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-18",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 3335,
-            "title": "Sometimes Things Get, Whatever",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "4M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 946,
-            "title": "Sofi Needs A Ladder",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "10M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 2754,
-            "title": "Nextra",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "7M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6082,
-            "title": "Xoh",
-            "artist": "Eden Burns",
-            "bpm": 131.0,
-            "key": "8M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6043,
-            "title": "Searchin' For My Rizla",
-            "artist": "RatPack",
-            "bpm": 134.0,
-            "key": "1D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-19",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6112,
-            "title": "The Age Of Love - Jam & Spoon Watch Out For Stella Mix",
-            "artist": "Age Of Love",
-            "bpm": 130.0,
-            "key": "9M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6100,
-            "title": "Hold It Down",
-            "artist": "2 Bad Mice",
-            "bpm": 134.0,
-            "key": "4D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6090,
-            "title": "El Crit De L'Shrek",
-            "artist": "Mainline Magic Orchestra",
-            "bpm": 132.0,
-            "key": "12M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 4641,
-            "title": "My House - Acapella",
-            "artist": "Rhythm Control",
-            "bpm": 140.3,
-            "key": "7M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6071,
-            "title": "The Sugar Daddy Toone",
-            "artist": "Cold Mission",
-            "bpm": 154.0,
-            "key": "7D",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 9
-      },
-      {
-        "id": "autoset-slot-20",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 946,
-            "title": "Sofi Needs A Ladder",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "10M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6046,
-            "title": "Super Sharp Shooter - Chris Gialanze Remix",
-            "artist": "DJ Zinc, Chris Gialanze",
-            "bpm": 135.0,
-            "key": "11M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6031,
-            "title": "Armed & Dangerous",
-            "artist": "Oppidan, Cutty Ranks",
-            "bpm": 133.0,
-            "key": "4M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6099,
-            "title": "Future Sound",
-            "artist": "Phuture Assassins",
-            "bpm": 140.8,
-            "key": "9M",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6035,
-            "title": "Dreaming (Jungle Mix)",
-            "artist": "Ashaye",
-            "bpm": 165.9,
-            "key": "1M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 8
-      },
-      {
-        "id": "autoset-slot-21",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6096,
-            "title": "20 Seconds to Comply (Pumped up Mix)",
-            "artist": "Silver Bullet, Ralph Jezzard",
-            "bpm": 127.7,
-            "key": "11M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6043,
-            "title": "Searchin' For My Rizla",
-            "artist": "RatPack",
-            "bpm": 134.0,
-            "key": "1D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6100,
-            "title": "Hold It Down",
-            "artist": "2 Bad Mice",
-            "bpm": 134.0,
-            "key": "4D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6045,
-            "title": "Stephanie",
-            "artist": "Cloonee, Young M.A, InntRaw",
-            "bpm": 130.0,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6091,
-            "title": "Maximum Style (Lover To Lover)",
-            "artist": "Tom & Jerry",
-            "bpm": 159.0,
-            "key": "10M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 9
-      },
-      {
-        "id": "autoset-slot-22",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6032,
-            "title": "Badman Sound",
-            "artist": "Cloonee",
-            "bpm": 127.9,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6045,
-            "title": "Stephanie",
-            "artist": "Cloonee, Young M.A, InntRaw",
-            "bpm": 130.0,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6038,
-            "title": "Get Up Get Out",
-            "artist": "Born Dirty, jstlbby",
-            "bpm": 126.0,
-            "key": "2M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 3942,
-            "title": "Patakha Guddi - Drill Remix",
-            "artist": "Trinix Remix, Nooran Sisters",
-            "bpm": 153.0,
-            "key": "8M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6048,
-            "title": "Victory Lap",
-            "artist": "Fred again.., Skepta, PlaqueBoyMax",
-            "bpm": 140.0,
-            "key": "7M",
-            "year": 2025,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-23",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6107,
-            "title": "Spliffhead",
-            "artist": "Ragga Twins",
-            "bpm": 129.7,
-            "key": "9D",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6110,
-            "title": "Wickedest Sound",
-            "artist": "Rebel MC, Fright, Tenor Fly",
-            "bpm": 128.7,
-            "key": "2D",
-            "year": 1991,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6031,
-            "title": "Armed & Dangerous",
-            "artist": "Oppidan, Cutty Ranks",
-            "bpm": 133.0,
-            "key": "4M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 1425,
-            "title": "Gosh",
-            "artist": "Jamie xx",
-            "bpm": 139.5,
-            "key": "7M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6087,
-            "title": "Code Red",
-            "artist": "Conquering Lion",
-            "bpm": 165.8,
-            "key": "8M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-24",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6032,
-            "title": "Badman Sound",
-            "artist": "Cloonee",
-            "bpm": 127.9,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6105,
-            "title": "Go (Woodtick Mix)",
-            "artist": "Moby",
-            "bpm": 125.9,
-            "key": "2M",
-            "year": 1991,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 4641,
-            "title": "My House - Acapella",
-            "artist": "Rhythm Control",
-            "bpm": 140.3,
-            "key": "7M",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6081,
-            "title": "Tell Me Why - M&M Full Vocal",
-            "artist": "Rachel Wallace",
-            "bpm": 135.9,
-            "key": "12M",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6045,
-            "title": "Stephanie",
-            "artist": "Cloonee, Young M.A, InntRaw",
-            "bpm": 130.0,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 8
-      },
-      {
-        "id": "autoset-slot-25",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6096,
-            "title": "20 Seconds to Comply (Pumped up Mix)",
-            "artist": "Silver Bullet, Ralph Jezzard",
-            "bpm": 127.7,
-            "key": "11M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6046,
-            "title": "Super Sharp Shooter - Chris Gialanze Remix",
-            "artist": "DJ Zinc, Chris Gialanze",
-            "bpm": 135.0,
-            "key": "11M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6043,
-            "title": "Searchin' For My Rizla",
-            "artist": "RatPack",
-            "bpm": 134.0,
-            "key": "1D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6100,
-            "title": "Hold It Down",
-            "artist": "2 Bad Mice",
-            "bpm": 134.0,
-            "key": "4D",
-            "year": 1992,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6035,
-            "title": "Dreaming (Jungle Mix)",
-            "artist": "Ashaye",
-            "bpm": 165.9,
-            "key": "1M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 9
-      },
-      {
-        "id": "autoset-slot-26",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6096,
-            "title": "20 Seconds to Comply (Pumped up Mix)",
-            "artist": "Silver Bullet, Ralph Jezzard",
-            "bpm": 127.7,
-            "key": "11M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6045,
-            "title": "Stephanie",
-            "artist": "Cloonee, Young M.A, InntRaw",
-            "bpm": 130.0,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6032,
-            "title": "Badman Sound",
-            "artist": "Cloonee",
-            "bpm": 127.9,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6089,
-            "title": "Extender",
-            "artist": "Oldboy",
-            "bpm": 135.0,
-            "key": "7M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 6048,
-            "title": "Victory Lap",
-            "artist": "Fred again.., Skepta, PlaqueBoyMax",
-            "bpm": 140.0,
-            "key": "7M",
-            "year": 2025,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
+          null
+        ]
       },
       {
         "id": "autoset-slot-27",
+        "selectedTrackIndex": 5,
         "source": {
-          "type": "autoset",
           "id": "act-2",
-          "name": "Peak"
+          "name": "Peak",
+          "type": "autoset"
         },
         "tracks": [
           null,
@@ -10761,631 +9106,451 @@
           null,
           null,
           {
-            "id": 6110,
-            "title": "Wickedest Sound",
             "artist": "Rebel MC, Fright, Tenor Fly",
             "bpm": 128.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6110,
             "key": "2D",
-            "year": 1991,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Wickedest Sound",
+            "year": 1991
           },
           {
-            "id": 6082,
-            "title": "Xoh",
             "artist": "Eden Burns",
-            "bpm": 131.0,
+            "bpm": 131,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6082,
             "key": "8M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Xoh",
+            "year": 2023
           },
           {
-            "id": 6037,
-            "title": "Gabriel - Live Garage Mix",
             "artist": "Roy Davis Jr., Peven Everett",
             "bpm": 128.5,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6037,
             "key": "5D",
-            "year": 1996,
-            "has_audio": false,
-            "bpm_level": 130
+            "title": "Gabriel - Live Garage Mix",
+            "year": 1996
           },
           {
-            "id": 6067,
-            "title": "You're Not Alone",
             "artist": "Olive",
             "bpm": 134.2,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6067,
             "key": "11M",
-            "year": 1997,
-            "has_audio": false,
-            "bpm_level": 140
+            "title": "You're Not Alone",
+            "year": 1997
           },
           {
-            "id": 6108,
-            "title": "Keep The Fire Burning - Original 12-Inch Versions",
             "artist": "The House Crew",
-            "bpm": 131.0,
+            "bpm": 131,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6108,
             "key": "3M",
-            "year": 1991,
-            "has_audio": false,
-            "bpm_level": 150
+            "title": "Keep The Fire Burning - Original 12-Inch Versions",
+            "year": 1991
           }
-        ],
-        "selectedTrackIndex": 7
+        ]
       },
       {
-        "id": "autoset-slot-28",
+        "id": "autoset-slot-4",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
+          "id": "act-0",
+          "name": "Warm-Up",
+          "type": "autoset"
         },
         "tracks": [
           null,
           null,
           null,
-          null,
-          null,
           {
-            "id": 3335,
-            "title": "Sometimes Things Get, Whatever",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "4M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6089,
-            "title": "Extender",
-            "artist": "Oldboy",
-            "bpm": 135.0,
-            "key": "7M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6045,
-            "title": "Stephanie",
-            "artist": "Cloonee, Young M.A, InntRaw",
-            "bpm": 130.0,
-            "key": "3D",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6069,
-            "title": "Itchy",
-            "artist": "Siriusmo",
-            "bpm": 132.0,
-            "key": "4M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 1425,
-            "title": "Gosh",
-            "artist": "Jamie xx",
-            "bpm": 139.5,
-            "key": "7M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-29",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Peak"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 3335,
-            "title": "Sometimes Things Get, Whatever",
-            "artist": "deadmau5",
-            "bpm": 128.0,
-            "key": "4M",
-            "year": 2009,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6072,
-            "title": "House of God - Azzido Da Bass Edit",
-            "artist": "D.H.S., Azzido Da Bass",
-            "bpm": 132.0,
-            "key": "8M",
-            "year": 1990,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6089,
-            "title": "Extender",
-            "artist": "Oldboy",
-            "bpm": 135.0,
-            "key": "7M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6046,
-            "title": "Super Sharp Shooter - Chris Gialanze Remix",
-            "artist": "DJ Zinc, Chris Gialanze",
-            "bpm": 135.0,
-            "key": "11M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 3942,
-            "title": "Patakha Guddi - Drill Remix",
-            "artist": "Trinix Remix, Nooran Sisters",
-            "bpm": 153.0,
-            "key": "8M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 9
-      },
-      {
-        "id": "autoset-slot-30",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6063,
-            "title": "Collider",
-            "artist": "Jon Hopkins",
-            "bpm": 115.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 384,
-            "title": "Kingsize - Kelly Lee Owens Rework",
-            "artist": "Kelly Lee Owens",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6075,
-            "title": "We All Move Together - Kevin Saunderson x Latroit Remix",
-            "artist": "Inner City, IDRIS, Kevin Saunderson, Latroit",
-            "bpm": 126.0,
-            "key": "1M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 5539,
-            "title": "()v\u022f)) \u0337\u0328\u0285(\u06dd\u0285(\u019f\u0285()---()\u0335\u0333\u0317\u030a(\u019f\u0285()v\u022f)) \u0337\u0328\u0285",
-            "artist": "\u28ce\u2847\ua27a\u10da\u0f3d\u0b87\u2022\u031b)\u0f80\u25de \u0f0e\u0eb6 \u0f3d\u09e3\u09e2\u061e\u09e2\u061e\u0616 \ua27a\u10da",
-            "bpm": 129.0,
-            "key": "1M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 5421,
-            "title": "I Caught A Vibe",
-            "artist": "Claude VonStroke,Mike Kerrigan",
-            "bpm": 123.0,
-            "key": "4D",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-31",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6063,
-            "title": "Collider",
-            "artist": "Jon Hopkins",
-            "bpm": 115.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 384,
-            "title": "Kingsize - Kelly Lee Owens Rework",
-            "artist": "Kelly Lee Owens",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6061,
-            "title": "Jump 'N Shout",
-            "artist": "Basement Jaxx",
-            "bpm": 126.8,
-            "key": "8M",
-            "year": 1999,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 6084,
-            "title": "YoYo Disco",
-            "artist": "Wolfram, Josh Ludlow",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 3921,
-            "title": "Fake",
-            "artist": "Jesse Perez",
-            "bpm": 126.0,
-            "key": "5M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 7
-      },
-      {
-        "id": "autoset-slot-32",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6063,
-            "title": "Collider",
-            "artist": "Jon Hopkins",
-            "bpm": 115.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 6075,
-            "title": "We All Move Together - Kevin Saunderson x Latroit Remix",
-            "artist": "Inner City, IDRIS, Kevin Saunderson, Latroit",
-            "bpm": 126.0,
-            "key": "1M",
-            "year": 2024,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6049,
-            "title": "Downstairs",
-            "artist": "Cour T.",
-            "bpm": 124.0,
-            "key": "12M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 1790,
-            "title": "Disc\u00f3tico Pl\u00e9xico - Maceo Plex Remix",
-            "artist": "Rebolledo,Maceo Plex",
-            "bpm": 123.0,
-            "key": "3D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6088,
-            "title": "N.Y. So Hi",
-            "artist": "Eli Escobar, Eddie Cumana, Lula",
-            "bpm": 122.0,
+            "artist": "Soul II Soul, Caron Wheeler",
+            "bpm": 101.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5711,
             "key": "1D",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-33",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Build"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 4892,
-            "title": "Let Me in Fellas - Edit",
-            "artist": "Skizzo",
-            "bpm": 124.0,
-            "key": "12M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Back To Life",
+            "year": 1998
           },
           {
-            "id": 1897,
-            "title": "Joys - Nic Fanciulli Re-Edit",
-            "artist": "Roberto Surace,Nic Fanciulli",
-            "bpm": 125.0,
+            "artist": "Public Enemy",
+            "bpm": 117.6,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4837,
             "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Can't Do Nuttin' For Ya, Man!",
+            "year": 1990
           },
           {
-            "id": 6034,
-            "title": "Down To Earth",
-            "artist": "Armand Van Helden, Mark Knight",
-            "bpm": 126.0,
-            "key": "7D",
-            "year": 2023,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6060,
-            "title": "Drop It",
-            "artist": "Catz 'n Dogz",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-34",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6063,
-            "title": "Collider",
-            "artist": "Jon Hopkins",
-            "bpm": 115.0,
-            "key": "7M",
-            "year": 2013,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6044,
-            "title": "Snakes Crawl - East Village Mix",
-            "artist": "Phil Kieran, Bush Tetras",
-            "bpm": 127.0,
-            "key": "3D",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 384,
-            "title": "Kingsize - Kelly Lee Owens Rework",
-            "artist": "Kelly Lee Owens",
-            "bpm": 125.0,
-            "key": "1M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 3921,
-            "title": "Fake",
-            "artist": "Jesse Perez",
-            "bpm": 126.0,
-            "key": "5M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-35",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Wind-Down"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 4174,
-            "title": "Delorean Drums",
-            "artist": "Todd Terje",
-            "bpm": 124.0,
-            "key": "12M",
-            "year": 2014,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 6088,
-            "title": "N.Y. So Hi",
-            "artist": "Eli Escobar, Eddie Cumana, Lula",
-            "bpm": 122.0,
-            "key": "1D",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 1085,
-            "title": "212",
-            "artist": "Azealia Banks,Lazy Jay",
-            "bpm": 126.0,
-            "key": "4M",
-            "year": 2011,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 6086,
-            "title": "LFO - Leeds Warehouse Mix",
-            "artist": "LFO",
-            "bpm": 124.7,
-            "key": "9M",
-            "year": 1991,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          null
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-36",
-        "source": {
-          "type": "autoset",
-          "id": "act-4",
-          "name": "Outro"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 6092,
-            "title": "Don't Fucking Tell Me What To Do",
-            "artist": "Robyn",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 5414,
-            "title": "Oud Ou Ray",
-            "artist": "Sultan Shakes",
-            "bpm": 120.0,
+            "artist": "Vince Staples",
+            "bpm": 120,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 2852,
             "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Party People",
+            "year": 2017
           },
           {
-            "id": 1144,
-            "title": "Dancing On My Own",
-            "artist": "Robyn",
-            "bpm": 117.0,
+            "artist": "Sugar Bear",
+            "bpm": 116.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6109,
+            "key": "3D",
+            "title": "Don't Scandalize Mine - 1988",
+            "year": 2024
+          },
+          {
+            "artist": "A Guy Called Gerald",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6050,
+            "key": "7M",
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-26",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Silver Bullet, Ralph Jezzard",
+            "bpm": 127.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6096,
+            "key": "11M",
+            "title": "20 Seconds to Comply (Pumped up Mix)",
+            "year": 2024
+          },
+          {
+            "artist": "Cloonee, Young M.A, InntRaw",
+            "bpm": 130,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6045,
+            "key": "3D",
+            "title": "Stephanie",
+            "year": 2024
+          },
+          {
+            "artist": "Cloonee",
+            "bpm": 127.9,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6032,
             "key": "7D",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Badman Sound",
+            "year": 2023
           },
           {
-            "id": 6106,
-            "title": "In the Neighbourhood - Downtown Mix",
-            "artist": "Sisters Underground",
-            "bpm": 121.4,
-            "key": "11M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 130
+            "artist": "Oldboy",
+            "bpm": 135,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6089,
+            "key": "7M",
+            "title": "Extender",
+            "year": 2024
           },
           {
-            "id": 6033,
-            "title": "Brighter Days - Dajae- Underground Mix '93",
-            "artist": "Cajmere, Dajae",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 140
+            "artist": "Fred again.., Skepta, PlaqueBoyMax",
+            "bpm": 140,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6048,
+            "key": "7M",
+            "title": "Victory Lap",
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-5",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-0",
+          "name": "Warm-Up",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "artist": "Soul II Soul, Caron Wheeler",
+            "bpm": 101.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5711,
+            "key": "1D",
+            "title": "Back To Life",
+            "year": 1998
+          },
+          {
+            "artist": "LL Cool J, Jennifer Lopez",
+            "bpm": 120,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3448,
+            "key": "1D",
+            "title": "Control Myself",
+            "year": 2006
+          },
+          {
+            "artist": "Public Enemy",
+            "bpm": 117.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4837,
+            "key": "1M",
+            "title": "Can't Do Nuttin' For Ya, Man!",
+            "year": 1990
+          },
+          {
+            "artist": "Quay Dash",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1903,
+            "key": "3D",
+            "title": "Queen Of This Shit",
+            "year": 2017
+          },
+          {
+            "artist": "Vince Staples",
+            "bpm": 120,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2852,
+            "key": "5D",
+            "title": "Party People",
+            "year": 2017
+          },
+          {
+            "artist": "A Guy Called Gerald",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6050,
+            "key": "7M",
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
+      },
+      {
+        "id": "autoset-slot-12",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Prok & Fitch",
+            "bpm": 127,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6047,
+            "key": "12D",
+            "title": "Testimony",
+            "year": 2021
+          },
+          {
+            "artist": "Blapps Posse",
+            "bpm": 124.1,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6104,
+            "key": "12D",
+            "title": "Don't Hold Back",
+            "year": 2016
+          },
+          {
+            "artist": "Cloonee",
+            "bpm": 127,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4906,
+            "key": "6M",
+            "title": "Sippin' Yak",
+            "year": 2024
+          },
+          {
+            "artist": "Armand Van Helden, Mark Knight",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6034,
+            "key": "7D",
+            "title": "Down To Earth",
+            "year": 2023
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-1",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Yulia Niko, Mommo G",
+            "bpm": 122,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6068,
+            "key": "11M",
+            "title": "It\u2019s All In My Mind",
+            "year": 2022
+          },
+          {
+            "artist": "Red Axes",
+            "bpm": 122,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6042,
+            "key": "10M",
+            "title": "Relax Shiva",
+            "year": 2023
+          },
+          {
+            "artist": "The Chemical Brothers, Claude VonStroke",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6066,
+            "key": "11M",
+            "title": "Go - Claude VonStroke Remix",
+            "year": 2015
+          },
+          {
+            "artist": "Unique 3, Karin Minott",
+            "bpm": 125.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6113,
+            "key": "8M",
+            "title": "Rhythm Takes Control - Remastered",
+            "year": 2022
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-6",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-0",
+          "name": "Warm-Up",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "artist": "Soul II Soul, Caron Wheeler",
+            "bpm": 101.1,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5711,
+            "key": "1D",
+            "title": "Back To Life",
+            "year": 1998
+          },
+          {
+            "artist": "LL Cool J, Jennifer Lopez",
+            "bpm": 120,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 3448,
+            "key": "1D",
+            "title": "Control Myself",
+            "year": 2006
+          },
+          {
+            "artist": "Public Enemy",
+            "bpm": 117.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4837,
+            "key": "1M",
+            "title": "Can't Do Nuttin' For Ya, Man!",
+            "year": 1990
+          },
+          {
+            "artist": "Vince Staples",
+            "bpm": 120,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 2852,
+            "key": "5D",
+            "title": "Party People",
+            "year": 2017
+          },
+          {
+            "artist": "A Guy Called Gerald",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6050,
+            "key": "7M",
+            "title": "Groove of the Ghetto - Original Mix",
+            "year": 2013
+          },
+          null,
+          null
+        ]
       },
       {
         "id": "autoset-slot-37",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
           "id": "act-4",
-          "name": "Outro"
+          "name": "Outro",
+          "type": "autoset"
         },
         "tracks": [
           null,
@@ -11393,65 +9558,1851 @@
           null,
           null,
           {
-            "id": 6058,
-            "title": "Day 2 - Acid Version",
             "artist": "Jordan Nocturne, Le Boom",
-            "bpm": 118.0,
+            "bpm": 118,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6058,
             "key": "10M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 100
+            "title": "Day 2 - Acid Version",
+            "year": 2022
           },
           {
-            "id": 6106,
-            "title": "In the Neighbourhood - Downtown Mix",
             "artist": "Sisters Underground",
             "bpm": 121.4,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6106,
             "key": "11M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "In the Neighbourhood - Downtown Mix",
+            "year": 1994
           },
           {
-            "id": 6065,
-            "title": "Femuscle",
             "artist": "Siriusmo",
-            "bpm": 118.0,
+            "bpm": 118,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6065,
             "key": "10M",
-            "year": 2008,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Femuscle",
+            "year": 2008
           },
           {
-            "id": 2332,
-            "title": "I'm Not Done - Still Not Done Mix",
             "artist": "Fever Ray",
-            "bpm": 117.0,
+            "bpm": 117,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2332,
             "key": "12M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 130
+            "title": "I'm Not Done - Still Not Done Mix",
+            "year": 2019
           },
           {
-            "id": 6033,
-            "title": "Brighter Days - Dajae- Underground Mix '93",
             "artist": "Cajmere, Dajae",
-            "bpm": 124.0,
+            "bpm": 124,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6033,
             "key": "11M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 140
+            "title": "Brighter Days - Dajae- Underground Mix '93",
+            "year": 2010
           },
           null
+        ]
+      },
+      {
+        "id": "autoset-slot-28",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3335,
+            "key": "4M",
+            "title": "Sometimes Things Get, Whatever",
+            "year": 2009
+          },
+          {
+            "artist": "Oldboy",
+            "bpm": 135,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6089,
+            "key": "7M",
+            "title": "Extender",
+            "year": 2024
+          },
+          {
+            "artist": "Cloonee, Young M.A, InntRaw",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6045,
+            "key": "3D",
+            "title": "Stephanie",
+            "year": 2024
+          },
+          {
+            "artist": "Siriusmo",
+            "bpm": 132,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6069,
+            "key": "4M",
+            "title": "Itchy",
+            "year": 2013
+          },
+          {
+            "artist": "Jamie xx",
+            "bpm": 139.5,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 1425,
+            "key": "7M",
+            "title": "Gosh",
+            "year": 2015
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-19",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Age Of Love",
+            "bpm": 130,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6112,
+            "key": "9M",
+            "title": "The Age Of Love - Jam & Spoon Watch Out For Stella Mix",
+            "year": 2009
+          },
+          {
+            "artist": "2 Bad Mice",
+            "bpm": 134,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6100,
+            "key": "4D",
+            "title": "Hold It Down",
+            "year": 1992
+          },
+          {
+            "artist": "Mainline Magic Orchestra",
+            "bpm": 132,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6090,
+            "key": "12M",
+            "title": "El Crit De L'Shrek",
+            "year": 2024
+          },
+          {
+            "artist": "Rhythm Control",
+            "bpm": 140.3,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 4641,
+            "key": "7M",
+            "title": "My House - Acapella",
+            "year": 2018
+          },
+          {
+            "artist": "Cold Mission",
+            "bpm": 154,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6071,
+            "key": "7D",
+            "title": "The Sugar Daddy Toone",
+            "year": 2010
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-10",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Skizzo",
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4892,
+            "key": "12M",
+            "title": "Let Me in Fellas - Edit",
+            "year": 2019
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6036,
+            "key": "5M",
+            "title": "Funked Up",
+            "year": 2019
+          },
+          {
+            "artist": "Michael Bibi",
+            "bpm": 122,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4907,
+            "key": "6M",
+            "title": "Stay Missing",
+            "year": 2018
+          },
+          {
+            "artist": "Bizarre Inc",
+            "bpm": 126.9,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5085,
+            "key": "1D",
+            "title": "I'm Gonna Get You - Original Remix Version",
+            "year": 1996
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-7",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "The Chemical Brothers, Claude VonStroke",
+            "bpm": 125,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6066,
+            "key": "11M",
+            "title": "Go - Claude VonStroke Remix",
+            "year": 2015
+          },
+          {
+            "artist": "Shiba San",
+            "bpm": 123,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1289,
+            "key": "12M",
+            "title": "Okay - Original Mix",
+            "year": 2014
+          },
+          {
+            "artist": "Lubelski",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6030,
+            "key": "1M",
+            "title": "Animalistic",
+            "year": 2020
+          },
+          {
+            "artist": "Roberto Surace,Nic Fanciulli",
+            "bpm": 125,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1897,
+            "key": "1M",
+            "title": "Joys - Nic Fanciulli Re-Edit",
+            "year": 2020
+          },
+          null
+        ]
+      },
+      {
+        "id": "slot-1771395824851-h5gv",
+        "source": {
+          "type": "tree_node",
+          "id": "ragga-jungle-soundsystem-pressure",
+          "tree_type": "collection",
+          "name": "Ragga Jungle: Soundsystem Pressure & Vocal Science"
+        },
+        "tracks": [
+          {
+            "artist": "The Prodigy",
+            "bpm": 65,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 92,
+            "key": "7M",
+            "title": "Breathe",
+            "year": 1996
+          },
+          {
+            "artist": "Ashaye",
+            "bpm": 83,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 3990,
+            "key": "1M",
+            "title": "Dreaming (Jungle Mix)",
+            "year": 1994
+          },
+          {
+            "artist": "DJ Krome,Mr. Time",
+            "bpm": 79.9,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4005,
+            "key": "3D",
+            "title": "Ganja Man",
+            "year": 2020
+          },
+          {
+            "artist": "Chad Jackson",
+            "bpm": 108.3,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 5454,
+            "key": "9M",
+            "title": "Hear The Drummer (Get Wicked) - Radio Edit",
+            "year": 1990
+          },
+          {
+            "artist": "Chad Jackson",
+            "bpm": 108.3,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5375,
+            "key": "9M",
+            "title": "Hear The Drummer (Get Wicked) - Radio Edit",
+            "year": 1990
+          },
+          {
+            "artist": "Shut Up and Dance",
+            "bpm": 124.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6111,
+            "key": "10M",
+            "title": "Dance Before The Police Come",
+            "year": 1990
+          },
+          {
+            "artist": "Outlander",
+            "bpm": 126.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6102,
+            "key": "6D",
+            "title": "Vamp",
+            "year": 1996
+          },
+          {
+            "artist": "SL2",
+            "bpm": 127,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6098,
+            "key": "8M",
+            "title": "DJs Take Control",
+            "year": 2008
+          },
+          {
+            "artist": "The Prodigy",
+            "bpm": 136.2,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 112,
+            "key": "8M",
+            "title": "Smack My Bitch Up",
+            "year": 1997
+          },
+          {
+            "artist": "Coco Bryce",
+            "bpm": 151,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 5227,
+            "key": "8M",
+            "title": "Beats Like This",
+            "year": 2019
+          }
         ],
-        "selectedTrackIndex": 6
+        "selectedTrackIndex": 7,
+        "_loading": false
+      },
+      {
+        "id": "autoset-slot-9",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "MEZERG",
+            "bpm": 126.4,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6057,
+            "key": "12M",
+            "title": "Welcome Theremin",
+            "year": 2021
+          },
+          {
+            "artist": "Michael Bibi",
+            "bpm": 122,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4907,
+            "key": "6M",
+            "title": "Stay Missing",
+            "year": 2018
+          },
+          {
+            "artist": "Lubelski",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6030,
+            "key": "1M",
+            "title": "Animalistic",
+            "year": 2020
+          },
+          {
+            "artist": "Catz 'n Dogz",
+            "bpm": 125,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6060,
+            "key": "1M",
+            "title": "Drop It",
+            "year": 2014
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-23",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Ragga Twins",
+            "bpm": 129.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6107,
+            "key": "9D",
+            "title": "Spliffhead",
+            "year": 2018
+          },
+          {
+            "artist": "Rebel MC, Fright, Tenor Fly",
+            "bpm": 128.7,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6110,
+            "key": "2D",
+            "title": "Wickedest Sound",
+            "year": 1991
+          },
+          {
+            "artist": "Oppidan, Cutty Ranks",
+            "bpm": 133,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6031,
+            "key": "4M",
+            "title": "Armed & Dangerous",
+            "year": 2024
+          },
+          {
+            "artist": "Jamie xx",
+            "bpm": 139.5,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 1425,
+            "key": "7M",
+            "title": "Gosh",
+            "year": 2015
+          },
+          {
+            "artist": "Conquering Lion",
+            "bpm": 165.8,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6087,
+            "key": "8M",
+            "title": "Code Red",
+            "year": 1994
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-16",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 946,
+            "key": "10M",
+            "title": "Sofi Needs A Ladder",
+            "year": 2010
+          },
+          {
+            "artist": "Gat Decor",
+            "bpm": 124.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6054,
+            "key": "9M",
+            "title": "Passion - Naked Edit",
+            "year": 1992
+          },
+          {
+            "artist": "D.H.S., Azzido Da Bass",
+            "bpm": 132,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6072,
+            "key": "8M",
+            "title": "House of God - Azzido Da Bass Edit",
+            "year": 1990
+          },
+          {
+            "artist": "Eden Burns",
+            "bpm": 131,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6082,
+            "key": "8M",
+            "title": "Xoh",
+            "year": 2023
+          },
+          {
+            "artist": "Oldboy",
+            "bpm": 135,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6089,
+            "key": "7M",
+            "title": "Extender",
+            "year": 2024
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-8",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Jon Hopkins",
+            "bpm": 115,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6063,
+            "key": "7M",
+            "title": "Collider",
+            "year": 2013
+          },
+          {
+            "artist": "Todd Terje",
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4174,
+            "key": "12M",
+            "title": "Delorean Drums",
+            "year": 2014
+          },
+          {
+            "artist": "Jesse Perez",
+            "bpm": 126,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 3921,
+            "key": "5M",
+            "title": "Fake",
+            "year": 2016
+          },
+          {
+            "artist": "Vitalic",
+            "bpm": 126.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6055,
+            "key": "8M",
+            "title": "Poison Lips",
+            "year": 2009
+          },
+          {
+            "artist": "Phil Kieran, Bush Tetras",
+            "bpm": 127,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6044,
+            "key": "3D",
+            "title": "Snakes Crawl - East Village Mix",
+            "year": 2012
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-24",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Cloonee",
+            "bpm": 127.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6032,
+            "key": "7D",
+            "title": "Badman Sound",
+            "year": 2023
+          },
+          {
+            "artist": "Moby",
+            "bpm": 125.9,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6105,
+            "key": "2M",
+            "title": "Go (Woodtick Mix)",
+            "year": 1991
+          },
+          {
+            "artist": "Rhythm Control",
+            "bpm": 140.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 4641,
+            "key": "7M",
+            "title": "My House - Acapella",
+            "year": 2018
+          },
+          {
+            "artist": "Rachel Wallace",
+            "bpm": 135.9,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6081,
+            "key": "12M",
+            "title": "Tell Me Why - M&M Full Vocal",
+            "year": 1992
+          },
+          {
+            "artist": "Cloonee, Young M.A, InntRaw",
+            "bpm": 130,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6045,
+            "key": "3D",
+            "title": "Stephanie",
+            "year": 2024
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-21",
+        "selectedTrackIndex": 9,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Silver Bullet, Ralph Jezzard",
+            "bpm": 127.7,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6096,
+            "key": "11M",
+            "title": "20 Seconds to Comply (Pumped up Mix)",
+            "year": 2024
+          },
+          {
+            "artist": "RatPack",
+            "bpm": 134,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6043,
+            "key": "1D",
+            "title": "Searchin' For My Rizla",
+            "year": 1992
+          },
+          {
+            "artist": "2 Bad Mice",
+            "bpm": 134,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6100,
+            "key": "4D",
+            "title": "Hold It Down",
+            "year": 1992
+          },
+          {
+            "artist": "Cloonee, Young M.A, InntRaw",
+            "bpm": 130,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6045,
+            "key": "3D",
+            "title": "Stephanie",
+            "year": 2024
+          },
+          {
+            "artist": "Tom & Jerry",
+            "bpm": 159,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6091,
+            "key": "10M",
+            "title": "Maximum Style (Lover To Lover)",
+            "year": 1994
+          }
+        ]
+      },
+      {
+        "id": "slot-1771395345644-rbs9",
+        "source": {
+          "type": "tree_node",
+          "id": "ragga-jungle-soundsystem-pressure",
+          "tree_type": "collection",
+          "name": "Ragga Jungle: Soundsystem Pressure & Vocal Science"
+        },
+        "tracks": [
+          {
+            "artist": "SHERELLE",
+            "bpm": 80,
+            "bpm_level": 60,
+            "has_audio": false,
+            "id": 4413,
+            "key": "9D",
+            "title": "JUNGLE TEKNAH",
+            "year": 2021
+          },
+          {
+            "artist": "General Levy, Hard'n'Pure",
+            "bpm": 89,
+            "bpm_level": 70,
+            "has_audio": true,
+            "id": 3026,
+            "key": "1M",
+            "title": "Wikkeda!!",
+            "year": 2019
+          },
+          {
+            "artist": "M-Beat",
+            "bpm": 82.5,
+            "bpm_level": 80,
+            "has_audio": true,
+            "id": 4197,
+            "key": "1M",
+            "title": "Incredible (feat. General Levy)",
+            "year": 2014
+          },
+          {
+            "artist": "Ashaye",
+            "bpm": 83,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 3990,
+            "key": "1M",
+            "title": "Dreaming (Jungle Mix)",
+            "year": 1994
+          },
+          {
+            "artist": "Top Cat",
+            "bpm": 90.9,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4301,
+            "key": "11D",
+            "title": "Ruffest Gun Ark - DJ Rap Mix",
+            "year": 2019
+          },
+          {
+            "artist": "General Levy",
+            "bpm": 106.6,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3010,
+            "key": "12M",
+            "title": "Mad Them",
+            "year": 2019
+          },
+          {
+            "artist": "2 Bad Mice",
+            "bpm": 134,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6100,
+            "key": "4D",
+            "title": "Hold It Down",
+            "year": 1992
+          },
+          {
+            "artist": "Double Trouble,Rebel MC",
+            "bpm": 118.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5493,
+            "key": "10M",
+            "title": "Street Tuff",
+            "year": 1990
+          },
+          {
+            "artist": "",
+            "bpm": 159.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 3945,
+            "key": "9D",
+            "title": "10 Shot Fe Bust (Marvellous Cain Remix)",
+            "year": 1995
+          },
+          {
+            "artist": "Conquering Lion",
+            "bpm": 165.8,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 4285,
+            "key": "8M",
+            "title": "Code Red",
+            "year": 1994
+          }
+        ],
+        "selectedTrackIndex": 9,
+        "_loading": false
+      },
+      {
+        "id": "autoset-slot-14",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Yulia Niko, Mommo G",
+            "bpm": 122,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6068,
+            "key": "11M",
+            "title": "It\u2019s All In My Mind",
+            "year": 2022
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6056,
+            "key": "7D",
+            "title": "Space Funk '75",
+            "year": 2019
+          },
+          {
+            "artist": "MEZERG",
+            "bpm": 126.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6057,
+            "key": "12M",
+            "title": "Welcome Theremin",
+            "year": 2021
+          },
+          {
+            "artist": "SL2",
+            "bpm": 127,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6098,
+            "key": "8M",
+            "title": "DJs Take Control",
+            "year": 2008
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-30",
+        "selectedTrackIndex": 5,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Jon Hopkins",
+            "bpm": 115,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6063,
+            "key": "7M",
+            "title": "Collider",
+            "year": 2013
+          },
+          {
+            "artist": "Kelly Lee Owens",
+            "bpm": 125,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 384,
+            "key": "1M",
+            "title": "Kingsize - Kelly Lee Owens Rework",
+            "year": 2020
+          },
+          {
+            "artist": "Inner City, IDRIS, Kevin Saunderson, Latroit",
+            "bpm": 126,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6075,
+            "key": "1M",
+            "title": "We All Move Together - Kevin Saunderson x Latroit Remix",
+            "year": 2024
+          },
+          {
+            "artist": "\u28ce\u2847\ua27a\u10da\u0f3d\u0b87\u2022\u031b)\u0f80\u25de \u0f0e\u0eb6 \u0f3d\u09e3\u09e2\u061e\u09e2\u061e\u0616 \ua27a\u10da",
+            "bpm": 129,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5539,
+            "key": "1M",
+            "title": "()v\u022f)) \u0337\u0328\u0285(\u06dd\u0285(\u019f\u0285()---()\u0335\u0333\u0317\u030a(\u019f\u0285()v\u022f)) \u0337\u0328\u0285",
+            "year": 2022
+          },
+          {
+            "artist": "Claude VonStroke,Mike Kerrigan",
+            "bpm": 123,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 5421,
+            "key": "4D",
+            "title": "I Caught A Vibe",
+            "year": 2020
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-15",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "MEZERG",
+            "bpm": 126.4,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6057,
+            "key": "12M",
+            "title": "Welcome Theremin",
+            "year": 2021
+          },
+          {
+            "artist": "Vitalic",
+            "bpm": 126,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1293,
+            "key": "2M",
+            "title": "Ooey",
+            "year": 2008
+          },
+          {
+            "artist": "The Sponges",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6064,
+            "key": "12D",
+            "title": "Feelin' Alright",
+            "year": 2020
+          },
+          {
+            "artist": "Catz 'n Dogz",
+            "bpm": 125,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6060,
+            "key": "1M",
+            "title": "Drop It",
+            "year": 2014
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-13",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Bizarre Inc",
+            "bpm": 126.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5085,
+            "key": "1D",
+            "title": "I'm Gonna Get You - Original Remix Version",
+            "year": 1996
+          },
+          {
+            "artist": "Blapps Posse",
+            "bpm": 124.1,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6104,
+            "key": "12D",
+            "title": "Don't Hold Back",
+            "year": 2016
+          },
+          {
+            "artist": "Disclosure",
+            "bpm": 126.3,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6051,
+            "key": "7M",
+            "title": "In My Arms",
+            "year": 2021
+          },
+          {
+            "artist": "MEZERG",
+            "bpm": 126.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6057,
+            "key": "12M",
+            "title": "Welcome Theremin",
+            "year": 2021
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-31",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Jon Hopkins",
+            "bpm": 115,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6063,
+            "key": "7M",
+            "title": "Collider",
+            "year": 2013
+          },
+          {
+            "artist": "Kelly Lee Owens",
+            "bpm": 125,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 384,
+            "key": "1M",
+            "title": "Kingsize - Kelly Lee Owens Rework",
+            "year": 2020
+          },
+          {
+            "artist": "Basement Jaxx",
+            "bpm": 126.8,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6061,
+            "key": "8M",
+            "title": "Jump 'N Shout",
+            "year": 1999
+          },
+          {
+            "artist": "Wolfram, Josh Ludlow",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6084,
+            "key": "12M",
+            "title": "YoYo Disco",
+            "year": 2023
+          },
+          {
+            "artist": "Jesse Perez",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 3921,
+            "key": "5M",
+            "title": "Fake",
+            "year": 2016
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-11",
+        "selectedTrackIndex": 8,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Roberto Surace,Nic Fanciulli",
+            "bpm": 125,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 1897,
+            "key": "1M",
+            "title": "Joys - Nic Fanciulli Re-Edit",
+            "year": 2020
+          },
+          {
+            "artist": "Michael Bibi",
+            "bpm": 122,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 4907,
+            "key": "6M",
+            "title": "Stay Missing",
+            "year": 2018
+          },
+          {
+            "artist": "The Chemical Brothers, Claude VonStroke",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6066,
+            "key": "11M",
+            "title": "Go - Claude VonStroke Remix",
+            "year": 2015
+          },
+          {
+            "artist": "Armand Van Helden, Mark Knight",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6034,
+            "key": "7D",
+            "title": "Down To Earth",
+            "year": 2023
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-22",
+        "selectedTrackIndex": 9,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Cloonee",
+            "bpm": 127.9,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6032,
+            "key": "7D",
+            "title": "Badman Sound",
+            "year": 2023
+          },
+          {
+            "artist": "Cloonee, Young M.A, InntRaw",
+            "bpm": 130,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6045,
+            "key": "3D",
+            "title": "Stephanie",
+            "year": 2024
+          },
+          {
+            "artist": "Born Dirty, jstlbby",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6038,
+            "key": "2M",
+            "title": "Get Up Get Out",
+            "year": 2018
+          },
+          {
+            "artist": "Trinix Remix, Nooran Sisters",
+            "bpm": 153,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 3942,
+            "key": "8M",
+            "title": "Patakha Guddi - Drill Remix",
+            "year": 2022
+          },
+          {
+            "artist": "Fred again.., Skepta, PlaqueBoyMax",
+            "bpm": 140,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6048,
+            "key": "7M",
+            "title": "Victory Lap",
+            "year": 2025
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-29",
+        "selectedTrackIndex": 9,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3335,
+            "key": "4M",
+            "title": "Sometimes Things Get, Whatever",
+            "year": 2009
+          },
+          {
+            "artist": "D.H.S., Azzido Da Bass",
+            "bpm": 132,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6072,
+            "key": "8M",
+            "title": "House of God - Azzido Da Bass Edit",
+            "year": 1990
+          },
+          {
+            "artist": "Oldboy",
+            "bpm": 135,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6089,
+            "key": "7M",
+            "title": "Extender",
+            "year": 2024
+          },
+          {
+            "artist": "DJ Zinc, Chris Gialanze",
+            "bpm": 135,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6046,
+            "key": "11M",
+            "title": "Super Sharp Shooter - Chris Gialanze Remix",
+            "year": 2023
+          },
+          {
+            "artist": "Trinix Remix, Nooran Sisters",
+            "bpm": 153,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 3942,
+            "key": "8M",
+            "title": "Patakha Guddi - Drill Remix",
+            "year": 2022
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-20",
+        "selectedTrackIndex": 9,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 946,
+            "key": "10M",
+            "title": "Sofi Needs A Ladder",
+            "year": 2010
+          },
+          {
+            "artist": "DJ Zinc, Chris Gialanze",
+            "bpm": 135,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6046,
+            "key": "11M",
+            "title": "Super Sharp Shooter - Chris Gialanze Remix",
+            "year": 2023
+          },
+          {
+            "artist": "Oppidan, Cutty Ranks",
+            "bpm": 133,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6031,
+            "key": "4M",
+            "title": "Armed & Dangerous",
+            "year": 2024
+          },
+          {
+            "artist": "Phuture Assassins",
+            "bpm": 140.8,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6099,
+            "key": "9M",
+            "title": "Future Sound",
+            "year": 1992
+          },
+          {
+            "artist": "Ashaye",
+            "bpm": 165.9,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6035,
+            "key": "1M",
+            "title": "Dreaming (Jungle Mix)",
+            "year": 1994
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-18",
+        "selectedTrackIndex": 7,
+        "source": {
+          "id": "act-2",
+          "name": "Peak",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 3335,
+            "key": "4M",
+            "title": "Sometimes Things Get, Whatever",
+            "year": 2009
+          },
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 946,
+            "key": "10M",
+            "title": "Sofi Needs A Ladder",
+            "year": 2010
+          },
+          {
+            "artist": "deadmau5",
+            "bpm": 128,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 2754,
+            "key": "7M",
+            "title": "Nextra",
+            "year": 2021
+          },
+          {
+            "artist": "Eden Burns",
+            "bpm": 131,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6082,
+            "key": "8M",
+            "title": "Xoh",
+            "year": 2023
+          },
+          {
+            "artist": "RatPack",
+            "bpm": 134,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 6043,
+            "key": "1D",
+            "title": "Searchin' For My Rizla",
+            "year": 1992
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-32",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Jon Hopkins",
+            "bpm": 115,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6063,
+            "key": "7M",
+            "title": "Collider",
+            "year": 2013
+          },
+          {
+            "artist": "Inner City, IDRIS, Kevin Saunderson, Latroit",
+            "bpm": 126,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6075,
+            "key": "1M",
+            "title": "We All Move Together - Kevin Saunderson x Latroit Remix",
+            "year": 2024
+          },
+          {
+            "artist": "Cour T.",
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6049,
+            "key": "12M",
+            "title": "Downstairs",
+            "year": 2019
+          },
+          {
+            "artist": "Rebolledo,Maceo Plex",
+            "bpm": 123,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1790,
+            "key": "3D",
+            "title": "Disc\u00f3tico Pl\u00e9xico - Maceo Plex Remix",
+            "year": 2017
+          },
+          {
+            "artist": "Eli Escobar, Eddie Cumana, Lula",
+            "bpm": 122,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6088,
+            "key": "1D",
+            "title": "N.Y. So Hi",
+            "year": 2015
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-33",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-1",
+          "name": "Build",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Skizzo",
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4892,
+            "key": "12M",
+            "title": "Let Me in Fellas - Edit",
+            "year": 2019
+          },
+          {
+            "artist": "Roberto Surace,Nic Fanciulli",
+            "bpm": 125,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1897,
+            "key": "1M",
+            "title": "Joys - Nic Fanciulli Re-Edit",
+            "year": 2020
+          },
+          {
+            "artist": "Armand Van Helden, Mark Knight",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6034,
+            "key": "7D",
+            "title": "Down To Earth",
+            "year": 2023
+          },
+          {
+            "artist": "Catz 'n Dogz",
+            "bpm": 125,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6060,
+            "key": "1M",
+            "title": "Drop It",
+            "year": 2014
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-35",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Todd Terje",
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 4174,
+            "key": "12M",
+            "title": "Delorean Drums",
+            "year": 2014
+          },
+          {
+            "artist": "Eli Escobar, Eddie Cumana, Lula",
+            "bpm": 122,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6088,
+            "key": "1D",
+            "title": "N.Y. So Hi",
+            "year": 2015
+          },
+          {
+            "artist": "Azealia Banks,Lazy Jay",
+            "bpm": 126,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1085,
+            "key": "4M",
+            "title": "212",
+            "year": 2011
+          },
+          {
+            "artist": "LFO",
+            "bpm": 124.7,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6086,
+            "key": "9M",
+            "title": "LFO - Leeds Warehouse Mix",
+            "year": 1991
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-34",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-3",
+          "name": "Wind-Down",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Jon Hopkins",
+            "bpm": 115,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6063,
+            "key": "7M",
+            "title": "Collider",
+            "year": 2013
+          },
+          {
+            "artist": "Phil Kieran, Bush Tetras",
+            "bpm": 127,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6044,
+            "key": "3D",
+            "title": "Snakes Crawl - East Village Mix",
+            "year": 2012
+          },
+          {
+            "artist": "Kelly Lee Owens",
+            "bpm": 125,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 384,
+            "key": "1M",
+            "title": "Kingsize - Kelly Lee Owens Rework",
+            "year": 2020
+          },
+          {
+            "artist": "Jesse Perez",
+            "bpm": 126,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 3921,
+            "key": "5M",
+            "title": "Fake",
+            "year": 2016
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-36",
+        "selectedTrackIndex": 6,
+        "source": {
+          "id": "act-4",
+          "name": "Outro",
+          "type": "autoset"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "artist": "Robyn",
+            "bpm": 120,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 6092,
+            "key": "12M",
+            "title": "Don't Fucking Tell Me What To Do",
+            "year": 2010
+          },
+          {
+            "artist": "Sultan Shakes",
+            "bpm": 120,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5414,
+            "key": "5D",
+            "title": "Oud Ou Ray",
+            "year": 2017
+          },
+          {
+            "artist": "Robyn",
+            "bpm": 117,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 1144,
+            "key": "7D",
+            "title": "Dancing On My Own",
+            "year": 2010
+          },
+          {
+            "artist": "Sisters Underground",
+            "bpm": 121.4,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6106,
+            "key": "11M",
+            "title": "In the Neighbourhood - Downtown Mix",
+            "year": 1994
+          },
+          {
+            "artist": "Cajmere, Dajae",
+            "bpm": 124,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6033,
+            "key": "11M",
+            "title": "Brighter Days - Dajae- Underground Mix '93",
+            "year": 2010
+          },
+          null
+        ]
       },
       {
         "id": "autoset-slot-38",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
           "id": "act-4",
-          "name": "Outro"
+          "name": "Outro",
+          "type": "autoset"
         },
         "tracks": [
           null,
@@ -11459,65 +11410,65 @@
           null,
           null,
           {
-            "id": 5414,
-            "title": "Oud Ou Ray",
             "artist": "Sultan Shakes",
-            "bpm": 120.0,
+            "bpm": 120,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5414,
             "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 100
+            "title": "Oud Ou Ray",
+            "year": 2017
           },
           {
-            "id": 6033,
-            "title": "Brighter Days - Dajae- Underground Mix '93",
             "artist": "Cajmere, Dajae",
-            "bpm": 124.0,
+            "bpm": 124,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 6033,
             "key": "11M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Brighter Days - Dajae- Underground Mix '93",
+            "year": 2010
           },
           {
-            "id": 6052,
-            "title": "Maggie's Last Party - Oak Lawn Mix",
             "artist": "V.I.M.",
             "bpm": 120.1,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6052,
             "key": "9M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Maggie's Last Party - Oak Lawn Mix",
+            "year": 2020
           },
           {
-            "id": 5445,
-            "title": "Voodoo Ray",
             "artist": "A Guy Called Gerald",
             "bpm": 119.5,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 5445,
             "key": "1M",
-            "year": 1989,
-            "has_audio": false,
-            "bpm_level": 130
+            "title": "Voodoo Ray",
+            "year": 1989
           },
           {
-            "id": 6106,
-            "title": "In the Neighbourhood - Downtown Mix",
             "artist": "Sisters Underground",
             "bpm": 121.4,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6106,
             "key": "11M",
-            "year": 1994,
-            "has_audio": false,
-            "bpm_level": 140
+            "title": "In the Neighbourhood - Downtown Mix",
+            "year": 1994
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-39",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
           "id": "act-4",
-          "name": "Outro"
+          "name": "Outro",
+          "type": "autoset"
         },
         "tracks": [
           null,
@@ -11525,61 +11476,79 @@
           null,
           null,
           {
-            "id": 5445,
-            "title": "Voodoo Ray",
             "artist": "A Guy Called Gerald",
             "bpm": 119.5,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 5445,
             "key": "1M",
-            "year": 1989,
-            "has_audio": false,
-            "bpm_level": 100
+            "title": "Voodoo Ray",
+            "year": 1989
           },
           {
-            "id": 5414,
-            "title": "Oud Ou Ray",
             "artist": "Sultan Shakes",
-            "bpm": 120.0,
+            "bpm": 120,
+            "bpm_level": 110,
+            "has_audio": true,
+            "id": 5414,
             "key": "5D",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
+            "title": "Oud Ou Ray",
+            "year": 2017
           },
           {
-            "id": 6033,
-            "title": "Brighter Days - Dajae- Underground Mix '93",
             "artist": "Cajmere, Dajae",
-            "bpm": 124.0,
+            "bpm": 124,
+            "bpm_level": 120,
+            "has_audio": true,
+            "id": 6033,
             "key": "11M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 120
+            "title": "Brighter Days - Dajae- Underground Mix '93",
+            "year": 2010
           },
           {
-            "id": 6092,
-            "title": "Don't Fucking Tell Me What To Do",
             "artist": "Robyn",
-            "bpm": 120.0,
+            "bpm": 120,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 6092,
             "key": "12M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 130
+            "title": "Don't Fucking Tell Me What To Do",
+            "year": 2010
           },
           {
-            "id": 6083,
-            "title": "Xumba Xumba",
             "artist": "Mainline Magic Orchestra",
-            "bpm": 122.0,
+            "bpm": 122,
+            "bpm_level": 140,
+            "has_audio": true,
+            "id": 6083,
             "key": "10M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 140
+            "title": "Xumba Xumba",
+            "year": 2021
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
+      },
+      {
+        "id": "slot-1771392499329-uzyh",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      },
+      {
+        "id": "slot-1771392499329-ccfu",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
+      },
+      {
+        "id": "slot-1771392499329-09mm",
+        "source": null,
+        "tracks": [],
+        "selectedTrackIndex": null
       }
     ],
     "created_at": "2026-02-18T05:26:08.175861+00:00",
-    "updated_at": "2026-02-18T05:26:08.175867+00:00"
+    "updated_at": "2026-02-18T06:32:24.978701+00:00",
+    "phase_profile_id": "classic_arc"
   }
 }
