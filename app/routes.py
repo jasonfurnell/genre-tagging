@@ -58,6 +58,7 @@ from app.setbuilder import (
     create_saved_set, get_saved_set, list_saved_sets,
     update_saved_set, delete_saved_set,
 )
+from app.autoset import build_autoset
 
 api = Blueprint("api", __name__)
 
@@ -95,6 +96,11 @@ _state = {
     "_dropbox_account_id": None,
     "_dropbox_exists_cache": {},   # dropbox_path -> bool
     "_dropbox_oauth_csrf": None,   # CSRF token for OAuth flow
+    # Auto Set (narrative set builder)
+    "autoset_result": None,
+    "autoset_thread": None,
+    "autoset_stop_flag": threading.Event(),
+    "autoset_progress_listeners": [],
 }
 
 # ---------------------------------------------------------------------------
@@ -3593,3 +3599,211 @@ def serve_audio(track_id):
     ext = os.path.splitext(location)[1].lower()
     mimetype = _AUDIO_MIME.get(ext, "application/octet-stream")
     return send_file(location, mimetype=mimetype, conditional=True)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Auto Set endpoints (narrative set builder)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def _autoset_broadcast(data):
+    _tree_broadcast(data, listeners_key="autoset_progress_listeners")
+
+
+# ---------------------------------------------------------------------------
+# POST /api/autoset/build
+# ---------------------------------------------------------------------------
+
+@api.route("/api/autoset/build", methods=["POST"])
+def autoset_build():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    t = _state.get("autoset_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Auto Set build already in progress"}), 409
+
+    body = request.get_json(force=True)
+    source_type = body.get("source_type")  # "playlist" or "tree_node"
+    source_id = body.get("source_id")
+    phase_profile_id = body.get("phase_profile_id", "classic_arc")
+    set_name = body.get("set_name", "Auto Set")
+
+    if not source_type or not source_id:
+        return jsonify({"error": "source_type and source_id required"}), 400
+
+    # Resolve track IDs from source
+    track_ids = []
+    if source_type == "playlist":
+        from app.playlist import get_playlist
+        pl = get_playlist(source_id)
+        if not pl:
+            return jsonify({"error": f"Playlist '{source_id}' not found"}), 404
+        track_ids = pl.get("track_ids", [])
+        if not set_name or set_name == "Auto Set":
+            set_name = f"Auto Set — {pl.get('name', source_id)}"
+    elif source_type == "tree_node":
+        tree_type = body.get("tree_type", "collection")
+        tree = None
+        if tree_type == "collection":
+            tree = _state.get("collection_tree") or load_tree(
+                file_path=_COLLECTION_TREE_FILE)
+        elif tree_type == "scene":
+            tree = _state.get("scene_tree") or load_tree(
+                file_path=TREE_PROFILES["scene"]["file"])
+        else:
+            tree = _state.get("tree") or load_tree()
+
+        if not tree:
+            return jsonify({"error": f"{tree_type} tree not found"}), 404
+
+        node = find_node(tree, source_id)
+        if not node:
+            return jsonify({"error": f"Node '{source_id}' not found in {tree_type} tree"}), 404
+        track_ids = node.get("track_ids", [])
+        if not set_name or set_name == "Auto Set":
+            set_name = f"Auto Set — {node.get('title', source_id)}"
+    else:
+        return jsonify({"error": f"Unknown source_type: {source_type}"}), 400
+
+    if len(track_ids) < 10:
+        return jsonify({"error": f"Need at least 10 tracks, got {len(track_ids)}"}), 400
+
+    # Gather available trees for context
+    trees = {}
+    genre_tree = _state.get("tree") or load_tree()
+    if genre_tree:
+        trees["genre"] = genre_tree
+    scene_tree = _state.get("scene_tree") or load_tree(
+        file_path=TREE_PROFILES["scene"]["file"])
+    if scene_tree:
+        trees["scene"] = scene_tree
+    collection_tree = _state.get("collection_tree") or load_tree(
+        file_path=_COLLECTION_TREE_FILE)
+    if collection_tree:
+        trees["collection"] = collection_tree
+
+    # Load model config
+    config = load_config()
+    model_config = {
+        "creative": config.get("creative_model", COLLECTION_TREE_MODELS["creative"]),
+        "mechanical": config.get("mechanical_model", COLLECTION_TREE_MODELS["mechanical"]),
+    }
+
+    # Get LLM client (use anthropic by default since both models are claude)
+    client = _get_client("anthropic")
+
+    # Reset state
+    _state["autoset_stop_flag"].clear()
+    _state["autoset_result"] = None
+
+    def progress_callback(phase, detail, pct):
+        _autoset_broadcast({
+            "event": "progress",
+            "phase": phase,
+            "detail": detail,
+            "percent": pct,
+        })
+
+    def worker():
+        try:
+            result = build_autoset(
+                df=df,
+                track_ids=track_ids,
+                phase_profile_id=phase_profile_id,
+                client=client,
+                model_config=model_config,
+                set_name=set_name,
+                trees=trees,
+                progress_cb=progress_callback,
+                stop_flag=_state["autoset_stop_flag"],
+            )
+            _state["autoset_result"] = result
+            if result.get("stopped"):
+                _autoset_broadcast({
+                    "event": "stopped", "phase": "stopped", "percent": 0,
+                })
+            else:
+                _autoset_broadcast({
+                    "event": "done", "phase": "complete", "percent": 100,
+                    "set_id": result.get("set", {}).get("id"),
+                })
+        except Exception as e:
+            logging.exception("Auto Set build failed")
+            _autoset_broadcast({
+                "event": "error", "phase": "error",
+                "detail": str(e), "percent": 0,
+            })
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["autoset_thread"] = thread
+    thread.start()
+
+    return jsonify({"started": True, "track_count": len(track_ids)}), 202
+
+
+# ---------------------------------------------------------------------------
+# GET /api/autoset/progress — SSE stream
+# ---------------------------------------------------------------------------
+
+@api.route("/api/autoset/progress")
+def autoset_progress():
+    import queue
+    q = queue.Queue(maxsize=100)
+    _state["autoset_progress_listeners"].append(q)
+
+    def stream():
+        try:
+            while True:
+                try:
+                    data = q.get(timeout=30)
+                except queue.Empty:
+                    yield ":\n\n"
+                    continue
+                yield f"data: {json.dumps(data)}\n\n"
+                if data.get("event") in ("done", "error", "stopped"):
+                    break
+        finally:
+            if q in _state["autoset_progress_listeners"]:
+                _state["autoset_progress_listeners"].remove(q)
+
+    return Response(stream(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache",
+                             "X-Accel-Buffering": "no"})
+
+
+# ---------------------------------------------------------------------------
+# POST /api/autoset/stop
+# ---------------------------------------------------------------------------
+
+@api.route("/api/autoset/stop", methods=["POST"])
+def autoset_stop():
+    _state["autoset_stop_flag"].set()
+    return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# GET /api/autoset/result
+# ---------------------------------------------------------------------------
+
+@api.route("/api/autoset/result")
+def autoset_result():
+    result = _state.get("autoset_result")
+    if not result:
+        return jsonify({"error": "No result available"}), 404
+    # Return the full result (narrative, acts, tracklist, set info)
+    return jsonify({
+        "narrative": result.get("narrative", ""),
+        "acts": result.get("acts", []),
+        "ordered_tracks": result.get("ordered_tracks", []),
+        "set": {
+            "id": result.get("set", {}).get("id"),
+            "name": result.get("set", {}).get("name"),
+            "slot_count": len(result.get("set", {}).get("slots", [])),
+        },
+        "pool_profile": {
+            "track_count": result.get("pool_profile", {}).get("track_count", 0),
+            "bpm": result.get("pool_profile", {}).get("bpm", {}),
+        },
+    })

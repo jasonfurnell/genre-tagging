@@ -14,7 +14,11 @@
       "Bash(bd:*)",
       "Bash(git config:*)",
       "Read(./*)",
-      "Bash(sh)"
+      "Bash(sh)",
+      "Bash(uv run python:*)",
+      "Bash(for id in 97c 6ab w76 a5e dhn akd tpk bx1 6bv 4f6)",
+      "Bash(do bd update GenreTagging-$id --parent GenreTagging-ztg)",
+      "Bash(done)"
     ]
   }
 }

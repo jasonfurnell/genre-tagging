@@ -27,6 +27,7 @@ let workshopInitialized = false;
 let tracksInitialized = false;
 let treeInitialized = false;
 let setBuilderInitialized = false;
+let autosetInitialized = false;
 
 const genreChart = $("#genre-chart");
 const TOP_N_GENRES = 8;
@@ -926,6 +927,10 @@ $$(".tab-btn").forEach(btn => {
         if (target === "sets") {
             if (typeof initSetsTab === "function") initSetsTab();
             if (typeof loadSetsList === "function") loadSetsList();
+        }
+        if (target === "autoset" && !autosetInitialized) {
+            autosetInitialized = true;
+            if (typeof initAutoSetTab === "function") initAutoSetTab();
         }
     });
 });

@@ -3464,3 +3464,273 @@ tr.ws-seed-selected {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Auto Set Tab                                                              */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.autoset-layout {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+}
+
+/* ── Config Panel ─────────────────────────────────────────── */
+
+.autoset-config {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.autoset-config-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.autoset-config-row:last-child {
+    margin-bottom: 0;
+}
+
+.autoset-config-row label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    min-width: 80px;
+    text-align: right;
+}
+
+.autoset-select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.autoset-source-picker {
+    flex: 1;
+    min-width: 200px;
+}
+
+.autoset-track-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.autoset-track-count.autoset-warn {
+    color: var(--accent);
+}
+
+/* ── Progress Area ────────────────────────────────────────── */
+
+.autoset-progress {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.autoset-phase-timeline {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.autoset-phase-step {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+}
+
+.autoset-phase-step.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(233, 69, 96, 0.1);
+}
+
+.autoset-phase-step.done {
+    color: var(--success);
+    border-color: var(--success);
+    background: rgba(78, 204, 163, 0.08);
+}
+
+.autoset-phase-icon {
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+
+.autoset-progress-bar-wrap {
+    height: 4px;
+    background: var(--bg);
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.autoset-progress-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.autoset-progress-status {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.autoset-log-wrap {
+    max-height: 150px;
+    overflow-y: auto;
+    background: var(--bg);
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+.autoset-log {
+    font-size: 0.7rem;
+    font-family: monospace;
+}
+
+.autoset-log-entry {
+    padding: 0.1rem 0;
+    color: var(--text-muted);
+}
+
+.autoset-log-entry.log-error {
+    color: var(--accent);
+}
+
+.log-time {
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-right: 0.5rem;
+}
+
+/* ── Result Area ──────────────────────────────────────────── */
+
+.autoset-result {
+    margin-top: 1rem;
+}
+
+.autoset-narrative-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.autoset-narrative-box h3 {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.autoset-narrative-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+    white-space: pre-wrap;
+}
+
+/* ── Act Breakdown ────────────────────────────────────────── */
+
+.autoset-acts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.autoset-act {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid #888;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.autoset-act-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.autoset-act-name {
+    font-weight: 600;
+}
+
+.autoset-act-pct {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+.autoset-act-count {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+.autoset-act-tracks {
+    padding: 0.25rem 0.75rem 0.5rem;
+}
+
+.autoset-act-track {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+    font-size: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.autoset-act-track:last-child {
+    border-bottom: none;
+}
+
+.autoset-track-num {
+    color: var(--text-muted);
+    min-width: 1.5rem;
+    text-align: right;
+}
+
+.autoset-track-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.autoset-track-meta {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+/* ── Actions ──────────────────────────────────────────────── */
+
+.autoset-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+}

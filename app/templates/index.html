@@ -20,6 +20,7 @@
         <button class="tab-btn" data-tab="tracks">Tracks</button>
         <button class="tab-btn" data-tab="tree">Trees</button>
         <button class="tab-btn" data-tab="phases">Phases</button>
+        <button class="tab-btn" data-tab="autoset">Auto Set</button>
     </nav>
 
     <!-- Tab-specific controls (only active tab's div is visible) -->
@@ -44,6 +45,7 @@
     <div id="tab-controls-tracks" class="tab-controls hidden"></div>
     <div id="tab-controls-tree" class="tab-controls hidden"></div>
     <div id="tab-controls-phases" class="tab-controls hidden"></div>
+    <div id="tab-controls-autoset" class="tab-controls hidden"></div>
 
     <div class="hdr-status">
         <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
@@ -370,6 +372,66 @@
         </div>
     </div>
 
+    <!-- ═══ Tab: Auto Set ═══ -->
+    <div id="tab-autoset" class="tab-content hidden">
+        <div class="autoset-layout">
+            <!-- Config Panel -->
+            <div class="autoset-config">
+                <div class="autoset-config-row">
+                    <label for="autoset-source-type">Source</label>
+                    <select id="autoset-source-type" class="autoset-select">
+                        <option value="playlist">Playlist</option>
+                        <option value="tree_node">Tree Leaf</option>
+                    </select>
+                    <select id="autoset-source-id" class="autoset-select autoset-source-picker">
+                        <option value="">— Select source —</option>
+                    </select>
+                    <span id="autoset-track-count" class="autoset-track-count"></span>
+                </div>
+                <div class="autoset-config-row">
+                    <label for="autoset-profile">Phase Profile</label>
+                    <select id="autoset-profile" class="autoset-select">
+                        <option value="classic_arc">Classic Arc</option>
+                    </select>
+                </div>
+                <div class="autoset-config-row">
+                    <button id="autoset-generate-btn" class="btn btn-primary" disabled>Generate Set</button>
+                    <button id="autoset-stop-btn" class="btn btn-secondary hidden">Stop</button>
+                </div>
+            </div>
+
+            <!-- Progress Area -->
+            <div id="autoset-progress" class="autoset-progress hidden">
+                <div class="autoset-phase-timeline" id="autoset-phase-timeline"></div>
+                <div class="autoset-progress-bar-wrap">
+                    <div id="autoset-progress-bar" class="autoset-progress-bar" style="width:0%"></div>
+                </div>
+                <div id="autoset-progress-status" class="autoset-progress-status"></div>
+                <div class="autoset-log-wrap">
+                    <div id="autoset-log" class="autoset-log"></div>
+                </div>
+            </div>
+
+            <!-- Result Area -->
+            <div id="autoset-result" class="autoset-result hidden">
+                <!-- Narrative -->
+                <div class="autoset-narrative-box">
+                    <h3>Set Narrative</h3>
+                    <div id="autoset-narrative-text" class="autoset-narrative-text"></div>
+                </div>
+
+                <!-- Act Breakdown -->
+                <div id="autoset-acts" class="autoset-acts"></div>
+
+                <!-- Actions -->
+                <div class="autoset-actions">
+                    <button id="autoset-open-workshop-btn" class="btn btn-primary">Open in Workshop</button>
+                    <button id="autoset-regenerate-btn" class="btn btn-secondary">Regenerate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <!-- Set Workshop Drawer (right-hand slide-out) -->
@@ -549,5 +611,6 @@
 <script src="/static/tree.js"></script>
 <script src="/static/setbuilder.js"></script>
 <script src="/static/phases.js"></script>
+<script src="/static/autoset.js"></script>
 </body>
 </html>
