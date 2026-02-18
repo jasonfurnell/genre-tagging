@@ -5,9 +5,18 @@ A local DJ tool: upload a playlist CSV, auto-tag tracks with genre/style comment
 
 ## Running
 ```bash
-python app/main.py   # Flask on port 5001
+uv run python app/main.py   # Flask on port 5001
 ```
 Requires `.env` with `OPENAI_API_KEY` and/or `ANTHROPIC_API_KEY`.
+
+## Package Management
+Uses **uv** for dependency management. Dependencies defined in `pyproject.toml`, locked in `uv.lock`.
+```bash
+uv add <package>       # Add a dependency
+uv remove <package>    # Remove a dependency
+uv sync                # Install from lockfile
+uv run <command>       # Run within the venv
+```
 
 ## Architecture
 - **Backend**: Flask, pandas DataFrame in `_state["df"]`, LLM via OpenAI + Anthropic SDKs
@@ -48,9 +57,10 @@ This project uses **bd** (Beads) for issue tracking. See `AGENTS.md` for workflo
 
 ## Plans
 Active improvement plans are in `.claude/plans/`, each linked to a beads epic:
-- `security-and-correctness.md` — Thread safety, path traversal, shutdown cleanup (`GenreTagging-1p9`)
-- `split-monoliths.md` — Break up routes.py (backend only, 2 tasks remain) (`GenreTagging-8d6`)
-- `shared-abstractions.md` — LLMClient, BackgroundTaskRunner, JsonStore (`GenreTagging-n0e`)
-- `frontend-modernization.md` — React 19 + TypeScript + Vite + Bun migration (`GenreTagging-x8f`)
-- `aws-deployment.md` — Docker + ECR + EC2 deployment pipeline (`GenreTagging-qpw`)
+- `backend-modernization.md` — **uv + FastAPI migration** (`GenreTagging-94r`) — P1, do first
+- `frontend-modernization.md` — React 19 + TypeScript + Vite + Bun migration (`GenreTagging-x8f`) — blocked by backend
+- `aws-deployment.md` — Docker + ECR + EC2 deployment pipeline (`GenreTagging-qpw`) — updated by backend migration
+- `security-and-correctness.md` — ~~Archived~~ (superseded by backend-modernization)
+- `split-monoliths.md` — ~~Archived~~ (superseded by backend-modernization)
+- `shared-abstractions.md` — ~~Archived~~ (absorbed by backend-modernization)
 - `frontend-health.md` — ~~Archived~~ (superseded by frontend-modernization)

@@ -1,7 +1,8 @@
-# Plan: Extract Shared Abstractions
+# Plan: Extract Shared Abstractions — SUPERSEDED
 > Source: `docs/architecture-review.md` — Phase 3
-> Priority: Medium (do after or alongside split-monoliths)
-> **Beads Epic**: `GenreTagging-n0e` (P2) — 3 subtasks
+> Priority: ~~Medium~~ Closed
+> **Beads Epic**: `GenreTagging-n0e` (P2) — **CLOSED**
+> **Absorbed by**: Backend Modernization (`GenreTagging-94r`) — all 3 abstractions built async-native (LLMClient → 94r.5, BackgroundTaskManager → 94r.6, JsonStore → 94r.7)
 
 ## 1. LLMClient (`app/llm.py`)
 

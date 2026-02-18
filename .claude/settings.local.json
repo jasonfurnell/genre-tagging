@@ -13,8 +13,8 @@
       "Bash(brew install:*)",
       "Bash(bd:*)",
       "Bash(git config:*)",
-      "Read(./*)" 
-
+      "Read(./*)",
+      "Bash(sh)"
     ]
   }
 }

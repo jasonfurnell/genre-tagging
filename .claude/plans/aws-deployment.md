@@ -2,6 +2,7 @@
 > Source: `docs/architecture-review.md` — Section 5
 > Priority: When ready to deploy
 > **Beads Epic**: `GenreTagging-qpw` (P3) — 4 subtasks
+> **Note**: Will be updated by Backend Modernization (`GenreTagging-94r`, task GenreTagging-crn) — uvicorn replaces gunicorn, uv replaces pip
 
 ## Architecture
 ```

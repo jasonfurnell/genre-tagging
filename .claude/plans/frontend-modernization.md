@@ -56,5 +56,5 @@
 ## Migration Notes
 - Tab-by-tab approach: React shell runs first, tabs migrated incrementally
 - AG Grid kept — shadcn tables are not comparable for data-heavy views
-- Flask backend unchanged — Vite dev server proxies API calls
-- Buntralino decision deferred: bundle Flask alongside vs port backend to Bun/TS
+- Backend migrated to FastAPI (see `backend-modernization.md`, `GenreTagging-94r`) — Vite dev server proxies API calls to uvicorn
+- Buntralino decision simplified: Flask removed, backend is FastAPI+uvicorn — package as Python sidecar or port to Bun/TS later

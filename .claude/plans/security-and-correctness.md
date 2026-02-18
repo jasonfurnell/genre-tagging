@@ -1,7 +1,8 @@
-# Plan: Security & Correctness
+# Plan: Security & Correctness — SUPERSEDED
 > Source: `docs/architecture-review.md` — Phase 1
-> Priority: High (do first)
-> **Beads Epic**: `GenreTagging-1p9` (P1) — 4 subtasks
+> Priority: ~~High~~ Closed
+> **Beads Epic**: `GenreTagging-1p9` (P1) — **CLOSED**
+> **Superseded by**: Backend Modernization (`GenreTagging-94r`) — all 4 security concerns addressed natively by FastAPI/Pydantic/asyncio (path validation, async event loop, typed state DI, lifespan cleanup)
 
 ## 1. Path Traversal in `serve_artwork()`
 **File**: `app/routes.py`
