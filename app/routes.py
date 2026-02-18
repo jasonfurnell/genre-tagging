@@ -59,6 +59,7 @@ from app.setbuilder import (
     update_saved_set, delete_saved_set,
 )
 from app.autoset import build_autoset
+from app.chat import run_chat_turn, simplify_history_for_frontend
 
 api = Blueprint("api", __name__)
 
@@ -101,6 +102,11 @@ _state = {
     "autoset_thread": None,
     "autoset_stop_flag": threading.Event(),
     "autoset_progress_listeners": [],
+    # Chat (conversational AI)
+    "chat_history": [],
+    "chat_thread": None,
+    "chat_stop_flag": threading.Event(),
+    "chat_progress_listeners": [],
 }
 
 # ---------------------------------------------------------------------------
@@ -3807,3 +3813,100 @@ def autoset_result():
             "bpm": result.get("pool_profile", {}).get("bpm", {}),
         },
     })
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chat — conversational AI with tool-use
+# ═══════════════════════════════════════════════════════════════════════════
+
+# POST /api/chat/message — start a chat turn
+@api.route("/api/chat/message", methods=["POST"])
+def chat_message():
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    t = _state.get("chat_thread")
+    if t and t.is_alive():
+        return jsonify({"error": "Chat request already in progress"}), 409
+
+    body = request.get_json(force=True)
+    user_message = body.get("message", "").strip()
+    if not user_message:
+        return jsonify({"error": "Empty message"}), 400
+
+    _state["chat_stop_flag"].clear()
+
+    def broadcast(data):
+        for q in list(_state["chat_progress_listeners"]):
+            try:
+                q.put_nowait(data)
+            except Exception:
+                pass
+
+    def worker():
+        try:
+            run_chat_turn(
+                _state, user_message, broadcast, _state["chat_stop_flag"],
+                get_client_fn=_get_client,
+                provider_for_model_fn=_provider_for_model,
+                load_config_fn=load_config,
+            )
+        except Exception as e:
+            logging.exception("Chat turn failed")
+            broadcast({"event": "error", "detail": str(e)})
+
+    thread = threading.Thread(target=worker, daemon=True)
+    _state["chat_thread"] = thread
+    thread.start()
+    return jsonify({"started": True}), 202
+
+
+# GET /api/chat/progress — SSE stream
+@api.route("/api/chat/progress")
+def chat_progress():
+    import queue
+    q = queue.Queue(maxsize=500)
+    _state["chat_progress_listeners"].append(q)
+
+    def stream():
+        try:
+            while True:
+                try:
+                    data = q.get(timeout=30)
+                except queue.Empty:
+                    yield ":\n\n"  # keep-alive
+                    continue
+                yield f"data: {json.dumps(data)}\n\n"
+                if data.get("event") in ("done", "error", "stopped"):
+                    break
+        finally:
+            if q in _state["chat_progress_listeners"]:
+                _state["chat_progress_listeners"].remove(q)
+
+    return Response(stream(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache",
+                             "X-Accel-Buffering": "no"})
+
+
+# GET /api/chat/history — return conversation for UI restore
+@api.route("/api/chat/history")
+def chat_history():
+    history = _state.get("chat_history", [])
+    messages = simplify_history_for_frontend(history)
+    return jsonify({"messages": messages})
+
+
+# POST /api/chat/clear — reset conversation
+@api.route("/api/chat/clear", methods=["POST"])
+def chat_clear():
+    _state["chat_stop_flag"].set()
+    _state["chat_history"] = []
+    return jsonify({"cleared": True})
+
+
+# POST /api/chat/stop — stop current turn
+@api.route("/api/chat/stop", methods=["POST"])
+def chat_stop():
+    _state["chat_stop_flag"].set()
+    return jsonify({"stopped": True})

@@ -21,6 +21,7 @@
         <button class="tab-btn" data-tab="tree">Trees</button>
         <button class="tab-btn" data-tab="phases">Phases</button>
         <button class="tab-btn" data-tab="autoset">Auto Set</button>
+        <button class="tab-btn" data-tab="chat">Chat</button>
     </nav>
 
     <!-- Tab-specific controls (only active tab's div is visible) -->
@@ -46,6 +47,9 @@
     <div id="tab-controls-tree" class="tab-controls hidden"></div>
     <div id="tab-controls-phases" class="tab-controls hidden"></div>
     <div id="tab-controls-autoset" class="tab-controls hidden"></div>
+    <div id="tab-controls-chat" class="tab-controls hidden">
+        <button id="chat-clear-btn" class="hdr-btn">Clear</button>
+    </div>
 
     <div class="hdr-status">
         <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
@@ -432,6 +436,28 @@
         </div>
     </div>
 
+    <!-- ═══ Tab: Chat ═══ -->
+    <div id="tab-chat" class="tab-content hidden">
+        <div class="chat-layout">
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-welcome">
+                    <h3>Music Collection Chat</h3>
+                    <p>Ask questions about your collection, search for tracks, or create playlists using natural language.</p>
+                    <div class="chat-suggestions">
+                        <button class="chat-suggestion" data-msg="What genres are in my collection?">What genres are in my collection?</button>
+                        <button class="chat-suggestion" data-msg="Find me some uplifting house tracks">Find me some uplifting house tracks</button>
+                        <button class="chat-suggestion" data-msg="Create a playlist of 90s hip-hop">Create a playlist of 90s hip-hop</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask about your music collection..." rows="1"></textarea>
+                <button id="chat-send-btn" class="chat-send-btn" disabled>Send</button>
+                <button id="chat-stop-btn" class="chat-send-btn chat-stop-btn hidden">Stop</button>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <!-- Set Workshop Drawer (right-hand slide-out) -->
@@ -612,5 +638,6 @@
 <script src="/static/setbuilder.js"></script>
 <script src="/static/phases.js"></script>
 <script src="/static/autoset.js"></script>
+<script src="/static/chat.js"></script>
 </body>
 </html>
