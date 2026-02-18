@@ -426,3 +426,19 @@ async function _asOpenInWorkshop() {
         showToast(`"${sourceName}" loaded — drag tracks to slots`);
     }
 }
+
+// ---------------------------------------------------------------------------
+// Cross-Tab Preselection (called from Chat drawer)
+// ---------------------------------------------------------------------------
+
+async function preselectAutoSetPlaylist(playlistId) {
+    const typeSelect = _as("autoset-source-type");
+    if (!typeSelect) return;
+
+    typeSelect.value = "playlist";
+    await _asLoadSources();
+
+    const picker = _as("autoset-source-id");
+    picker.value = playlistId;
+    _asOnSourceChange();
+}

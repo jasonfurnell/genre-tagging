@@ -7,6 +7,8 @@
 let _chatEventSource = null;
 let _chatStreaming = false;
 let _chatCurrentAssistantEl = null;
+let _chatDrawerOpen = false;
+let _chatDrawerPlaylistId = null;
 
 const _ch = (id) => document.getElementById(id);
 
@@ -40,6 +42,11 @@ function initChatTab() {
             _chatSend();
         });
     });
+
+    // Drawer buttons
+    _ch("chat-drawer-close").addEventListener("click", _chatCloseDrawer);
+    _ch("chat-drawer-push-workshop").addEventListener("click", _chatPushToWorkshop);
+    _ch("chat-drawer-push-autoset").addEventListener("click", _chatPushToAutoSet);
 
     _chatLoadHistory();
 }
@@ -155,6 +162,7 @@ function _chatStop() {
 }
 
 async function _chatClear() {
+    if (_chatDrawerOpen) _chatCloseDrawer();
     await fetch("/api/chat/clear", { method: "POST" });
     const messages = _ch("chat-messages");
     messages.innerHTML = "";
@@ -258,6 +266,14 @@ function _chatShowToolResult(toolName, summary, result) {
     if (result && result.tracks && result.tracks.length > 0) {
         _chatRenderTrackList(result.tracks, bubble);
     }
+
+    // Auto-open drawer for playlist mutations
+    if (toolName === "create_playlist" && result && result.playlist) {
+        _chatOpenDrawer(result.playlist.id, result.playlist.name);
+    }
+    if (toolName === "add_tracks_to_playlist" && result && result.playlist) {
+        _chatOpenDrawer(result.playlist.id, result.playlist.name);
+    }
 }
 
 function _chatRenderTrackList(tracks, bubble) {
@@ -310,6 +326,160 @@ function _chatEsc(s) {
     const d = document.createElement("div");
     d.textContent = s || "";
     return d.innerHTML;
+}
+
+// ---------------------------------------------------------------------------
+// Chat Playlist Drawer
+// ---------------------------------------------------------------------------
+
+async function _chatOpenDrawer(playlistId, playlistName) {
+    _chatDrawerPlaylistId = playlistId;
+    _chatDrawerOpen = true;
+
+    const drawer = document.getElementById("chat-drawer");
+    drawer.classList.add("open");
+    document.getElementById("tab-chat").classList.add("chat-drawer-open");
+
+    // Show loading state
+    document.getElementById("chat-drawer-title").textContent = playlistName || "Playlist";
+    document.getElementById("chat-drawer-badge").className = "source-badge";
+    document.getElementById("chat-drawer-badge").textContent = "";
+    document.getElementById("chat-drawer-desc").style.display = "none";
+    document.getElementById("chat-drawer-count").textContent = "Loading\u2026";
+    document.getElementById("chat-drawer-tracks").innerHTML = "";
+
+    try {
+        const res = await fetch(`/api/workshop/playlists/${playlistId}`);
+        if (!res.ok) throw new Error("Playlist not found");
+        const data = await res.json();
+        _chatRenderDrawer(data.playlist, data.tracks);
+    } catch (e) {
+        document.getElementById("chat-drawer-count").textContent = "Failed to load playlist";
+    }
+}
+
+function _chatCloseDrawer() {
+    _chatDrawerOpen = false;
+    _chatDrawerPlaylistId = null;
+    document.getElementById("chat-drawer").classList.remove("open");
+    document.getElementById("tab-chat").classList.remove("chat-drawer-open");
+}
+
+function _chatRenderDrawer(playlist, tracks) {
+    document.getElementById("chat-drawer-title").textContent = playlist.name;
+
+    // Source badge
+    const badge = document.getElementById("chat-drawer-badge");
+    const source = playlist.source || "manual";
+    badge.textContent = _chatSourceLabel(source);
+    badge.className = "source-badge source-badge-" + _chatSourceBadgeClass(source);
+
+    // Description
+    const descEl = document.getElementById("chat-drawer-desc");
+    if (playlist.description) {
+        descEl.textContent = playlist.description;
+        descEl.style.display = "block";
+    } else {
+        descEl.style.display = "none";
+    }
+
+    // Count
+    document.getElementById("chat-drawer-count").textContent = tracks.length + " tracks";
+
+    // Tracks
+    const container = document.getElementById("chat-drawer-tracks");
+    container.innerHTML = "";
+
+    for (const track of tracks) {
+        const row = document.createElement("div");
+        row.className = "chat-drawer-track-row";
+
+        const safeArtist = _chatEsc(track.artist || "");
+        const safeTitle = _chatEsc(track.title || "");
+
+        row.innerHTML =
+            '<img class="chat-drawer-track-art" alt="">' +
+            '<button class="btn-preview" title="Preview">&#x25B6;</button>' +
+            '<div class="chat-drawer-track-info">' +
+                '<span class="chat-drawer-track-title">' + safeTitle + '</span>' +
+                '<span class="chat-drawer-track-artist">' + safeArtist + '</span>' +
+            '</div>' +
+            '<div class="chat-drawer-track-meta">' +
+                (track.bpm ? Math.round(track.bpm) + " BPM" : "") +
+                (track.key ? "<br>" + _chatEsc(track.key) : "") +
+            '</div>';
+
+        // Load artwork
+        const img = row.querySelector("img");
+        if (typeof loadArtwork === "function") {
+            loadArtwork(track.artist, track.title, img);
+        }
+
+        // Preview button
+        row.querySelector(".btn-preview").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(track.artist, track.title, e.currentTarget);
+            }
+        });
+
+        container.appendChild(row);
+    }
+}
+
+function _chatSourceLabel(source) {
+    const labels = {
+        manual: "Manual", llm: "AI Curated", import: "Imported",
+        chat: "Chat", tree: "Genre Tree",
+        "scene-tree": "Scene Tree", "collection-tree": "Collection",
+    };
+    return labels[source] || source;
+}
+
+function _chatSourceBadgeClass(source) {
+    if (source === "chat") return "chat";
+    if (source === "llm") return "llm";
+    if (source === "import") return "import";
+    if (source && source.includes("tree")) return "tree";
+    return "manual";
+}
+
+function _chatPushToWorkshop() {
+    if (!_chatDrawerPlaylistId) return;
+    const playlistId = _chatDrawerPlaylistId;
+    const name = document.getElementById("chat-drawer-title").textContent;
+    _chatCloseDrawer();
+
+    fetch("/api/workshop/playlists/" + playlistId)
+        .then(r => r.json())
+        .then(data => {
+            if (typeof pushToSetWorkshop === "function") {
+                pushToSetWorkshop(
+                    data.playlist.track_ids || [],
+                    name,
+                    "playlist",
+                    playlistId,
+                    null
+                );
+            }
+        });
+}
+
+function _chatPushToAutoSet() {
+    if (!_chatDrawerPlaylistId) return;
+    const playlistId = _chatDrawerPlaylistId;
+    _chatCloseDrawer();
+
+    if (typeof switchToTab === "function") {
+        switchToTab("autoset");
+    }
+
+    // Allow tab to initialize before preselecting
+    setTimeout(() => {
+        if (typeof preselectAutoSetPlaylist === "function") {
+            preselectAutoSetPlaylist(playlistId);
+        }
+    }, 200);
 }
 
 // ---------------------------------------------------------------------------

@@ -1694,13 +1694,34 @@ function renderPlaylistSidebar() {
         const div = document.createElement("div");
         div.className = "ws-playlist-item" + (p.id === wsSelectedPlaylist ? " active" : "");
         div.dataset.pid = p.id;
+        const source = p.source || "manual";
+        const badgeHtml = source !== "manual"
+            ? ` <span class="source-badge source-badge-${_wsSourceBadgeClass(source)}">${_wsSourceLabel(source)}</span>`
+            : "";
         div.innerHTML = `
-            <span class="ws-pl-name">${escapeHtml(p.name)}</span>
+            <span class="ws-pl-name">${escapeHtml(p.name)}</span>${badgeHtml}
             <span class="ws-pl-count">${(p.track_ids || []).length}</span>
         `;
         div.addEventListener("click", () => selectPlaylist(p.id));
         sidebar.appendChild(div);
     });
+}
+
+function _wsSourceBadgeClass(source) {
+    if (source === "chat") return "chat";
+    if (source === "llm") return "llm";
+    if (source === "import") return "import";
+    if (source && source.includes("tree")) return "tree";
+    return "manual";
+}
+
+function _wsSourceLabel(source) {
+    const labels = {
+        manual: "Manual", llm: "AI", import: "Import",
+        chat: "Chat", tree: "Tree", "scene-tree": "Scene",
+        "collection-tree": "Collection",
+    };
+    return labels[source] || source;
 }
 
 async function selectPlaylist(playlistId) {

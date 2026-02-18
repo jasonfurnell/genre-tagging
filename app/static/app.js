@@ -902,6 +902,11 @@ $$(".tab-btn").forEach(btn => {
         $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
         $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
 
+        // Close chat drawer when leaving chat tab
+        if (target !== "chat" && typeof _chatCloseDrawer === "function" && typeof _chatDrawerOpen !== "undefined" && _chatDrawerOpen) {
+            _chatCloseDrawer();
+        }
+
         if (target === "intersections" && !intersectionsInitialized) {
             intersectionsInitialized = true;
             if (typeof initIntersections === "function") initIntersections();
