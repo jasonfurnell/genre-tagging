@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python -c:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(node --check:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs:*)",
+      "Bash(python app/routes.py:*)"
+    ]
+  }
+}
