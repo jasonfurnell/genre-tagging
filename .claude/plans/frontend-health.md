@@ -1,6 +1,8 @@
 # Plan: Frontend Health
 > Source: `docs/architecture-review.md` — Phase 4
 > Priority: Low-Medium
+> **Beads Epic**: `GenreTagging-57d` — **CLOSED** (all 7 subtasks superseded by Frontend Modernization epic `GenreTagging-x8f`)
+> **Status**: This plan is archived. The full React+TypeScript+Vite rewrite addresses all issues below as part of the migration.
 
 ## 1. Magic Numbers → `constants.js`
 **Issue**: Timeouts, batch sizes, thresholds scattered as bare numeric literals across all JS files.

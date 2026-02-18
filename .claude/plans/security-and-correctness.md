@@ -1,6 +1,7 @@
 # Plan: Security & Correctness
 > Source: `docs/architecture-review.md` — Phase 1
 > Priority: High (do first)
+> **Beads Epic**: `GenreTagging-1p9` (P1) — 4 subtasks
 
 ## 1. Path Traversal in `serve_artwork()`
 **File**: `app/routes.py`

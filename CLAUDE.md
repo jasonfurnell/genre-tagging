@@ -38,10 +38,19 @@ Requires `.env` with `OPENAI_API_KEY` and/or `ANTHROPIC_API_KEY`.
 - Artwork cache JSON can corrupt from concurrent workers — disk files are source of truth, use `_artwork_cache_lock`
 - `_state["_analysis_cache"]` must be invalidated on CSV upload
 
+## Issue Tracking
+This project uses **bd** (Beads) for issue tracking. See `AGENTS.md` for workflow details.
+- `bd ready` — list tasks with no open blockers
+- `bd create "Title" -p <priority>` — create a task (P0=critical, P1=high, P2=normal, P3=low)
+- `bd update <id> --claim` — claim a task
+- `bd close <id>` — complete a task
+- Include issue ID in commit messages: `git commit -m "Fix bug (GenreTagging-abc)"`
+
 ## Plans
-Active improvement plans are in `.claude/plans/`:
-- `security-and-correctness.md` — Thread safety, path traversal, shutdown cleanup
-- `split-monoliths.md` — Break up routes.py (3.5K lines) and large JS files
-- `shared-abstractions.md` — LLMClient, BackgroundTaskRunner, JsonStore
-- `frontend-health.md` — Magic numbers, error handling, deduplication, memory leaks
-- `aws-deployment.md` — Docker + ECR + EC2 deployment pipeline
+Active improvement plans are in `.claude/plans/`, each linked to a beads epic:
+- `security-and-correctness.md` — Thread safety, path traversal, shutdown cleanup (`GenreTagging-1p9`)
+- `split-monoliths.md` — Break up routes.py (backend only, 2 tasks remain) (`GenreTagging-8d6`)
+- `shared-abstractions.md` — LLMClient, BackgroundTaskRunner, JsonStore (`GenreTagging-n0e`)
+- `frontend-modernization.md` — React 19 + TypeScript + Vite + Bun migration (`GenreTagging-x8f`)
+- `aws-deployment.md` — Docker + ECR + EC2 deployment pipeline (`GenreTagging-qpw`)
+- `frontend-health.md` — ~~Archived~~ (superseded by frontend-modernization)

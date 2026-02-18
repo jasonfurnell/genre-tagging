@@ -1,6 +1,8 @@
 # Plan: Split the Monoliths
 > Source: `docs/architecture-review.md` — Phase 2
 > Priority: Medium
+> **Beads Epic**: `GenreTagging-8d6` (P2) — 2 backend subtasks remain
+> **Note**: Frontend tasks (.3 JS split, .4 CSS split) closed — superseded by Frontend Modernization epic `GenreTagging-x8f`
 
 ## Backend — Split `routes.py` (3,567 lines, 99 routes) into Domain Blueprints
 

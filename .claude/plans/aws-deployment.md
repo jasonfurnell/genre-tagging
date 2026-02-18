@@ -1,6 +1,7 @@
 # Plan: AWS Deployment
 > Source: `docs/architecture-review.md` — Section 5
 > Priority: When ready to deploy
+> **Beads Epic**: `GenreTagging-qpw` (P3) — 4 subtasks
 
 ## Architecture
 ```

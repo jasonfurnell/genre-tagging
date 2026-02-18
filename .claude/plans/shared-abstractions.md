@@ -1,6 +1,7 @@
 # Plan: Extract Shared Abstractions
 > Source: `docs/architecture-review.md` — Phase 3
 > Priority: Medium (do after or alongside split-monoliths)
+> **Beads Epic**: `GenreTagging-n0e` (P2) — 3 subtasks
 
 ## 1. LLMClient (`app/llm.py`)
 

@@ -9,7 +9,12 @@
       "Bash(node --check:*)",
       "Bash(lsof:*)",
       "Bash(xargs:*)",
-      "Bash(python app/routes.py:*)"
+      "Bash(python app/routes.py:*)",
+      "Bash(brew install:*)",
+      "Bash(bd:*)",
+      "Bash(git config:*)",
+      "Read(./*)" 
+
     ]
   }
 }
