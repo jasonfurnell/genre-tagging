@@ -18,7 +18,7 @@ Flask served well as a prototype framework, but the project has outgrown it:
 - **Serialization bugs**: numpy int64 / float64 → JSON failures, patched ad-hoc with `_safe_val()`
 - **No validation**: raw `request.json` everywhere, no schema enforcement
 - **Code duplication**: LLM provider routing, background task patterns, JSON persistence duplicated across modules
-- **Deployment friction**: pip + requirements.txt, no lockfile, no reproducible builds
+- ~~**Deployment friction**: pip + requirements.txt, no lockfile, no reproducible builds~~ (resolved — uv + pyproject.toml + uv.lock)
 
 ## Target Stack
 
@@ -73,20 +73,20 @@ app/
 
 ---
 
-## Phase 0: Package Management (no blockers)
+## Phase 0: Package Management — COMPLETE
 
-### Task 1: Initialize uv + pyproject.toml (`GenreTagging-9d7`)
+### Task 1: Initialize uv + pyproject.toml (`GenreTagging-9d7`) — DONE
 
-- Install uv (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
-- Create `pyproject.toml` with project metadata and dependencies (migrated from requirements.txt)
-- Run `uv venv` to create managed virtual environment
-- Run `uv pip install -e .` or `uv sync` to install all dependencies
-- Generate `uv.lock` for reproducible builds
-- Add `uv.lock` to git, add `.venv/` to `.gitignore`
-- Update README/CLAUDE.md run instructions: `uv run python app/main.py`
-- Verify the existing Flask app starts and works with uv-managed venv
+- [x] Install uv via **Homebrew** (`brew install uv`) — note: the `curl` installer produces unsigned binaries that macOS Gatekeeper kills
+- [x] Create `pyproject.toml` with project metadata and 7 dependencies (migrated from requirements.txt)
+- [x] Run `uv venv --python 3.13` to create managed `.venv/`
+- [x] Run `uv sync` to install all 37 packages
+- [x] `uv.lock` generated (reproducible builds)
+- [x] `.venv/` added to `.gitignore`
+- [x] CLAUDE.md updated with `uv run python app/main.py` and package management docs
+- [x] App verified running at localhost:5001 via `uv run`
 
-**Exit criteria**: App runs identically via `uv run python app/main.py`, lockfile committed.
+**Completed**: App runs identically via `uv run python app/main.py`, lockfile committed.
 
 ---
 
