@@ -388,9 +388,17 @@ function _asRenderResult(data, setId) {
 // Workshop Integration
 // ---------------------------------------------------------------------------
 
-function _asOpenInWorkshop() {
+async function _asOpenInWorkshop() {
     const setId = _as("autoset-open-workshop-btn").dataset.setId;
     if (!setId) return;
+
+    // Grab source info from the build form before switching tabs
+    const sourceType = _as("autoset-source-type").value;
+    const sourceId = _as("autoset-source-id").value;
+    const picker = _as("autoset-source-id");
+    const selected = picker.options[picker.selectedIndex];
+    const treeType = selected?.dataset?.treeType || null;
+    const sourceName = selected?.textContent?.trim() || "Source";
 
     // Switch to Set Workshop tab and load the set
     const wsBtn = document.querySelector('.tab-btn[data-tab="setbuilder"]');
@@ -398,6 +406,23 @@ function _asOpenInWorkshop() {
 
     // Trigger set load in setbuilder.js (if available)
     if (typeof loadSavedSet === "function") {
-        loadSavedSet(setId);
+        await loadSavedSet(setId);
+    }
+
+    // Open the drawer with the source playlist so user can drag/swap tracks
+    if (sourceType && sourceId && typeof openDrawer === "function") {
+        await new Promise(r => setTimeout(r, 100));
+        openDrawer("detail", null);
+        if (typeof _showDrawerLoading === "function") {
+            _showDrawerLoading(sourceName);
+        }
+        if (typeof loadDrawerSourceDetail === "function") {
+            await loadDrawerSourceDetail({
+                type: sourceType,
+                id: sourceId,
+                tree_type: treeType,
+            });
+        }
+        showToast(`"${sourceName}" loaded — drag tracks to slots`);
     }
 }
