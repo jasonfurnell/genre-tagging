@@ -15,6 +15,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.state import get_state, reset_state
+from app.tasks import BackgroundTaskManager
 
 _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,12 +40,21 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Lifespan — startup / shutdown hooks
 # ---------------------------------------------------------------------------
+_task_manager = BackgroundTaskManager()
+
+
+def get_task_manager() -> BackgroundTaskManager:
+    """FastAPI dependency for the background task manager."""
+    return _task_manager
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     state = get_state()
     logger.info("FastAPI starting up — AppState initialized")
     yield
-    logger.info("FastAPI shutting down")
+    logger.info("FastAPI shutting down — cancelling background tasks")
+    await _task_manager.shutdown()
     reset_state()
 
 
