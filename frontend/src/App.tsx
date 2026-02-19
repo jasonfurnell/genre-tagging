@@ -8,6 +8,7 @@ import { SetsTab } from '@/components/sets'
 import { TaggerTab } from '@/components/tagger'
 import { PhasesTab } from '@/components/phases'
 import { TreesTab } from '@/components/trees'
+import { WorkshopTab } from '@/components/workshop'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'set-workshop', label: 'Set Workshop' },
@@ -57,7 +58,9 @@ function App() {
         <main className="flex flex-1 overflow-hidden">
           {TABS.map((tab) => (
             <TabsContent key={tab.id} value={tab.id} className="flex flex-1">
-              {tab.id === 'tagger' ? (
+              {tab.id === 'set-workshop' ? (
+                <WorkshopTab />
+              ) : tab.id === 'tagger' ? (
                 <TaggerTab />
               ) : tab.id === 'sets' ? (
                 <SetsTab />
