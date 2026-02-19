@@ -9,6 +9,7 @@ import logging
 from contextlib import asynccontextmanager
 from logging.handlers import RotatingFileHandler
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -18,6 +19,7 @@ from app.state import get_state, reset_state
 from app.tasks import BackgroundTaskManager
 
 _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(_project_root, ".env"))
 _app_dir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -86,10 +88,11 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 # Routers (Phase 3 — migrated from Flask routes.py)
 # ---------------------------------------------------------------------------
-from app.routers import config_routes, dropbox, upload  # noqa: E402
+from app.routers import config_routes, dropbox, tagging, upload  # noqa: E402
 
 app.include_router(config_routes.router)
 app.include_router(dropbox.router)
+app.include_router(tagging.router)
 app.include_router(upload.router)
 
 

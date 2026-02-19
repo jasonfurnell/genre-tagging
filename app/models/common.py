@@ -63,3 +63,17 @@ class UploadSummary(BaseModel):
     columns: list[str] = []
     restored: bool = False
     filename: str = ""
+
+
+class TrackUpdate(BaseModel):
+    """Inline track edit (PUT /api/track/{id})."""
+
+    comment: str = ""
+
+
+class TagSingleResponse(BaseModel):
+    """Response for single track re-tag (POST /api/tag/{id})."""
+
+    id: int
+    comment: str
+    year: int | None = None
