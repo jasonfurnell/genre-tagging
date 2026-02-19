@@ -4,6 +4,7 @@ version = "1.0.0"
 description = "DJ tool: auto-tag tracks with genre/style comments via LLM, browse curated trees, build DJ sets"
 requires-python = ">=3.13"
 dependencies = [
+    "aiofiles>=25.1.0",
     "anthropic>=0.78.0",
     "dropbox>=12.0.0",
     "fastapi>=0.129.0",
