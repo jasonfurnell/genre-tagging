@@ -14,6 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+from app.state import get_state, reset_state
+
 _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _app_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,9 +41,11 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("FastAPI starting up")
+    state = get_state()
+    logger.info("FastAPI starting up — AppState initialized")
     yield
     logger.info("FastAPI shutting down")
+    reset_state()
 
 
 # ---------------------------------------------------------------------------
