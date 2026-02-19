@@ -91,12 +91,13 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 # Routers (Phase 3 — migrated from Flask routes.py)
 # ---------------------------------------------------------------------------
-from app.routers import artwork, config_routes, dropbox, tagging, upload  # noqa: E402
+from app.routers import artwork, config_routes, dropbox, tagging, trees, upload  # noqa: E402
 
 app.include_router(artwork.router)
 app.include_router(config_routes.router)
 app.include_router(dropbox.router)
 app.include_router(tagging.router)
+app.include_router(trees.router)
 app.include_router(upload.router)
 
 
