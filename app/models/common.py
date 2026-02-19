@@ -52,3 +52,14 @@ class ProgressEvent(BaseModel):
     arguments: dict | None = None
     result_summary: str | None = None
     full_text: str | None = None
+
+
+class UploadSummary(BaseModel):
+    """Response for upload and restore endpoints."""
+
+    total: int = 0
+    tagged: int = 0
+    untagged: int = 0
+    columns: list[str] = []
+    restored: bool = False
+    filename: str = ""

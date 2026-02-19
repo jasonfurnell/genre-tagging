@@ -51,6 +51,9 @@ def get_task_manager() -> BackgroundTaskManager:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     state = get_state()
+    # Restore persisted Dropbox tokens on startup
+    from app.routers.dropbox import load_dropbox_tokens
+    await load_dropbox_tokens(state)
     logger.info("FastAPI starting up — AppState initialized")
     yield
     logger.info("FastAPI shutting down — cancelling background tasks")
@@ -78,6 +81,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# ---------------------------------------------------------------------------
+# Routers (Phase 3 — migrated from Flask routes.py)
+# ---------------------------------------------------------------------------
+from app.routers import config_routes, dropbox, upload  # noqa: E402
+
+app.include_router(config_routes.router)
+app.include_router(dropbox.router)
+app.include_router(upload.router)
 
 
 # ---------------------------------------------------------------------------

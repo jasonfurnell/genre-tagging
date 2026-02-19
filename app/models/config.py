@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
+from app.models.workshop import Phase, PhaseProfile
+
 
 class AppConfig(BaseModel):
     """Full application config as persisted in config.json."""
@@ -30,3 +32,49 @@ class AppConfig(BaseModel):
     audio_path_from: str = "/Volumes/Macintosh HD/Users/jasonfurnell/Dropbox"
     audio_path_to: str = "/Users/jason.furnell/Dropbox (Personal)"
     dropbox_path_prefix: str = ""
+
+
+# ---------------------------------------------------------------------------
+# Request / response models for config + phase profile routes
+# ---------------------------------------------------------------------------
+
+
+class ConfigUpdate(BaseModel):
+    """Partial config update (PUT /api/config)."""
+
+    model: str | None = None
+    system_prompt: str | None = None
+    user_prompt_template: str | None = None
+    delay_between_requests: float | None = None
+    audio_path_map_enabled: bool | None = None
+    audio_path_from: str | None = None
+    audio_path_to: str | None = None
+    dropbox_path_prefix: str | None = None
+
+
+class PhaseProfileCreate(BaseModel):
+    """Create a new phase profile (POST /api/phase-profiles)."""
+
+    name: str
+    description: str = ""
+    phases: list[Phase]
+
+
+class PhaseProfileUpdate(BaseModel):
+    """Update an existing phase profile (PUT /api/phase-profiles/{id})."""
+
+    name: str | None = None
+    description: str | None = None
+    phases: list[Phase] | None = None
+
+
+class PhaseProfileDuplicate(BaseModel):
+    """Duplicate a phase profile (POST /api/phase-profiles/{id}/duplicate)."""
+
+    name: str
+
+
+class PhaseProfileListResponse(BaseModel):
+    """Response for GET /api/phase-profiles."""
+
+    profiles: list[PhaseProfile]

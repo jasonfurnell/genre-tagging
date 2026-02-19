@@ -1,7 +1,14 @@
 """Pydantic v2 models for GenreTagging API types."""
 
-from app.models.common import ErrorResponse, ProgressEvent, SuccessResponse
-from app.models.config import AppConfig
+from app.models.common import ErrorResponse, ProgressEvent, SuccessResponse, UploadSummary
+from app.models.config import (
+    AppConfig,
+    ConfigUpdate,
+    PhaseProfileCreate,
+    PhaseProfileDuplicate,
+    PhaseProfileListResponse,
+    PhaseProfileUpdate,
+)
 from app.models.track import TrackRow, TrackSearchResult
 from app.models.tree import (
     Category,
@@ -34,6 +41,12 @@ __all__ = [
     "SuccessResponse",
     # config
     "AppConfig",
+    "ConfigUpdate",
+    "PhaseProfileCreate",
+    "PhaseProfileDuplicate",
+    "PhaseProfileListResponse",
+    "PhaseProfileUpdate",
+    "UploadSummary",
     # track
     "TrackRow",
     "TrackSearchResult",
