@@ -6,6 +6,7 @@ import { IntersectionsTab } from '@/components/intersections'
 import { PlaylistsTab } from '@/components/playlists'
 import { SetsTab } from '@/components/sets'
 import { TaggerTab } from '@/components/tagger'
+import { PhasesTab } from '@/components/phases'
 import { TreesTab } from '@/components/trees'
 
 const TABS: { id: TabId; label: string }[] = [
@@ -66,6 +67,8 @@ function App() {
                 <IntersectionsTab />
               ) : tab.id === 'trees' ? (
                 <TreesTab />
+              ) : tab.id === 'phases' ? (
+                <PhasesTab />
               ) : (
                 <TabPlaceholder id={tab.id} />
               )}
