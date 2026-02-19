@@ -27921,5 +27921,1654 @@
     ],
     "created_at": "2026-02-19T05:45:54.715822+00:00",
     "updated_at": "2026-02-19T05:45:54.720824+00:00"
+  },
+  "a9a6f214": {
+    "id": "a9a6f214",
+    "name": "Auto Set \u2014 Electronic Evolution: Krautrock to Berlin Techno (1972-2022)",
+    "slots": [
+      {
+        "id": "autoset-slot-0",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 13,
+            "title": "Wire Shock",
+            "artist": "Brian Eno",
+            "bpm": 91.1,
+            "key": "5M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1352,
+            "title": "Trafic",
+            "artist": "Gautier Vizioz",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3473,
+            "title": "O'locco - Kama Sutra",
+            "artist": "sun electric",
+            "bpm": 108.8,
+            "key": "5M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-1",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1344,
+            "title": "The Misorientation Of Autarkic",
+            "artist": "Autarkic",
+            "bpm": 107.0,
+            "key": "9M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3455,
+            "title": "Dub 4 Joy - Original Mix",
+            "artist": "Good Block",
+            "bpm": 102.0,
+            "key": "7M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3473,
+            "title": "O'locco - Kama Sutra",
+            "artist": "sun electric",
+            "bpm": 108.8,
+            "key": "5M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-2",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1352,
+            "title": "Trafic",
+            "artist": "Gautier Vizioz",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1344,
+            "title": "The Misorientation Of Autarkic",
+            "artist": "Autarkic",
+            "bpm": 107.0,
+            "key": "9M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3473,
+            "title": "O'locco - Kama Sutra",
+            "artist": "sun electric",
+            "bpm": 108.8,
+            "key": "5M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-3",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1352,
+            "title": "Trafic",
+            "artist": "Gautier Vizioz",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3473,
+            "title": "O'locco - Kama Sutra",
+            "artist": "sun electric",
+            "bpm": 108.8,
+            "key": "5M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-4",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          {
+            "id": 3473,
+            "title": "O'locco - Kama Sutra",
+            "artist": "sun electric",
+            "bpm": 108.8,
+            "key": "5M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-5",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Opening Build"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6223,
+            "title": "The Revolution Of Super Visions",
+            "artist": "Jane Weaver",
+            "bpm": 93.0,
+            "key": "5M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          {
+            "id": 3016,
+            "title": "Rushing Into Water",
+            "artist": "Toulouse Low Trax",
+            "bpm": 108.0,
+            "key": "11D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-6",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1518,
+            "title": "Scriptures",
+            "artist": "B12",
+            "bpm": 121.9,
+            "key": "7M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 261,
+            "title": "Syrinx",
+            "artist": "A Made Up Sound",
+            "bpm": 117.0,
+            "key": "8M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 720,
+            "title": "Kesef Katan (Simple Symmetry) - Remix",
+            "artist": "Megaphonim",
+            "bpm": 120.0,
+            "key": "3M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-7",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 457,
+            "title": "The Entity",
+            "artist": "Maetrik",
+            "bpm": 126.0,
+            "key": "3D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 6121,
+            "title": "Energy Flash - 2023 Remasterd",
+            "artist": "Joey Beltram",
+            "bpm": 122.8,
+            "key": "9D",
+            "year": 1990,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2366,
+            "title": "Work It",
+            "artist": "Marie Davidson",
+            "bpm": 130.0,
+            "key": "2M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 707,
+            "title": "Disc\u00f3tico Pl\u00e9xico - Maceo Plex Remix",
+            "artist": "Rebolledo,Maceo Plex",
+            "bpm": 123.0,
+            "key": "3D",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 19,
+            "title": "Cars",
+            "artist": "Gary Numan",
+            "bpm": 130.5,
+            "key": "12M",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-8",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1286,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1518,
+            "title": "Scriptures",
+            "artist": "B12",
+            "bpm": 121.9,
+            "key": "7M",
+            "year": 1993,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 733,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-9",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 6077,
+            "title": "Voodoo Ray",
+            "artist": "A Guy Called Gerald",
+            "bpm": 119.5,
+            "key": "1M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5445,
+            "title": "Voodoo Ray",
+            "artist": "A Guy Called Gerald",
+            "bpm": 119.5,
+            "key": "1M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5376,
+            "title": "Love Can't Turn Around",
+            "artist": "Farley 'Jackmaster' Funk",
+            "bpm": 122.2,
+            "key": "8M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2655,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-10",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 733,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1286,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 720,
+            "title": "Kesef Katan (Simple Symmetry) - Remix",
+            "artist": "Megaphonim",
+            "bpm": 120.0,
+            "key": "3M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-11",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 6077,
+            "title": "Voodoo Ray",
+            "artist": "A Guy Called Gerald",
+            "bpm": 119.5,
+            "key": "1M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5376,
+            "title": "Love Can't Turn Around",
+            "artist": "Farley 'Jackmaster' Funk",
+            "bpm": 122.2,
+            "key": "8M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2655,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 4387,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-12",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Valley"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 909,
+            "title": "Hip Hop Be Bop (Original Version)",
+            "artist": "Man Parrish",
+            "bpm": 115.8,
+            "key": "6M",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3053,
+            "title": "Singular",
+            "artist": "Discodeine, Matias Aguayo",
+            "bpm": 115.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 813,
+            "title": "Vitamin C",
+            "artist": "CAN",
+            "bpm": 117.2,
+            "key": "2M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-13",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Valley"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 909,
+            "title": "Hip Hop Be Bop (Original Version)",
+            "artist": "Man Parrish",
+            "bpm": 115.8,
+            "key": "6M",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3053,
+            "title": "Singular",
+            "artist": "Discodeine, Matias Aguayo",
+            "bpm": 115.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-14",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Valley"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 909,
+            "title": "Hip Hop Be Bop (Original Version)",
+            "artist": "Man Parrish",
+            "bpm": 115.8,
+            "key": "6M",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-15",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 6077,
+            "title": "Voodoo Ray",
+            "artist": "A Guy Called Gerald",
+            "bpm": 119.5,
+            "key": "1M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 4387,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2655,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-16",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 733,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 720,
+            "title": "Kesef Katan (Simple Symmetry) - Remix",
+            "artist": "Megaphonim",
+            "bpm": 120.0,
+            "key": "3M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-17",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2655,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 4387,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-18",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2655,
+            "title": "Good Life",
+            "artist": "Inner City",
+            "bpm": 121.3,
+            "key": "3M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-19",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Second Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 5486,
+            "title": "Big Fun",
+            "artist": "Inner City",
+            "bpm": 120.2,
+            "key": "7M",
+            "year": 1989,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-20",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 733,
+            "title": "Ofterschwang",
+            "artist": "J\u00fcrgen Paape",
+            "bpm": 121.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-21",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "First Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 247,
+            "title": "Wakoom",
+            "artist": "Futuristic Dub Foundation",
+            "bpm": 139.9,
+            "key": "8M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 8
+      },
+      {
+        "id": "autoset-slot-22",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 58,
+            "title": "Pollution",
+            "artist": "Skudge",
+            "bpm": 128.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 707,
+            "title": "Disc\u00f3tico Pl\u00e9xico - Maceo Plex Remix",
+            "artist": "Rebolledo,Maceo Plex",
+            "bpm": 123.0,
+            "key": "3D",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1340,
+            "title": "The Entity",
+            "artist": "Maetrik",
+            "bpm": 126.0,
+            "key": "3D",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 457,
+            "title": "The Entity",
+            "artist": "Maetrik",
+            "bpm": 126.0,
+            "key": "3D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-23",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 160,
+            "title": "I Feel Love - Edit",
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "key": "10M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5015,
+            "title": "Can You Party (Club Mix)",
+            "artist": "Royal House",
+            "bpm": 123.3,
+            "key": "2M",
+            "year": 1988,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2425,
+            "title": "Clear",
+            "artist": "Cybotron",
+            "bpm": 125.3,
+            "key": "4M",
+            "year": 1990,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 2366,
+            "title": "Work It",
+            "artist": "Marie Davidson",
+            "bpm": 130.0,
+            "key": "2M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-24",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 302,
+            "title": "Planet Rock - Original 12\" Version",
+            "artist": "Afrika Bambaataa,The Soulsonic Force",
+            "bpm": 127.2,
+            "key": "3M",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 291,
+            "title": "Cosmic Cars",
+            "artist": "Cybotron",
+            "bpm": 124.9,
+            "key": "4D",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2425,
+            "title": "Clear",
+            "artist": "Cybotron",
+            "bpm": 125.3,
+            "key": "4M",
+            "year": 1990,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 868,
+            "title": "Al-Naafyish - Time",
+            "artist": "Hashim",
+            "bpm": 122.8,
+            "key": "4M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-25",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 58,
+            "title": "Pollution",
+            "artist": "Skudge",
+            "bpm": 128.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2366,
+            "title": "Work It",
+            "artist": "Marie Davidson",
+            "bpm": 130.0,
+            "key": "2M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 160,
+            "title": "I Feel Love - Edit",
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "key": "10M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 19,
+            "title": "Cars",
+            "artist": "Gary Numan",
+            "bpm": 130.5,
+            "key": "12M",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-26",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 291,
+            "title": "Cosmic Cars",
+            "artist": "Cybotron",
+            "bpm": 124.9,
+            "key": "4D",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 19,
+            "title": "Cars",
+            "artist": "Gary Numan",
+            "bpm": 130.5,
+            "key": "12M",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 160,
+            "title": "I Feel Love - Edit",
+            "artist": "Donna Summer",
+            "bpm": 125.7,
+            "key": "10M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2567,
+            "title": "AHADADREAM - SHAKEDOWN DRUM DUB",
+            "artist": "XXIII",
+            "bpm": 127.0,
+            "key": "12D",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-27",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 58,
+            "title": "Pollution",
+            "artist": "Skudge",
+            "bpm": 128.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2982,
+            "title": "Schrapnell",
+            "artist": "Isol\u00e9e",
+            "bpm": 126.0,
+            "key": "2D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 1340,
+            "title": "The Entity",
+            "artist": "Maetrik",
+            "bpm": 126.0,
+            "key": "3D",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 19,
+            "title": "Cars",
+            "artist": "Gary Numan",
+            "bpm": 130.5,
+            "key": "12M",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-28",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Main Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 58,
+            "title": "Pollution",
+            "artist": "Skudge",
+            "bpm": 128.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1002,
+            "title": "Donna",
+            "artist": "MMM (Errorsmith & Fiedel)",
+            "bpm": 131.0,
+            "key": "10D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 457,
+            "title": "The Entity",
+            "artist": "Maetrik",
+            "bpm": 126.0,
+            "key": "3D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 19,
+            "title": "Cars",
+            "artist": "Gary Numan",
+            "bpm": 130.5,
+            "key": "12M",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-29",
+        "source": {
+          "type": "autoset",
+          "id": "act-5",
+          "name": "Cool-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 3475,
+            "title": "Our Time - Dub",
+            "artist": "Pender Street Steppers",
+            "bpm": 113.0,
+            "key": "2M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          {
+            "id": 6252,
+            "title": "Vitamin C",
+            "artist": "CAN",
+            "bpm": 117.2,
+            "key": "2M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-30",
+        "source": {
+          "type": "autoset",
+          "id": "act-5",
+          "name": "Cool-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 3475,
+            "title": "Our Time - Dub",
+            "artist": "Pender Street Steppers",
+            "bpm": 113.0,
+            "key": "2M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      }
+    ],
+    "created_at": "2026-02-19T07:30:54.660401+00:00",
+    "updated_at": "2026-02-19T07:30:54.660407+00:00"
   }
 }
