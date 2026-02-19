@@ -7,22 +7,22 @@
   "use strict";
 
   // ─── Layout ────────────────────────────────────────────────
-  const VW = 300, VH = 420;
-  const ROOT_X = VW / 2, ROOT_Y = 215;
+  const VW = 180, VH = 252;
+  const ROOT_X = VW / 2, ROOT_Y = 130;
 
   // ─── Base skeleton segment lengths ─────────────────────────
   const S_BASE = {
-    spine: 70, neck: 16, shoulderW: 28, upperArm: 42,
-    forearm: 38, hipW: 16, thigh: 46, shin: 42,
+    spine: 42, neck: 10, shoulderW: 17, upperArm: 25,
+    forearm: 23, hand: 16, hipW: 10, thigh: 28, shin: 25,
   };
 
   // ─── Base body-part cover sizes [w, h] ─────────────────────
   const SIZES_BASE = {
-    head:  [42, 42], torso: [50, 60],
-    armLU: [24, 38], armRU: [24, 38],
-    armLL: [20, 34], armRL: [20, 34],
-    legLU: [28, 42], legRU: [28, 42],
-    legLL: [24, 38], legRL: [24, 38],
+    head:  [25, 25], torso: [30, 36],
+    armLU: [14, 23], armRU: [14, 23],
+    armLL: [12, 20], armRL: [12, 20],
+    legLU: [17, 25], legRU: [17, 25],
+    legLL: [14, 23], legRL: [14, 23],
   };
 
   // ─── Z-order (higher = in front) ──────────────────────────
@@ -36,18 +36,19 @@
     ["head",  "torso"],
     ["torso", "armLU"], ["torso", "armRU"],
     ["armLU", "armLL"], ["armRU", "armRL"],
+    ["armLL", "handL"], ["armRL", "handR"],
     ["torso", "legLU"], ["torso", "legRU"],
     ["legLU", "legLL"], ["legRU", "legRL"],
   ];
 
   // ─── Dance poses ──────────────────────────────────────────
   const POSES = [
-    { sp:-90, aLU:105, aLL:100, aRU:75,  aRL:80,  lLU:93,  lLL:90,  lRU:87,  lRL:90,  hd:0,   ry:0  },
-    { sp:-88, aLU:115, aLL:125, aRU:-50, aRL:-65, lLU:95,  lLL:88,  lRU:82,  lRL:86,  hd:8,   ry:0  },
-    { sp:-90, aLU:-130,aLL:-105,aRU:-50, aRL:-75, lLU:96,  lLL:88,  lRU:84,  lRL:92,  hd:-3,  ry:5  },
-    { sp:-92, aLU:-95, aLL:-40, aRU:105, aRL:100, lLU:88,  lLL:90,  lRU:92,  lRL:90,  hd:-10, ry:0  },
-    { sp:-82, aLU:140, aLL:110, aRU:40,  aRL:70,  lLU:108, lLL:72,  lRU:72,  lRL:108, hd:5,   ry:18 },
-    { sp:-75, aLU:-110,aLL:-130,aRU:105, aRL:115, lLU:105, lLL:82,  lRU:78,  lRL:88,  hd:12,  ry:8  },
+    { sp:-90, aLU:105, aLL:100, aLH:110, aRU:75,  aRL:80,  aRH:70,  lLU:93,  lLL:90,  lRU:87,  lRL:90,  hd:0,   ry:0  },
+    { sp:-88, aLU:115, aLL:125, aLH:140, aRU:-50, aRL:-65, aRH:-50, lLU:95,  lLL:88,  lRU:82,  lRL:86,  hd:8,   ry:0  },
+    { sp:-90, aLU:-130,aLL:-105,aLH:-90, aRU:-50, aRL:-75, aRH:-60, lLU:96,  lLL:88,  lRU:84,  lRL:92,  hd:-3,  ry:5  },
+    { sp:-92, aLU:-95, aLL:-40, aLH:-25, aRU:105, aRL:100, aRH:115, lLU:88,  lLL:90,  lRU:92,  lRL:90,  hd:-10, ry:0  },
+    { sp:-82, aLU:140, aLL:110, aLH:125, aRU:40,  aRL:70,  aRH:55,  lLU:108, lLL:72,  lRU:72,  lRL:108, hd:5,   ry:18 },
+    { sp:-75, aLU:-110,aLL:-130,aLH:-115,aRU:105, aRL:115, aRH:130, lLU:105, lLL:82,  lRU:78,  lRL:88,  hd:12,  ry:8  },
   ];
 
   const SEQUENCE = [0, 1, 2, 3, 0, 4, 5, 3, 1, 0];
@@ -58,6 +59,19 @@
     "#c23152","#1b3a5c","#12294d","#3db890","#e05470",
   ];
   const ACCENT_HEX = "#e94560";
+
+  // ─── Equaliser finger bars ──────────────────────────────
+  const EQ_BARS = 5;
+  const EQ_BASE_HEIGHT = 7;
+  const EQ_MAX_HEIGHT = 40;
+  // 5-band profiles: [beatMultiplier, oscFreq, oscAmp, phaseOffset]
+  const EQ_BANDS = [
+    [1.0,  1.2, 0.55, 0.0],   // sub-bass
+    [0.80, 3.2, 0.58, 1.1],   // bass
+    [0.55, 6.0, 0.70, 2.7],   // mid
+    [0.35, 9.0, 0.82, 4.2],   // presence
+    [0.20, 12.0,0.90, 5.7],   // air — fastest
+  ];
 
   // ─── Camelot colour palette ───────────────────────────────
   const CAMELOT_KEYS = [
@@ -76,7 +90,7 @@
 
   // ─── Tunable config (sliders modify these live) ────────────
   const DEFAULTS = {
-    skelScale:  1.10,   blockScale: 0.90,
+    skelScale:  1.00,   blockScale: 1.00,
     blockRatio: 1.05,   blockRound: 0,      keyColor: 0,
     waveAmp:    4.7,    waveSpeed:  0.3,
     waveLayers: 3,      waveColor:  0.70,
@@ -553,8 +567,22 @@
 
   function _shuffleCamelotKeys() {
     const names = Object.keys(SIZES_BASE);
+    // Limb groups share one colour so arms + EQ hands match, legs + EQ feet match
+    const limbGroups = [
+      ["armLU", "armLL"],  // left arm
+      ["armRU", "armRL"],  // right arm
+      ["legLU", "legLL"],  // left leg
+      ["legRU", "legRL"],  // right leg
+    ];
+    const grouped = new Set(limbGroups.flat());
+    limbGroups.forEach(group => {
+      const k = CAMELOT_KEYS[Math.floor(Math.random() * CAMELOT_KEYS.length)];
+      group.forEach(name => { _partCamelot[name] = k; });
+    });
     names.forEach(name => {
-      _partCamelot[name] = CAMELOT_KEYS[Math.floor(Math.random() * CAMELOT_KEYS.length)];
+      if (!grouped.has(name)) {
+        _partCamelot[name] = CAMELOT_KEYS[Math.floor(Math.random() * CAMELOT_KEYS.length)];
+      }
     });
   }
 
@@ -652,8 +680,10 @@
 
     j.elL = { x: j.shL.x + S.upperArm*Math.cos(rad(p.aLU)), y: j.shL.y + S.upperArm*Math.sin(rad(p.aLU)) };
     j.haL = { x: j.elL.x + S.forearm*Math.cos(rad(p.aLL)),  y: j.elL.y + S.forearm*Math.sin(rad(p.aLL)) };
+    j.fiL = { x: j.haL.x + S.hand*Math.cos(rad(p.aLH)),    y: j.haL.y + S.hand*Math.sin(rad(p.aLH)) };
     j.elR = { x: j.shR.x + S.upperArm*Math.cos(rad(p.aRU)), y: j.shR.y + S.upperArm*Math.sin(rad(p.aRU)) };
     j.haR = { x: j.elR.x + S.forearm*Math.cos(rad(p.aRL)),  y: j.elR.y + S.forearm*Math.sin(rad(p.aRL)) };
+    j.fiR = { x: j.haR.x + S.hand*Math.cos(rad(p.aRH)),    y: j.haR.y + S.hand*Math.sin(rad(p.aRH)) };
 
     j.hipL = { x: j.hip.x + S.hipW*Math.cos(pL), y: j.hip.y + S.hipW*Math.sin(pL) };
     j.hipR = { x: j.hip.x + S.hipW*Math.cos(pR), y: j.hip.y + S.hipW*Math.sin(pR) };
@@ -676,6 +706,8 @@
       armRU: { ...mid(j.shR, j.elR),  rot: ang(j.shR, j.elR)-90 },
       armLL: { ...mid(j.elL, j.haL),  rot: ang(j.elL, j.haL)-90 },
       armRL: { ...mid(j.elR, j.haR),  rot: ang(j.elR, j.haR)-90 },
+      handL: { ...mid(j.haL, j.fiL),  rot: ang(j.haL, j.fiL)-90 },
+      handR: { ...mid(j.haR, j.fiR),  rot: ang(j.haR, j.fiR)-90 },
       legLU: { ...mid(j.hipL, j.knL), rot: ang(j.hipL, j.knL)-90 },
       legRU: { ...mid(j.hipR, j.knR), rot: ang(j.hipR, j.knR)-90 },
       legLL: { ...mid(j.knL, j.ftL),  rot: ang(j.knL, j.ftL)-90 },
@@ -688,8 +720,8 @@
     const e = ease(t);
     return {
       sp:  lerpAngle(a.sp,  b.sp,  e),
-      aLU: lerpAngle(a.aLU, b.aLU, e), aLL: lerpAngle(a.aLL, b.aLL, e),
-      aRU: lerpAngle(a.aRU, b.aRU, e), aRL: lerpAngle(a.aRL, b.aRL, e),
+      aLU: lerpAngle(a.aLU, b.aLU, e), aLL: lerpAngle(a.aLL, b.aLL, e), aLH: lerpAngle(a.aLH, b.aLH, e),
+      aRU: lerpAngle(a.aRU, b.aRU, e), aRL: lerpAngle(a.aRL, b.aRL, e), aRH: lerpAngle(a.aRH, b.aRH, e),
       lLU: lerpAngle(a.lLU, b.lLU, e), lLL: lerpAngle(a.lLL, b.lLL, e),
       lRU: lerpAngle(a.lRU, b.lRU, e), lRL: lerpAngle(a.lRL, b.lRL, e),
       hd:  lerpAngle(a.hd,  b.hd,  e),
@@ -705,8 +737,10 @@
       sp:  base.sp  + rn() * n * 0.25,
       aLU: base.aLU + rn() * n,
       aLL: base.aLL + rn() * n,
+      aLH: base.aLH + rn() * n,
       aRU: base.aRU + rn() * n,
       aRL: base.aRL + rn() * n,
+      aRH: base.aRH + rn() * n,
       lLU: base.lLU + rn() * n * 0.5,
       lLL: base.lLL + rn() * n * 0.5,
       lRU: base.lRU + rn() * n * 0.5,
@@ -739,6 +773,66 @@
       });
     }
     return crPath(pts, 0.3);
+  }
+
+  // ─── Equaliser finger rendering ───────────────────────
+  // Each attachment: from→to joint (direction), part name (for colour + block width)
+  function renderEqFingers(j, elapsed, beat) {
+    let svg = "";
+    const attachments = [
+      { from: j.haL,  to: j.fiL,  widthPart: "armLL", atMid: true,  hScale: 1.0 },  // left hand (FK segment)
+      { from: j.haR,  to: j.fiR,  widthPart: "armRL", atMid: true,  hScale: 1.0 },  // right hand (FK segment)
+      { from: j.knL,  to: j.ftL,  widthPart: "legLL", atMid: false, hScale: 1.5 },  // left foot
+      { from: j.knR,  to: j.ftR,  widthPart: "legRL", atMid: false, hScale: 1.5 },  // right foot
+    ];
+
+    for (const { from, to, widthPart, atMid, hScale } of attachments) {
+      // Direction vector (from → to)
+      const dx = to.x - from.x, dy = to.y - from.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      const dirX = dx / len, dirY = dy / len;
+      const perpX = -dirY, perpY = dirX;
+      const ang = Math.atan2(dy, dx) * 180 / Math.PI;
+
+      // Spread width matches the connected block
+      const [blockW] = sz(widthPart);
+      const barW = blockW / EQ_BARS;
+      const gap = barW * 0.15;
+      const barNetW = barW - gap;
+
+      // Bar colour from key colour system
+      const kc = partKeyColor(widthPart);
+      const fill = (_cfg.keyColor > 0 && kc)
+        ? (_cfg.keyColor >= 1 ? kc : hexLerp(ACCENT_HEX, kc, _cfg.keyColor))
+        : ACCENT_HEX;
+
+      for (let i = 0; i < EQ_BARS; i++) {
+        const [beatMul, oscFreq, oscAmp, phase] = EQ_BANDS[i];
+        const osc = (Math.sin(elapsed * oscFreq + phase) * 0.5 + 0.5) * oscAmp;
+        const maxH = EQ_MAX_HEIGHT * hScale;
+        const h = EQ_BASE_HEIGHT * hScale + (beat * beatMul + osc) * (maxH - EQ_BASE_HEIGHT * hScale);
+        const barH = Math.min(h, maxH);
+
+        // Anchor: midpoint (body segment) or endpoint (foot extension)
+        const ax = atMid ? (from.x + to.x) / 2 : to.x;
+        const ay = atMid ? (from.y + to.y) / 2 : to.y;
+        const offset = (i - (EQ_BARS - 1) / 2) * barW;
+        const bx = ax + perpX * offset;
+        const by = ay + perpY * offset;
+
+        const rx = bx - barNetW / 2;
+        const ry = by - barH;
+
+        const glowPx = 3 + beat * 6;
+        const op = 0.7 + beat * 0.25;
+        svg += `<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" `
+          + `width="${barNetW.toFixed(1)}" height="${barH.toFixed(1)}" rx="1" `
+          + `fill="${fill}" opacity="${op.toFixed(2)}" `
+          + `transform="rotate(${(ang + 90).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)})" `
+          + `style="filter:drop-shadow(0 0 ${glowPx.toFixed(0)}px ${fill})" />`;
+      }
+    }
+    return svg;
   }
 
   // ─── Visual update helpers ─────────────────────────────────
@@ -816,13 +910,13 @@
   const SLIDERS = [
     { group: "Body" },
     { key: "skelScale",  label: "Skeleton Scale",    min: 0.80, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
-    { key: "blockScale", label: "Block Size",         min: 0.40, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
-    { key: "blockRatio", label: "Block Ratio",        min: 0.35, max: 1.75, step: 0.05, fmt: v => v.toFixed(2) },
+    { key: "blockScale", label: "Block Size",         min: 0.25, max: 1.82, step: 0.05, fmt: v => v.toFixed(2) },
+    { key: "blockRatio", label: "Block Ratio",        min: 0.20, max: 2.00, step: 0.05, fmt: v => v.toFixed(2) },
     { key: "keyColor",   label: "Key Colour",         min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { group: "Energy" },
     { key: "waveAmp",    label: "Wave Amplitude",     min: 2,   max: 5,    step: 0.1,  fmt: v => v.toFixed(1) },
     { key: "waveSpeed",  label: "Wave Speed",         min: 0,   max: 4,    step: 0.1,  fmt: v => v.toFixed(1) },
-    { key: "waveLayers", label: "Wave Layers",        min: 1,   max: 6,    step: 1,    fmt: v => String(v) },
+    { key: "waveLayers", label: "Wave Layers",        min: 1,   max: 5,    step: 1,    fmt: v => String(v) },
     { key: "waveColor",  label: "Wave Colour",        min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { group: "Movement" },
     { key: "bpm",        label: "BPM Tempo",          min: 60,  max: 200,  step: 1,    fmt: v => String(v) },
@@ -1104,6 +1198,7 @@
     const glowBase = 8;
     const glowBeat = beat * 12;
     for (const [name, p] of Object.entries(pos)) {
+      if (!_els[name]) continue;  // EQ hand parts have no DOM element
       const [w, h] = sz(name);
       const kc = partKeyColor(name);
       const glowColor = (_cfg.keyColor > 0 && kc) ? kc : ACCENT_HEX;
@@ -1140,6 +1235,9 @@
           + `style="filter:drop-shadow(0 0 ${gl.toFixed(0)}px ${stroke})" />`;
       }
     });
+    // ── Equaliser finger bars (extend from hands) ──
+    svg += renderEqFingers(j, elapsed, beat);
+
     _svg.innerHTML = svg;
 
     // Lazy artwork load
