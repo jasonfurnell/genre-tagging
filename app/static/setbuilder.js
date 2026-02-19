@@ -455,6 +455,7 @@ function renderSetsGrid(sets) {
             </div>
             <div class="set-card-actions">
                 <button class="btn btn-sm btn-secondary set-card-load">Load</button>
+                <button class="btn btn-sm btn-secondary set-card-export" title="Export M3U8 (Lexicon)">Export</button>
                 <button class="btn btn-sm btn-danger set-card-delete" title="Delete">&times;</button>
             </div>
         `;
@@ -463,6 +464,10 @@ function renderSetsGrid(sets) {
             e.stopPropagation();
             loadSavedSet(s.id);
         });
+        card.querySelector(".set-card-export").addEventListener("click", (e) => {
+            e.stopPropagation();
+            exportSavedSet(s.id, s.name);
+        });
         card.querySelector(".set-card-delete").addEventListener("click", (e) => {
             e.stopPropagation();
             deleteSavedSet(s.id, s.name);
@@ -470,6 +475,27 @@ function renderSetsGrid(sets) {
         card.addEventListener("click", () => loadSavedSet(s.id));
 
         grid.appendChild(card);
+    }
+}
+
+async function exportSavedSet(setId, setName) {
+    try {
+        const res = await fetch(`/api/saved-sets/${setId}/export/m3u`);
+        if (res.ok) {
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            const safeName = (setName || "DJ_Set").replace(/\s+/g, "_");
+            a.download = `${safeName}.m3u8`;
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            const err = await res.json().catch(() => ({}));
+            alert(err.error || "Export failed");
+        }
+    } catch (e) {
+        console.error("Export failed:", e);
     }
 }
 
@@ -2596,7 +2622,7 @@ async function exportSet() {
         return;
     }
 
-    const totalMinutes = setSlots.length * 3;
+    const setName = currentSetName || `DJ_Set_${setSlots.length * 3}min`;
 
     try {
         const res = await fetch("/api/set-workshop/export-m3u", {
@@ -2604,7 +2630,7 @@ async function exportSet() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 slots,
-                name: `DJ_Set_${totalMinutes}min`,
+                name: setName,
             }),
         });
 
@@ -2613,7 +2639,8 @@ async function exportSet() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `DJ_Set_${totalMinutes}min.m3u8`;
+            const safeName = setName.replace(/\s+/g, "_");
+            a.download = `${safeName}.m3u8`;
             a.click();
             URL.revokeObjectURL(url);
         }

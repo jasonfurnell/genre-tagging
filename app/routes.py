@@ -3384,6 +3384,43 @@ def saved_sets_delete(set_id):
     return jsonify({"error": "Set not found"}), 404
 
 
+@api.route("/api/saved-sets/<set_id>/export/m3u")
+def saved_sets_export_m3u(set_id):
+    """Export a saved set as M3U8 (Lexicon compatible)."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    s = get_saved_set(set_id)
+    if not s:
+        return jsonify({"error": "Set not found"}), 404
+
+    set_name = s.get("name", "DJ_Set")
+    lines = ["#EXTM3U", f"#PLAYLIST:{set_name}"]
+
+    for slot in s.get("slots", []):
+        idx = slot.get("selectedTrackIndex")
+        tracks = slot.get("tracks") or []
+        if idx is None or idx >= len(tracks) or tracks[idx] is None:
+            continue
+        tid = tracks[idx].get("id")
+        if tid is None or tid not in df.index:
+            continue
+        row = df.loc[tid]
+        artist = str(row.get("artist", "Unknown"))
+        title = str(row.get("title", "Unknown"))
+        location = str(row.get("location", ""))
+        lines.append(f"#EXTINF:-1,{artist} - {title}")
+        if location and location != "nan":
+            lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    safe_name = set_name.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return send_file(buf, mimetype="audio/x-mpegurl", as_attachment=True,
+                     download_name=f"{safe_name}.m3u8")
+
+
 # ---------------------------------------------------------------------------
 # Phase Profiles CRUD
 # ---------------------------------------------------------------------------

@@ -41,7 +41,12 @@
       "Bash(gh repo delete:*)",
       "Bash(gh auth switch:*)",
       "Bash(git remote set-url:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(ls:*)",
+      "Bash(head:*)",
+      "Bash(uv add:*)",
+      "Bash(git -C /Users/jason.furnell/Sources/Jason_Learning/GenreTagging log --oneline -5)",
+      "Bash(git -C:*)"
     ]
   }
 }
