@@ -3,9 +3,39 @@
 ## What This Is
 A local DJ tool: upload a playlist CSV, auto-tag tracks with genre/style comments via LLM, browse curated trees, build DJ sets. Flask backend, vanilla JS frontend, single-user, in-memory DataFrame.
 
+## V1 / V2
+
+This project has two versions:
+
+| | V1 (current) | V2 (rebuild) |
+|---|---|---|
+| **What** | The app as it exists today | Complete rebuild on target architecture |
+| **Backend** | Flask, `_state` dict, threads | FastAPI, Pydantic, asyncio |
+| **Frontend** | Vanilla JS, AG Grid | React 19, TypeScript, Vite, shadcn/ui |
+| **Beads epics** | — | `GenreTagging-94r` (backend), `GenreTagging-x8f` (frontend) |
+| **Plans** | — | `backend-modernization.md`, `frontend-modernization.md` |
+| **Run command** | `uv run python app/main.py` | `uv run uvicorn app.main_fastapi:app --port 5001` |
+
+### How to interpret common instructions
+
+| User says | Meaning |
+|-----------|---------|
+| "Continue V2" / "Continue the rebuild" | Check `bd ready`, pick up next unblocked V2 task |
+| "Add X to V1" / "Add X to the current app" | Build the feature in the Flask + vanilla JS codebase |
+| "Run V1" / "Run the app" | `uv run python app/main.py` (port 5001) |
+| "Run V2" | `uv run uvicorn app.main_fastapi:app --port 5001` |
+| "V2 status" / "Rebuild status" | Show progress via `bd list` on epics 94r + x8f |
+| "V2 plan" / "Build V2 plan" | Refer to `.claude/plans/backend-modernization.md` + `frontend-modernization.md` |
+| "Deploy V2" | Refer to `.claude/plans/aws-deployment.md` |
+
+### V2 Progress
+Tracked entirely in beads. Use `bd ready` to find next work, `bd list` on the epics for full status.
+- **Backend** (`GenreTagging-94r`): Phase 0 DONE → Phase 1 → 2 → 3 → 4
+- **Frontend** (`GenreTagging-x8f`): Blocked until backend epic closes
+
 ## Running
 ```bash
-uv run python app/main.py   # Flask on port 5001
+uv run python app/main.py   # V1: Flask on port 5001
 ```
 Requires `.env` with `OPENAI_API_KEY` and/or `ANTHROPIC_API_KEY`.
 

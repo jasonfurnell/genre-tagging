@@ -18,7 +18,30 @@
       "Bash(uv run python:*)",
       "Bash(for id in 97c 6ab w76 a5e dhn akd tpk bx1 6bv 4f6)",
       "Bash(do bd update GenreTagging-$id --parent GenreTagging-ztg)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(wc:*)",
+      "Bash(ln:*)",
+      "Bash(uv init:*)",
+      "Bash(uv run alembic:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(node:*)",
+      "Bash(bash)",
+      "Bash(export PATH=\"$HOME/.bun/bin:$PATH\")",
+      "Bash(bun:*)",
+      "Bash(uv run ruff check:*)",
+      "Bash(uv sync:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git push:*)",
+      "Bash(gh auth status:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(gh auth switch:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(gh auth:*)"
     ]
   }
 }
