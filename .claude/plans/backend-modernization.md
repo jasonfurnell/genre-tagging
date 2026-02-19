@@ -216,14 +216,14 @@ Each domain migrated as a FastAPI `APIRouter`. Order: simplest → most complex.
 
 ## Phase 4: Cleanup + Deployment Update (depends on all Phase 3)
 
-### Task 14: Remove Flask, finalize FastAPI (`GenreTagging-59c`)
+### Task 14: Finalize FastAPI entry point (`GenreTagging-59c`) — DONE
 
-- Remove Flask from dependencies (`uv remove flask`)
-- Delete old `app/main.py` (Flask entry point), rename `main_fastapi.py` → `main.py`
-- Delete old `app/routes.py`
-- Update all imports
-- Run full manual test of every tab
-- Update `pyproject.toml` scripts: `uv run uvicorn app.main:app --port 5001`
+V1 preserved alongside V2 per isolation rules:
+- Renamed `main_fastapi.py` → `main.py` (V2 entry point)
+- Created `main_flask.py` (V1 entry point, renamed from old `main.py`)
+- `routes.py` preserved for V1
+- Flask remains as dependency
+- V1: `uv run python app/main_flask.py`, V2: `uv run uvicorn app.main:app --port 5001`
 
 ### Task 15: Update deployment pipeline (`GenreTagging-crn`)
 
