@@ -907,6 +907,13 @@ $$(".tab-btn").forEach(btn => {
             _chatCloseDrawer();
         }
 
+        // Robot dancer: start on chat tab, stop on others
+        if (target === "chat") {
+            if (typeof startRobotDancer === "function") startRobotDancer();
+        } else {
+            if (typeof stopRobotDancer === "function") stopRobotDancer();
+        }
+
         if (target === "intersections" && !intersectionsInitialized) {
             intersectionsInitialized = true;
             if (typeof initIntersections === "function") initIntersections();

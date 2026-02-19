@@ -3739,12 +3739,19 @@ tr.ws-seed-selected {
 
 /* ═══ Chat Tab ═══════════════════════════════════════════════════════════ */
 
+#tab-chat {
+    display: flex;
+    position: relative;
+}
+
 .chat-layout {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 46px);
     max-width: 800px;
     margin: 0 auto;
+    flex: 1;
+    min-width: 0;
 }
 
 .chat-messages {
@@ -4105,6 +4112,198 @@ tr.ws-seed-selected {
     margin-right: 390px;
     margin-left: 0;
     transition: margin 0.3s ease;
+}
+
+/* ── Dancing Robot Panel ──────────────────────────────────── */
+
+.robot-panel {
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: calc(100vh - 46px);
+    border-left: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent 0%, rgba(233,69,96,0.03) 50%, transparent 100%);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem 0;
+}
+
+.robot-stage {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.robot-part {
+    transition: box-shadow 0.3s ease;
+}
+
+.robot-part img {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ── Robot Controls ── */
+.robot-controls {
+    width: 100%;
+    padding: 0.5rem 1rem 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.25rem;
+}
+
+.robot-ctrl-group {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin: 0.5rem 0 0.25rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border);
+}
+
+.robot-ctrl-group:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.robot-ctrl-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 34px 20px;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.robot-ctrl-row.has-auto {
+    grid-template-columns: 100px 1fr 34px 20px 20px;
+}
+
+.robot-ctrl-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.robot-ctrl-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.robot-ctrl-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+}
+
+.robot-ctrl-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+}
+
+.robot-ctrl-val {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.robot-ctrl-dice {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+}
+
+.robot-ctrl-dice:hover {
+    opacity: 1;
+    background: var(--border);
+}
+
+.robot-ctrl-auto {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.6rem;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.robot-ctrl-auto:hover {
+    opacity: 1;
+    background: var(--border);
+}
+
+.robot-ctrl-auto.active {
+    opacity: 1;
+    color: var(--accent);
+    background: rgba(233, 69, 96, 0.15);
+}
+
+.robot-ctrl-btn-row {
+    flex-wrap: wrap;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.robot-ctrl-btn-row .btn {
+    flex: 1;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    min-width: 0;
+}
+
+.robot-ctrl-btn-row .btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* Hide robot on narrow screens and when drawer is open */
+@media (max-width: 1200px) {
+    .robot-panel { display: none; }
+}
+
+#tab-chat.chat-drawer-open .robot-panel {
+    display: none;
 }
 
 /* ── Source Badges ─────────────────────────────────────────── */
