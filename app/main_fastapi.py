@@ -56,6 +56,9 @@ async def lifespan(app: FastAPI):
     # Restore persisted Dropbox tokens on startup
     from app.routers.dropbox import load_dropbox_tokens
     await load_dropbox_tokens(state)
+    # Load persistent artwork cache
+    from app.routers.artwork import init_artwork_cache
+    init_artwork_cache(state)
     logger.info("FastAPI starting up — AppState initialized")
     yield
     logger.info("FastAPI shutting down — cancelling background tasks")
@@ -88,8 +91,9 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 # Routers (Phase 3 — migrated from Flask routes.py)
 # ---------------------------------------------------------------------------
-from app.routers import config_routes, dropbox, tagging, upload  # noqa: E402
+from app.routers import artwork, config_routes, dropbox, tagging, upload  # noqa: E402
 
+app.include_router(artwork.router)
 app.include_router(config_routes.router)
 app.include_router(dropbox.router)
 app.include_router(tagging.router)
