@@ -2270,7 +2270,7 @@ tr.ws-seed-selected {
     left: 50%;
     transform: translateX(-50%);
     width: 10px;              /* hover hit-zone */
-    height: 503px;            /* 9px insert-row + 2px margin + 492px BPM grid */
+    height: 647px;            /* 9px insert-row + 2px margin + 636px BPM grid */
     cursor: pointer;
     background: linear-gradient(to right,
         transparent calc(50% - 0.5px),
@@ -2338,7 +2338,7 @@ tr.ws-seed-selected {
     width: 44px;
     position: relative;
     flex-shrink: 0;
-    height: 492px;
+    height: 636px;
 }
 .set-bpm-label {
     position: absolute;
@@ -2348,18 +2348,20 @@ tr.ws-seed-selected {
     transform: translateY(50%);
     font-variant-numeric: tabular-nums;
 }
-/* BPM labels positioned for 60-150 range with 432px grid + 30px padding */
-.set-bpm-label[data-bpm="150"] { top: 30px; }
-.set-bpm-label[data-bpm="130"] { top: 126px; }
-.set-bpm-label[data-bpm="110"] { top: 222px; }
-.set-bpm-label[data-bpm="90"]  { top: 318px; }
-.set-bpm-label[data-bpm="70"]  { top: 414px; }
+/* BPM labels positioned for 50-170 range with 576px grid + 30px padding */
+.set-bpm-label[data-bpm="170"] { top: 30px; }
+.set-bpm-label[data-bpm="150"] { top: 126px; }
+.set-bpm-label[data-bpm="130"] { top: 222px; }
+.set-bpm-label[data-bpm="110"] { top: 318px; }
+.set-bpm-label[data-bpm="90"]  { top: 414px; }
+.set-bpm-label[data-bpm="70"]  { top: 510px; }
+.set-bpm-label[data-bpm="50"]  { top: 606px; }
 
 .set-bpm-grid {
     flex: none;
     position: relative;
-    height: 492px;
-    overflow: visible;
+    height: 636px;
+    overflow: hidden;
 }
 
 /* BPM gridlines */

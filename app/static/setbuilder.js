@@ -73,12 +73,13 @@ const SET_IMG = 48;
 const SET_PAD = 4;
 const SET_COL_W = SET_IMG + SET_PAD * 2;  // 56
 const SET_GAP = 6;
-const SET_GRID_H = 432;
+const SET_GRID_H = 576;
 const SET_GRID_PAD = 30;
-const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // 492
-const SET_BPM_MIN = 60;
-const SET_BPM_MAX = 150;
+const SET_AREA_H = SET_GRID_H + SET_GRID_PAD * 2;  // 636
+const SET_BPM_MIN = 50;
+const SET_BPM_MAX = 170;
 const SET_BPM_LEVELS = [60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+const SET_BPM_GRIDLINES = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170];
 
 // ── Tooltip ──
 let setTooltipEl = null;
@@ -846,8 +847,8 @@ function renderBpmGrid() {
     const totalW = setSlots.length * slotW;
     grid.style.width = `${totalW}px`;
 
-    // Draw gridlines at each BPM level
-    for (const bpm of SET_BPM_LEVELS) {
+    // Draw gridlines across the full BPM range
+    for (const bpm of SET_BPM_GRIDLINES) {
         const line = document.createElement("div");
         line.className = "set-bpm-gridline";
         line.style.top = `${bpmToY(bpm)}px`;
@@ -1083,7 +1084,12 @@ function renderTrackColumns() {
             });
             col.appendChild(placeholder);
         } else {
-            // Render tracks at their BPM Y positions
+            // Offset the entire column so the selected track sits at its actual BPM height
+            const colOffset = selTrack
+                ? bpmToY(selTrack.bpm || selTrack.bpm_level || 100) - bpmToY(selTrack.bpm_level || selTrack.bpm || 100)
+                : 0;
+
+            // Render tracks at their BPM Y positions (shifted by colOffset)
             slot.tracks.forEach((track, ti) => {
                 if (!track) {
                     // Loading shimmer placeholder for empty BPM rows
@@ -1119,9 +1125,9 @@ function renderTrackColumns() {
                     }
                 }
 
-                // Position at BPM
+                // Position at BPM (offset so selected track aligns to actual BPM)
                 const bpm = track.bpm_level || track.bpm || 100;
-                el.style.top = `${bpmToY(bpm) - SET_IMG / 2}px`;
+                el.style.top = `${bpmToY(bpm) - SET_IMG / 2 + colOffset}px`;
 
                 // Label fallback
                 const label = document.createElement("div");

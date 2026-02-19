@@ -5078,3 +5078,467 @@ ValueError: No valid tracks in pool
 2026-02-19 16:48:04,074 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 16:48:04] "POST /api/artwork/download-all HTTP/1.1" 200 -
 2026-02-19 16:48:04,076 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 16:48:04] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
 2026-02-19 16:48:09,898 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 16:48:09] "POST /api/set-workshop/export-m3u HTTP/1.1" 200 -
+2026-02-19 17:09:31,428 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "GET /api/artwork?artist=Shabba%20Ranks&title=Pullu%20Pum HTTP/1.1" 200 -
+2026-02-19 17:09:31,435 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:09:31,445 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:09:31,456 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "GET /artwork/6da154d63162ad220bbb4496e4c25fdd_big.jpg?v=1770986002 HTTP/1.1" 200 -
+2026-02-19 17:09:31,490 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "GET /api/set-workshop/track-context/2797 HTTP/1.1" 200 -
+2026-02-19 17:09:31,679 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:09:31,683 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "GET /artwork/214d6d9f3a56189ef88f782df672f189_small.jpg?v=1770985422 HTTP/1.1" 200 -
+2026-02-19 17:09:31,683 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:31] "GET /artwork/919053a5ce5b74985862bbc240b24bcd_small.jpg?v=1770985421 HTTP/1.1" 200 -
+2026-02-19 17:09:32,081 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:09:32,084 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:32] "[32mGET /api/audio/2797 HTTP/1.1[0m" 302 -
+2026-02-19 17:09:34,769 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:34] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:09:44,572 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:09:44,572 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:44] "GET /artwork/b9d3f9aaeee242356c44eeec541138c4_big.jpg?v=1770987522 HTTP/1.1" 200 -
+2026-02-19 17:09:44,645 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:44] "GET /api/set-workshop/track-context/5552 HTTP/1.1" 200 -
+2026-02-19 17:09:44,830 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:44] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:09:44,834 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:44] "GET /artwork/4e5fc5d5afaf5f64427ea0fe3a728ae5_small.jpg?v=1770985644 HTTP/1.1" 200 -
+2026-02-19 17:09:44,921 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:09:44,922 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:09:44] "[32mGET /api/audio/5552 HTTP/1.1[0m" 302 -
+2026-02-19 17:13:30,539 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:13:30,541 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:13:30] "GET /artwork/bc8ba42d15a37b5d59c75fe9370a4f92_big.jpg?v=1770987607 HTTP/1.1" 200 -
+2026-02-19 17:13:30,544 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:13:30,573 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:13:30] "GET /api/set-workshop/track-context/6045 HTTP/1.1" 200 -
+2026-02-19 17:13:30,782 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:13:30] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:13:31,043 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:13:31,046 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:13:31] "[32mGET /api/audio/6045 HTTP/1.1[0m" 302 -
+2026-02-19 17:16:42,921 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:16:42] "GET /artwork/6574747869f8b4166881eb749846a45a_big.jpg?v=1770987433 HTTP/1.1" 200 -
+2026-02-19 17:16:42,922 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:16:42,987 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:16:42,993 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:16:42] "GET /api/set-workshop/track-context/4892 HTTP/1.1" 200 -
+2026-02-19 17:16:43,505 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:16:43,507 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:16:43] "[32mGET /api/audio/4892 HTTP/1.1[0m" 302 -
+2026-02-19 17:21:18,226 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:21:18,226 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "GET /artwork/dd051587b031e24ca5dd439bc38e8c3d_big.jpg?v=1770987310 HTTP/1.1" 200 -
+2026-02-19 17:21:18,249 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:21:18,323 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "GET /api/set-workshop/track-context/4819 HTTP/1.1" 200 -
+2026-02-19 17:21:18,608 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:21:18,649 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "GET /artwork/2257f558056c008a7c7d9c80d01906e7_small.jpg?v=1770985364 HTTP/1.1" 200 -
+2026-02-19 17:21:18,651 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "GET /artwork/b2aaa4e9d5ad06132435544d78fa759d_small.jpg?v=1771014796 HTTP/1.1" 200 -
+2026-02-19 17:21:18,797 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:21:18,829 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:21:18] "[32mGET /api/audio/4819 HTTP/1.1[0m" 302 -
+2026-02-19 17:24:39,980 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:24:39] "GET /artwork/3cabb1f367b3209c6136f4006c008fbb_big.jpg?v=1770987611 HTTP/1.1" 200 -
+2026-02-19 17:24:39,983 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:24:40,250 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:24:40,507 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:24:40] "GET /api/set-workshop/track-context/6061 HTTP/1.1" 200 -
+2026-02-19 17:24:40,744 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:24:40] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:24:40,896 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:24:40,900 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:24:40] "[32mGET /api/audio/6061 HTTP/1.1[0m" 302 -
+2026-02-19 17:29:27,254 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "GET /api/artwork?artist=SL2&title=DJs%20Take%20Control HTTP/1.1" 200 -
+2026-02-19 17:29:27,381 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:29:27,383 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "GET /artwork/62aa7f963eddf76c36ea328590ad97bb_big.jpg?v=1770987619 HTTP/1.1" 200 -
+2026-02-19 17:29:27,385 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:29:27,416 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "GET /api/set-workshop/track-context/6098 HTTP/1.1" 200 -
+2026-02-19 17:29:27,628 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:29:27,644 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "GET /artwork/1fef876e4cc5d4e3df9dfe5c2549d6f2_small.jpg?v=1770985388 HTTP/1.1" 200 -
+2026-02-19 17:29:27,823 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:29:27,827 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:29:27] "[32mGET /api/audio/6098 HTTP/1.1[0m" 302 -
+2026-02-19 17:34:38,955 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:38] "GET /api/artwork?artist=Vitalic&title=Poison%20Lips HTTP/1.1" 200 -
+2026-02-19 17:34:39,176 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:34:39,260 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:39] "GET /artwork/3fd2ce3384989e75bdb457cf2e976093_big.jpg?v=1770987568 HTTP/1.1" 200 -
+2026-02-19 17:34:39,277 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:34:39,360 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:39] "GET /api/set-workshop/track-context/6055 HTTP/1.1" 200 -
+2026-02-19 17:34:39,619 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:39] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:34:39,665 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:39] "GET /artwork/71cb00c2bdf5098238205c0f590a1532_small.jpg?v=1770985339 HTTP/1.1" 200 -
+2026-02-19 17:34:39,845 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:34:39,908 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:34:39] "[32mGET /api/audio/6055 HTTP/1.1[0m" 302 -
+2026-02-19 17:38:38,093 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:38:38] "GET /api/artwork?artist=Gat%20Decor&title=Passion%20-%20Naked%20Edit HTTP/1.1" 200 -
+2026-02-19 17:38:38,144 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:38:38,152 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:38:38,159 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:38:38] "GET /artwork/5f9353dfc1fd98192aa38b09d8104525_big.jpg?v=1770987504 HTTP/1.1" 200 -
+2026-02-19 17:38:38,179 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:38:38] "GET /api/set-workshop/track-context/6054 HTTP/1.1" 200 -
+2026-02-19 17:38:38,391 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:38:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:38:38,614 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:38:38,617 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:38:38] "[32mGET /api/audio/6054 HTTP/1.1[0m" 302 -
+2026-02-19 17:43:03,348 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:03] "GET /api/artwork?artist=Conquering%20Lion&title=Code%20Red HTTP/1.1" 200 -
+2026-02-19 17:43:03,366 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:43:03,370 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:03] "GET /artwork/7e6922329f80be0d4b498ad79819f5ec_big.jpg?v=1770987346 HTTP/1.1" 200 -
+2026-02-19 17:43:03,376 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:43:03,686 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:03] "GET /api/set-workshop/track-context/4285 HTTP/1.1" 200 -
+2026-02-19 17:43:04,096 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:43:04,099 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:04] "[32mGET /api/audio/4285 HTTP/1.1[0m" 302 -
+2026-02-19 17:43:59,368 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET / HTTP/1.1" 200 -
+2026-02-19 17:43:59,684 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-19 17:43:59,678 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,704 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,706 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,736 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,737 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,740 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-19 17:43:59,751 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:43:59] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-19 17:44:01,071 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:01] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-19 17:44:01,364 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:01] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:44:01,888 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:01] "GET /api/restore HTTP/1.1" 200 -
+2026-02-19 17:44:02,755 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:02] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-19 17:44:02,870 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:02] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:44:02,880 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:02] "GET /api/phase-profiles/opening_set HTTP/1.1" 200 -
+2026-02-19 17:44:03,083 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:44:03,095 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:44:03,116 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:44:03,130 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:44:03,166 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:44:03,184 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/2599f53e0a76577d2291ca87c84ef64f_small.jpg?v=1770987622 HTTP/1.1" 200 -
+2026-02-19 17:44:03,185 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/480e4b76b61e2092c222b20603f90812_small.jpg?v=1771014781 HTTP/1.1" 200 -
+2026-02-19 17:44:03,198 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/1797e60e1344d5caaf723edc81910290_small.jpg?v=1770987624 HTTP/1.1" 200 -
+2026-02-19 17:44:03,201 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/7c931e2f71d117aeae55ffff1fd7960f_small.jpg?v=1770987607 HTTP/1.1" 200 -
+2026-02-19 17:44:03,210 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/bf74f78a53676365e1cc43786ae4407f_small.jpg?v=1770987622 HTTP/1.1" 200 -
+2026-02-19 17:44:03,223 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/bc8ba42d15a37b5d59c75fe9370a4f92_small.jpg?v=1770987607 HTTP/1.1" 200 -
+2026-02-19 17:44:03,228 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/ba44c1aac128916c3b996844e6fb8ebf_small.jpg?v=1770987605 HTTP/1.1" 200 -
+2026-02-19 17:44:03,238 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/5ad4c617699a72ab9dc55c75f2c5d332_small.jpg?v=1771016508 HTTP/1.1" 200 -
+2026-02-19 17:44:03,240 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/645d110ce6d87f7ea33c4cc81cf3812c_small.jpg?v=1770987436 HTTP/1.1" 200 -
+2026-02-19 17:44:03,260 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/7e6922329f80be0d4b498ad79819f5ec_small.jpg?v=1770987345 HTTP/1.1" 200 -
+2026-02-19 17:44:03,262 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/085d76bee7d38e4803e8e412fb5579a5_small.jpg?v=1770986175 HTTP/1.1" 200 -
+2026-02-19 17:44:03,273 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/d5cfd14a6928d864bf63ddf930aa827b_small.jpg?v=1771014811 HTTP/1.1" 200 -
+2026-02-19 17:44:03,276 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/390eed9a81867a5082ebf01983d33731_small.jpg?v=1770987615 HTTP/1.1" 200 -
+2026-02-19 17:44:03,291 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/9e659f1f4dce5199d51acf4c3178cf1a_small.jpg?v=1770987610 HTTP/1.1" 200 -
+2026-02-19 17:44:03,292 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/026db3d3e8d665f0d1c4749ddc1de6c4_small.jpg?v=1770987611 HTTP/1.1" 200 -
+2026-02-19 17:44:03,304 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/ac404232179ca53df4b538948498e4cf_small.jpg?v=1770987570 HTTP/1.1" 200 -
+2026-02-19 17:44:03,310 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/645c008e225fa7048fb3e8d1d0da91e7_small.jpg?v=1770986202 HTTP/1.1" 200 -
+2026-02-19 17:44:03,321 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/18fa3f7a9f078136311a2bec6646132b_small.jpg?v=1771014878 HTTP/1.1" 200 -
+2026-02-19 17:44:03,323 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/0aeda9161327eb4b04514a83b43cfde5_small.jpg?v=1770987615 HTTP/1.1" 200 -
+2026-02-19 17:44:03,329 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/76064619b173c641493fac8a7724354f_small.jpg?v=1770987616 HTTP/1.1" 200 -
+2026-02-19 17:44:03,334 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/c3052934236e9fe3821bc5e63ac2567f_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:03,338 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/0137d1bba19fdab82a697b37c9cd2381_small.jpg?v=1770987605 HTTP/1.1" 200 -
+2026-02-19 17:44:03,356 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/979bdcea952a0ca4635702d6e5fb9b81_small.jpg?v=1770987608 HTTP/1.1" 200 -
+2026-02-19 17:44:03,358 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/85f57861aa4e7bc7f01346065c6698ed_small.jpg?v=1771014809 HTTP/1.1" 200 -
+2026-02-19 17:44:03,368 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/dcac2654d1e89f459373b11572a0934e_small.jpg?v=1770987419 HTTP/1.1" 200 -
+2026-02-19 17:44:03,368 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/ee887ae199d8998bc5cba4f70af1c830_small.jpg?v=1770985681 HTTP/1.1" 200 -
+2026-02-19 17:44:03,381 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/b9cc54a890f590c49f0d05d2160f1ec5_small.jpg?v=1770987624 HTTP/1.1" 200 -
+2026-02-19 17:44:03,387 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/fe38d8d03b5f69112bbff2de616fd77d_small.jpg?v=1770987625 HTTP/1.1" 200 -
+2026-02-19 17:44:03,401 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/7ca0c0c16866227010007115e1911432_small.jpg?v=1771014875 HTTP/1.1" 200 -
+2026-02-19 17:44:03,403 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/46f641de4ee86331b83dc5c7dceca8d8_small.jpg?v=1770987538 HTTP/1.1" 200 -
+2026-02-19 17:44:03,414 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/6da154d63162ad220bbb4496e4c25fdd_small.jpg?v=1770986000 HTTP/1.1" 200 -
+2026-02-19 17:44:03,414 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/b9d3f9aaeee242356c44eeec541138c4_small.jpg?v=1770987522 HTTP/1.1" 200 -
+2026-02-19 17:44:03,426 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/d66effd9881b6e4b468e5d4f29066d54_small.jpg?v=1770986175 HTTP/1.1" 200 -
+2026-02-19 17:44:03,435 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/c4d4ea8a625bacdd336b02d2c1a81426_small.jpg?v=1771014888 HTTP/1.1" 200 -
+2026-02-19 17:44:03,449 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/f462be3b0689fc0080c56a0cb0e7216d_small.jpg?v=1770985943 HTTP/1.1" 200 -
+2026-02-19 17:44:03,458 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/484619b708043652d5bd4d8bdfaa9f4b_small.jpg?v=1770987625 HTTP/1.1" 200 -
+2026-02-19 17:44:03,464 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/d2bb1a953d6efdd6057d227158a61ed4_small.jpg?v=1770987660 HTTP/1.1" 200 -
+2026-02-19 17:44:03,468 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/0a6c3f4f45854efd1fcbd72689c273a2_small.jpg?v=1771014888 HTTP/1.1" 200 -
+2026-02-19 17:44:03,476 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/8b1a691439829d7832bd04a395870846_small.jpg?v=1770985504 HTTP/1.1" 200 -
+2026-02-19 17:44:03,488 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/c99144508743c85248fe3552655e2cd2_small.jpg?v=1770985644 HTTP/1.1" 200 -
+2026-02-19 17:44:03,494 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/1afe76eeb8c45fb9995f400aa45f7061_small.jpg?v=1770986020 HTTP/1.1" 200 -
+2026-02-19 17:44:03,505 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/6b0b30c7b28fd739a7ca0eef7383b5de_small.jpg?v=1771016502 HTTP/1.1" 200 -
+2026-02-19 17:44:03,510 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/b3a7070cd4355fe41a76124cc0fa576f_small.jpg?v=1770985647 HTTP/1.1" 200 -
+2026-02-19 17:44:03,526 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/925b35f8504961b65193fb38a237951a_small.jpg?v=1771016507 HTTP/1.1" 200 -
+2026-02-19 17:44:03,544 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/faed3d4f610f44a1ebdb230844d4bf4b_small.jpg?v=1770987300 HTTP/1.1" 200 -
+2026-02-19 17:44:03,548 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/e2f56a7b95c006e80483e66a9d0f9708_small.jpg?v=1770985771 HTTP/1.1" 200 -
+2026-02-19 17:44:03,562 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/ec44ed360c487f765c3206df97931c3c_small.jpg?v=1771014833 HTTP/1.1" 200 -
+2026-02-19 17:44:03,563 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/f63145c9a3a1706b94eb1dfc3fd33ba6_small.jpg?v=1770985376 HTTP/1.1" 200 -
+2026-02-19 17:44:03,572 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/b3469cf26452770432c48cedb9492dd5_small.jpg?v=1771014846 HTTP/1.1" 200 -
+2026-02-19 17:44:03,573 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/765f98f6ecea54225aa683e1db561fa8_small.jpg?v=1770985642 HTTP/1.1" 200 -
+2026-02-19 17:44:03,583 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/adf261ec123f34a9874187631f75a968_small.jpg?v=1770987375 HTTP/1.1" 200 -
+2026-02-19 17:44:03,589 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/2a345d87a095a4ecfc03fba8179c5715_small.jpg?v=1771014844 HTTP/1.1" 200 -
+2026-02-19 17:44:03,595 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/67c34ae7819dfc8d0d20fa05ceec2cd0_small.jpg?v=1770985701 HTTP/1.1" 200 -
+2026-02-19 17:44:03,598 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/100c42ff3350314c874c64689cc95a53_small.jpg?v=1770985496 HTTP/1.1" 200 -
+2026-02-19 17:44:03,599 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-19 17:44:03,611 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/5420739efb8f0ff165568f71e77969ec_small.jpg?v=1770987298 HTTP/1.1" 200 -
+2026-02-19 17:44:03,612 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/91f1815f5a5de4c3caf6f2ea823dabde_small.jpg?v=1770985685 HTTP/1.1" 200 -
+2026-02-19 17:44:03,624 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/cd4a733a1bde59b6065c4e996c7886b5_small.jpg?v=1771014809 HTTP/1.1" 200 -
+2026-02-19 17:44:03,633 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/42336ee32516f0ac0c6b63f6331db921_small.jpg?v=1770985650 HTTP/1.1" 200 -
+2026-02-19 17:44:03,634 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/2fedcd6197e2eaec06183505640f31ea_small.jpg?v=1770985698 HTTP/1.1" 200 -
+2026-02-19 17:44:03,638 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/e6ad53f1677166c30d608b53b2629677_small.jpg?v=1771014809 HTTP/1.1" 200 -
+2026-02-19 17:44:03,651 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a1759d5ebf7f31991ccf32063d1b6767_small.jpg?v=1770986134 HTTP/1.1" 200 -
+2026-02-19 17:44:03,653 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/d9cc2c8ac9d9c2d669d6d87ac118bfdb_small.jpg?v=1770985754 HTTP/1.1" 200 -
+2026-02-19 17:44:03,654 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a90d12313b6a583d40b61df4f32a1c24_small.jpg?v=1770985769 HTTP/1.1" 200 -
+2026-02-19 17:44:03,670 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/8d819e8ba6d9eaa0a4f90775dff97e0b_small.jpg?v=1770987436 HTTP/1.1" 200 -
+2026-02-19 17:44:03,670 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a069603a13a524777c63db6fd6989a44_small.jpg?v=1770986215 HTTP/1.1" 200 -
+2026-02-19 17:44:03,693 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/88600af31abaad002cfd559aad247027_small.jpg?v=1770985552 HTTP/1.1" 200 -
+2026-02-19 17:44:03,753 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/16f1737e38b304a2c59a60400fcf0674_small.jpg?v=1770985650 HTTP/1.1" 200 -
+2026-02-19 17:44:03,819 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/d9aca89e667c7939b8479546b014f5fd_small.jpg?v=1770987608 HTTP/1.1" 200 -
+2026-02-19 17:44:03,822 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/fcd83059018f2768dedbf073e3cf8d06_small.jpg?v=1770986043 HTTP/1.1" 200 -
+2026-02-19 17:44:03,823 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/c73bac53d79c7a7ecbad40bc1687e591_small.jpg?v=1770987570 HTTP/1.1" 200 -
+2026-02-19 17:44:03,823 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/afecf692b956ba1159eaf35da830d668_small.jpg?v=1770986039 HTTP/1.1" 200 -
+2026-02-19 17:44:03,825 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/597c72c98fde960d204cf4d59d17955f_small.jpg?v=1770987571 HTTP/1.1" 200 -
+2026-02-19 17:44:03,849 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/82794aacf2fb64dfde9d1e831b64324c_small.jpg?v=1770987622 HTTP/1.1" 200 -
+2026-02-19 17:44:03,850 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/6574747869f8b4166881eb749846a45a_small.jpg?v=1770987432 HTTP/1.1" 200 -
+2026-02-19 17:44:03,853 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a3fbee24cee216068b38bbed490bb9ba_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:03,883 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a81450882ec9d8607c257b12f2a460ab_small.jpg?v=1770987608 HTTP/1.1" 200 -
+2026-02-19 17:44:03,884 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/357c33ce7060f0d3f46cb648fcff963b_small.jpg?v=1770987389 HTTP/1.1" 200 -
+2026-02-19 17:44:03,885 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/af90abfb4db4513c8a0364be66f87599_small.jpg?v=1770985909 HTTP/1.1" 200 -
+2026-02-19 17:44:03,890 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/2ff51d14161ce45eed56b7eb535703a2_small.jpg?v=1770987625 HTTP/1.1" 200 -
+2026-02-19 17:44:03,898 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/9486c8c915a1efcfa8e4907df08b0b43_small.jpg?v=1770986179 HTTP/1.1" 200 -
+2026-02-19 17:44:03,914 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/649188e45238c35d0855987d403d6e90_small.jpg?v=1771016492 HTTP/1.1" 200 -
+2026-02-19 17:44:03,920 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/3cabb1f367b3209c6136f4006c008fbb_small.jpg?v=1770987611 HTTP/1.1" 200 -
+2026-02-19 17:44:03,926 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/97d8b798d79c38b683090962f482a791_small.jpg?v=1770987566 HTTP/1.1" 200 -
+2026-02-19 17:44:03,926 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/6e8656e2c5ffcf1a1a3cfaafaf6c9658_small.jpg?v=1770987492 HTTP/1.1" 200 -
+2026-02-19 17:44:03,936 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/0cbc1c276ef3f89a27348e525169f3aa_small.jpg?v=1770987479 HTTP/1.1" 200 -
+2026-02-19 17:44:03,938 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/a7e85045e5b6df8b434b17a52bd8db20_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:03,944 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/14173572221c4b744400f23a3e99f84c_small.jpg?v=1770987296 HTTP/1.1" 200 -
+2026-02-19 17:44:03,945 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/f5d247ff3aa2ae61654d2320bcc43f0f_small.jpg?v=1770985653 HTTP/1.1" 200 -
+2026-02-19 17:44:03,948 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/5f9353dfc1fd98192aa38b09d8104525_small.jpg?v=1770987504 HTTP/1.1" 200 -
+2026-02-19 17:44:03,949 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/5946bc941b1e21ee3a44e27245eaabbd_small.jpg?v=1770986097 HTTP/1.1" 200 -
+2026-02-19 17:44:03,950 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/f142390f56b3de8ed87deb596ecefa59_small.jpg?v=1770987496 HTTP/1.1" 200 -
+2026-02-19 17:44:03,961 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/6c6602d631ad4006124169669548b7b9_small.jpg?v=1770986091 HTTP/1.1" 200 -
+2026-02-19 17:44:03,965 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/725b876c941eb53bdf0a054ba1f60556_small.jpg?v=1770985884 HTTP/1.1" 200 -
+2026-02-19 17:44:03,968 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/44d0b18ae2c2ab803ac3c3725cb5add0_small.jpg?v=1770987507 HTTP/1.1" 200 -
+2026-02-19 17:44:03,972 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/863743bf93500dadbf8a6a07a8a51752_small.jpg?v=1770987280 HTTP/1.1" 200 -
+2026-02-19 17:44:03,975 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/732b0dbc68879b806b18618854a839dc_small.jpg?v=1770987618 HTTP/1.1" 200 -
+2026-02-19 17:44:03,975 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/39b6f3f1b61b0e310d96f445444c19ce_small.jpg?v=1771016507 HTTP/1.1" 200 -
+2026-02-19 17:44:03,979 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/53f3404cab94e4996a54e5febf3995bf_small.jpg?v=1770987329 HTTP/1.1" 200 -
+2026-02-19 17:44:03,992 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/0f4e9d0c298d3bf260c46bc87b0bea4c_small.jpg?v=1771016509 HTTP/1.1" 200 -
+2026-02-19 17:44:03,992 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:03] "GET /artwork/59380038567ac735e8a74ca745006607_small.jpg?v=1770987621 HTTP/1.1" 200 -
+2026-02-19 17:44:04,003 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/a8ed1945455dcc396c7cd07a1a97d069_small.jpg?v=1770987615 HTTP/1.1" 200 -
+2026-02-19 17:44:04,008 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/0ba87e7f655a06d4833fc132355fdd7d_small.jpg?v=1770987608 HTTP/1.1" 200 -
+2026-02-19 17:44:04,016 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/79f146e2837b819529c645c3ef142ffe_small.jpg?v=1771014888 HTTP/1.1" 200 -
+2026-02-19 17:44:04,019 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/af9cb34a1d93491ae7e4f19e198ad741_small.jpg?v=1770987434 HTTP/1.1" 200 -
+2026-02-19 17:44:04,023 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/0669dd12eef0b572ba0b4f687a23c676_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:04,024 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/8adc73a1ddb869e61ba9db7ce0924ea4_small.jpg?v=1770987371 HTTP/1.1" 200 -
+2026-02-19 17:44:04,025 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/f8ecdfdff298b47c427a2de65e604562_small.jpg?v=1770987625 HTTP/1.1" 200 -
+2026-02-19 17:44:04,033 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/62aa7f963eddf76c36ea328590ad97bb_small.jpg?v=1770987619 HTTP/1.1" 200 -
+2026-02-19 17:44:04,041 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/dc4cba8a48d4d756fb4f8839a1cfaca8_small.jpg?v=1770987500 HTTP/1.1" 200 -
+2026-02-19 17:44:04,045 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c7324e8ed3b5f035bfbb6be6bd87488f_small.jpg?v=1771014797 HTTP/1.1" 200 -
+2026-02-19 17:44:04,046 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/11f53efed471ed03594dd6eb9200e0a8_small.jpg?v=1770985392 HTTP/1.1" 200 -
+2026-02-19 17:44:04,048 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/dbf1d04ab8a302dded97021fa3ae2db8_small.jpg?v=1770987326 HTTP/1.1" 200 -
+2026-02-19 17:44:04,051 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/179f15310e44493906549e65ca34dca2_small.jpg?v=1770987619 HTTP/1.1" 200 -
+2026-02-19 17:44:04,066 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/486348a60a849d4647f11f27062dbfb9_small.jpg?v=1770987347 HTTP/1.1" 200 -
+2026-02-19 17:44:04,068 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/3ca95a6bfc2579b481a2a23c0633c6b7_small.jpg?v=1770987616 HTTP/1.1" 200 -
+2026-02-19 17:44:04,069 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/3fd2ce3384989e75bdb457cf2e976093_small.jpg?v=1770987568 HTTP/1.1" 200 -
+2026-02-19 17:44:04,076 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/43fac7518905fe150225a205c368744f_small.jpg?v=1770987621 HTTP/1.1" 200 -
+2026-02-19 17:44:04,082 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/2408ea961e0d763d8bf2dd31826de1c7_small.jpg?v=1770987520 HTTP/1.1" 200 -
+2026-02-19 17:44:04,086 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/4792c52f182defd4d4b73a633a0b7767_small.jpg?v=1770987507 HTTP/1.1" 200 -
+2026-02-19 17:44:04,087 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/dd051587b031e24ca5dd439bc38e8c3d_small.jpg?v=1770987310 HTTP/1.1" 200 -
+2026-02-19 17:44:04,093 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/165ee31605256425d13b49c2d9dd4ac4_small.jpg?v=1770986188 HTTP/1.1" 200 -
+2026-02-19 17:44:04,096 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c4c113028b25b468ecc9bca9c739fa56_small.jpg?v=1770985524 HTTP/1.1" 200 -
+2026-02-19 17:44:04,100 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/979c5cad860443e53aa8776821ce4eae_small.jpg?v=1770987566 HTTP/1.1" 200 -
+2026-02-19 17:44:04,101 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/3fc581b57a8537942d1ec9aca3dd51df_small.jpg?v=1770985644 HTTP/1.1" 200 -
+2026-02-19 17:44:04,184 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/6084521f29d39c7f026ae0207161dab3_small.jpg?v=1770987502 HTTP/1.1" 200 -
+2026-02-19 17:44:04,184 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c80796c091bc2f916d82cc2eff3456a7_small.jpg?v=1770985970 HTTP/1.1" 200 -
+2026-02-19 17:44:04,185 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/28e3bb4de5f2bc954af908d1baa2df19_small.jpg?v=1770987505 HTTP/1.1" 200 -
+2026-02-19 17:44:04,205 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/07e1cc9aa648d85f7f8d11436d88d093_small.jpg?v=1770987503 HTTP/1.1" 200 -
+2026-02-19 17:44:04,209 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/cc5a7df424e5a1c30b9797edc642e2cb_small.jpg?v=1770987510 HTTP/1.1" 200 -
+2026-02-19 17:44:04,211 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/1e2bcf884dcbe14879fafad212c7b558_small.jpg?v=1770985981 HTTP/1.1" 200 -
+2026-02-19 17:44:04,211 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/dfd1b17802f638aea828212d546b54cc_small.jpg?v=1770987610 HTTP/1.1" 200 -
+2026-02-19 17:44:04,214 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/08f4382d3183074c39abd37d6a99fe2f_small.jpg?v=1770987608 HTTP/1.1" 200 -
+2026-02-19 17:44:04,215 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/62eb39d059379c6949ed430125054212_small.jpg?v=1770986195 HTTP/1.1" 200 -
+2026-02-19 17:44:04,221 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/80cd6bc830e68f5de3e59c026ded8219_small.jpg?v=1770987616 HTTP/1.1" 200 -
+2026-02-19 17:44:04,223 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/7ddbd1792c5d9a89f3e1436974188eb7_small.jpg?v=1770987317 HTTP/1.1" 200 -
+2026-02-19 17:44:04,224 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/8ee5f9f16f606eb2af0fc2f56b1dc711_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:04,227 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/83f45d47c1bf63dd6236ee4bdaba4c14_small.jpg?v=1770987436 HTTP/1.1" 200 -
+2026-02-19 17:44:04,229 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/667e1b0d8fe7f89808e3ffae52860a3d_small.jpg?v=1770985511 HTTP/1.1" 200 -
+2026-02-19 17:44:04,235 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/26b516c66760cbac22a41a1ea4e5047c_small.jpg?v=1770987355 HTTP/1.1" 200 -
+2026-02-19 17:44:04,237 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/359cd018022c6600d94295d45aeab9b9_small.jpg?v=1770987616 HTTP/1.1" 200 -
+2026-02-19 17:44:04,253 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/4f0b68721955eee4d38300657fa71c70_small.jpg?v=1770987605 HTTP/1.1" 200 -
+2026-02-19 17:44:04,256 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/45ccec9d1b22a90a9148567d03ea2faa_small.jpg?v=1770985397 HTTP/1.1" 200 -
+2026-02-19 17:44:04,257 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/ed600243cd3d8617863fb6f60878c18c_small.jpg?v=1770987570 HTTP/1.1" 200 -
+2026-02-19 17:44:04,260 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/0ca897ef6b8f9d08014bd5e9572eea40_small.jpg?v=1770987638 HTTP/1.1" 200 -
+2026-02-19 17:44:04,267 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/427f1f6b3fbf4eb72f2dba51a34dd9fa_small.jpg?v=1770985591 HTTP/1.1" 200 -
+2026-02-19 17:44:04,270 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/fc1b16013e0139f3389ec1255e579c7c_small.jpg?v=1770985775 HTTP/1.1" 200 -
+2026-02-19 17:44:04,272 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/f344836b95c2b4258f92001d6c9ff686_small.jpg?v=1770987622 HTTP/1.1" 200 -
+2026-02-19 17:44:04,272 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/36279e60b2e3639a0557dd88fead0741_small.jpg?v=1771014888 HTTP/1.1" 200 -
+2026-02-19 17:44:04,274 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/89208dac1688206457e4679b93143109_small.jpg?v=1770985524 HTTP/1.1" 200 -
+2026-02-19 17:44:04,287 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/8d13a2a1326ce641946c82124aed4307_small.jpg?v=1771014800 HTTP/1.1" 200 -
+2026-02-19 17:44:04,288 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/bb68cd5a0d179390720c0b1741a3bd55_small.jpg?v=1770985696 HTTP/1.1" 200 -
+2026-02-19 17:44:04,289 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/0c559b4ea5419b95de742d8373b57172_small.jpg?v=1770985526 HTTP/1.1" 200 -
+2026-02-19 17:44:04,292 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/9b1819680cdc726a66327e09a867de4b_small.jpg?v=1771014854 HTTP/1.1" 200 -
+2026-02-19 17:44:04,295 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/2da2da8c50d02f434a2c1e59001635be_small.jpg?v=1770987613 HTTP/1.1" 200 -
+2026-02-19 17:44:04,297 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/d60f9f641334c173458af9d7a06fc3d7_small.jpg?v=1770987610 HTTP/1.1" 200 -
+2026-02-19 17:44:04,302 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/6737b0f7c419c934cedd308629583aeb_small.jpg?v=1770985760 HTTP/1.1" 200 -
+2026-02-19 17:44:04,307 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/d15c96ffb53f3495340d8acde2f0268d_small.jpg?v=1771014871 HTTP/1.1" 200 -
+2026-02-19 17:44:04,308 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/f9c0bff8b8621c268b7f38d051ee268a_small.jpg?v=1770987611 HTTP/1.1" 200 -
+2026-02-19 17:44:04,310 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/5822754bb45445d99912d40106128178_small.jpg?v=1770985401 HTTP/1.1" 200 -
+2026-02-19 17:44:04,311 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/191ea76b990528b1d082166ce596a5c6_small.jpg?v=1770987704 HTTP/1.1" 200 -
+2026-02-19 17:44:04,315 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/9a72a09878490f311102a3c3d26209de_small.jpg?v=1770985970 HTTP/1.1" 200 -
+2026-02-19 17:44:04,320 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/71979bd554fab6658ea6a4ad90914c0b_small.jpg?v=1770985835 HTTP/1.1" 200 -
+2026-02-19 17:44:04,321 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/837a8e46093deccfa2a24aa7d7428070_small.jpg?v=1770985918 HTTP/1.1" 200 -
+2026-02-19 17:44:04,327 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/6a5b2de722863c2072c6cfb7b8a1aacf_small.jpg?v=1770985438 HTTP/1.1" 200 -
+2026-02-19 17:44:04,328 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/0977f4ad45fa28dd29f4ce1a51d9058a_small.jpg?v=1770985817 HTTP/1.1" 200 -
+2026-02-19 17:44:04,332 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/9c804fdc02d62f57af283238a275ba26_small.jpg?v=1771014875 HTTP/1.1" 200 -
+2026-02-19 17:44:04,333 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/ab3ca36ac371263f1542d644914bda23_small.jpg?v=1770985789 HTTP/1.1" 200 -
+2026-02-19 17:44:04,338 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/253afbefec17303d16a03abbacfe1640_small.jpg?v=1771014877 HTTP/1.1" 200 -
+2026-02-19 17:44:04,338 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/51f13df1a971113da6faa0fce8937624_small.jpg?v=1770987296 HTTP/1.1" 200 -
+2026-02-19 17:44:04,342 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/6e7546c0266e9f5d5c4ebc06018377c1_small.jpg?v=1770987377 HTTP/1.1" 200 -
+2026-02-19 17:44:04,343 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/ebbea45f9b2cde660c95b6a13aa94965_small.jpg?v=1770987385 HTTP/1.1" 200 -
+2026-02-19 17:44:04,347 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/fb8e89eec391efdf661521fc5ce24b96_small.jpg?v=1770987369 HTTP/1.1" 200 -
+2026-02-19 17:44:04,353 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/3f279c0628353395d6d798d0ea1682cb_small.jpg?v=1770987498 HTTP/1.1" 200 -
+2026-02-19 17:44:04,357 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/f4dc7cead9d208859d9317c67bd271bc_small.jpg?v=1770985867 HTTP/1.1" 200 -
+2026-02-19 17:44:04,358 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/e7149a7a83cc8b70e07e41695ec35930_small.jpg?v=1770985699 HTTP/1.1" 200 -
+2026-02-19 17:44:04,362 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c94c1797996eca03845e39ef5e64e466_small.jpg?v=1770986173 HTTP/1.1" 200 -
+2026-02-19 17:44:04,362 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/82753ae6f74ec6a3188775e27f7285ff_small.jpg?v=1770985511 HTTP/1.1" 200 -
+2026-02-19 17:44:04,370 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c02bd994d14ec92f7bb1e13d1403657a_small.jpg?v=1770985659 HTTP/1.1" 200 -
+2026-02-19 17:44:04,371 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/30a431fa4875a6710130cd84b020a2a6_small.jpg?v=1770987584 HTTP/1.1" 200 -
+2026-02-19 17:44:04,372 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/c233514ade5cd036acaae400603d3de8_small.jpg?v=1770987357 HTTP/1.1" 200 -
+2026-02-19 17:44:04,373 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/cd0c135078b4935fbe6c89c39e925f68_small.jpg?v=1770985873 HTTP/1.1" 200 -
+2026-02-19 17:44:04,374 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/52f36c34ecb3c10c19a99a92ea630bdf_small.jpg?v=1770987287 HTTP/1.1" 200 -
+2026-02-19 17:44:04,384 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/dcc59166413286a79dfbce72aab7c258_small.jpg?v=1770987291 HTTP/1.1" 200 -
+2026-02-19 17:44:04,385 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/ba8b6ea02a862eebd3de37fe98da3fde_small.jpg?v=1770985722 HTTP/1.1" 200 -
+2026-02-19 17:44:04,390 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/2ec3e6ec0391a435d919fea9295fda3b_small.jpg?v=1770987354 HTTP/1.1" 200 -
+2026-02-19 17:44:04,393 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/fba96d5df6d1b7b7dc438323a809e60b_small.jpg?v=1770985352 HTTP/1.1" 200 -
+2026-02-19 17:44:04,394 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/474bd7e3d5a31c025057441b69e6c498_small.jpg?v=1770985350 HTTP/1.1" 200 -
+2026-02-19 17:44:04,398 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /artwork/1f7188492731ca687c986402f237ac63_small.jpg?v=1771014872 HTTP/1.1" 200 -
+2026-02-19 17:44:04,571 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-19 17:44:04,576 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-19 17:44:04,580 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:04] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-19 17:44:50,023 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:50] "GET /api/preview?artist=A+Guy+Called+Gerald&title=Voodoo+Ray HTTP/1.1" 200 -
+2026-02-19 17:44:50,343 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:50] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:44:51,908 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:44:53,496 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:53] "GET /api/preview?artist=V.I.M.&title=Maggie's+Last+Party+-+Oak+Lawn+Mix HTTP/1.1" 200 -
+2026-02-19 17:44:53,982 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:44:53] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:45:00,426 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:45:00] "GET /api/preview?artist=Eden+Burns&title=Xoh HTTP/1.1" 200 -
+2026-02-19 17:45:00,906 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:45:00] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:45:02,852 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:45:02] "GET /api/preview?artist=Rebel+MC,+Fright,+Tenor+Fly&title=Wickedest+Sound HTTP/1.1" 200 -
+2026-02-19 17:45:03,214 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:45:03] "POST /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:48:07,475 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:07,481 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-19 17:48:07,542 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:07] "GET /api/set-workshop/track-context/2797 HTTP/1.1" 200 -
+2026-02-19 17:48:07,774 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:07] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:07,947 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:07,951 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:07] "[32mGET /api/audio/2797 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:12,869 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:12] "GET /api/artwork?artist=Sugar%20Bear&title=Don't%20Scandalize%20Mine%20-%201988 HTTP/1.1" 200 -
+2026-02-19 17:48:12,906 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:12,907 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:12] "GET /artwork/484619b708043652d5bd4d8bdfaa9f4b_big.jpg?v=1770987626 HTTP/1.1" 200 -
+2026-02-19 17:48:12,921 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:12] "GET /api/set-workshop/track-context/6109 HTTP/1.1" 200 -
+2026-02-19 17:48:13,107 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:13,111 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "GET /artwork/78f52e81f07f3458a4d179bc1cb6dba1_small.jpg?v=1770985762 HTTP/1.1" 200 -
+2026-02-19 17:48:13,112 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "GET /artwork/ec516c00a3fa35ffd384e61bbf8e697c_small.jpg?v=1770985609 HTTP/1.1" 200 -
+2026-02-19 17:48:13,277 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:13,277 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "[32mGET /api/audio/6109 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:13,655 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:13,655 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "GET /artwork/fe38d8d03b5f69112bbff2de616fd77d_big.jpg?v=1770987626 HTTP/1.1" 200 -
+2026-02-19 17:48:13,672 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "GET /api/set-workshop/track-context/6110 HTTP/1.1" 200 -
+2026-02-19 17:48:13,847 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:13,982 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:13,983 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:13] "[32mGET /api/audio/6110 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:14,270 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:14,271 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:14] "GET /artwork/d2bb1a953d6efdd6057d227158a61ed4_big.jpg?v=1770987660 HTTP/1.1" 200 -
+2026-02-19 17:48:14,276 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:14] "GET /api/set-workshop/track-context/6207 HTTP/1.1" 200 -
+2026-02-19 17:48:14,473 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:14] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:14,477 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:14] "GET /artwork/36e42e70958df7b973d445a97089353c_small.jpg?v=1770985521 HTTP/1.1" 200 -
+2026-02-19 17:48:14,540 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:14,543 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:14] "[32mGET /api/audio/6207 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:16,600 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "GET /api/artwork?artist=Quay%20Dash&title=Queen%20Of%20This%20Shit HTTP/1.1" 200 -
+2026-02-19 17:48:16,641 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:16,654 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "GET /artwork/ee887ae199d8998bc5cba4f70af1c830_big.jpg?v=1770985681 HTTP/1.1" 200 -
+2026-02-19 17:48:16,664 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "GET /api/set-workshop/track-context/1903 HTTP/1.1" 200 -
+2026-02-19 17:48:16,837 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:16,849 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "GET /artwork/9e44b6d1cebd711e978cb04854d65564_small.jpg?v=1770985746 HTTP/1.1" 200 -
+2026-02-19 17:48:16,852 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "GET /artwork/40bc4921f0d2ee21939bfe7e3ea6a439_small.jpg?v=1770985526 HTTP/1.1" 200 -
+2026-02-19 17:48:16,929 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:16,933 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:16] "[32mGET /api/audio/1903 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:17,880 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:17] "GET /api/artwork?artist=Cloonee&title=Badman%20Sound HTTP/1.1" 200 -
+2026-02-19 17:48:17,913 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:17,916 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:17] "GET /api/set-workshop/track-context/6032 HTTP/1.1" 200 -
+2026-02-19 17:48:17,916 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:17] "GET /artwork/ba44c1aac128916c3b996844e6fb8ebf_big.jpg?v=1770987606 HTTP/1.1" 200 -
+2026-02-19 17:48:18,087 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:18] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:18,090 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:18] "GET /artwork/a661ac143e71c70cf4db1a53dc77ef7b_small.jpg?v=1770986073 HTTP/1.1" 200 -
+2026-02-19 17:48:18,334 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:18,334 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:18] "[32mGET /api/audio/6032 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:20,424 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:20,425 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "GET /artwork/645d110ce6d87f7ea33c4cc81cf3812c_big.jpg?v=1770987436 HTTP/1.1" 200 -
+2026-02-19 17:48:20,431 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "GET /api/set-workshop/track-context/4906 HTTP/1.1" 200 -
+2026-02-19 17:48:20,608 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:20,615 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "GET /artwork/ba3c57c1839ac804d916e6cd389a1b05_small.jpg?v=1770986070 HTTP/1.1" 200 -
+2026-02-19 17:48:20,615 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "GET /artwork/c02c55c387ff402b1bb9f0ad0d59ebf9_small.jpg?v=1770985869 HTTP/1.1" 200 -
+2026-02-19 17:48:20,724 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:20,726 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:20] "[32mGET /api/audio/4906 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:21,118 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:21,118 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "GET /artwork/b9cc54a890f590c49f0d05d2160f1ec5_big.jpg?v=1770987625 HTTP/1.1" 200 -
+2026-02-19 17:48:21,125 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "GET /api/set-workshop/track-context/6107 HTTP/1.1" 200 -
+2026-02-19 17:48:21,401 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:21,402 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "[32mGET /api/audio/6107 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:21,765 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "GET /api/artwork?artist=Oppidan,%20Cutty%20Ranks&title=Armed%20%26%20Dangerous HTTP/1.1" 200 -
+2026-02-19 17:48:21,788 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:21,788 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "GET /artwork/0137d1bba19fdab82a697b37c9cd2381_big.jpg?v=1770987606 HTTP/1.1" 200 -
+2026-02-19 17:48:21,794 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:21] "GET /api/set-workshop/track-context/6031 HTTP/1.1" 200 -
+2026-02-19 17:48:22,063 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:22,065 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:22] "[32mGET /api/audio/6031 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:25,149 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-19 17:48:25,156 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:25] "GET /api/set-workshop/track-context/6107 HTTP/1.1" 200 -
+2026-02-19 17:48:25,427 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-19 17:48:25,428 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:25] "[32mGET /api/audio/6107 HTTP/1.1[0m" 302 -
+2026-02-19 17:48:37,560 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET / HTTP/1.1" 200 -
+2026-02-19 17:48:37,616 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,617 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-19 17:48:37,617 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,618 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,618 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,618 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,624 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-19 17:48:37,627 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:37] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-19 17:48:38,148 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-19 17:48:38,237 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:48:38,268 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/restore HTTP/1.1" 200 -
+2026-02-19 17:48:38,473 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-19 17:48:38,532 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:48:38,537 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/phase-profiles/opening_set HTTP/1.1" 200 -
+2026-02-19 17:48:38,687 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-19 17:48:38,690 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-19 17:48:38,691 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-19 17:48:38,697 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:38,697 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:38,708 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:38,712 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:38,721 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:48:38,769 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:48:38] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-19 17:50:45,506 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET / HTTP/1.1" 200 -
+2026-02-19 17:50:45,532 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-19 17:50:45,532 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,533 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,534 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,536 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,536 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,542 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-19 17:50:45,542 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:45] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-19 17:50:46,046 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-19 17:50:46,063 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:50:46,146 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/restore HTTP/1.1" 200 -
+2026-02-19 17:50:46,354 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-19 17:50:46,416 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:50:46,421 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/phase-profiles/opening_set HTTP/1.1" 200 -
+2026-02-19 17:50:46,703 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:50:46,705 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:50:46,739 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:50:46,770 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:50:46,783 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:50:46,815 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-19 17:50:46,823 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-19 17:50:46,828 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-19 17:50:46,876 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:50:46] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-19 17:53:42,340 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET / HTTP/1.1" 200 -
+2026-02-19 17:53:42,374 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,374 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-19 17:53:42,374 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,375 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,380 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,380 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,381 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,381 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-19 17:53:42,855 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-19 17:53:42,905 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-19 17:53:42,966 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:42] "GET /api/restore HTTP/1.1" 200 -
+2026-02-19 17:53:43,175 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-19 17:53:43,247 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:53:43,250 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "GET /api/phase-profiles/opening_set HTTP/1.1" 200 -
+2026-02-19 17:53:43,390 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-19 17:53:43,392 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-19 17:53:43,394 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-19 17:53:43,394 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-19 17:53:43,411 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:53:43,412 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:53:43,421 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:53:43,427 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:53:43,433 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:53:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:08,619 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "GET / HTTP/1.1" 200 -
+2026-02-19 17:55:08,649 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/tree.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,650 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,651 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/workshop.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,651 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/app.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,653 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/setbuilder.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,654 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/autoset.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,656 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/chat.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,658 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "[36mGET /static/phases.js HTTP/1.1[0m" 304 -
+2026-02-19 17:55:08,726 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-19 17:55:08,943 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:08] "GET /api/restore HTTP/1.1" 200 -
+2026-02-19 17:55:09,172 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-19 17:55:09,231 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-19 17:55:09,234 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "GET /api/phase-profiles/opening_set HTTP/1.1" 200 -
+2026-02-19 17:55:09,383 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-19 17:55:09,385 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-19 17:55:09,387 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-19 17:55:09,393 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:09,394 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:09,405 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:09,409 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:09,417 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-19 17:55:09,558 [INFO] werkzeug: 127.0.0.1 - - [19/Feb/2026 17:55:09] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
