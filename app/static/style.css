@@ -4116,6 +4116,104 @@ tr.ws-seed-selected {
 
 /* ── Dancing Robot Panel ──────────────────────────────────── */
 
+/* ── Dance Tab ─────────────────────────────────────────────── */
+
+.dance-layout {
+    display: flex;
+    height: calc(100vh - 46px);
+    overflow: hidden;
+}
+
+.dance-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    overflow: hidden;
+}
+
+.dance-robot-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 5s ease 3s;
+}
+
+.dance-robot-panel.dance-visible {
+    opacity: 1;
+}
+
+.dance-robot-panel .robot-stage {
+    transform: scale(2);
+    transform-origin: top center;
+    margin-bottom: 420px;   /* compensate for scaled visual height */
+}
+
+.dance-play-area {
+    display: flex;
+    justify-content: center;
+}
+
+.dance-play-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.dance-play-btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.dance-play-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.dance-play-btn.dance-playing {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.dance-play-icon {
+    font-size: 1rem;
+}
+
+.dance-controls-sidebar {
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: calc(100vh - 46px);
+    border-left: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent 0%, rgba(233,69,96,0.03) 50%, transparent 100%);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem 0;
+}
+
+@media (max-width: 1200px) {
+    .dance-controls-sidebar { display: none; }
+}
+
+/* ── Robot Panel (legacy) ─────────────────────────────────── */
+
 .robot-panel {
     width: 340px;
     flex-shrink: 0;

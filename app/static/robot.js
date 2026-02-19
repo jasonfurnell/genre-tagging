@@ -362,6 +362,48 @@
     _updateBlockColors();
   }
 
+  // ─── Auto-Random: periodically fire _playRandom() ────────
+  const _autoRandom = { active: false, nextFire: 0, btn: null };
+
+  function _tickAutoRandom(now) {
+    if (!_autoRandom.active) return;
+    if (now >= _autoRandom.nextFire) {
+      _playRandom();
+      _scheduleNextRandom(now);
+    }
+  }
+
+  function _scheduleNextRandom(now) {
+    const freq = _cfg.driftFreq;       // 1-20, higher = more frequent
+    const wild = _cfg.driftAmount;     // 0-1, higher = more variance
+    // Base interval: inverse of frequency (freq 10 ≈ 3s, freq 1 ≈ 30s, freq 20 ≈ 1.5s)
+    const base = 30000 / Math.max(freq, 1);
+    // Jitter: ± wildness proportion
+    const jitter = base * wild * (Math.random() - 0.5);
+    _autoRandom.nextFire = now + Math.max(500, base + jitter);
+  }
+
+  function _startAutoRandom() {
+    _autoRandom.active = true;
+    _scheduleNextRandom(performance.now());
+    if (_autoRandom.btn) {
+      _autoRandom.btn.classList.add("active");
+      _autoRandom.btn.textContent = "Stop Random";
+    }
+  }
+
+  function _stopAutoRandom() {
+    _autoRandom.active = false;
+    if (_autoRandom.btn) {
+      _autoRandom.btn.classList.remove("active");
+      _autoRandom.btn.textContent = "Play Random";
+    }
+  }
+
+  function _toggleAutoRandom() {
+    if (_autoRandom.active) _stopAutoRandom(); else _startAutoRandom();
+  }
+
   function _tickDrift(now) {
     if (!_drift.active) return;
 
@@ -441,10 +483,6 @@
       _drift.btn.classList.add("active");
       _drift.btn.textContent = "Stop Drift";
     }
-    // Pause auto-drives (drift takes over)
-    _setAllAuto(false);
-    const apBtn = document.getElementById("robot-autopilot-btn");
-    if (apBtn) { apBtn.classList.remove("active"); apBtn.textContent = "Autopilot"; }
   }
 
   function _stopDrift() {
@@ -733,7 +771,7 @@
   }
 
   // ─── Build DOM ─────────────────────────────────────────────
-  function _build() {
+  function _build(controlsTarget) {
     const panel = document.getElementById("robot-panel");
     if (!panel) return false;
 
@@ -769,7 +807,7 @@
 
     panel.innerHTML = "";
     panel.appendChild(_stage);
-    _buildControls(panel);
+    _buildControls(controlsTarget || panel);
     return true;
   }
 
@@ -917,24 +955,27 @@
     _drift.btn = driftBtn;
     driftBtn.addEventListener("click", _toggleDrift);
 
-    const playRandBtn = document.createElement("button");
-    playRandBtn.className = "btn btn-sm btn-secondary";
-    playRandBtn.textContent = "Play Random";
-    playRandBtn.addEventListener("click", _playRandom);
+    const autoRandBtn = document.createElement("button");
+    autoRandBtn.className = "btn btn-sm btn-secondary";
+    autoRandBtn.textContent = "Play Random";
+    _autoRandom.btn = autoRandBtn;
+    autoRandBtn.addEventListener("click", _toggleAutoRandom);
 
     btnRow.appendChild(resetBtn);
     btnRow.appendChild(autopilotBtn);
     btnRow.appendChild(driftBtn);
-    btnRow.appendChild(playRandBtn);
+    btnRow.appendChild(autoRandBtn);
     _ctrlPanel.appendChild(btnRow);
 
     panel.appendChild(_ctrlPanel);
 
-    // Activate default auto-drives on init
+    // Activate default auto-drives + drift + auto-random on init
     _setAutoKeys(DEFAULT_AUTO);
     autopilotBtn.classList.add("active");
     autopilotBtn.textContent = "Stop Autopilot";
     autopilotOn = true;
+    _startDrift();
+    _startAutoRandom();
   }
 
   function _resetControls() {
@@ -943,7 +984,7 @@
     Object.assign(_cfg, DEFAULTS);
     _wander.bob = 0;
     _wander.sway = 0;
-    // Restore default auto-drives
+    // Restore default auto-drives + drift
     _setAutoKeys(DEFAULT_AUTO);
     const apBtn = document.getElementById("robot-autopilot-btn");
     if (apBtn) {
@@ -961,6 +1002,8 @@
     _updateBlockSizes();
     _updateBlockRounding();
     _updateBlockColors();
+    _startDrift();
+    _startAutoRandom();
   }
 
   // ─── Load artwork ──────────────────────────────────────────
@@ -1001,6 +1044,9 @@
 
     // ── BPM beat pulse (0-1 on the beat) ──
     const beat = beatPulse(elapsed, _cfg.bpm);
+
+    // ── Auto-Random: periodic randomise ──
+    _tickAutoRandom(now);
 
     // ── Drift: home ↔ random cycling ──
     _tickDrift(now);
@@ -1103,9 +1149,9 @@
   }
 
   // ─── Public API ────────────────────────────────────────────
-  window.initRobotDancer = function () {
+  window.initRobotDancer = function (controlsContainer) {
     if (_stage) return;
-    if (!_build()) return;
+    if (!_build(controlsContainer)) return;
     _loadArt();
   };
 

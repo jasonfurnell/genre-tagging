@@ -654,6 +654,7 @@ async function uploadFile(file) {
         summary.classList.remove("hidden");
         $("#unified-header").classList.remove("hidden");
         if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
+        if (typeof startDance === "function") startDance();
         checkAndWarmArtworkCache();
     } catch (err) {
         alert("Upload error: " + err.message);
@@ -907,11 +908,11 @@ $$(".tab-btn").forEach(btn => {
             _chatCloseDrawer();
         }
 
-        // Robot dancer: start on chat tab, stop on others
-        if (target === "chat") {
-            if (typeof startRobotDancer === "function") startRobotDancer();
+        // Dance tab: start on enter, stop on leave
+        if (target === "dance") {
+            if (typeof startDance === "function") startDance();
         } else {
-            if (typeof stopRobotDancer === "function") stopRobotDancer();
+            if (typeof stopDancePlayback === "function") stopDancePlayback();
         }
 
         if (target === "intersections" && !intersectionsInitialized) {
@@ -967,6 +968,7 @@ initGrid();
             summary.classList.remove("hidden");
             $("#unified-header").classList.remove("hidden");
             if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
+            if (typeof startDance === "function") startDance();
             checkAndWarmArtworkCache();
         }
     } catch (_) { /* no autosave available */ }

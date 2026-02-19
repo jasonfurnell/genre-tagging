@@ -12,7 +12,8 @@
 
 <header id="unified-header" class="unified-header hidden">
     <nav id="tab-bar" class="tab-bar">
-        <button class="tab-btn active" data-tab="setbuilder">Set Workshop</button>
+        <button class="tab-btn active" data-tab="dance">Dance</button>
+        <button class="tab-btn" data-tab="setbuilder">Set Workshop</button>
         <button class="tab-btn" data-tab="sets">Sets</button>
         <button class="tab-btn" data-tab="tagger">Tagger</button>
         <button class="tab-btn" data-tab="intersections">Intersections</button>
@@ -25,7 +26,8 @@
     </nav>
 
     <!-- Tab-specific controls (only active tab's div is visible) -->
-    <div id="tab-controls-setbuilder" class="tab-controls">
+    <div id="tab-controls-dance" class="tab-controls"></div>
+    <div id="tab-controls-setbuilder" class="tab-controls hidden">
         <span id="set-current-name" class="set-current-name"></span>
         <button id="set-save-btn" class="hdr-btn hdr-btn-save" style="display:none;">Save</button>
         <button id="set-save-as-btn" class="hdr-btn hdr-btn-save-as">Save As</button>
@@ -314,8 +316,18 @@
         </div>
     </div>
 
+    <!-- ═══ Tab: Dance ═══ -->
+    <div id="tab-dance" class="tab-content">
+        <div class="dance-layout">
+            <div class="dance-main">
+                <div id="robot-panel" class="dance-robot-panel"></div>
+            </div>
+            <div id="dance-controls-sidebar" class="dance-controls-sidebar"></div>
+        </div>
+    </div>
+
     <!-- ═══ Tab: Set Workshop ═══ -->
-    <div id="tab-setbuilder" class="tab-content">
+    <div id="tab-setbuilder" class="tab-content hidden">
 
         <!-- Set Grid: always visible (starts empty) -->
         <div id="set-grid-wrapper" class="set-grid-wrapper">
@@ -458,7 +470,6 @@
                 <button id="chat-stop-btn" class="chat-send-btn chat-stop-btn hidden">Stop</button>
             </div>
         </div>
-        <div id="robot-panel" class="robot-panel"></div>
     </div>
 
 </main>
@@ -662,6 +673,7 @@
 <script src="/static/phases.js"></script>
 <script src="/static/autoset.js"></script>
 <script src="/static/robot.js"></script>
+<script src="/static/dance.js"></script>
 <script src="/static/chat.js"></script>
 </body>
 </html>
