@@ -9,11 +9,11 @@ export const trackKeys = {
   upload: ['upload'] as const,
 }
 
-export function useTracks() {
+export function useTracks(enabled = true) {
   return useQuery({
     queryKey: trackKeys.all,
     queryFn: () => api.get('/api/tracks').then(api.validated(z.array(TrackRow))),
-    enabled: useUiStore.getState().hasData,
+    enabled,
   })
 }
 

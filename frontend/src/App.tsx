@@ -2,6 +2,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Toaster } from '@/components/ui/sonner'
 import { useConfig } from '@/hooks/use-config'
 import { useUiStore, type TabId } from '@/stores/ui'
+import { TaggerTab } from '@/components/tagger'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'set-workshop', label: 'Set Workshop' },
@@ -51,7 +52,7 @@ function App() {
         <main className="flex flex-1 overflow-hidden">
           {TABS.map((tab) => (
             <TabsContent key={tab.id} value={tab.id} className="flex flex-1">
-              <TabPlaceholder id={tab.id} />
+              {tab.id === 'tagger' ? <TaggerTab /> : <TabPlaceholder id={tab.id} />}
             </TabsContent>
           ))}
         </main>
