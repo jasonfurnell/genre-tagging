@@ -1,4 +1,6 @@
+export * from './chord'
 export * from './common'
 export * from './config'
+export * from './playlist'
 export * from './sets'
 export * from './track'

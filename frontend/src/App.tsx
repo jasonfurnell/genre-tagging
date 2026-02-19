@@ -2,6 +2,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Toaster } from '@/components/ui/sonner'
 import { useConfig } from '@/hooks/use-config'
 import { useUiStore, type TabId } from '@/stores/ui'
+import { IntersectionsTab } from '@/components/intersections'
+import { PlaylistsTab } from '@/components/playlists'
 import { SetsTab } from '@/components/sets'
 import { TaggerTab } from '@/components/tagger'
 
@@ -57,6 +59,10 @@ function App() {
                 <TaggerTab />
               ) : tab.id === 'sets' ? (
                 <SetsTab />
+              ) : tab.id === 'playlists' ? (
+                <PlaylistsTab />
+              ) : tab.id === 'intersections' ? (
+                <IntersectionsTab />
               ) : (
                 <TabPlaceholder id={tab.id} />
               )}
