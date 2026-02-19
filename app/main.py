@@ -11,7 +11,7 @@ from logging.handlers import RotatingFileHandler
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.state import get_state, reset_state
@@ -20,6 +20,7 @@ from app.tasks import BackgroundTaskManager
 _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(_project_root, ".env"))
 _app_dir = os.path.dirname(os.path.abspath(__file__))
+_frontend_dist = os.path.join(_project_root, "frontend", "dist")
 
 
 # ---------------------------------------------------------------------------
@@ -108,21 +109,28 @@ app.include_router(upload.router)
 
 
 # ---------------------------------------------------------------------------
-# Serve index.html at root
+# Serve React frontend from frontend/dist/ (Vite build output)
 # ---------------------------------------------------------------------------
-_index_path = os.path.join(_app_dir, "templates", "index.html")
+_spa_index = os.path.join(_frontend_dist, "index.html")
+
+if os.path.isdir(os.path.join(_frontend_dist, "assets")):
+    app.mount(
+        "/assets",
+        StaticFiles(directory=os.path.join(_frontend_dist, "assets")),
+        name="frontend-assets",
+    )
 
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    with open(_index_path, "r") as f:
-        return f.read()
-
-
-# ---------------------------------------------------------------------------
-# Static files — must be mounted AFTER explicit routes
-# ---------------------------------------------------------------------------
-app.mount("/static", StaticFiles(directory=os.path.join(_app_dir, "static")), name="static")
+    if not os.path.isfile(_spa_index):
+        return HTMLResponse(
+            "<h1>Frontend not built</h1>"
+            "<p>Run <code>cd frontend && npm run build</code> to build the React app, "
+            "or use the Vite dev server at <a href='http://localhost:5173'>localhost:5173</a>.</p>",
+            status_code=200,
+        )
+    return FileResponse(_spa_index)
 
 
 # ---------------------------------------------------------------------------
