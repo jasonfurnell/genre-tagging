@@ -20,3 +20,6 @@ output/dropbox_tokens.json
 
 # Local artwork cache (downloaded from Deezer CDN)
 output/artwork/
+
+# V2 session state (autosave CSVs, upload metadata)
+output_v2/

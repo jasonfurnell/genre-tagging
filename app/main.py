@@ -52,6 +52,9 @@ def get_task_manager() -> BackgroundTaskManager:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     state = get_state()
+    # Ensure V2 session-state directory exists
+    from app.routers._helpers import V2_OUTPUT_DIR
+    os.makedirs(V2_OUTPUT_DIR, exist_ok=True)
     # Restore persisted Dropbox tokens on startup
     from app.routers.dropbox import load_dropbox_tokens
     await load_dropbox_tokens(state)

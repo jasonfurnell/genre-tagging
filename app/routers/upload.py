@@ -13,7 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from app.models.common import UploadSummary
 from app.routers._helpers import (
     LAST_UPLOAD_META,
-    OUTPUT_DIR,
+    V2_OUTPUT_DIR,
     autosave,
     save_last_upload_meta,
     summary,
@@ -86,7 +86,7 @@ async def restore(state: AppState = Depends(get_state)):
             meta = json.load(f)
         original = meta.get("original_filename", "")
         autosave_name = original.rsplit(".", 1)[0] + "_autosave.csv"
-        path = os.path.join(OUTPUT_DIR, autosave_name)
+        path = os.path.join(V2_OUTPUT_DIR, autosave_name)
         if not os.path.exists(path):
             return UploadSummary(restored=False)
 
