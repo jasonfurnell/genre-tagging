@@ -4285,10 +4285,11 @@ tr.ws-seed-selected {
 }
 
 .robot-ctrl-btn-row .btn {
-    flex: 1;
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
+    flex: 1 1 auto;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.35rem;
     min-width: 0;
+    white-space: nowrap;
 }
 
 .robot-ctrl-btn-row .btn.active {

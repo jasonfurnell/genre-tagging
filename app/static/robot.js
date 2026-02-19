@@ -76,15 +76,17 @@
 
   // ─── Tunable config (sliders modify these live) ────────────
   const DEFAULTS = {
-    skelScale:  0.85,   blockScale: 0.85,
+    skelScale:  1.10,   blockScale: 0.90,
     blockRatio: 1.05,   blockRound: 0,      keyColor: 0,
-    waveAmp:    3.7,    waveSpeed:  3.2,
-    waveLayers: 3,      waveColor:  0.75,
-    bpm:        120,    poseHold:   820,
-    poseTrans:  230,    bobAmt:     0,
-    swayAmt:    1.5,    poseRandom: 1.25,
+    waveAmp:    4.7,    waveSpeed:  0.3,
+    waveLayers: 3,      waveColor:  0.70,
+    bpm:        120,    poseHold:   130,
+    poseTrans:  120,    bobAmt:     0,
+    swayAmt:    0,      poseRandom: 3.00,
     holdRandom: 0.70,   keyRandom:  0,
     moveRandom: 0.90,
+    driftFreq:  8,      driftSpeed: 2.5,
+    driftAmount: 0.75,
   };
   const _cfg = { ...DEFAULTS };
 
@@ -101,14 +103,30 @@
   let _artworkLoaded = false;
 
   // ─── Dynamics state (randomiser engines) ───────────────────
-  let _curHold = 820;
-  let _curTrans = 230;
+  let _curHold = 130;
+  let _curTrans = 120;
   let _nextKeyChange = 0;
   let _lastTickTime = 0;
   let _wander = { bob: 0, sway: 0 };
 
+  // ─── Drift state (home ↔ random cycling) ──────────────────
+  const DRIFT_KEYS = [
+    "skelScale", "blockScale", "blockRatio", "keyColor",
+    "waveAmp", "waveSpeed", "waveLayers", "waveColor",
+    "poseHold", "poseTrans", "bobAmt", "swayAmt", "poseRandom",
+  ];
+  const _drift = {
+    active: false,
+    phase: "home",       // "home" | "going-out" | "away" | "coming-back"
+    phaseStart: 0,
+    phaseDur: 0,
+    homeVals: {},
+    awayVals: {},
+    btn: null,
+  };
+
   // ─── Default auto-drive activation ─────────────────────────
-  const DEFAULT_AUTO = ["waveAmp", "waveSpeed", "poseHold", "poseTrans", "swayAmt", "poseRandom"];
+  const DEFAULT_AUTO = ["waveAmp", "waveSpeed", "poseHold", "poseTrans", "waveColor"];
 
   // ─── Auto-drive profiles ──────────────────────────────────
   // Each slider that supports auto-drive gets a profile with "moves":
@@ -168,17 +186,17 @@
     skelScale: {
       moves: [
         // Compact
-        { lo: 0.5, hi: 0.8,  weight: 0.35, holdLo: 3000, holdHi: 7000, moveDur: 800 },
+        { lo: 0.80, hi: 1.0, weight: 0.35, holdLo: 3000, holdHi: 7000, moveDur: 800 },
         // Normal-large
-        { lo: 0.9, hi: 1.5,  weight: 0.65, holdLo: 2000, holdHi: 5000, moveDur: 600 },
+        { lo: 1.05, hi: 1.4, weight: 0.65, holdLo: 2000, holdHi: 5000, moveDur: 600 },
       ],
     },
     blockScale: {
       moves: [
         // Small blocks
-        { lo: 0.5, hi: 0.8,  weight: 0.4,  holdLo: 3000, holdHi: 6000, moveDur: 700 },
+        { lo: 0.40, hi: 0.75, weight: 0.4, holdLo: 3000, holdHi: 6000, moveDur: 700 },
         // Large blocks
-        { lo: 1.0, hi: 2.0,  weight: 0.6,  holdLo: 2000, holdHi: 5000, moveDur: 500 },
+        { lo: 0.95, hi: 1.40, weight: 0.6, holdLo: 2000, holdHi: 5000, moveDur: 500 },
       ],
     },
     poseRandom: {
@@ -187,6 +205,22 @@
         { lo: 0,   hi: 0.5,  weight: 0.35, holdLo: 2000, holdHi: 5000, moveDur: 400 },
         // Wild poses
         { lo: 1.0, hi: 3.0,  weight: 0.65, holdLo: 1500, holdHi: 4000, moveDur: 300 },
+      ],
+    },
+    keyColor: {
+      moves: [
+        // Low range — warm tones
+        { lo: 0,   hi: 0.35, weight: 0.4,  holdLo: 2000, holdHi: 5000, moveDur: 600 },
+        // High range — cool tones
+        { lo: 0.5, hi: 1.0,  weight: 0.6,  holdLo: 1500, holdHi: 4000, moveDur: 400 },
+      ],
+    },
+    waveColor: {
+      moves: [
+        // Low range
+        { lo: 0,   hi: 0.35, weight: 0.35, holdLo: 2000, holdHi: 5000, moveDur: 500 },
+        // High range
+        { lo: 0.5, hi: 1.0,  weight: 0.65, holdLo: 1500, holdHi: 4000, moveDur: 400 },
       ],
     },
   };
@@ -299,6 +333,138 @@
       state.btn.textContent = on ? "\u23F8" : "\u25B6";
     }
     if (on) _autoPickTarget(key, performance.now());
+  }
+
+  // ─── Drift: home ↔ random cycling ──────────────────────────
+
+  function _generateDriftTarget() {
+    // Full "Randomise All" — same as pressing the button
+    const away = {};
+    for (const key of DRIFT_KEYS) {
+      const s = SLIDERS.find(x => x.key === key);
+      if (!s) continue;
+      const v = s.min + Math.random() * (s.max - s.min);
+      away[key] = Math.max(s.min, Math.min(s.max, Math.round(v / s.step) * s.step));
+    }
+    return away;
+  }
+
+  // Preview: snap all drift sliders to a random state (like Randomise All but only drift keys)
+  function _playRandom() {
+    for (const key of DRIFT_KEYS) {
+      const s = SLIDERS.find(x => x.key === key);
+      if (!s) continue;
+      const v = s.min + Math.random() * (s.max - s.min);
+      _cfg[key] = Math.max(s.min, Math.min(s.max, Math.round(v / s.step) * s.step));
+      _syncSliderUI(key);
+    }
+    _shuffleCamelotKeys();
+    _updateBlockColors();
+  }
+
+  function _tickDrift(now) {
+    if (!_drift.active) return;
+
+    const elapsed = now - _drift.phaseStart;
+    const amt = _cfg.driftAmount;
+
+    switch (_drift.phase) {
+      case "home":
+        if (elapsed >= _drift.phaseDur) {
+          _drift.awayVals = _generateDriftTarget();
+          _drift.phase = "going-out";
+          _drift.phaseStart = now;
+          // Transition speed with randomness: base ± amt variation
+          const outSpeed = _cfg.driftSpeed * 1000 * (1 - amt * 0.5 + Math.random() * amt);
+          _drift.phaseDur = Math.max(100, outSpeed);
+        }
+        break;
+
+      case "going-out": {
+        const t = Math.min(elapsed / _drift.phaseDur, 1);
+        const e = ease(t);
+        for (const key of DRIFT_KEYS) {
+          if (!(key in _drift.homeVals) || !(key in _drift.awayVals)) continue;
+          _cfg[key] = lerp(_drift.homeVals[key], _drift.awayVals[key], e);
+          _syncSliderUI(key);
+        }
+        if (t >= 1) {
+          _drift.phase = "away";
+          _drift.phaseStart = now;
+          // Stay "away" for freq × random jitter
+          const awayHold = _cfg.driftFreq * 1000 * (0.3 + Math.random() * amt * 1.4);
+          _drift.phaseDur = Math.max(200, awayHold);
+        }
+        break;
+      }
+
+      case "away":
+        if (elapsed >= _drift.phaseDur) {
+          _drift.phase = "coming-back";
+          _drift.phaseStart = now;
+          const backSpeed = _cfg.driftSpeed * 1000 * (1 - amt * 0.3 + Math.random() * amt * 0.6);
+          _drift.phaseDur = Math.max(100, backSpeed);
+        }
+        break;
+
+      case "coming-back": {
+        const t = Math.min(elapsed / _drift.phaseDur, 1);
+        const e = ease(t);
+        for (const key of DRIFT_KEYS) {
+          if (!(key in _drift.awayVals) || !(key in _drift.homeVals)) continue;
+          _cfg[key] = lerp(_drift.awayVals[key], _drift.homeVals[key], e);
+          _syncSliderUI(key);
+        }
+        if (t >= 1) {
+          _drift.phase = "home";
+          _drift.phaseStart = now;
+          // Stay "home" for freq with jitter
+          const homeHold = _cfg.driftFreq * 1000 * (0.5 + Math.random() * 1.0);
+          _drift.phaseDur = Math.max(300, homeHold);
+        }
+        break;
+      }
+    }
+  }
+
+  function _startDrift() {
+    // Snapshot current defaults as home
+    for (const key of DRIFT_KEYS) {
+      _drift.homeVals[key] = DEFAULTS[key];
+    }
+    _drift.active = true;
+    _drift.phase = "home";
+    _drift.phaseStart = performance.now();
+    // First home hold before initial drift
+    _drift.phaseDur = _cfg.driftFreq * 500 * (0.5 + Math.random() * 0.5);
+    if (_drift.btn) {
+      _drift.btn.classList.add("active");
+      _drift.btn.textContent = "Stop Drift";
+    }
+    // Pause auto-drives (drift takes over)
+    _setAllAuto(false);
+    const apBtn = document.getElementById("robot-autopilot-btn");
+    if (apBtn) { apBtn.classList.remove("active"); apBtn.textContent = "Autopilot"; }
+  }
+
+  function _stopDrift() {
+    _drift.active = false;
+    // Return to home values
+    for (const key of DRIFT_KEYS) {
+      if (key in _drift.homeVals) {
+        _cfg[key] = _drift.homeVals[key];
+        _syncSliderUI(key);
+      }
+    }
+    if (_drift.btn) {
+      _drift.btn.classList.remove("active");
+      _drift.btn.textContent = "Drift";
+    }
+  }
+
+  function _toggleDrift() {
+    if (_drift.active) _stopDrift();
+    else _startDrift();
   }
 
   // ─── Helpers ───────────────────────────────────────────────
@@ -611,10 +777,9 @@
 
   const SLIDERS = [
     { group: "Body" },
-    { key: "skelScale",  label: "Skeleton Scale",    min: 0.3, max: 1.5,  step: 0.05, fmt: v => v.toFixed(2) },
-    { key: "blockScale", label: "Block Size",         min: 0.5, max: 2.5,  step: 0.05, fmt: v => v.toFixed(2) },
-    { key: "blockRatio", label: "Block Ratio",        min: 0.3, max: 3.0,  step: 0.05, fmt: v => v.toFixed(2) },
-    { key: "blockRound", label: "Block Rounding",     min: 0,   max: 50,   step: 1,    fmt: v => v + "%" },
+    { key: "skelScale",  label: "Skeleton Scale",    min: 0.80, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
+    { key: "blockScale", label: "Block Size",         min: 0.40, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
+    { key: "blockRatio", label: "Block Ratio",        min: 0.35, max: 1.75, step: 0.05, fmt: v => v.toFixed(2) },
     { key: "keyColor",   label: "Key Colour",         min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { group: "Energy" },
     { key: "waveAmp",    label: "Wave Amplitude",     min: 2,   max: 5,    step: 0.1,  fmt: v => v.toFixed(1) },
@@ -627,17 +792,20 @@
     { key: "poseTrans",  label: "Transition",         min: 100, max: 1750, step: 10,   fmt: v => v + "ms" },
     { key: "bobAmt",     label: "Bob Amount",         min: 0,   max: 4,    step: 0.1,  fmt: v => v.toFixed(1) },
     { key: "swayAmt",    label: "Sway Amount",        min: 0,   max: 12,   step: 0.5,  fmt: v => v.toFixed(1) },
-    { key: "poseRandom", label: "Pose Randomiser",    min: 0,   max: 3,    step: 0.05, fmt: v => (v*100|0) + "%" },
+    { key: "poseRandom", label: "Pose Randomiser",    min: 1.5, max: 3,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { group: "Dynamics" },
     { key: "holdRandom", label: "Hold Randomiser",    min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { key: "keyRandom",  label: "Key Randomiser",     min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
     { key: "moveRandom", label: "Move Randomiser",    min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
+    { group: "Drift" },
+    { key: "driftFreq",   label: "Drift Frequency",    min: 1,   max: 20,   step: 0.5,  fmt: v => v.toFixed(1) + "s" },
+    { key: "driftSpeed",  label: "Drift Speed",        min: 0.3, max: 5,    step: 0.1,  fmt: v => v.toFixed(1) + "s" },
+    { key: "driftAmount", label: "Drift Wildness",     min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
   ];
 
   const REFRESH = {
     blockScale: _updateBlockSizes,
     blockRatio: _updateBlockSizes,
-    blockRound: _updateBlockRounding,
     keyColor:   _updateBlockColors,
   };
 
@@ -742,25 +910,22 @@
       autopilotBtn.textContent = autopilotOn ? "Stop Autopilot" : "Autopilot";
     });
 
-    const randAllBtn = document.createElement("button");
-    randAllBtn.className = "btn btn-sm btn-secondary";
-    randAllBtn.textContent = "Randomise All";
-    randAllBtn.addEventListener("click", _randomiseAll);
+    const driftBtn = document.createElement("button");
+    driftBtn.className = "btn btn-sm btn-secondary";
+    driftBtn.id = "robot-drift-btn";
+    driftBtn.textContent = "Drift";
+    _drift.btn = driftBtn;
+    driftBtn.addEventListener("click", _toggleDrift);
 
-    const artBtn = document.createElement("button");
-    artBtn.className = "btn btn-sm btn-secondary";
-    artBtn.textContent = "Shuffle Art";
-    artBtn.addEventListener("click", () => {
-      _artworkLoaded = false;
-      _shuffleCamelotKeys();
-      _loadArt();
-      _updateBlockColors();
-    });
+    const playRandBtn = document.createElement("button");
+    playRandBtn.className = "btn btn-sm btn-secondary";
+    playRandBtn.textContent = "Play Random";
+    playRandBtn.addEventListener("click", _playRandom);
 
     btnRow.appendChild(resetBtn);
     btnRow.appendChild(autopilotBtn);
-    btnRow.appendChild(randAllBtn);
-    btnRow.appendChild(artBtn);
+    btnRow.appendChild(driftBtn);
+    btnRow.appendChild(playRandBtn);
     _ctrlPanel.appendChild(btnRow);
 
     panel.appendChild(_ctrlPanel);
@@ -772,20 +937,9 @@
     autopilotOn = true;
   }
 
-  function _randomiseAll() {
-    _ctrlPanel.querySelectorAll(".robot-ctrl-row").forEach(row => {
-      const input = row.querySelector("input[data-key]");
-      if (!input) return;
-      const s = SLIDERS.find(x => x.key === input.dataset.key);
-      if (!s) return;
-      const val = row.querySelector(".robot-ctrl-val");
-      _randomiseSlider(s, input, val);
-    });
-    _shuffleCamelotKeys();
-    _updateBlockColors();
-  }
-
   function _resetControls() {
+    // Stop drift if running
+    if (_drift.active) _stopDrift();
     Object.assign(_cfg, DEFAULTS);
     _wander.bob = 0;
     _wander.sway = 0;
@@ -847,6 +1001,9 @@
 
     // ── BPM beat pulse (0-1 on the beat) ──
     const beat = beatPulse(elapsed, _cfg.bpm);
+
+    // ── Drift: home ↔ random cycling ──
+    _tickDrift(now);
 
     // ── Auto-drive: update any actively driven sliders ──
     _tickAutoDrive(now);
