@@ -1,22 +1,63 @@
-import { useEffect, useState } from 'react'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Toaster } from '@/components/ui/sonner'
+import { useConfig } from '@/hooks/use-config'
+import { useUiStore, type TabId } from '@/stores/ui'
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: 'set-workshop', label: 'Set Workshop' },
+  { id: 'sets', label: 'Sets' },
+  { id: 'tagger', label: 'Tagger' },
+  { id: 'intersections', label: 'Intersections' },
+  { id: 'playlists', label: 'Playlists' },
+  { id: 'tracks', label: 'Tracks' },
+  { id: 'trees', label: 'Trees' },
+  { id: 'phases', label: 'Phases' },
+  { id: 'auto-set', label: 'Auto Set' },
+  { id: 'chat', label: 'Chat' },
+]
+
+function TabPlaceholder({ id }: { id: TabId }) {
+  const tab = TABS.find((t) => t.id === id)
+  return (
+    <div className="flex flex-1 items-center justify-center">
+      <p className="text-muted-foreground text-lg">{tab?.label} — coming soon</p>
+    </div>
+  )
+}
 
 function App() {
-  const [status, setStatus] = useState<string>('Connecting...')
-
-  useEffect(() => {
-    fetch('/api/config')
-      .then((res) => {
-        if (res.ok) return res.json()
-        throw new Error(`${res.status} ${res.statusText}`)
-      })
-      .then(() => setStatus('Connected to FastAPI backend'))
-      .catch((err) => setStatus(`Backend unavailable: ${err.message}`))
-  }, [])
+  const activeTab = useUiStore((s) => s.activeTab)
+  const setActiveTab = useUiStore((s) => s.setActiveTab)
+  const { isError } = useConfig()
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>GenreTagging V2</h1>
-      <p>{status}</p>
+    <div className="flex h-screen flex-col overflow-hidden">
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => setActiveTab(v as TabId)}
+        className="flex h-full flex-col"
+      >
+        <header className="border-b border-border bg-card px-2">
+          <TabsList variant="line" className="h-10 gap-0">
+            {TABS.map((tab) => (
+              <TabsTrigger key={tab.id} value={tab.id} className="px-3 text-xs">
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {isError && <p className="text-destructive px-3 py-1 text-xs">Backend unavailable</p>}
+        </header>
+
+        <main className="flex flex-1 overflow-hidden">
+          {TABS.map((tab) => (
+            <TabsContent key={tab.id} value={tab.id} className="flex flex-1">
+              <TabPlaceholder id={tab.id} />
+            </TabsContent>
+          ))}
+        </main>
+      </Tabs>
+
+      <Toaster position="bottom-right" theme="dark" />
     </div>
   )
 }
