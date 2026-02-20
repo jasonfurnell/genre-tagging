@@ -4237,6 +4237,29 @@ tr.ws-seed-selected {
 .dance-settings-drawer.open {
     transform: translateX(0);
 }
+.dance-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+.dance-settings-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.dance-settings-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    line-height: 1;
+}
+.dance-settings-close:hover {
+    color: var(--text);
+}
 
 /* ── Dance: Settings Toggle Button ──────────────────────── */
 .dance-settings-btn {

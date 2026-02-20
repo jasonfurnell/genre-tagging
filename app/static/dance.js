@@ -172,6 +172,7 @@
     _els = {
       settingsBtn:    document.getElementById("dance-settings-btn"),
       settingsDrawer: document.getElementById("dance-settings-drawer"),
+      settingsClose:  document.getElementById("dance-settings-close"),
     };
 
     // Init robots with controls built into the hidden settings drawer
@@ -182,6 +183,9 @@
     // Settings drawer toggle
     if (_els.settingsBtn) {
       _els.settingsBtn.addEventListener("click", _toggleSettings);
+    }
+    if (_els.settingsClose) {
+      _els.settingsClose.addEventListener("click", _toggleSettings);
     }
 
     // Show still pose
