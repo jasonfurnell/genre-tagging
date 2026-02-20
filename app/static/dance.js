@@ -36,6 +36,10 @@
     _settingsOpen = !_settingsOpen;
     if (_els.settingsDrawer) _els.settingsDrawer.classList.toggle("open", _settingsOpen);
     if (_els.settingsBtn) _els.settingsBtn.classList.toggle("active", _settingsOpen);
+    // Exit pose preview when closing the drawer
+    if (!_settingsOpen && typeof exitRobotPosePreview === "function") {
+      exitRobotPosePreview();
+    }
   }
 
   // ── Workshop detection ─────────────────────────────────────

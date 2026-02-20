@@ -2367,5 +2367,34 @@
     "source": "chat",
     "created_at": "2026-02-20T04:11:39.338531+00:00",
     "updated_at": "2026-02-20T04:11:39.338573+00:00"
+  },
+  "d1b85081": {
+    "id": "d1b85081",
+    "name": "Spiritual Afro House Rituals",
+    "description": "Tanzanian Electronic and Afro House with hypnotic vocal chants, pulsing bass, organic percussion layered with electronic beats - spiritual sunset ritual energy",
+    "filters": {},
+    "track_ids": [
+      1495,
+      46,
+      224,
+      48,
+      226,
+      989,
+      1213,
+      3350,
+      3397,
+      3447,
+      3969,
+      1802,
+      386,
+      724,
+      992,
+      1245,
+      1971,
+      4201
+    ],
+    "source": "chat",
+    "created_at": "2026-02-20T04:31:21.939365+00:00",
+    "updated_at": "2026-02-20T04:31:21.939381+00:00"
   }
 }

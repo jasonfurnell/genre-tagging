@@ -133,8 +133,8 @@
       ["legLU", "legLL"], ["legRU", "legRL"],
     ];
 
-    // ─── Dance poses ──────────────────────────────────────────
-    const POSES = [
+    // ─── Dance poses (defaults — mutable copies below) ─────────
+    const DEFAULT_POSES = [
       { sp:-90, aLU:105, aLL:100, aLH:110, aRU:75,  aRL:80,  aRH:70,  lLU:93,  lLL:90,  lRU:87,  lRL:90,  hd:0,   ry:0  },
       { sp:-88, aLU:115, aLL:125, aLH:140, aRU:-50, aRL:-65, aRH:-50, lLU:95,  lLL:88,  lRU:82,  lRL:86,  hd:8,   ry:0  },
       { sp:-90, aLU:-130,aLL:-105,aLH:-90, aRU:-50, aRL:-75, aRH:-60, lLU:96,  lLL:88,  lRU:84,  lRL:92,  hd:-3,  ry:5  },
@@ -142,8 +142,51 @@
       { sp:-82, aLU:140, aLL:110, aLH:125, aRU:40,  aRL:70,  aRH:55,  lLU:108, lLL:72,  lRU:72,  lRL:108, hd:5,   ry:18 },
       { sp:-75, aLU:-110,aLL:-130,aLH:-115,aRU:105, aRL:115, aRH:130, lLU:105, lLL:82,  lRU:78,  lRL:88,  hd:12,  ry:8  },
     ];
+    const DEFAULT_POSE_NAMES = ["Neutral", "Left Reach", "Arms Back", "Right Reach", "Wide Stance", "Dramatic"];
+    const DEFAULT_SEQUENCE = [0, 1, 2, 3, 0, 4, 5, 3, 1, 0];
 
-    const SEQUENCE = [0, 1, 2, 3, 0, 4, 5, 3, 1, 0];
+    const POSE_KEYS = ["sp","aLU","aLL","aLH","aRU","aRL","aRH","lLU","lLL","lRU","lRL","hd","ry"];
+
+    // ─── Mutable pose state (loaded from localStorage or defaults) ──
+    let _poses = DEFAULT_POSES.map(p => ({ ...p }));
+    let _poseNames = [...DEFAULT_POSE_NAMES];
+    let _sequence = [...DEFAULT_SEQUENCE];
+
+    function _loadStancesFromStorage() {
+      try {
+        const raw = localStorage.getItem("robotDancer_stances");
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.poses) && data.poses.length > 0 &&
+            data.poses.every(p => POSE_KEYS.every(k => typeof p[k] === "number"))) {
+          _poses = data.poses.map(p => ({ ...p }));
+        }
+        if (Array.isArray(data.names) && data.names.length === _poses.length) {
+          _poseNames = [...data.names];
+        } else {
+          _poseNames = _poses.map((_, i) => `Pose ${i + 1}`);
+        }
+        if (Array.isArray(data.sequence) && data.sequence.length > 0 &&
+            data.sequence.every(i => typeof i === "number" && i >= 0 && i < _poses.length)) {
+          _sequence = [...data.sequence];
+        } else {
+          _sequence = [0];
+        }
+      } catch (e) { /* ignore corrupt data */ }
+    }
+    _loadStancesFromStorage();
+
+    let _saveTimer = null;
+    function _saveStancesToStorage() {
+      clearTimeout(_saveTimer);
+      _saveTimer = setTimeout(() => {
+        try {
+          localStorage.setItem("robotDancer_stances", JSON.stringify({
+            poses: _poses, names: _poseNames, sequence: _sequence,
+          }));
+        } catch (e) { /* quota exceeded etc */ }
+      }, 300);
+    }
 
     // ─── Placeholder colours ──────────────────────────────────
     const PH = [
@@ -207,6 +250,12 @@
     let _frame = null;
     let _startTime = 0;
     let _artworkLoaded = false;
+
+    // ─── Stances editor state ─────────────────────────────────
+    let _previewFrozen = false;   // true when stances tab is previewing a pose
+    let _frozenPose = null;       // the pose object being previewed
+    let _stancesPanel = null;     // DOM container for stances tab
+    let _selectedPoseIdx = -1;    // currently selected pose in editor
 
     // ─── Dynamics state (randomiser engines) ───────────────────
     let _curHold = 130;
@@ -943,7 +992,427 @@
       if (REFRESH[s.key]) REFRESH[s.key]();
     }
 
+    // ─── Stances tab: joint angle slider definitions ───────────
+    const JOINT_SLIDERS = [
+      { group: "Core" },
+      { key: "sp",  label: "Spine",      min: -120, max: -60,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "ry",  label: "Hip Sway",   min: -30,  max: 30,   step: 1, fmt: v => v + "\u00B0" },
+      { group: "Head" },
+      { key: "hd",  label: "Rotation",   min: -30,  max: 30,   step: 1, fmt: v => v + "\u00B0" },
+      { group: "Left Arm" },
+      { key: "aLU", label: "Upper",      min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "aLL", label: "Forearm",    min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "aLH", label: "Hand",       min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { group: "Right Arm" },
+      { key: "aRU", label: "Upper",      min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "aRL", label: "Forearm",    min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "aRH", label: "Hand",       min: -180, max: 180,  step: 1, fmt: v => v + "\u00B0" },
+      { group: "Left Leg" },
+      { key: "lLU", label: "Thigh",      min: 30,   max: 150,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "lLL", label: "Shin",       min: 30,   max: 150,  step: 1, fmt: v => v + "\u00B0" },
+      { group: "Right Leg" },
+      { key: "lRU", label: "Thigh",      min: 30,   max: 150,  step: 1, fmt: v => v + "\u00B0" },
+      { key: "lRL", label: "Shin",       min: 30,   max: 150,  step: 1, fmt: v => v + "\u00B0" },
+    ];
+
+    // ─── Stick-figure mini-preview SVG ──────────────────────────
+    function _stickFigureSVG(pose) {
+      const j = fk(pose);
+      const lines = [
+        [j.hip, j.neck], [j.neck, j.head],
+        [j.neck, j.shL], [j.shL, j.elL], [j.elL, j.haL],
+        [j.neck, j.shR], [j.shR, j.elR], [j.elR, j.haR],
+        [j.hip, j.hipL], [j.hipL, j.knL], [j.knL, j.ftL],
+        [j.hip, j.hipR], [j.hipR, j.knR], [j.knR, j.ftR],
+      ];
+      let svg = `<svg viewBox="0 0 ${VW} ${VH}" class="stance-stick-svg">`;
+      lines.forEach(([a, b]) => {
+        svg += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>`;
+      });
+      svg += `<circle cx="${j.head.x}" cy="${j.head.y}" r="6" fill="var(--accent)" opacity="0.8"/>`;
+      svg += `</svg>`;
+      return svg;
+    }
+
+    // ─── Stances tab: build pose cards ──────────────────────────
+    function _buildPoseCards() {
+      if (!_stancesPanel) return;
+      const container = _stancesPanel.querySelector(".stance-cards");
+      if (!container) return;
+      container.innerHTML = "";
+
+      _poses.forEach((pose, i) => {
+        const card = document.createElement("div");
+        card.className = "stance-card" + (i === _selectedPoseIdx ? " selected" : "");
+        card.dataset.idx = i;
+
+        const preview = document.createElement("div");
+        preview.className = "stance-card-preview";
+        preview.innerHTML = _stickFigureSVG(pose);
+
+        const label = document.createElement("div");
+        label.className = "stance-card-label";
+        label.textContent = _poseNames[i] || `Pose ${i + 1}`;
+        label.title = "Click to rename";
+        label.addEventListener("dblclick", (e) => {
+          e.stopPropagation();
+          const inp = document.createElement("input");
+          inp.type = "text";
+          inp.className = "stance-card-rename";
+          inp.value = _poseNames[i] || "";
+          inp.addEventListener("blur", () => {
+            _poseNames[i] = inp.value.trim() || `Pose ${i + 1}`;
+            _saveStancesToStorage();
+            _buildPoseCards();
+          });
+          inp.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter") inp.blur();
+            if (ev.key === "Escape") { inp.value = _poseNames[i]; inp.blur(); }
+          });
+          label.replaceWith(inp);
+          inp.focus();
+          inp.select();
+        });
+
+        card.appendChild(preview);
+        card.appendChild(label);
+
+        card.addEventListener("click", () => {
+          _selectedPoseIdx = i;
+          _previewFrozen = true;
+          _frozenPose = { ..._poses[i] };
+          _buildPoseCards();
+          _buildJointEditor();
+        });
+
+        container.appendChild(card);
+      });
+
+      // "+ New" card
+      const addCard = document.createElement("div");
+      addCard.className = "stance-card stance-card-add";
+      addCard.innerHTML = `<div class="stance-card-preview"><span class="stance-add-icon">+</span></div><div class="stance-card-label">New</div>`;
+      addCard.addEventListener("click", () => {
+        const base = _selectedPoseIdx >= 0 ? { ..._poses[_selectedPoseIdx] } : { ...DEFAULT_POSES[0] };
+        _poses.push(base);
+        _poseNames.push(`Pose ${_poses.length}`);
+        _selectedPoseIdx = _poses.length - 1;
+        _previewFrozen = true;
+        _frozenPose = { ...base };
+        _saveStancesToStorage();
+        _buildPoseCards();
+        _buildJointEditor();
+        _buildSequenceEditor();
+      });
+      container.appendChild(addCard);
+    }
+
+    // ─── Stances tab: build joint angle editor ──────────────────
+    function _buildJointEditor() {
+      if (!_stancesPanel) return;
+      const container = _stancesPanel.querySelector(".stance-editor");
+      if (!container) return;
+      container.innerHTML = "";
+
+      if (_selectedPoseIdx < 0 || _selectedPoseIdx >= _poses.length) {
+        container.innerHTML = `<div class="stance-editor-empty">Select a pose to edit</div>`;
+        return;
+      }
+
+      const pose = _poses[_selectedPoseIdx];
+
+      // Action buttons above sliders
+      const actionRow = document.createElement("div");
+      actionRow.className = "stance-action-row";
+
+      const mirrorLR = document.createElement("button");
+      mirrorLR.className = "btn btn-sm btn-secondary";
+      mirrorLR.textContent = "Mirror L\u2192R";
+      mirrorLR.title = "Copy left arm/leg to right";
+      mirrorLR.addEventListener("click", () => {
+        pose.aRU = pose.aLU; pose.aRL = pose.aLL; pose.aRH = pose.aLH;
+        pose.lRU = pose.lLU; pose.lRL = pose.lLL;
+        _frozenPose = { ...pose };
+        _saveStancesToStorage();
+        _buildJointEditor();
+        _buildPoseCards();
+      });
+
+      const mirrorRL = document.createElement("button");
+      mirrorRL.className = "btn btn-sm btn-secondary";
+      mirrorRL.textContent = "Mirror R\u2192L";
+      mirrorRL.title = "Copy right arm/leg to left";
+      mirrorRL.addEventListener("click", () => {
+        pose.aLU = pose.aRU; pose.aLL = pose.aRL; pose.aLH = pose.aRH;
+        pose.lLU = pose.lRU; pose.lLL = pose.lRL;
+        _frozenPose = { ...pose };
+        _saveStancesToStorage();
+        _buildJointEditor();
+        _buildPoseCards();
+      });
+
+      const dupeBtn = document.createElement("button");
+      dupeBtn.className = "btn btn-sm btn-secondary";
+      dupeBtn.textContent = "Duplicate";
+      dupeBtn.addEventListener("click", () => {
+        const clone = { ...pose };
+        _poses.splice(_selectedPoseIdx + 1, 0, clone);
+        _poseNames.splice(_selectedPoseIdx + 1, 0, (_poseNames[_selectedPoseIdx] || "Pose") + " copy");
+        // Update sequence: indices after insertion shift up
+        _sequence = _sequence.map(si => si > _selectedPoseIdx ? si + 1 : si);
+        _selectedPoseIdx += 1;
+        _frozenPose = { ...clone };
+        _saveStancesToStorage();
+        _buildPoseCards();
+        _buildJointEditor();
+        _buildSequenceEditor();
+      });
+
+      const delBtn = document.createElement("button");
+      delBtn.className = "btn btn-sm btn-secondary btn-danger-subtle";
+      delBtn.textContent = "Delete";
+      delBtn.disabled = _poses.length <= 1;
+      delBtn.addEventListener("click", () => {
+        if (_poses.length <= 1) return;
+        const removed = _selectedPoseIdx;
+        _poses.splice(removed, 1);
+        _poseNames.splice(removed, 1);
+        // Update sequence: remove refs to deleted, shift down indices above
+        _sequence = _sequence
+          .filter(si => si !== removed)
+          .map(si => si > removed ? si - 1 : si);
+        if (_sequence.length === 0) _sequence = [0];
+        _selectedPoseIdx = Math.min(removed, _poses.length - 1);
+        _frozenPose = { ..._poses[_selectedPoseIdx] };
+        _saveStancesToStorage();
+        _buildPoseCards();
+        _buildJointEditor();
+        _buildSequenceEditor();
+      });
+
+      actionRow.appendChild(mirrorLR);
+      actionRow.appendChild(mirrorRL);
+      actionRow.appendChild(dupeBtn);
+      actionRow.appendChild(delBtn);
+      container.appendChild(actionRow);
+
+      // Joint angle sliders
+      JOINT_SLIDERS.forEach(s => {
+        if (s.group) {
+          const hdr = document.createElement("div");
+          hdr.className = "robot-ctrl-group";
+          hdr.textContent = s.group;
+          container.appendChild(hdr);
+          return;
+        }
+
+        const row = document.createElement("div");
+        row.className = "robot-ctrl-row";
+
+        const lbl = document.createElement("label");
+        lbl.className = "robot-ctrl-label";
+        lbl.textContent = s.label;
+
+        const input = document.createElement("input");
+        input.type = "range";
+        input.className = "robot-ctrl-slider";
+        input.min = s.min;
+        input.max = s.max;
+        input.step = s.step;
+        input.value = pose[s.key];
+
+        const val = document.createElement("span");
+        val.className = "robot-ctrl-val";
+        val.textContent = s.fmt(pose[s.key]);
+
+        input.addEventListener("input", () => {
+          const v = Number(input.value);
+          pose[s.key] = v;
+          val.textContent = s.fmt(v);
+          _frozenPose = { ...pose };
+          _saveStancesToStorage();
+          // Update stick figure on the selected card
+          const card = _stancesPanel.querySelector(`.stance-card[data-idx="${_selectedPoseIdx}"] .stance-card-preview`);
+          if (card) card.innerHTML = _stickFigureSVG(pose);
+        });
+
+        row.appendChild(lbl);
+        row.appendChild(input);
+        row.appendChild(val);
+        container.appendChild(row);
+      });
+    }
+
+    // ─── Stances tab: build sequence editor ─────────────────────
+    function _buildSequenceEditor() {
+      if (!_stancesPanel) return;
+      const container = _stancesPanel.querySelector(".stance-sequence");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const label = document.createElement("div");
+      label.className = "robot-ctrl-group";
+      label.textContent = "Playback Sequence";
+      container.appendChild(label);
+
+      const chipRow = document.createElement("div");
+      chipRow.className = "stance-seq-chips";
+
+      _sequence.forEach((poseIdx, seqPos) => {
+        const chip = document.createElement("span");
+        chip.className = "stance-seq-chip";
+        chip.textContent = poseIdx;
+        chip.title = _poseNames[poseIdx] || `Pose ${poseIdx + 1}`;
+
+        // Click chip → highlight the pose it refers to
+        chip.addEventListener("click", () => {
+          _selectedPoseIdx = poseIdx;
+          _previewFrozen = true;
+          _frozenPose = { ..._poses[poseIdx] };
+          _buildPoseCards();
+          _buildJointEditor();
+        });
+
+        // Remove button
+        if (_sequence.length > 1) {
+          const x = document.createElement("span");
+          x.className = "stance-seq-chip-x";
+          x.textContent = "\u00D7";
+          x.addEventListener("click", (e) => {
+            e.stopPropagation();
+            _sequence.splice(seqPos, 1);
+            if (_sequence.length === 0) _sequence = [0];
+            _seqIdx = Math.min(_seqIdx, _sequence.length - 1);
+            _saveStancesToStorage();
+            _buildSequenceEditor();
+          });
+          chip.appendChild(x);
+        }
+
+        chipRow.appendChild(chip);
+      });
+
+      container.appendChild(chipRow);
+
+      // Add step controls
+      const addRow = document.createElement("div");
+      addRow.className = "stance-seq-add-row";
+
+      const sel = document.createElement("select");
+      sel.className = "stance-seq-select";
+      _poses.forEach((_, i) => {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = `${i}: ${_poseNames[i] || "Pose " + (i + 1)}`;
+        sel.appendChild(opt);
+      });
+
+      const addBtn = document.createElement("button");
+      addBtn.className = "btn btn-sm btn-secondary";
+      addBtn.textContent = "+ Add Step";
+      addBtn.addEventListener("click", () => {
+        _sequence.push(Number(sel.value));
+        _saveStancesToStorage();
+        _buildSequenceEditor();
+      });
+
+      const clearBtn = document.createElement("button");
+      clearBtn.className = "btn btn-sm btn-secondary";
+      clearBtn.textContent = "Clear";
+      clearBtn.addEventListener("click", () => {
+        _sequence = [0];
+        _seqIdx = 0;
+        _saveStancesToStorage();
+        _buildSequenceEditor();
+      });
+
+      addRow.appendChild(sel);
+      addRow.appendChild(addBtn);
+      addRow.appendChild(clearBtn);
+      container.appendChild(addRow);
+    }
+
+    // ─── Stances tab: full panel ────────────────────────────────
+    function _buildStancesTab() {
+      _stancesPanel = document.createElement("div");
+      _stancesPanel.className = "robot-stances";
+      _stancesPanel.style.display = "none";
+
+      // Pose cards strip
+      const cardsSection = document.createElement("div");
+      cardsSection.className = "stance-cards";
+      _stancesPanel.appendChild(cardsSection);
+
+      // Joint angle editor
+      const editorSection = document.createElement("div");
+      editorSection.className = "stance-editor";
+      _stancesPanel.appendChild(editorSection);
+
+      // Sequence editor
+      const seqSection = document.createElement("div");
+      seqSection.className = "stance-sequence";
+      _stancesPanel.appendChild(seqSection);
+
+      // Bottom action row
+      const bottomRow = document.createElement("div");
+      bottomRow.className = "robot-ctrl-btn-row";
+
+      const resetAllBtn = document.createElement("button");
+      resetAllBtn.className = "btn btn-sm btn-secondary";
+      resetAllBtn.textContent = "Reset All";
+      resetAllBtn.addEventListener("click", () => {
+        _poses = DEFAULT_POSES.map(p => ({ ...p }));
+        _poseNames = [...DEFAULT_POSE_NAMES];
+        _sequence = [...DEFAULT_SEQUENCE];
+        _selectedPoseIdx = -1;
+        _previewFrozen = false;
+        _frozenPose = null;
+        localStorage.removeItem("robotDancer_stances");
+        _buildPoseCards();
+        _buildJointEditor();
+        _buildSequenceEditor();
+      });
+      bottomRow.appendChild(resetAllBtn);
+      _stancesPanel.appendChild(bottomRow);
+
+      // Initial render
+      _buildPoseCards();
+      _buildJointEditor();
+      _buildSequenceEditor();
+
+      return _stancesPanel;
+    }
+
+    // ─── Exit preview mode ──────────────────────────────────────
+    function _exitPosePreview() {
+      if (!_previewFrozen) return;
+      _previewFrozen = false;
+      _frozenPose = null;
+      _selectedPoseIdx = -1;
+      if (_stancesPanel) {
+        _buildPoseCards();
+        _buildJointEditor();
+      }
+    }
+
     function _buildControls(panel) {
+      // ── Tab bar ──
+      const tabBar = document.createElement("div");
+      tabBar.className = "robot-tab-bar";
+
+      const movementTab = document.createElement("button");
+      movementTab.className = "robot-tab active";
+      movementTab.textContent = "Movement";
+
+      const stancesTab = document.createElement("button");
+      stancesTab.className = "robot-tab";
+      stancesTab.textContent = "Stances";
+
+      tabBar.appendChild(movementTab);
+      tabBar.appendChild(stancesTab);
+      panel.appendChild(tabBar);
+
+      // ── Movement panel (existing sliders) ──
       _ctrlPanel = document.createElement("div");
       _ctrlPanel.className = "robot-controls";
 
@@ -1010,7 +1479,7 @@
         _ctrlPanel.appendChild(row);
       });
 
-      // Buttons
+      // Movement buttons
       const btnRow = document.createElement("div");
       btnRow.className = "robot-ctrl-btn-row";
 
@@ -1049,6 +1518,26 @@
       _ctrlPanel.appendChild(btnRow);
 
       panel.appendChild(_ctrlPanel);
+
+      // ── Stances panel ──
+      const stancesPanel = _buildStancesTab();
+      panel.appendChild(stancesPanel);
+
+      // ── Tab switching ──
+      movementTab.addEventListener("click", () => {
+        movementTab.classList.add("active");
+        stancesTab.classList.remove("active");
+        _ctrlPanel.style.display = "";
+        stancesPanel.style.display = "none";
+        _exitPosePreview();
+      });
+
+      stancesTab.addEventListener("click", () => {
+        stancesTab.classList.add("active");
+        movementTab.classList.remove("active");
+        stancesPanel.style.display = "";
+        _ctrlPanel.style.display = "none";
+      });
 
       // Activate default auto-drives + drift + auto-random on init
       _setAutoKeys(DEFAULT_AUTO);
@@ -1134,37 +1623,46 @@
       _tickMoveWander(dt);
       _tickKeyRandom(now);
 
-      // ── Pose state machine ──
-      if (_phase === "hold" && now - _phaseStart > _curHold / tempo) {
-        _phase = "transition";
-        _phaseStart = now;
-        _curTrans = _rollTrans();
-        _fromPose = _toPose || noisyPose(POSES[SEQUENCE[_seqIdx]]);
-        _seqIdx = (_seqIdx + 1) % SEQUENCE.length;
-        _toPose = noisyPose(POSES[SEQUENCE[_seqIdx]]);
-      }
-      if (_phase === "transition" && now - _phaseStart > _curTrans / tempo) {
-        _phase = "hold";
-        _phaseStart = now;
-        _curHold = _rollHold();
-      }
-
-      // ── Current pose ──
-      const effTrans = _curTrans / tempo;
+      // ── Pose state machine (skipped when previewing a stance) ──
       let pose;
-      if (_phase === "transition") {
-        const t = Math.min((now - _phaseStart) / effTrans, 1);
-        pose = interpPose(_fromPose, _toPose, t);
+      let sway = 0;
+      if (_previewFrozen && _frozenPose) {
+        pose = { ..._frozenPose };
+        // Still apply gentle bob/sway so the robot "breathes"
+        const bobFreq = (Math.PI * 2 * _cfg.bpm) / 60;
+        const gentleBob = Math.sin(elapsed * bobFreq / 2) * 0.8;
+        pose.ry = (pose.ry || 0) + gentleBob;
+        sway = Math.sin(elapsed * bobFreq / 4) * 1.2;
       } else {
-        pose = _toPose ? { ..._toPose } : { ...POSES[0] };
-      }
+        if (_phase === "hold" && now - _phaseStart > _curHold / tempo) {
+          _phase = "transition";
+          _phaseStart = now;
+          _curTrans = _rollTrans();
+          _fromPose = _toPose || noisyPose(_poses[_sequence[_seqIdx]]);
+          _seqIdx = (_seqIdx + 1) % _sequence.length;
+          _toPose = noisyPose(_poses[_sequence[_seqIdx]]);
+        }
+        if (_phase === "transition" && now - _phaseStart > _curTrans / tempo) {
+          _phase = "hold";
+          _phaseStart = now;
+          _curHold = _rollHold();
+        }
 
-      const effBob  = Math.max(0, _cfg.bobAmt  + _wander.bob);
-      const effSway = Math.max(0, _cfg.swayAmt + _wander.sway);
-      const bobFreq = (Math.PI * 2 * _cfg.bpm) / 60;
-      pose.ry = (pose.ry||0) + Math.sin(elapsed * bobFreq / 2) * effBob
-                              + beat * effBob * 0.8;
-      const sway = Math.sin(elapsed * bobFreq / 4) * effSway;
+        const effTrans = _curTrans / tempo;
+        if (_phase === "transition") {
+          const t = Math.min((now - _phaseStart) / effTrans, 1);
+          pose = interpPose(_fromPose, _toPose, t);
+        } else {
+          pose = _toPose ? { ..._toPose } : { ..._poses[0] };
+        }
+
+        const effBob  = Math.max(0, _cfg.bobAmt  + _wander.bob);
+        const effSway = Math.max(0, _cfg.swayAmt + _wander.sway);
+        const bobFreq = (Math.PI * 2 * _cfg.bpm) / 60;
+        pose.ry = (pose.ry||0) + Math.sin(elapsed * bobFreq / 2) * effBob
+                                + beat * effBob * 0.8;
+        sway = Math.sin(elapsed * bobFreq / 4) * effSway;
+      }
 
       // ── Forward kinematics ──
       const j = fk(pose);
@@ -1242,8 +1740,8 @@
       _lastTickTime = _startTime;
       _phaseStart = _startTime;
       // Random starting position so each robot dances independently
-      _seqIdx = Math.floor(Math.random() * SEQUENCE.length);
-      _toPose = noisyPose(POSES[SEQUENCE[_seqIdx]]);
+      _seqIdx = Math.floor(Math.random() * _sequence.length);
+      _toPose = noisyPose(_poses[_sequence[_seqIdx]]);
       _phase = "hold";
       _curHold = _rollHold();
       _curTrans = _rollTrans();
@@ -1304,7 +1802,7 @@
       if (!_stage) init();
       if (!_stage) return;
       if (_frame) return; // already animating, don't overwrite
-      const pose = noisyPose(POSES[SEQUENCE[Math.floor(Math.random() * SEQUENCE.length)]]);
+      const pose = noisyPose(_poses[_sequence[Math.floor(Math.random() * _sequence.length)]]);
       const j = fk(pose);
       const pos = partPos(j);
       pos.head.rot = pose.hd || 0;
@@ -1328,7 +1826,7 @@
       }
     }
 
-    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage, setBpm };
+    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage, setBpm, exitPosePreview: _exitPosePreview };
   }
 
   // ═══ PUBLIC API (single instance, multiple synced stages) ═══
@@ -1406,6 +1904,10 @@
 
   window.setRobotBpm = function (bpm) {
     if (_inst && _inst.setBpm) _inst.setBpm(bpm);
+  };
+
+  window.exitRobotPosePreview = function () {
+    if (_inst && _inst.exitPosePreview) _inst.exitPosePreview();
   };
 
 })();

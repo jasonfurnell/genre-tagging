@@ -23983,6 +23983,110 @@
         ]
       },
       {
+        "id": "slot-1771562082135-41xk",
+        "source": {
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
+        },
+        "tracks": [
+          {
+            "artist": "Swordman Kitala,Village Cuts",
+            "bpm": 63,
+            "bpm_level": 60,
+            "has_audio": true,
+            "id": 3983,
+            "key": "9M",
+            "title": "Digida",
+            "year": 2022
+          },
+          null,
+          {
+            "artist": "The Unknown Cases",
+            "bpm": 92,
+            "bpm_level": 80,
+            "has_audio": false,
+            "id": 224,
+            "key": "5M",
+            "title": "Masimbabele",
+            "year": 2019
+          },
+          {
+            "artist": "The Unknown Cases",
+            "bpm": 92,
+            "bpm_level": 90,
+            "has_audio": true,
+            "id": 46,
+            "key": "5M",
+            "title": "Masimbabele",
+            "year": 2019
+          },
+          {
+            "artist": "Thomash",
+            "bpm": 105,
+            "bpm_level": 100,
+            "has_audio": true,
+            "id": 4201,
+            "key": "5M",
+            "title": "Candomble - Original Mix",
+            "year": 2014
+          },
+          {
+            "artist": "Osunlade",
+            "bpm": 120,
+            "bpm_level": 110,
+            "has_audio": false,
+            "id": 3961,
+            "key": "3M",
+            "title": "Auto Machine",
+            "year": 2020
+          },
+          {
+            "artist": "Africaine 808",
+            "bpm": 120.2,
+            "bpm_level": 120,
+            "has_audio": false,
+            "id": 1825,
+            "key": "12M",
+            "title": "Tummy, Tummy",
+            "year": 2013
+          },
+          {
+            "artist": "Mim Suleiman",
+            "bpm": 130,
+            "bpm_level": 130,
+            "has_audio": true,
+            "id": 1495,
+            "key": "4M",
+            "title": "Haki",
+            "year": 2012
+          },
+          {
+            "artist": "Alex Guesta",
+            "bpm": 124,
+            "bpm_level": 140,
+            "has_audio": false,
+            "id": 1972,
+            "key": "8M",
+            "title": "Babarabatiri - Alex Guesta Tribal Mix",
+            "year": 2017
+          },
+          {
+            "artist": "Mel\u00e9",
+            "bpm": 130,
+            "bpm_level": 150,
+            "has_audio": true,
+            "id": 2322,
+            "key": "7M",
+            "title": "Esperanza",
+            "year": 2020
+          }
+        ],
+        "selectedTrackIndex": 7,
+        "_loading": false
+      },
+      {
         "id": "autoset-slot-19",
         "selectedTrackIndex": 6,
         "source": {
@@ -27920,7 +28024,7 @@
       }
     ],
     "created_at": "2026-02-19T05:45:54.715822+00:00",
-    "updated_at": "2026-02-19T05:45:54.720824+00:00"
+    "updated_at": "2026-02-20T04:35:00.660354+00:00"
   },
   "a9a6f214": {
     "id": "a9a6f214",
@@ -30340,5 +30444,806 @@
     ],
     "created_at": "2026-02-20T03:49:25.052902+00:00",
     "updated_at": "2026-02-20T03:49:25.052919+00:00"
+  },
+  "e7c4c897": {
+    "id": "e7c4c897",
+    "name": "Auto Set \u2014 Spiritual Afro House Rituals",
+    "slots": [
+      {
+        "id": "autoset-slot-0",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 46,
+            "title": "Masimbabele",
+            "artist": "The Unknown Cases",
+            "bpm": 92.0,
+            "key": "5M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 224,
+            "title": "Masimbabele",
+            "artist": "The Unknown Cases",
+            "bpm": 92.0,
+            "key": "5M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 226,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 48,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-1",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 226,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 46,
+            "title": "Masimbabele",
+            "artist": "The Unknown Cases",
+            "bpm": 92.0,
+            "key": "5M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 48,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-2",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 226,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 48,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-3",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 226,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95.0,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-4",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 4201,
+            "title": "Candomble - Original Mix",
+            "artist": "Thomash",
+            "bpm": 105.0,
+            "key": "5M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1245,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 386,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 992,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "10M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-5",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3350,
+            "title": "Amos",
+            "artist": "Mulya",
+            "bpm": 116.0,
+            "key": "5M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1213,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121.0,
+            "key": "8D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 989,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121.0,
+            "key": "8D",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-6",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 386,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 992,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "10M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1245,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-7",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 386,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          {
+            "id": 992,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "10M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-8",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1971,
+            "title": "Afrika",
+            "artist": "De Gama",
+            "bpm": 126.0,
+            "key": "12M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-9",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1971,
+            "title": "Afrika",
+            "artist": "De Gama",
+            "bpm": 126.0,
+            "key": "12M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 7
+      },
+      {
+        "id": "autoset-slot-10",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 989,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121.0,
+            "key": "8D",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3350,
+            "title": "Amos",
+            "artist": "Mulya",
+            "bpm": 116.0,
+            "key": "5M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 724,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-11",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 724,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 989,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121.0,
+            "key": "8D",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-12",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          {
+            "id": 724,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-13",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          null,
+          {
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-14",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 386,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-15",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-16",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3969,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          {
+            "id": 3447,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-17",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 3969,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108.0,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      }
+    ],
+    "created_at": "2026-02-20T04:32:18.492500+00:00",
+    "updated_at": "2026-02-20T04:32:18.492508+00:00",
+    "phase_profile_id": "classic_arc"
   }
 }
