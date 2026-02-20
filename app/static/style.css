@@ -3115,6 +3115,9 @@ tr.ws-seed-selected {
 #tab-setbuilder.base-drawer-open {
     padding-bottom: 180px;
 }
+#tab-chat.base-drawer-open .chat-layout {
+    height: calc(100vh - 46px - 130px);
+}
 
 /* Three-panel layout */
 .base-drawer-panels {
@@ -3754,6 +3757,18 @@ tr.ws-seed-selected {
     min-width: 0;
 }
 
+/* Center welcome + input together before first message */
+.chat-layout.chat-centered {
+    justify-content: center;
+}
+.chat-layout.chat-centered .chat-messages {
+    flex: 0 0 auto;
+    overflow-y: visible;
+}
+.chat-layout.chat-centered .chat-input-area {
+    border-top: none;
+}
+
 .chat-messages {
     flex: 1;
     overflow-y: auto;
@@ -3767,9 +3782,8 @@ tr.ws-seed-selected {
 
 .chat-welcome {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 1rem 1rem 0.5rem;
     color: var(--text-muted);
-    margin: auto 0;
 }
 
 .chat-welcome h3 {

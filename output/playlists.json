@@ -2316,5 +2316,33 @@
     "source": "chat",
     "created_at": "2026-02-19T07:29:28.110880+00:00",
     "updated_at": "2026-02-19T07:29:28.110909+00:00"
+  },
+  "45e3ce63": {
+    "id": "45e3ce63",
+    "name": "Spiritual Jazz",
+    "description": "A journey through spiritual jazz featuring modal explorations, Afrocentric consciousness, and transcendent grooves from the late 60s to contemporary London jazz renaissance",
+    "filters": {},
+    "track_ids": [
+      3191,
+      4045,
+      5006,
+      4968,
+      2866,
+      5074,
+      5325,
+      972,
+      2376,
+      2863,
+      2993,
+      3420,
+      3422,
+      1495,
+      2829,
+      47,
+      1273
+    ],
+    "source": "chat",
+    "created_at": "2026-02-20T03:48:14.453863+00:00",
+    "updated_at": "2026-02-20T03:48:14.453875+00:00"
   }
 }

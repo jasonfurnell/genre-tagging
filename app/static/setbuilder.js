@@ -1494,10 +1494,10 @@ function transitionToBaseDrawer() {
     setDrawerMode = null;
     document.getElementById("set-drawer").classList.remove("open");
     const tab = document.getElementById("tab-setbuilder");
-    if (tab) {
-        tab.classList.remove("drawer-open");
-        tab.classList.add("base-drawer-open");
-    }
+    if (tab) tab.classList.remove("drawer-open");
+
+    // Push content up on ALL tabs so the fixed drawer doesn't cover anything
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
 
     // Open the base drawer after right drawer starts sliding out
     setTimeout(() => {
@@ -1512,8 +1512,7 @@ function transitionToBaseDrawer() {
 function closeBaseDrawer() {
     baseDrawerOpen = false;
     document.getElementById("base-drawer").classList.remove("open");
-    const tab = document.getElementById("tab-setbuilder");
-    if (tab) tab.classList.remove("base-drawer-open");
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-open"));
 }
 
 function expandFromBaseDrawer() {

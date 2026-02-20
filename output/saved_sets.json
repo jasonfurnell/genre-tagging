@@ -29570,5 +29570,775 @@
     ],
     "created_at": "2026-02-19T07:30:54.660401+00:00",
     "updated_at": "2026-02-19T07:30:54.660407+00:00"
+  },
+  "1b830737": {
+    "id": "1b830737",
+    "name": "Auto Set \u2014 Spiritual Jazz",
+    "slots": [
+      {
+        "id": "autoset-slot-0",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Gentle Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2376,
+            "title": "Love And Death",
+            "artist": "Ebo Taylor, Uhuru-Yenzu",
+            "bpm": 107.5,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2863,
+            "title": "Ariya",
+            "artist": "Tony Allen",
+            "bpm": 117.8,
+            "key": "8M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 47,
+            "title": "Mori Baka",
+            "artist": "Peter Power",
+            "bpm": 105.0,
+            "key": "12M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          {
+            "id": 972,
+            "title": "Music for My Mother",
+            "artist": "Funkadelic",
+            "bpm": 181.0,
+            "key": "2M",
+            "year": 1973,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 9
+      },
+      {
+        "id": "autoset-slot-1",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Ambient Welcome"
+        },
+        "tracks": [
+          {
+            "id": 3191,
+            "title": "Little Sunflower",
+            "artist": "Dorothy Ashby",
+            "bpm": 77.3,
+            "key": "12M",
+            "year": 1968,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 5325,
+            "title": "Swahililand",
+            "artist": "Ahmad Jamal",
+            "bpm": 82.8,
+            "key": "2M",
+            "year": 1987,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 4045,
+            "title": "Little Sunflower",
+            "artist": "Dorothy Ashby",
+            "bpm": 77.3,
+            "key": "12M",
+            "year": 1968,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5074,
+            "title": "My Queen Is Nanny Of The Maroons",
+            "artist": "Sons Of Kemet",
+            "bpm": 75.8,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3420,
+            "title": "I Am The Black Gold Of The Sun",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 87.0,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-2",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Ambient Welcome"
+        },
+        "tracks": [
+          {
+            "id": 5074,
+            "title": "My Queen Is Nanny Of The Maroons",
+            "artist": "Sons Of Kemet",
+            "bpm": 75.8,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3420,
+            "title": "I Am The Black Gold Of The Sun",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 87.0,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3191,
+            "title": "Little Sunflower",
+            "artist": "Dorothy Ashby",
+            "bpm": 77.3,
+            "key": "12M",
+            "year": 1968,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5325,
+            "title": "Swahililand",
+            "artist": "Ahmad Jamal",
+            "bpm": 82.8,
+            "key": "2M",
+            "year": 1987,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-3",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Ambient Welcome"
+        },
+        "tracks": [
+          {
+            "id": 5074,
+            "title": "My Queen Is Nanny Of The Maroons",
+            "artist": "Sons Of Kemet",
+            "bpm": 75.8,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3420,
+            "title": "I Am The Black Gold Of The Sun",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 87.0,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 5325,
+            "title": "Swahililand",
+            "artist": "Ahmad Jamal",
+            "bpm": 82.8,
+            "key": "2M",
+            "year": 1987,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-4",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Ambient Welcome"
+        },
+        "tracks": [
+          {
+            "id": 5074,
+            "title": "My Queen Is Nanny Of The Maroons",
+            "artist": "Sons Of Kemet",
+            "bpm": 75.8,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          null,
+          null,
+          {
+            "id": 3420,
+            "title": "I Am The Black Gold Of The Sun",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 87.0,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-5",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Groove Establish"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2993,
+            "title": "African Rhythms",
+            "artist": "Oneness Of Juju",
+            "bpm": 97.9,
+            "key": "8D",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 4968,
+            "title": "Song for My Father",
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5006,
+            "title": "Song for My Father",
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-6",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Groove Establish"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 4968,
+            "title": "Song for My Father",
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5006,
+            "title": "Song for My Father",
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-7",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Groove Establish"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 4968,
+            "title": "Song for My Father",
+            "artist": "Tenderlonious",
+            "bpm": 113.2,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-8",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Handoff"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1273,
+            "title": "Mori Baka",
+            "artist": "Peter Power",
+            "bpm": 105.0,
+            "key": "12M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3422,
+            "title": "It's Alright, I Feel It",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 121.9,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2829,
+            "title": "Pas la peine",
+            "artist": "Vaudou Game",
+            "bpm": 122.5,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-9",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Gentle Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 47,
+            "title": "Mori Baka",
+            "artist": "Peter Power",
+            "bpm": 105.0,
+            "key": "12M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2863,
+            "title": "Ariya",
+            "artist": "Tony Allen",
+            "bpm": 117.8,
+            "key": "8M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2376,
+            "title": "Love And Death",
+            "artist": "Ebo Taylor, Uhuru-Yenzu",
+            "bpm": 107.5,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-10",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Ambient Welcome"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 5074,
+            "title": "My Queen Is Nanny Of The Maroons",
+            "artist": "Sons Of Kemet",
+            "bpm": 75.8,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-11",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Handoff"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2866,
+            "title": "Door To The Cosmos",
+            "artist": "Sun Ra",
+            "bpm": 113.4,
+            "key": "7M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3422,
+            "title": "It's Alright, I Feel It",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 121.9,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2829,
+            "title": "Pas la peine",
+            "artist": "Vaudou Game",
+            "bpm": 122.5,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-12",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Gentle Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 47,
+            "title": "Mori Baka",
+            "artist": "Peter Power",
+            "bpm": 105.0,
+            "key": "12M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2863,
+            "title": "Ariya",
+            "artist": "Tony Allen",
+            "bpm": 117.8,
+            "key": "8M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-13",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Handoff"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 3422,
+            "title": "It's Alright, I Feel It",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 121.9,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2829,
+            "title": "Pas la peine",
+            "artist": "Vaudou Game",
+            "bpm": 122.5,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-14",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Gentle Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2863,
+            "title": "Ariya",
+            "artist": "Tony Allen",
+            "bpm": 117.8,
+            "key": "8M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-15",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Handoff"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3422,
+            "title": "It's Alright, I Feel It",
+            "artist": "Nuyorican Soul, Jocelyn Brown",
+            "bpm": 121.9,
+            "key": "6M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-16",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Handoff"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130.0,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 7
+      }
+    ],
+    "created_at": "2026-02-20T03:49:25.052902+00:00",
+    "updated_at": "2026-02-20T03:49:25.052919+00:00"
   }
 }

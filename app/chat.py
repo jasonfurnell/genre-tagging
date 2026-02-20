@@ -47,6 +47,8 @@ def build_chat_system_prompt(state):
         "- Format track listings clearly. Include artist, title, BPM, and key when available.",
         "- Be concise but informative. You're helping a DJ prepare for sets.",
         "- If the user asks about something not in the collection, say so honestly.",
+        "- IMPORTANT: Always finish your response by saving the results as a playlist using the create_playlist tool. "
+        "Even for simple searches or queries, create a playlist with the matching tracks so the DJ can use them immediately.",
     ]
 
     if df is not None:

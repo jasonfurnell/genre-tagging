@@ -60,9 +60,12 @@ async function _chatSend() {
     const text = input.value.trim();
     if (!text || _chatStreaming) return;
 
-    // Clear welcome on first send
+    // Clear welcome on first send and switch to bottom-pinned input
     const welcome = _ch("chat-messages").querySelector(".chat-welcome");
-    if (welcome) welcome.remove();
+    if (welcome) {
+        welcome.remove();
+        _ch("chat-messages").closest(".chat-layout").classList.remove("chat-centered");
+    }
 
     _chatAddMessage("user", text);
     input.value = "";
@@ -166,6 +169,7 @@ async function _chatClear() {
     await fetch("/api/chat/clear", { method: "POST" });
     const messages = _ch("chat-messages");
     messages.innerHTML = "";
+    messages.closest(".chat-layout").classList.add("chat-centered");
     // Re-add welcome
     messages.innerHTML = `
         <div class="chat-welcome">
@@ -494,6 +498,7 @@ async function _chatLoadHistory() {
         if (data.messages && data.messages.length > 0) {
             const welcome = _ch("chat-messages").querySelector(".chat-welcome");
             if (welcome) welcome.remove();
+            _ch("chat-messages").closest(".chat-layout").classList.remove("chat-centered");
 
             for (const msg of data.messages) {
                 _chatAddMessage(msg.role, msg.text || "");
