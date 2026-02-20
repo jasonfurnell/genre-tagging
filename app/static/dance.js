@@ -16,6 +16,7 @@
   // Boot sequence
   let _bootPhase = "idle";   // "idle" | "fading_in" | "ready"
   let _fadeCompleted = false;
+  let _fadingOut = false;     // true while fade-out transition is running
 
   // Settings drawer
   let _settingsOpen = false;
@@ -52,17 +53,53 @@
     if (_eventsHooked) return;
     _eventsHooked = true;
 
-    // Track change — sync BPM to robot
+    // Track change — sync BPM + auto-resume dancers if stopped
     window.addEventListener("playset-track", (e) => {
       _syncBpm(e.detail.track);
+      // Auto-fade-in dancers when a track starts (ties visibility to actual playback)
+      if (!_playing && _bootPhase === "ready") {
+        _playing = true;
+        _fadeInDancers();
+      }
     });
 
-    // Play mode stopped
+    // Play mode stopped — fade out dancers, then freeze
     window.addEventListener("playset-stopped", () => {
       _playing = false;
-      if (typeof stopRobotDancer === "function") stopRobotDancer();
-      if (typeof stillRobotDancer === "function") stillRobotDancer();
+      _fadeOutDancers();
     });
+  }
+
+  // ── Fade dancers out / in ──────────────────────────────────
+
+  function _fadeOutDancers() {
+    const robotPanel = document.getElementById("robot-panel");
+    if (!robotPanel) return;
+    _fadingOut = true;
+
+    function onEnd() {
+      robotPanel.removeEventListener("transitionend", onEnd);
+      // Only freeze if we haven't started playing again mid-fade
+      if (_fadingOut) {
+        if (typeof stopRobotDancer === "function") stopRobotDancer();
+        if (typeof stillRobotDancer === "function") stillRobotDancer();
+        _fadingOut = false;
+      }
+    }
+    robotPanel.addEventListener("transitionend", onEnd);
+    robotPanel.style.opacity = "0";
+  }
+
+  function _fadeInDancers() {
+    const robotPanel = document.getElementById("robot-panel");
+    if (!robotPanel) return;
+
+    // Cancel any in-progress fade-out
+    if (_fadingOut) _fadingOut = false;
+
+    // Start dancers before fading in so they're already moving as they appear
+    if (typeof startRobotDancer === "function") startRobotDancer();
+    robotPanel.style.opacity = "1";
   }
 
   // ── Enter play mode → base drawer appears ──────────────────
@@ -84,10 +121,10 @@
       // Start robots immediately or after a delay (lets the song get going first)
       if (dancerDelay > 0) {
         setTimeout(() => {
-          if (_playing && typeof startRobotDancer === "function") startRobotDancer();
+          if (_playing) _fadeInDancers();
         }, dancerDelay);
       } else {
-        if (typeof startRobotDancer === "function") startRobotDancer();
+        _fadeInDancers();
       }
 
       // Transition from the (hidden) right drawer to the base drawer
@@ -110,6 +147,14 @@
     if (_fadeCompleted) return; // guard against double-fire
     _fadeCompleted = true;
     _bootPhase = "ready";
+
+    // Switch from boot animation to CSS transition for future play/stop fades
+    const robotPanel = document.getElementById("robot-panel");
+    if (robotPanel) {
+      robotPanel.classList.remove("dance-fade-in");
+      robotPanel.style.opacity = "1";
+      robotPanel.classList.add("dance-live");
+    }
 
     _hookWorkshopEvents();
     _enterPlayMode(3000);  // let the song play for 3s before robots start
@@ -173,7 +218,7 @@
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
       // Already in play mode — sync robots + ensure base drawer is visible
       _playing = true;
-      if (typeof startRobotDancer === "function") startRobotDancer();
+      _fadeInDancers();
 
       // Make sure base drawer is showing (it may have been closed on another tab)
       const bd = document.getElementById("base-drawer");
