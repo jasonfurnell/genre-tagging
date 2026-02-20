@@ -1300,7 +1300,28 @@
       return stageEl;
     }
 
-    return { init, start, stop, refreshArtwork, addStage, stage: () => _stage };
+    function still() {
+      if (!_stage) init();
+      if (!_stage) return;
+      if (_frame) return; // already animating, don't overwrite
+      const pose = noisyPose(POSES[SEQUENCE[Math.floor(Math.random() * SEQUENCE.length)]]);
+      const j = fk(pose);
+      const pos = partPos(j);
+      pos.head.rot = pose.hd || 0;
+      for (const [name, p] of Object.entries(pos)) {
+        if (!SIZES_BASE[name]) continue;
+        const [w, h] = sz(name);
+        const tf = `translate(${(p.x - w/2).toFixed(1)}px, ${(p.y - h/2).toFixed(1)}px) rotate(${p.rot.toFixed(1)}deg)`;
+        for (const els of _allEls()) {
+          els[name].style.transform = tf;
+          els[name].style.boxShadow = `0 0 8px ${ACCENT_HEX}80`;
+        }
+      }
+      _svg.innerHTML = "";
+      for (const ex of _extraStages) ex.svgEl.innerHTML = "";
+    }
+
+    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage };
   }
 
   // ═══ PUBLIC API (single instance, multiple synced stages) ═══
@@ -1309,11 +1330,12 @@
 
   window.createRobotDancer = createRobotDancer;
 
-  window.initRobotDancer = function (controlsContainer) {
+  window.initRobotDancer = function (controlsContainer, opts) {
     if (_inst) return;
     const panel = document.getElementById("robot-panel");
     if (!panel) return;
 
+    const wantControls = opts?.showControls !== false;
     const scale = 2.0;
 
     // Row of 3 synced robots
@@ -1342,8 +1364,8 @@
     row.appendChild(rightSub);
 
     // Single instance with controls
-    _inst = createRobotDancer(centerSub, { showControls: true });
-    _inst.init(controlsContainer);
+    _inst = createRobotDancer(centerSub, { showControls: wantControls });
+    _inst.init(wantControls ? controlsContainer : null);
 
     // Apply scale to primary stage
     const stg = _inst.stage();
@@ -1364,6 +1386,11 @@
 
   window.stopRobotDancer = function () {
     if (_inst) _inst.stop();
+  };
+
+  window.stillRobotDancer = function () {
+    if (!_inst) window.initRobotDancer();
+    if (_inst) _inst.still();
   };
 
   window.refreshRobotArtwork = function () {

@@ -654,7 +654,8 @@ async function uploadFile(file) {
         summary.classList.remove("hidden");
         $("#unified-header").classList.remove("hidden");
         if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
-        if (typeof startDance === "function") startDance();
+        if (typeof initDanceTab === "function") initDanceTab();
+        if (typeof refreshDance === "function") refreshDance();
         checkAndWarmArtworkCache();
     } catch (err) {
         alert("Upload error: " + err.message);
@@ -896,9 +897,12 @@ async function resetSettings() {
 }
 
 // ── Tab Switching ──────────────────────────────────────────
+let _activeTab = "dance";  // dance is the default active tab
 $$(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         const target = btn.dataset.tab;
+        const previousTab = _activeTab;
+        _activeTab = target;
         $$(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
         $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
         $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
@@ -908,10 +912,14 @@ $$(".tab-btn").forEach(btn => {
             _chatCloseDrawer();
         }
 
-        // Dance tab: start on enter, stop on leave
+        // Dance ↔ Workshop seamless switching (shared playback)
         if (target === "dance") {
             if (typeof startDance === "function") startDance();
-        } else {
+        } else if (previousTab === "dance" && target === "setbuilder") {
+            // Dance → Workshop: keep audio playing, just stop robots + hide player
+            if (typeof stopDanceVisuals === "function") stopDanceVisuals();
+        } else if (previousTab === "dance") {
+            // Dance → other tab: full stop (pause standalone audio, stop robots)
             if (typeof stopDancePlayback === "function") stopDancePlayback();
         }
 
@@ -968,7 +976,8 @@ initGrid();
             summary.classList.remove("hidden");
             $("#unified-header").classList.remove("hidden");
             if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
-            if (typeof startDance === "function") startDance();
+            if (typeof initDanceTab === "function") initDanceTab();
+            if (typeof refreshDance === "function") refreshDance();
             checkAndWarmArtworkCache();
         }
     } catch (_) { /* no autosave available */ }

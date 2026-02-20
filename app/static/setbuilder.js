@@ -2299,6 +2299,9 @@ function exitPlaySetMode() {
 
     // Close base drawer if open
     if (baseDrawerOpen) closeBaseDrawer();
+
+    // Notify Dance tab
+    window.dispatchEvent(new CustomEvent("playset-stopped"));
 }
 
 function syncPlaySetIndex(slotId) {
@@ -2431,6 +2434,9 @@ async function playFullTrack(idx) {
 
     // Update Now Playing drawer
     updateNowPlayingDrawer(track, idx);
+
+    // Notify Dance tab of track change
+    window.dispatchEvent(new CustomEvent("playset-track", { detail: { track, idx } }));
 }
 
 async function updateNowPlayingDrawer(track, slotIdx) {
