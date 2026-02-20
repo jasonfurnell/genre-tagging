@@ -66,8 +66,13 @@
   }
 
   // ── Enter play mode → base drawer appears ──────────────────
-  function _enterPlayMode() {
+  // dancerDelay: ms to wait after song starts before robots begin dancing
+  function _enterPlayMode(dancerDelay) {
     if (!_hasWorkshopSet()) return;
+
+    // Hide the right-hand drawer so it doesn't flash during the transition
+    const setDrawer = document.getElementById("set-drawer");
+    if (setDrawer) setDrawer.style.visibility = "hidden";
 
     // Enter play set mode (starts first track, opens right drawer)
     if (typeof switchMode === "function") switchMode("playset");
@@ -75,12 +80,25 @@
     // Verify it actually entered play mode
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
       _playing = true;
-      if (typeof startRobotDancer === "function") startRobotDancer();
 
-      // Transition from the (invisible) right drawer to the base drawer
+      // Start robots immediately or after a delay (lets the song get going first)
+      if (dancerDelay > 0) {
+        setTimeout(() => {
+          if (_playing && typeof startRobotDancer === "function") startRobotDancer();
+        }, dancerDelay);
+      } else {
+        if (typeof startRobotDancer === "function") startRobotDancer();
+      }
+
+      // Transition from the (hidden) right drawer to the base drawer
       setTimeout(() => {
         if (typeof closeDrawer === "function") closeDrawer();
+        // Restore visibility after closeDrawer removes .open synchronously
+        if (setDrawer) setDrawer.style.visibility = "";
       }, 100);
+    } else {
+      // Restore if play mode wasn't entered
+      if (setDrawer) setDrawer.style.visibility = "";
     }
   }
 
@@ -94,7 +112,7 @@
     _bootPhase = "ready";
 
     _hookWorkshopEvents();
-    _enterPlayMode();
+    _enterPlayMode(3000);  // let the song play for 3s before robots start
   }
 
   // ═══════════════════════════════════════════════════════════
@@ -140,7 +158,7 @@
   window.refreshDance = function () {
     if (!_inited) return;
     if (_bootPhase === "ready" && !_playing) {
-      _enterPlayMode();
+      _enterPlayMode(0);
     }
     // If still fading, _enterPlayMode will run when boot reaches "ready"
   };
@@ -164,7 +182,7 @@
       }
     } else if (!_playing) {
       // Not yet in play mode — try to enter
-      _enterPlayMode();
+      _enterPlayMode(0);
     }
   };
 

@@ -95,10 +95,12 @@ app.add_middleware(
 # Routers
 # ---------------------------------------------------------------------------
 from app.routers import (  # noqa: E402
-    artwork, config_routes, dropbox, playlists, sets, tagging, trees, upload,
+    artwork, autoset, chat, config_routes, dropbox, playlists, sets, tagging, trees, upload,
 )
 
 app.include_router(artwork.router)
+app.include_router(autoset.router)
+app.include_router(chat.router)
 app.include_router(config_routes.router)
 app.include_router(dropbox.router)
 app.include_router(playlists.router)
