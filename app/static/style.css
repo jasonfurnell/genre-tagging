@@ -4138,7 +4138,16 @@ tr.ws-seed-selected {
     display: flex;
     flex-direction: column;
     align-items: center;
-    opacity: 1;
+    opacity: 0;
+}
+
+.dance-robot-panel.dance-fade-in {
+    animation: danceFadeIn 5s ease-out forwards;
+}
+
+@keyframes danceFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 /* Per-instance scale is set inline by robot.js factory */
@@ -4302,6 +4311,55 @@ tr.ws-seed-selected {
 .dance-pl-time span {
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+}
+
+/* ── Dance: Settings Drawer ─────────────────────────────── */
+.dance-settings-drawer {
+    position: fixed;
+    top: 46px;
+    right: 0;
+    bottom: 72px;
+    width: 320px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    z-index: 200;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dance-settings-drawer.open {
+    transform: translateX(0);
+}
+
+/* ── Dance: Settings Toggle Button ──────────────────────── */
+.dance-settings-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    margin-left: auto;
+}
+
+.dance-settings-btn:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--text-muted);
+}
+
+.dance-settings-btn.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(233,69,96,0.1);
 }
 
 /* ── Robot Panel (legacy) ─────────────────────────────────── */

@@ -3,6 +3,10 @@
    Music starts when user presses play → enters Workshop play mode.
    Seamless switching between Workshop and Dance while playing.
    Falls back to "I Feel Love" + leaf if no workshop set.
+
+   Boot sequence: fade-in robots (5s) → show player bar → resolve mode.
+   BPM sync: robot tempo matches currently playing track.
+   Settings drawer: gear button toggles robot controls panel.
    ──────────────────────────────────────────────────────────── */
 (function () {
   "use strict";
@@ -12,6 +16,13 @@
   let _playing = false;      // robots should be dancing
   let _inited = false;
   let _audioHooked = false;  // setAudio listeners attached?
+
+  // Boot sequence
+  let _bootPhase = "idle";   // "idle" | "fading_in" | "ready"
+  let _fadeCompleted = false;
+
+  // Settings drawer
+  let _settingsOpen = false;
 
   // Standalone fallback (I Feel Love + leaf)
   let _ownAudio = null;
@@ -47,6 +58,20 @@
         if (url) imgEl.src = url;
       })
       .catch(() => {});
+  }
+
+  // ── BPM sync ──────────────────────────────────────────────
+  function _syncBpm(track) {
+    if (track?.bpm && typeof setRobotBpm === "function") {
+      setRobotBpm(Math.round(track.bpm));
+    }
+  }
+
+  // ── Settings drawer toggle ────────────────────────────────
+  function _toggleSettings() {
+    _settingsOpen = !_settingsOpen;
+    if (_els.settingsDrawer) _els.settingsDrawer.classList.toggle("open", _settingsOpen);
+    if (_els.settingsBtn) _els.settingsBtn.classList.toggle("active", _settingsOpen);
   }
 
   // ── Active audio element (depends on mode) ─────────────────
@@ -114,6 +139,7 @@
     window.addEventListener("playset-track", (e) => {
       if (_mode === "workshop") {
         _updatePlayerTrackInfo(e.detail.track);
+        _syncBpm(e.detail.track);
       }
     });
 
@@ -186,6 +212,8 @@
         _playing = true;
         _setPauseIcon();
         if (typeof startRobotDancer === "function") startRobotDancer();
+        const track = _workshopCurrentTrack();
+        if (track) _syncBpm(track);
       }
     }
   }
@@ -282,6 +310,7 @@
     _ownQueueIdx = idx;
     const track = _ownQueue[idx];
     _updatePlayerTrackInfo(track);
+    _syncBpm(track);
     _ownAudio.src = `/api/audio/${track.id}`;
     _ownAudio.load();
     _ownAudio.play().catch(err => {
@@ -336,6 +365,27 @@
   }
 
   // ═══════════════════════════════════════════════════════════
+  // BOOT SEQUENCE — fade-in → player bar → resolve mode
+  // ═══════════════════════════════════════════════════════════
+
+  function _onFadeComplete() {
+    if (_fadeCompleted) return; // guard against double-fire
+    _fadeCompleted = true;
+
+    // Show the player drawer (slide up)
+    const danceTab = document.getElementById("tab-dance");
+    if (danceTab && !danceTab.classList.contains("hidden")) {
+      if (_els.player) _els.player.classList.add("visible");
+    }
+
+    // After player slide-up animation (350ms), resolve mode
+    setTimeout(() => {
+      _bootPhase = "ready";
+      _resolveMode();
+    }, 400);
+  }
+
+  // ═══════════════════════════════════════════════════════════
   // INIT
   // ═══════════════════════════════════════════════════════════
 
@@ -345,22 +395,24 @@
 
     // Cache DOM refs
     _els = {
-      player:       document.getElementById("dance-player"),
-      artwork:      document.getElementById("dance-pl-artwork"),
-      title:        document.getElementById("dance-pl-title"),
-      artist:       document.getElementById("dance-pl-artist"),
-      playBtn:      document.getElementById("dance-pl-play"),
-      prevBtn:      document.getElementById("dance-pl-prev"),
-      nextBtn:      document.getElementById("dance-pl-next"),
-      progressBar:  document.getElementById("dance-pl-progress-bar"),
-      progressFill: document.getElementById("dance-pl-progress-fill"),
-      current:      document.getElementById("dance-pl-current"),
-      duration:     document.getElementById("dance-pl-duration"),
+      player:         document.getElementById("dance-player"),
+      artwork:        document.getElementById("dance-pl-artwork"),
+      title:          document.getElementById("dance-pl-title"),
+      artist:         document.getElementById("dance-pl-artist"),
+      playBtn:        document.getElementById("dance-pl-play"),
+      prevBtn:        document.getElementById("dance-pl-prev"),
+      nextBtn:        document.getElementById("dance-pl-next"),
+      progressBar:    document.getElementById("dance-pl-progress-bar"),
+      progressFill:   document.getElementById("dance-pl-progress-fill"),
+      current:        document.getElementById("dance-pl-current"),
+      duration:       document.getElementById("dance-pl-duration"),
+      settingsBtn:    document.getElementById("dance-settings-btn"),
+      settingsDrawer: document.getElementById("dance-settings-drawer"),
     };
 
-    // Init robots (no sidebar controls)
+    // Init robots with controls in hidden settings drawer
     if (typeof initRobotDancer === "function") {
-      initRobotDancer(null, { showControls: false });
+      initRobotDancer(_els.settingsDrawer, { showControls: true });
     }
 
     // Standalone audio (only used if no workshop set)
@@ -378,23 +430,33 @@
     _els.nextBtn.addEventListener("click", _onNext);
     _els.progressBar.addEventListener("click", _onSeek);
 
-    // Show still pose immediately
-    if (typeof stillRobotDancer === "function") stillRobotDancer();
-
-    // Show player bar if dance tab is currently active
-    const danceTab = document.getElementById("tab-dance");
-    if (danceTab && !danceTab.classList.contains("hidden")) {
-      _els.player.classList.add("visible");
+    // Settings drawer toggle
+    if (_els.settingsBtn) {
+      _els.settingsBtn.addEventListener("click", _toggleSettings);
     }
 
-    // Determine mode and populate player bar
-    _resolveMode();
+    // Show still pose
+    if (typeof stillRobotDancer === "function") stillRobotDancer();
+
+    // Start 5-second fade-in
+    const robotPanel = document.getElementById("robot-panel");
+    if (robotPanel) {
+      robotPanel.classList.add("dance-fade-in");
+      robotPanel.addEventListener("animationend", _onFadeComplete, { once: true });
+    }
+    _bootPhase = "fading_in";
+
+    // Fallback in case animationend doesn't fire
+    setTimeout(_onFadeComplete, 5200);
   };
 
   // ── Called after CSV upload/restore to refresh state ────────
   window.refreshDance = function () {
     if (!_inited) return;
-    _resolveMode();
+    if (_bootPhase === "ready") {
+      _resolveMode();
+    }
+    // If still fading, _resolveMode will run when boot reaches "ready"
   };
 
   // ── Tab Enter ──────────────────────────────────────────────
@@ -402,30 +464,35 @@
   window.startDance = function () {
     if (!_inited) initDanceTab();
 
-    // Show player bar
-    if (_els.player) _els.player.classList.add("visible");
+    // Only show player bar and resolve mode if boot is complete
+    if (_bootPhase === "ready") {
+      if (_els.player) _els.player.classList.add("visible");
 
-    // Re-check mode (workshop state may have changed)
-    _resolveMode();
+      // Re-check mode (workshop state may have changed)
+      _resolveMode();
 
-    // Sync with current playback state
-    if (_mode === "workshop" && typeof isPlaySetMode === "function" && isPlaySetMode()) {
-      // Workshop is already in play mode — sync visuals
-      _playing = true;
-      _setPauseIcon();
-      const track = _workshopCurrentTrack();
-      if (track) _updatePlayerTrackInfo(track);
-      if (typeof startRobotDancer === "function") startRobotDancer();
-    } else if (_mode === "standalone" && _playing) {
-      // Was playing standalone when we left — resume
-      _ownAudio.play().catch(() => {});
-      _setPauseIcon();
-      if (typeof startRobotDancer === "function") startRobotDancer();
-    } else {
-      // Not playing — show still robots
-      _playing = false;
-      _setPlayIcon();
-      if (typeof stillRobotDancer === "function") stillRobotDancer();
+      // Sync with current playback state
+      if (_mode === "workshop" && typeof isPlaySetMode === "function" && isPlaySetMode()) {
+        // Workshop is already in play mode — sync visuals
+        _playing = true;
+        _setPauseIcon();
+        const track = _workshopCurrentTrack();
+        if (track) {
+          _updatePlayerTrackInfo(track);
+          _syncBpm(track);
+        }
+        if (typeof startRobotDancer === "function") startRobotDancer();
+      } else if (_mode === "standalone" && _playing) {
+        // Was playing standalone when we left — resume
+        _ownAudio.play().catch(() => {});
+        _setPauseIcon();
+        if (typeof startRobotDancer === "function") startRobotDancer();
+      } else {
+        // Not playing — show still robots
+        _playing = false;
+        _setPlayIcon();
+        if (typeof stillRobotDancer === "function") stillRobotDancer();
+      }
     }
   };
 

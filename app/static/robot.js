@@ -1321,7 +1321,14 @@
       for (const ex of _extraStages) ex.svgEl.innerHTML = "";
     }
 
-    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage };
+    function setBpm(bpm) {
+      if (typeof bpm === "number" && bpm >= 60 && bpm <= 200) {
+        _cfg.bpm = bpm;
+        _syncSliderUI("bpm");
+      }
+    }
+
+    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage, setBpm };
   }
 
   // ═══ PUBLIC API (single instance, multiple synced stages) ═══
@@ -1395,6 +1402,10 @@
 
   window.refreshRobotArtwork = function () {
     if (_inst) _inst.refreshArtwork();
+  };
+
+  window.setRobotBpm = function (bpm) {
+    if (_inst && _inst.setBpm) _inst.setBpm(bpm);
   };
 
 })();

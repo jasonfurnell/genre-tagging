@@ -563,6 +563,47 @@ async def saved_sets_delete(set_id: str):
     raise HTTPException(status_code=404, detail="Set not found")
 
 
+@router.get("/api/saved-sets/{set_id}/export/m3u")
+async def saved_sets_export_m3u(set_id: str, state: AppState = Depends(get_state)):
+    """Export a saved set as M3U8 (Lexicon compatible)."""
+    with state.df_lock:
+        if state.df.empty:
+            raise HTTPException(status_code=400, detail="No file uploaded")
+        df = state.df
+
+        s = get_saved_set(set_id)
+        if not s:
+            raise HTTPException(status_code=404, detail="Set not found")
+
+        set_name = s.get("name", "DJ_Set")
+        lines = ["#EXTM3U", f"#PLAYLIST:{set_name}"]
+
+        for slot in s.get("slots", []):
+            idx = slot.get("selectedTrackIndex")
+            tracks = slot.get("tracks") or []
+            if idx is None or idx >= len(tracks) or tracks[idx] is None:
+                continue
+            tid = tracks[idx].get("id")
+            if tid is None or tid not in df.index:
+                continue
+            row = df.loc[tid]
+            artist = str(row.get("artist", "Unknown"))
+            title = str(row.get("title", "Unknown"))
+            location = str(row.get("location", ""))
+            lines.append(f"#EXTINF:-1,{artist} - {title}")
+            if location and location != "nan":
+                lines.append(location)
+
+    content = "\n".join(lines) + "\n"
+    safe_name = set_name.replace(" ", "_")
+    buf = io.BytesIO(content.encode("utf-8"))
+    return StreamingResponse(
+        buf,
+        media_type="audio/x-mpegurl",
+        headers={"Content-Disposition": f'attachment; filename="{safe_name}.m3u8"'},
+    )
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Auto Set (narrative set builder)
 # ═══════════════════════════════════════════════════════════════════════════
