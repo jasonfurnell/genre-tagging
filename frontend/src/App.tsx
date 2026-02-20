@@ -2,12 +2,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Toaster } from '@/components/ui/sonner'
 import { useConfig } from '@/hooks/use-config'
 import { useUiStore, type TabId } from '@/stores/ui'
+import { AutoSetTab } from '@/components/autoset'
+import { ChatTab } from '@/components/chat'
 import { IntersectionsTab } from '@/components/intersections'
 import { PlaylistsTab } from '@/components/playlists'
 import { SetsTab } from '@/components/sets'
 import { TaggerTab } from '@/components/tagger'
 import { PhasesTab } from '@/components/phases'
 import { TreesTab } from '@/components/trees'
+import { TracksTab } from '@/components/tracks'
 import { WorkshopTab } from '@/components/workshop'
 
 const TABS: { id: TabId; label: string }[] = [
@@ -68,10 +71,16 @@ function App() {
                 <PlaylistsTab />
               ) : tab.id === 'intersections' ? (
                 <IntersectionsTab />
+              ) : tab.id === 'tracks' ? (
+                <TracksTab />
               ) : tab.id === 'trees' ? (
                 <TreesTab />
               ) : tab.id === 'phases' ? (
                 <PhasesTab />
+              ) : tab.id === 'auto-set' ? (
+                <AutoSetTab />
+              ) : tab.id === 'chat' ? (
+                <ChatTab />
               ) : (
                 <TabPlaceholder id={tab.id} />
               )}
