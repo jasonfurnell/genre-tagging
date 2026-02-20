@@ -4146,11 +4146,7 @@ tr.ws-seed-selected {
     opacity: 1;
 }
 
-.dance-robot-panel .robot-stage {
-    transform: scale(2);
-    transform-origin: top center;
-    margin-bottom: 420px;   /* compensate for scaled visual height */
-}
+/* Per-instance scale is set inline by robot.js factory */
 
 .dance-play-area {
     display: flex;

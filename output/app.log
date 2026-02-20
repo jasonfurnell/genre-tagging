@@ -3050,3 +3050,262 @@
 2026-02-20 09:14:45,481 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
 2026-02-20 09:14:45,483 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 09:14:45] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
 2026-02-20 09:14:47,101 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 09:14:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 10:48:50,967 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:50] "GET / HTTP/1.1" 200 -
+2026-02-20 10:48:51,028 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,030 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 10:48:51,031 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,033 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,033 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,034 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,041 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,055 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,055 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,055 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 10:48:51,521 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 10:48:51,588 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 10:48:51,626 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 10:48:51,825 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 10:48:51,898 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 10:48:51,976 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:51] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 10:48:52,078 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 10:48:52,083 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 10:48:52,085 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 10:48:52,102 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 10:48:52,162 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 10:48:52,168 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/4792c52f182defd4d4b73a633a0b7767_small.jpg?v=1770987507 HTTP/1.1" 200 -
+2026-02-20 10:48:52,168 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/f75211aa0d9cb8004c8ea6a0bd2d80c4_small.jpg?v=1770985463 HTTP/1.1" 200 -
+2026-02-20 10:48:52,168 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/793c12ebd0452bf7792a3e6272537eb6_small.jpg?v=1770985481 HTTP/1.1" 200 -
+2026-02-20 10:48:52,169 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/f7153bc8c5897737b1d287419dd5cb49_small.jpg?v=1770985612 HTTP/1.1" 200 -
+2026-02-20 10:48:52,172 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/305ed673b61686a791f39ba36c66b060_small.jpg?v=1770985705 HTTP/1.1" 200 -
+2026-02-20 10:48:52,172 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/13f2680f022b7929febaf8a46aaf7c30_small.jpg?v=1770985342 HTTP/1.1" 200 -
+2026-02-20 10:48:52,173 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/1c65524784bd5a95db5dfbbc482ef2e6_small.jpg?v=1770985889 HTTP/1.1" 200 -
+2026-02-20 10:48:52,173 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/09cd7634ee8b9b933ca1331e1c9f6815_small.jpg?v=1770985341 HTTP/1.1" 200 -
+2026-02-20 10:48:52,175 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/b595947e6693ee61176f4930a55f3a43_small.jpg?v=1770985478 HTTP/1.1" 200 -
+2026-02-20 10:48:52,176 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/9d20599eb790935e9a53fa8fa8ccc5ab_small.jpg?v=1770986106 HTTP/1.1" 200 -
+2026-02-20 10:48:52,176 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/c684c6d12794ca23acd10df6d3f0a7da_small.jpg?v=1770985417 HTTP/1.1" 200 -
+2026-02-20 10:48:52,177 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/4c9306e49878eb29af416e81b545bc7a_small.jpg?v=1770987492 HTTP/1.1" 200 -
+2026-02-20 10:48:52,178 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/6086069bf1722b9c1f4dbc19203944d0_small.jpg?v=1770985460 HTTP/1.1" 200 -
+2026-02-20 10:48:52,180 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/7a18089709469412b4e831d9f0318bf7_small.jpg?v=1770985344 HTTP/1.1" 200 -
+2026-02-20 10:48:52,180 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/58f7631ad8832db89ffa04fc37617b6f_small.jpg?v=1771014802 HTTP/1.1" 200 -
+2026-02-20 10:48:52,181 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/1af0f368ab66c4fd9483e3761f65ecf7_small.jpg?v=1771014820 HTTP/1.1" 200 -
+2026-02-20 10:48:52,182 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/b69bbb38000f6164b7ee0b12d3069887_small.jpg?v=1770985644 HTTP/1.1" 200 -
+2026-02-20 10:48:52,185 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/3d430d4dd4574cf8b2ce7a1e68cb57ba_small.jpg?v=1770986076 HTTP/1.1" 200 -
+2026-02-20 10:48:52,186 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/ba5be168dc4ed6e6460640a75179bd29_small.jpg?v=1770987494 HTTP/1.1" 200 -
+2026-02-20 10:48:52,186 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/efcbe716e29803479e7d6b475a61562a_small.jpg?v=1770985945 HTTP/1.1" 200 -
+2026-02-20 10:48:52,186 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/6e23ca26d0c7da3f4ff44337bdcf8ef8_small.jpg?v=1770987673 HTTP/1.1" 200 -
+2026-02-20 10:48:52,189 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/e8f4dfb728049e1a6f4d9ec0d787a971_small.jpg?v=1770987627 HTTP/1.1" 200 -
+2026-02-20 10:48:52,189 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/6d26879bff567cec0a0a86b9f7e80b88_small.jpg?v=1770985609 HTTP/1.1" 200 -
+2026-02-20 10:48:52,191 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/3cab3612e4e2411988fb46f5e72ed573_small.jpg?v=1770985537 HTTP/1.1" 200 -
+2026-02-20 10:48:52,192 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/bf3d4b748382936dae78c137947442fc_small.jpg?v=1770985650 HTTP/1.1" 200 -
+2026-02-20 10:48:52,192 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/7d6b7addaec52442bf70d0958f61b064_small.jpg?v=1771014801 HTTP/1.1" 200 -
+2026-02-20 10:48:52,192 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/0a151dd2bf35c832a4273858d216a48c_small.jpg?v=1770985879 HTTP/1.1" 200 -
+2026-02-20 10:48:52,194 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/bf1a31115b4e8479ffe729ac6ddaa0ae_small.jpg?v=1770985665 HTTP/1.1" 200 -
+2026-02-20 10:48:52,195 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/6733ecd6ff32616c3aa89a5c4b48ee18_small.jpg?v=1770986206 HTTP/1.1" 200 -
+2026-02-20 10:48:52,196 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/427f1f6b3fbf4eb72f2dba51a34dd9fa_small.jpg?v=1770985591 HTTP/1.1" 200 -
+2026-02-20 10:48:52,196 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/012f709fa75c86869e147f2c7ca6b9fa_small.jpg?v=1770987449 HTTP/1.1" 200 -
+2026-02-20 10:48:52,197 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/337c4d2f497b8a085944ec9a6c4a7cfc_small.jpg?v=1770985361 HTTP/1.1" 200 -
+2026-02-20 10:48:52,198 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/804573bad73b0bc5139b7e099f15e4a3_small.jpg?v=1770986204 HTTP/1.1" 200 -
+2026-02-20 10:48:52,199 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/f6b863e8c06fc241a142a4202cbd9e01_small.jpg?v=1770986091 HTTP/1.1" 200 -
+2026-02-20 10:48:52,200 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /artwork/21d7f130b5092dcd4e61db8c06745454_small.jpg?v=1771014812 HTTP/1.1" 200 -
+2026-02-20 10:48:52,239 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 10:48:52,242 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 10:48:52,243 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 10:48:52,432 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 10:48:52,434 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:52] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 10:48:53,694 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:48:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 10:50:35,300 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET / HTTP/1.1" 200 -
+2026-02-20 10:50:35,333 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 10:50:35,334 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,335 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,335 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,337 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,338 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,344 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,344 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,346 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,347 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 10:50:35,759 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 10:50:35,837 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 10:50:35,866 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:35] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 10:50:36,067 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 10:50:36,174 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 10:50:36,244 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 10:50:36,318 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 10:50:36,324 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 10:50:36,326 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 10:50:36,441 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 10:50:36,442 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 10:50:36,444 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 10:50:36,444 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 10:50:36,449 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 10:50:36,755 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 10:50:36,761 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:36] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 10:50:37,839 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 10:50:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:03:58,146 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET / HTTP/1.1" 200 -
+2026-02-20 11:03:58,178 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:03:58,178 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,178 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,178 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,192 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,193 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,193 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,196 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,197 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,197 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:03:58,675 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:03:58,744 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:03:58,759 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:03:58,967 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:58] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:03:59,046 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:03:59,116 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:03:59,265 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:03:59,327 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:03:59,328 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:03:59,330 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 11:03:59,332 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:03:59,333 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:03:59,336 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:03:59,352 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:03:59,670 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:03:59,673 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:03:59] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:04:01,601 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:01] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:04:19,772 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET / HTTP/1.1" 200 -
+2026-02-20 11:04:19,797 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:04:19,797 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,797 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,798 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,802 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,812 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,812 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,812 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,812 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:04:19,812 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:19] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:04:20,170 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:04:20,206 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:04:20,281 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:04:20,476 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:04:20,632 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:04:20,689 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:04:20,835 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:04:20,857 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:04:20,858 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:04:20,861 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:04:20,864 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:04:20,864 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:04:20,866 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:20] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:04:21,138 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:04:21,139 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:21] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:04:22,180 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:04:22] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:05:47,485 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET / HTTP/1.1" 200 -
+2026-02-20 11:05:47,512 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:05:47,515 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,515 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,515 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,515 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,515 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,518 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,521 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,522 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,524 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:05:47,919 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:05:47,951 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:05:48,017 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:05:48,220 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:05:48,310 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:05:48,342 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:05:48,514 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:05:48,608 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:05:48,609 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:05:48,615 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:05:48,616 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:05:48,617 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 11:05:48,624 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:05:48,627 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:05:48,951 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:05:48,954 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:48] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:05:50,117 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:05:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:11:26,104 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET / HTTP/1.1" 200 -
+2026-02-20 11:11:26,142 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:11:26,156 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,156 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,158 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,158 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,160 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,160 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,164 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,165 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:11:26,165 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:26] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:11:27,646 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:27] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:11:27,725 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:11:27,750 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:27] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:11:27,950 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:27] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:11:28,031 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:11:28,088 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:11:28,222 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:11:28,233 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:11:28,243 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 11:11:28,287 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:11:28,290 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:11:28,353 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:11:28,356 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:11:28,357 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:11:28,730 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:11:28,732 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:28] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:11:30,000 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:11:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:16:42,021 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET / HTTP/1.1" 200 -
+2026-02-20 11:16:42,050 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:16:42,050 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,051 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,054 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,055 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,055 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,058 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,061 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,061 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,062 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:16:42,590 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:16:42,663 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:16:42,676 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:16:42,877 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:16:42,959 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:16:42,992 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:42] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:16:43,164 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:16:43,169 [INFO] dropbox: Refreshing access token.
+2026-02-20 11:16:43,171 [DEBUG] urllib3.connectionpool: Resetting dropped connection: api.dropboxapi.com
+2026-02-20 11:16:43,177 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:16:43,185 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:16:43,269 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:16:43,272 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:16:43,273 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:16:43,493 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /oauth2/token HTTP/1.1" 200 None
+2026-02-20 11:16:43,495 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:16:43,756 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:16:43,759 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:43] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:16:44,804 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:16:44] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:17:34,817 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET / HTTP/1.1" 200 -
+2026-02-20 11:17:34,838 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/style.css HTTP/1.1" 200 -
+2026-02-20 11:17:34,847 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/app.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,848 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/workshop.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,852 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/tree.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,853 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/phases.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,853 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/setbuilder.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,855 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/autoset.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,858 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/robot.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,861 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/chat.js HTTP/1.1" 200 -
+2026-02-20 11:17:34,862 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:34] "GET /static/dance.js HTTP/1.1" 200 -
+2026-02-20 11:17:35,264 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/dropbox/status HTTP/1.1" 200 -
+2026-02-20 11:17:35,327 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-20 11:17:35,351 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/restore HTTP/1.1" 200 -
+2026-02-20 11:17:35,548 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/tracks HTTP/1.1" 200 -
+2026-02-20 11:17:35,612 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/set-workshop/state HTTP/1.1" 200 -
+2026-02-20 11:17:35,645 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/phase-profiles/double_peak HTTP/1.1" 200 -
+2026-02-20 11:17:35,818 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "POST /api/set-workshop/track-search HTTP/1.1" 200 -
+2026-02-20 11:17:35,861 [INFO] dropbox: Request to files/get_temporary_link
+2026-02-20 11:17:35,933 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "GET /api/artwork/uncached-count HTTP/1.1" 200 -
+2026-02-20 11:17:35,934 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "POST /api/artwork/batch HTTP/1.1" 200 -
+2026-02-20 11:17:35,935 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "POST /api/artwork/download-all HTTP/1.1" 200 -
+2026-02-20 11:17:35,937 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "POST /api/artwork/retry-not-found HTTP/1.1" 200 -
+2026-02-20 11:17:35,939 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:35] "POST /api/set-workshop/check-audio HTTP/1.1" 200 -
+2026-02-20 11:17:36,153 [DEBUG] urllib3.connectionpool: https://api.dropboxapi.com:443 "POST /2/files/get_temporary_link HTTP/1.1" 200 None
+2026-02-20 11:17:36,154 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:36] "[32mGET /api/audio/160 HTTP/1.1[0m" 302 -
+2026-02-20 11:17:37,309 [INFO] werkzeug: 127.0.0.1 - - [20/Feb/2026 11:17:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
