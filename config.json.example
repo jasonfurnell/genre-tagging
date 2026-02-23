@@ -1,0 +1,9 @@
+{
+  "model": "claude-sonnet-4-5-20250929",
+  "system_prompt": "You are a music genre expert and DJ selector.",
+  "delay_between_requests": 1.5,
+  "audio_path_map_enabled": false,
+  "audio_path_from": "",
+  "audio_path_to": "",
+  "dropbox_path_prefix": ""
+}

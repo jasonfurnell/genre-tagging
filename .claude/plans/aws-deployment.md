@@ -1,8 +1,6 @@
 # Plan: AWS Deployment
-> Source: `docs/architecture-review.md` — Section 5
-> Priority: When ready to deploy
 > **Beads Epic**: `GenreTagging-qpw` (P3) — 4 subtasks
-> **Note**: Will be updated by Backend Modernization (`GenreTagging-94r`, task GenreTagging-crn) — uvicorn replaces gunicorn, uv replaces pip
+> Updated for FastAPI + uv + uvicorn + React (Vite/Bun)
 
 ## Architecture
 ```
@@ -10,41 +8,192 @@ GitHub (push to main)
         │
         v
 GitHub Actions
-  ├─ Build Docker image
+  ├─ Build multi-stage Docker image (bun + uv)
   ├─ Push to Amazon ECR
   └─ SSH → EC2: pull & restart
         │
         v
 EC2 Instance (t3.micro, ~$9/mo)
-  ├─ Nginx (:80) ──proxy──> Gunicorn (:5001)
+  ├─ Nginx (:80) ──proxy──> uvicorn (:5001)
   ├─ Docker container
-  │   ├─ Flask app (1 worker, 4 threads)
+  │   ├─ FastAPI app (1 uvicorn worker, asyncio)
+  │   ├─ React SPA served at / and /assets
   │   ├─ /app/output/ → volume mount (persistent data)
-  │   └─ .env → API keys
-  └─ Public IP: http://x.x.x.x
+  │   ├─ /app/config.json → bind mount (read-only)
+  │   └─ .env → env-file (API keys)
+  └─ Elastic IP: http://x.x.x.x
 ```
 
-## Files to Create
-1. `Dockerfile` — Python 3.13-slim, gunicorn with 1 worker/4 threads/300s timeout
-2. `.dockerignore` — exclude venv, .git, .env, output, docs, notebooks
+## Files Created
+1. `Dockerfile` — Multi-stage: bun frontend build + Python 3.13-slim + uv + uvicorn (1 worker, 300s timeout)
+2. `.dockerignore` — exclude .git, .env, output/, node_modules/, __pycache__, .venv, docs/
 3. `.github/workflows/deploy.yml` — Build → ECR → SSH deploy to EC2
-4. `config.json.example` — Template for server config
+4. `config.json.example` — Template for server config (sanitized defaults)
 
 ## AWS Console Setup (one-time)
-1. **ECR**: Create private repo `genre-tagging`
-2. **IAM**: Create `github-actions-deployer` user with ECR push permissions
-3. **EC2 Key Pair**: `genre-tagging-key` (RSA, .pem)
-4. **Security Group**: `genre-tagging-sg` — SSH (My IP) + HTTP (0.0.0.0/0)
-5. **EC2 Instance**: t3.micro, Amazon Linux 2023, 20GB gp3
-6. **GitHub Secrets**: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, EC2_HOST, EC2_SSH_KEY
+
+### 1. ECR — Create private repository
+- AWS Console → ECR → Create repository
+- Name: `genre-tagging`, Visibility: Private
+- Tag mutability: Mutable (allows `latest` overwrite)
+
+### 2. IAM — Create deployer user
+- Name: `github-actions-deployer`, no console access
+- Attach inline policy:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["ecr:GetAuthorizationToken"],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload"
+      ],
+      "Resource": "arn:aws:ecr:*:*:repository/genre-tagging"
+    }
+  ]
+}
+```
+- Create access key → save for GitHub secrets
+
+### 3. EC2 Key Pair
+- Name: `genre-tagging-key`, Type: RSA, Format: .pem
+- Download and store securely (becomes `EC2_SSH_KEY` secret)
+
+### 4. Security Group
+- Name: `genre-tagging-sg`
+- Inbound: SSH (22) from My IP, HTTP (80) from 0.0.0.0/0, HTTPS (443) from 0.0.0.0/0
+- Outbound: All traffic (default)
+
+### 5. EC2 Instance
+- AMI: Amazon Linux 2023, Type: t3.micro
+- Key pair: `genre-tagging-key`, SG: `genre-tagging-sg`
+- Storage: 20GB gp3
+
+### 6. Elastic IP (recommended)
+- Allocate and associate to EC2 instance
+- Free while associated to a running instance
+
+### 7. GitHub Secrets (Settings → Secrets → Actions)
+| Secret | Value |
+|--------|-------|
+| `AWS_ACCESS_KEY_ID` | IAM deployer access key |
+| `AWS_SECRET_ACCESS_KEY` | IAM deployer secret key |
+| `AWS_REGION` | e.g. `ap-southeast-2` |
+| `AWS_ACCOUNT_ID` | 12-digit AWS account ID |
+| `EC2_HOST` | Elastic IP address |
+| `EC2_SSH_KEY` | Contents of `genre-tagging-key.pem` |
 
 ## EC2 Server Setup (one-time, via SSH)
-1. Install Docker (`dnf install docker`)
-2. Install & configure Nginx (proxy :80 → :5001, SSE support, 50M upload limit)
-3. Create `/data/genre-tagging/output/` for persistent data
-4. Create `.env` with API keys
-5. Create `config.json`
-6. Optional: rsync existing output data (exclude artwork — warm-cache re-downloads)
+
+### Step 1: Install Docker
+```bash
+sudo dnf update -y
+sudo dnf install -y docker
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo usermod -aG docker ec2-user
+# Log out and back in for group change
+```
+
+### Step 2: Install & configure Nginx
+```bash
+sudo dnf install -y nginx
+sudo systemctl enable nginx
+```
+
+Create `/etc/nginx/conf.d/genre-tagging.conf`:
+```nginx
+server {
+    listen 80;
+    server_name _;
+
+    client_max_body_size 50M;
+
+    proxy_connect_timeout 10s;
+    proxy_read_timeout 600s;
+    proxy_send_timeout 600s;
+
+    location / {
+        proxy_pass http://127.0.0.1:5001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # SSE support (critical for real-time progress)
+        proxy_buffering off;
+        proxy_cache off;
+        chunked_transfer_encoding on;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
+```
+
+```bash
+sudo rm -f /etc/nginx/conf.d/default.conf
+sudo nginx -t
+sudo systemctl start nginx
+```
+
+### Step 3: Create persistent data directories
+```bash
+sudo mkdir -p /data/genre-tagging/output/artwork
+sudo mkdir -p /data/genre-tagging/output_v2
+sudo chown -R ec2-user:ec2-user /data/genre-tagging
+```
+
+### Step 4: Create .env file
+```bash
+cat > /data/genre-tagging/.env << 'EOF'
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+DROPBOX_APP_KEY=...
+DROPBOX_APP_SECRET=...
+EOF
+chmod 600 /data/genre-tagging/.env
+```
+
+### Step 5: Create config.json
+```bash
+cp config.json.example /data/genre-tagging/config.json
+# Edit as needed
+```
+
+### Step 6: Configure ECR access for deploy pulls
+```bash
+# AWS CLI is pre-installed on Amazon Linux 2023
+# Option A (preferred): Attach IAM instance profile with ECR read permissions
+# Option B: aws configure with deployer credentials
+```
+
+### Step 7: (Optional) Seed initial data
+```bash
+# rsync persistent data from local (exclude artwork — re-downloads on first load)
+rsync -avz --exclude='artwork/' output/ ec2-user@<IP>:/data/genre-tagging/output/
+```
+
+## Key Decisions
+- **1 uvicorn worker required** — AppState is an in-memory singleton with thread locks
+- **asyncio concurrency** — uvicorn event loop handles concurrent requests (SSE, artwork, tagging)
+- **300s keep-alive timeout** — tree-building LLM calls can take 5+ minutes
+- **Port 5001 NOT exposed externally** — Nginx proxies :80 → :5001 on localhost only
+- **Elastic IP recommended** — public IP changes on EC2 stop/start without it
+- **Docker volumes for output/** — 7 persistent JSON files + 9K artwork images survive container updates
+- **config.json bind-mounted read-only** — edit on host, restart container to apply
+- **No SSL in v1** — add via Certbot/Let's Encrypt when a domain is configured
 
 ## Cost Estimate
 | Resource | Monthly |
@@ -53,19 +202,34 @@ EC2 Instance (t3.micro, ~$9/mo)
 | EBS 20GB gp3 | ~$1.60 |
 | ECR storage | ~$0.05 |
 | Data transfer | ~$0.10 |
+| Elastic IP | $0.00 |
 | **Total** | **~$9.25** |
-
-## Key Decisions
-- **1 gunicorn worker required** — `_state` is in-memory, multiple workers = multiple copies
-- **4 threads** — handles concurrent requests (artwork, SSE, tagging)
-- **300s timeout** — LLM calls (tree building) can take minutes
-- **Port 5001 NOT exposed** — Nginx proxies :80 → :5001 internally
-- **Elastic IP recommended** — public IP changes on stop/start without it
 
 ## Operational Commands
 ```bash
-docker logs genre-tagging --tail 100 -f     # View logs
-docker restart genre-tagging                 # Restart after config change
-```
+# View logs (live)
+docker logs genre-tagging --tail 100 -f
 
-See `docs/architecture-review.md` Section 5 for full Nginx config, IAM policy JSON, deploy workflow YAML, and backup cron setup.
+# View app.log inside persistent volume
+tail -f /data/genre-tagging/output/app.log
+
+# Restart after config change
+docker restart genre-tagging
+
+# Manual deploy (pull latest)
+aws ecr get-login-password --region <REGION> \
+  | docker login --username AWS --password-stdin <ACCOUNT>.dkr.ecr.<REGION>.amazonaws.com
+docker pull <ACCOUNT>.dkr.ecr.<REGION>.amazonaws.com/genre-tagging:latest
+docker stop genre-tagging && docker rm genre-tagging
+docker run -d --name genre-tagging --restart unless-stopped \
+  -p 127.0.0.1:5001:5001 \
+  --env-file /data/genre-tagging/.env \
+  -v /data/genre-tagging/output:/app/output \
+  -v /data/genre-tagging/output_v2:/app/output_v2 \
+  -v /data/genre-tagging/config.json:/app/config.json:ro \
+  <ACCOUNT>.dkr.ecr.<REGION>.amazonaws.com/genre-tagging:latest
+
+# Check disk usage
+df -h
+du -sh /data/genre-tagging/output/artwork/
+```

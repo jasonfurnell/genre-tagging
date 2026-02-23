@@ -1,0 +1,90 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main]
+
+env:
+  ECR_REPO: genre-tagging
+  CONTAINER_NAME: genre-tagging
+
+jobs:
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      image_uri: ${{ steps.build.outputs.image_uri }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image
+        id: build
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          IMAGE_URI="${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}"
+          docker build -t "${IMAGE_URI}" .
+          docker tag "${IMAGE_URI}" "${ECR_REGISTRY}/${ECR_REPO}:latest"
+          docker push "${IMAGE_URI}"
+          docker push "${ECR_REGISTRY}/${ECR_REPO}:latest"
+          echo "image_uri=${IMAGE_URI}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Deploy to EC2
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          command_timeout: 5m
+          script: |
+            # Login to ECR
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+              | docker login --username AWS --password-stdin \
+                ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+            # Pull latest image
+            IMAGE="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/genre-tagging:latest"
+            docker pull "${IMAGE}"
+
+            # Stop and remove existing container (if running)
+            docker stop genre-tagging 2>/dev/null || true
+            docker rm genre-tagging 2>/dev/null || true
+
+            # Run new container
+            docker run -d \
+              --name genre-tagging \
+              --restart unless-stopped \
+              -p 127.0.0.1:5001:5001 \
+              --env-file /data/genre-tagging/.env \
+              -v /data/genre-tagging/output:/app/output \
+              -v /data/genre-tagging/output_v2:/app/output_v2 \
+              -v /data/genre-tagging/config.json:/app/config.json:ro \
+              "${IMAGE}"
+
+            # Wait for health check
+            sleep 3
+            docker ps | grep genre-tagging && echo "Deploy successful" || echo "Deploy FAILED"
+
+            # Clean up old images
+            docker image prune -f

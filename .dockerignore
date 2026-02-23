@@ -1,0 +1,34 @@
+# Version control
+.git
+.gitignore
+
+# Environment & secrets
+.env
+config.json
+
+# Persistent data (volume-mounted at runtime)
+output/
+output_v2/
+
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Frontend build artifacts (rebuilt in Docker)
+frontend/node_modules/
+frontend/dist/
+
+# Development tools & docs
+docs/
+.beads/
+.claude/
+.github/
+
+# macOS artifacts
+.DS_Store
+
+# Testing
+frontend/playwright-report/
+frontend/test-results/
