@@ -1750,32 +1750,103 @@
     }
 
     // ─── Load artwork ──────────────────────────────────────────
-    function _loadArt() {
-      if (_artworkLoaded) return;
-      if (typeof gridOptions === "undefined" || !gridOptions.api) return;
-      const total = gridOptions.api.getDisplayedRowCount();
-      if (!total) return;
+    // Preload: pick random tracks, batch-fetch artwork URLs directly,
+    // then apply to <img> elements — no IntersectionObserver delay.
 
-      const idxs = new Set();
-      const need = Math.min(Object.keys(SIZES_BASE).length, total);
-      while (idxs.size < need) idxs.add(Math.floor(Math.random() * total));
+    function _getGridApi() {
+      return (typeof gridApi !== "undefined" && gridApi) ||
+             (typeof gridOptions !== "undefined" && gridOptions.api) ||
+             null;
+    }
+
+    function _pickRandomTracks() {
+      const api = _getGridApi();
+      if (!api) return null;
+      const total = api.getDisplayedRowCount();
+      if (!total) return null;
 
       const names = Object.keys(SIZES_BASE);
+      const need = Math.min(names.length, total);
+      const idxs = new Set();
+      while (idxs.size < need) idxs.add(Math.floor(Math.random() * total));
+
+      const picks = [];          // [{name, artist, title, key}]
       [...idxs].forEach((idx, i) => {
         if (i >= names.length) return;
-        const data = gridOptions.api.getDisplayedRowAtIndex(idx)?.data;
-        if (!data) return;
-        if (data.key) _partCamelot[names[i]] = data.key;
-        for (const els of _allEls()) {
-          const img = els[names[i]].querySelector("img");
-          if (typeof loadArtwork === "function") {
-            img.style.display = "block";
-            loadArtwork(data.artist, data.title, img);
-          }
+        const data = api.getDisplayedRowAtIndex(idx)?.data;
+        if (!data || !data.artist || !data.title) return;
+        picks.push({ name: names[i], artist: data.artist, title: data.title, key: data.key || null });
+      });
+      return picks.length ? picks : null;
+    }
+
+    // Apply a resolved artwork URL to every copy of a body-part <img>
+    function _applyArt(partName, url) {
+      for (const els of _allEls()) {
+        const img = els[partName].querySelector("img");
+        if (img) {
+          img.style.display = "block";
+          if (url) { img.src = url; img.classList.add("artwork-loaded"); }
+        }
+      }
+    }
+
+    function _loadArt() {
+      if (_artworkLoaded) return;
+      const picks = _pickRandomTracks();
+      if (!picks) return;
+
+      // Set camelot key colours immediately
+      const names = Object.keys(SIZES_BASE);
+      picks.forEach(p => { if (p.key) _partCamelot[p.name] = p.key; });
+
+      // Build batch payload — only tracks not already in the frontend cache
+      const uncached = [];
+      picks.forEach(p => {
+        const cacheKey = `${p.artist.toLowerCase()}||${p.title.toLowerCase()}`;
+        if (typeof artworkCache !== "undefined" && artworkCache.has(cacheKey)) {
+          // Already cached — apply immediately
+          _applyArt(p.name, artworkCache.get(cacheKey));
+        } else {
+          uncached.push(p);
         }
       });
+
+      if (uncached.length === 0) {
+        _artworkLoaded = true;
+        _updateBlockColors();
+        return;
+      }
+
+      // Fire a direct batch request — bypass IntersectionObserver entirely
+      const payload = uncached.map(p => ({ artist: p.artist, title: p.title }));
+      fetch("/api/artwork/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+        .then(data => {
+          uncached.forEach(p => {
+            const cacheKey = `${p.artist.toLowerCase()}||${p.title.toLowerCase()}`;
+            const info = data[cacheKey];
+            const url = info ? (info.cover_url || "") : "";
+            // Populate the shared artworkCache so grid/tagger doesn't re-fetch
+            if (typeof artworkCache !== "undefined") artworkCache.set(cacheKey, url);
+            _applyArt(p.name, url);
+          });
+        })
+        .catch(() => {
+          // On error, just show coloured blocks — no big deal
+          uncached.forEach(p => _applyArt(p.name, ""));
+        })
+        .finally(() => {
+          _artworkLoaded = true;
+          _updateBlockColors();
+        });
+
+      // Mark loaded so the tick loop doesn't keep retrying while fetch is in-flight
       _artworkLoaded = true;
-      _updateBlockColors();
     }
 
     // ─── Animation tick ────────────────────────────────────────
@@ -1892,7 +1963,7 @@
       _svg.innerHTML = svg;
       for (const ex of _extraStages) ex.svgEl.innerHTML = svg;
 
-      if (!_artworkLoaded && Math.random() < 0.01) _loadArt();
+      if (!_artworkLoaded) _loadArt();
 
       _frame = requestAnimationFrame(_tick);
     }
