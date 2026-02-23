@@ -405,8 +405,8 @@
       },
       waveAmp: {
         moves: [
-          { lo: 2,   hi: 3,    weight: 0.4,  holdLo: 2000, holdHi: 5000, moveDur: 500 },
-          { lo: 3.5, hi: 5,    weight: 0.6,  holdLo: 1000, holdHi: 3000, moveDur: 300 },
+          { lo: 2,   hi: 5,    weight: 0.4,  holdLo: 2000, holdHi: 5000, moveDur: 500 },
+          { lo: 5,   hi: 10,   weight: 0.6,  holdLo: 1000, holdHi: 3000, moveDur: 300 },
         ],
       },
       waveSpeed: {
@@ -461,7 +461,7 @@
       { key: "blockRatio", label: "Block Ratio",        min: 0.20, max: 2.00, step: 0.05, fmt: v => v.toFixed(2) },
       { key: "keyColor",   label: "Key Colour",         min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
       { group: "Energy" },
-      { key: "waveAmp",    label: "Wave Amplitude",     min: 2,   max: 5,    step: 0.1,  fmt: v => v.toFixed(1) },
+      { key: "waveAmp",    label: "Wave Amplitude",     min: 2,   max: 10,   step: 0.1,  fmt: v => v.toFixed(1) },
       { key: "waveSpeed",  label: "Wave Speed",         min: 0,   max: 4,    step: 0.1,  fmt: v => v.toFixed(1) },
       { key: "waveLayers", label: "Wave Layers",        min: 1,   max: 5,    step: 1,    fmt: v => String(v) },
       { key: "waveColor",  label: "Wave Colour",        min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
