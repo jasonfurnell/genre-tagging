@@ -73,7 +73,7 @@ EC2 Instance (t3.micro, ~$9/mo)
 
 ### 4. Security Group
 - Name: `genre-tagging-sg`
-- Inbound: SSH (22) from My IP, HTTP (80) from 0.0.0.0/0, HTTPS (443) from 0.0.0.0/0
+- Inbound: SSH (22) from 0.0.0.0/0 (required for GitHub Actions deploys, key-auth only), HTTP (80) from 0.0.0.0/0, HTTPS (443) from 0.0.0.0/0
 - Outbound: All traffic (default)
 
 ### 5. EC2 Instance
