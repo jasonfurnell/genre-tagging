@@ -126,9 +126,7 @@
     // ─── Connections for energy waves ──────────────────────────
     const CONNS = [
       ["head",  "torso"],
-      ["torso", "armLU"], ["torso", "armRU"],
-      ["armLU", "armLL"], ["armRU", "armRL"],
-      ["armLL", "handL"], ["armRL", "handR"],
+      // Arm chains removed — cross-dancer energy waves cover these
       ["torso", "legLU"], ["torso", "legRU"],
       ["legLU", "legLL"], ["legRU", "legRL"],
     ];
@@ -199,6 +197,8 @@
     const EQ_BARS = 5;
     const EQ_BASE_HEIGHT = 7;
     const EQ_MAX_HEIGHT = 40;
+    const EQ_SEG_SIZE = 4;               // segment square height (px)
+    const EQ_SEG_GAP = 1.5;              // gap between segments (px)
     const EQ_BANDS = [
       [1.0,  1.2, 0.55, 0.0],   // sub-bass
       [0.80, 3.2, 0.58, 1.1],   // bass
@@ -920,6 +920,90 @@
       return crPath(pts, 0.3);
     }
 
+    // ─── Cross-dancer energy waves ─────────────────────────
+    // L→R path: left fingertip → hand → elbow → shoulder → neck →
+    //           shoulder → elbow → hand → right fingertip
+    const BODY_JOINTS_LR = ["fiL","haL","elL","shL","neck","shR","elR","haR","fiR"];
+    // R→L path: right fingertip → hand → elbow → shoulder → neck →
+    //           shoulder → elbow → hand → left fingertip (dancers visited 2→1→0)
+    const BODY_JOINTS_RL = ["fiR","haR","elR","shR","neck","shL","elL","haL","fiL"];
+
+    function renderCrossWave(j, elapsed, beat) {
+      if (!_crossSvg) return;
+      const sc = _crossScale;
+      const stageW = VW * sc;
+      const totalW = stageW * 3;
+
+      // Screen-edge extensions
+      const wrapRect = _crossSvg.parentElement ? _crossSvg.parentElement.getBoundingClientRect() : null;
+      const extL = wrapRect ? wrapRect.left + 20 : 200;
+      const extR = wrapRect ? (window.innerWidth - wrapRect.right) + 20 : 200;
+
+      // Shared wave parameters
+      const beatAmpBoost = beat * 6;
+      const spd = _cfg.waveSpeed;
+      const layers = Math.round(_cfg.waveLayers);
+      const swBoost = beat * 1.5;
+
+      // Colour: blend accent with wave colour
+      let stroke = ACCENT_HEX;
+      if (_cfg.waveColor > 0) {
+        const kc = partKeyColor("torso") || partKeyColor("head");
+        if (kc) stroke = _cfg.waveColor >= 1 ? kc : hexLerp(ACCENT_HEX, kc, _cfg.waveColor);
+      }
+
+      let svg = "";
+
+      // ── Render one cross-wave given a joint path and dancer order ──
+      function renderOneWave(joints, dancerOrder, seedOffset) {
+        const waypoints = [];
+        for (const d of dancerOrder) {
+          const ox = d * stageW;
+          for (const jn of joints) {
+            waypoints.push({ x: ox + j[jn].x * sc, y: j[jn].y * sc });
+          }
+        }
+        // Extend to screen edges
+        const first = waypoints[0];
+        const last = waypoints[waypoints.length - 1];
+        waypoints.unshift({ x: first.x < last.x ? -extL : totalW + extR, y: first.y });
+        waypoints.push({ x: first.x < last.x ? totalW + extR : -extL, y: last.y });
+
+        const N = waypoints.length;
+        for (let li = 0; li < layers; li++) {
+          const baseAmp = 5 + li * 2;
+          const amp = baseAmp * _cfg.waveAmp + beatAmpBoost;
+          const layerSeed = li * 47.3 + seedOffset;
+
+          const layerPts = waypoints.map((wp, i) => {
+            const t = i / (N - 1);
+            const seed = i * 3.1 + layerSeed;
+            const disp = Math.sin(elapsed * 1.7 * spd + seed) * amp * 0.5
+                       + Math.sin(elapsed * 0.61 * spd + seed * 1.3) * amp * 0.4
+                       + Math.sin(elapsed * 2.83 * spd + seed * 0.5) * amp * 0.3;
+            const taper = Math.sin(t * Math.PI);
+            return { x: wp.x, y: wp.y + disp * taper };
+          });
+          const ld = crPath(layerPts, 0.3);
+          if (!ld) continue;
+          const op = (li === 0 ? 0.6 : li <= Math.floor(layers/2) ? 0.35 : 0.2) + beat * 0.15;
+          const sw = (li === 0 ? 5.0 : li <= Math.floor(layers/2) ? 3.6 : 2.4) + swBoost;
+          const gl = (li === 0 ? 6 : 3) + beat * 4;
+          svg += `<path d="${ld}" fill="none" stroke="${stroke}" `
+            + `stroke-width="${sw.toFixed(1)}" opacity="${op.toFixed(2)}" `
+            + `stroke-linecap="round" `
+            + `style="filter:drop-shadow(0 0 ${gl.toFixed(0)}px ${stroke})" />`;
+        }
+      }
+
+      // Wave 1: L→R through dancers 0 → 1 → 2
+      renderOneWave(BODY_JOINTS_LR, [0, 1, 2], 0);
+      // Wave 2: R→L through dancers 2 → 1 → 0 (different seed for independent motion)
+      renderOneWave(BODY_JOINTS_RL, [2, 1, 0], 100);
+
+      _crossSvg.innerHTML = svg;
+    }
+
     // ─── Equaliser finger rendering ───────────────────────
     function renderEqFingers(j, elapsed, beat) {
       let svg = "";
@@ -965,15 +1049,23 @@
           const by = ay + perpY * offset;
 
           const rx = bx - barNetW / 2;
-          const ry = by - barH;
 
           const glowPx = 3 + beat * 6;
           const op = 0.7 + beat * 0.25;
-          svg += `<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" `
-            + `width="${barNetW.toFixed(1)}" height="${barH.toFixed(1)}" rx="1" `
-            + `fill="${fill}" opacity="${op.toFixed(2)}" `
-            + `transform="rotate(${(ang + 90).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)})" `
-            + `style="filter:drop-shadow(0 0 ${glowPx.toFixed(0)}px ${fill})" />`;
+          const rot = `rotate(${(ang + 90).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)})`;
+          const segStep = EQ_SEG_SIZE + EQ_SEG_GAP;
+          const segCount = Math.max(1, Math.floor(barH / segStep));
+
+          // Group segments per bar — no filter for performance
+          svg += `<g transform="${rot}">`;
+          for (let s = 0; s < segCount; s++) {
+            const sy = by - (s + 1) * segStep + EQ_SEG_GAP;
+            const segOp = op * (0.5 + 0.5 * (s / Math.max(segCount - 1, 1)));
+            svg += `<rect x="${rx.toFixed(1)}" y="${sy.toFixed(1)}" `
+              + `width="${barNetW.toFixed(1)}" height="${EQ_SEG_SIZE}" rx="0.5" `
+              + `fill="${fill}" opacity="${segOp.toFixed(2)}" />`;
+          }
+          svg += `</g>`;
         }
       }
       return svg;
@@ -2102,6 +2194,8 @@
       _svg.innerHTML = svg;
       for (const ex of _extraStages) ex.svgEl.innerHTML = svg;
 
+      renderCrossWave(j, elapsed, beat);
+
       if (!_artworkLoaded) _loadArt();
 
       _frame = requestAnimationFrame(_tick);
@@ -2215,6 +2309,8 @@
   // ═══ PUBLIC API (single instance, multiple synced stages) ═══
 
   let _inst = null;
+  let _crossSvg = null;          // overlay SVG for cross-dancer energy wave
+  let _crossScale = 2.0;         // matches the dancer scale
 
   window.createRobotDancer = createRobotDancer;
 
@@ -2228,10 +2324,14 @@
 
     // Row of 3 synced robots
     panel.innerHTML = "";
+    const rowWrap = document.createElement("div");
+    rowWrap.style.cssText = "position:relative;display:inline-block;isolation:isolate;";
+    panel.appendChild(rowWrap);
+
     const row = document.createElement("div");
     row.className = "robot-row";
     row.style.cssText = "display:flex;align-items:flex-end;justify-content:center;gap:0;";
-    panel.appendChild(row);
+    rowWrap.appendChild(row);
 
     // Left stage
     const leftSub = document.createElement("div");
@@ -2265,6 +2365,16 @@
     // Add synced left + right stages
     _inst.addStage(leftSub, scale);
     _inst.addStage(rightSub, scale);
+
+    // Cross-dancer energy wave overlay
+    _crossScale = scale;
+    const totalW = VW * scale * 3;
+    const totalH = VH * scale;
+    _crossSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    _crossSvg.setAttribute("viewBox", `0 0 ${totalW} ${totalH}`);
+    _crossSvg.style.cssText = `position:absolute;top:0;left:0;width:${totalW}px;height:${totalH}px;`
+      + "pointer-events:none;overflow:visible;z-index:-1;";
+    rowWrap.appendChild(_crossSvg);
   };
 
   window.startRobotDancer = function () {
