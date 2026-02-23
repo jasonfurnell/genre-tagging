@@ -31245,5 +31245,1813 @@
     "created_at": "2026-02-20T04:32:18.492500+00:00",
     "updated_at": "2026-02-20T04:32:18.492508+00:00",
     "phase_profile_id": "classic_arc"
+  },
+  "10523c4d": {
+    "id": "10523c4d",
+    "name": "Auto Set \u2014 Kindergarten Fete Fun",
+    "slots": [
+      {
+        "id": "autoset-slot-0",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          {
+            "id": 563,
+            "title": "Mas Que Nada",
+            "artist": "Sergio Mendes & Brasil '66",
+            "bpm": 88.9,
+            "key": "9M",
+            "year": 1966,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 186,
+            "title": "Double Barrel",
+            "artist": "Dave Collins,Ansel Collins",
+            "bpm": 80.9,
+            "key": "11D",
+            "year": 1971,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 321,
+            "title": "Mais Que Nada",
+            "artist": "Sergio Mendes & Brasil '66",
+            "bpm": 89.2,
+            "key": "9M",
+            "year": 1966,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2149,
+            "title": "Shining Star",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 100.3,
+            "key": "2M",
+            "year": 1975,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5789,
+            "title": "Nothing From Nothing",
+            "artist": "Billy Preston",
+            "bpm": 102.6,
+            "key": "1D",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-1",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          {
+            "id": 321,
+            "title": "Mais Que Nada",
+            "artist": "Sergio Mendes & Brasil '66",
+            "bpm": 89.2,
+            "key": "9M",
+            "year": 1966,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          null,
+          {
+            "id": 563,
+            "title": "Mas Que Nada",
+            "artist": "Sergio Mendes & Brasil '66",
+            "bpm": 88.9,
+            "key": "9M",
+            "year": 1966,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2149,
+            "title": "Shining Star",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 100.3,
+            "key": "2M",
+            "year": 1975,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5789,
+            "title": "Nothing From Nothing",
+            "artist": "Billy Preston",
+            "bpm": 102.6,
+            "key": "1D",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-2",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 321,
+            "title": "Mais Que Nada",
+            "artist": "Sergio Mendes & Brasil '66",
+            "bpm": 89.2,
+            "key": "9M",
+            "year": 1966,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 5789,
+            "title": "Nothing From Nothing",
+            "artist": "Billy Preston",
+            "bpm": 102.6,
+            "key": "1D",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2149,
+            "title": "Shining Star",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 100.3,
+            "key": "2M",
+            "year": 1975,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-3",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5789,
+            "title": "Nothing From Nothing",
+            "artist": "Billy Preston",
+            "bpm": 102.6,
+            "key": "1D",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2149,
+            "title": "Shining Star",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 100.3,
+            "key": "2M",
+            "year": 1975,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-4",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 5789,
+            "title": "Nothing From Nothing",
+            "artist": "Billy Preston",
+            "bpm": 102.6,
+            "key": "1D",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-5",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2090,
+            "title": "I Wish",
+            "artist": "Stevie Wonder",
+            "bpm": 105.9,
+            "key": "7M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2060,
+            "title": "Getaway",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 113.4,
+            "key": "9M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2080,
+            "title": "I Got My Mind Made Up (You Can Get It Girl) - 7\" Version",
+            "artist": "Instant Funk",
+            "bpm": 110.2,
+            "key": "11D",
+            "year": 1979,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5573,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 107.1,
+            "key": "7M",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-6",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3043,
+            "title": "Life Is Something Special - Special Edition",
+            "artist": "Peech Boys",
+            "bpm": 110.5,
+            "key": "11M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5543,
+            "title": "Every 1's a Winner",
+            "artist": "Hot Chocolate",
+            "bpm": 107.8,
+            "key": "9M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2067,
+            "title": "He's the Greatest Dancer",
+            "artist": "Sister Sledge",
+            "bpm": 111.8,
+            "key": "11M",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-7",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2010,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 106.9,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2525,
+            "title": "Hum Along And Dance",
+            "artist": "The Jackson 5",
+            "bpm": 107.3,
+            "key": "11M",
+            "year": 1973,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2067,
+            "title": "He's the Greatest Dancer",
+            "artist": "Sister Sledge",
+            "bpm": 111.8,
+            "key": "11M",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3043,
+            "title": "Life Is Something Special - Special Edition",
+            "artist": "Peech Boys",
+            "bpm": 110.5,
+            "key": "11M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-8",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2010,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 106.9,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2067,
+            "title": "He's the Greatest Dancer",
+            "artist": "Sister Sledge",
+            "bpm": 111.8,
+            "key": "11M",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3043,
+            "title": "Life Is Something Special - Special Edition",
+            "artist": "Peech Boys",
+            "bpm": 110.5,
+            "key": "11M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-9",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2010,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 106.9,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2067,
+            "title": "He's the Greatest Dancer",
+            "artist": "Sister Sledge",
+            "bpm": 111.8,
+            "key": "11M",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-10",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 196,
+            "title": "Funky Kingston",
+            "artist": "Toots & The Maytals",
+            "bpm": 99.5,
+            "key": "4M",
+            "year": 1973,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 4531,
+            "title": "Dancing Queen",
+            "artist": "ABBA",
+            "bpm": 100.8,
+            "key": "4D",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-11",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 4358,
+            "title": "Walking on Sunshine '82",
+            "artist": "Rocker's Revenge,Donnie Calvin",
+            "bpm": 115.1,
+            "key": "6M",
+            "year": 1982,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 317,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-12",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 4379,
+            "title": "Fresh - Original 12' Remix",
+            "artist": "Kool & The Gang",
+            "bpm": 117.6,
+            "key": "3M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2033,
+            "title": "Don't You Worry 'Bout A Thing",
+            "artist": "Stevie Wonder",
+            "bpm": 122.3,
+            "key": "7M",
+            "year": 1973,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2012,
+            "title": "Boogie Oogie Oogie - Single Version 2   Remastered 1999",
+            "artist": "A Taste Of Honey",
+            "bpm": 123.9,
+            "key": "12M",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 1185,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-13",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 317,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 4379,
+            "title": "Fresh - Original 12' Remix",
+            "artist": "Kool & The Gang",
+            "bpm": 117.6,
+            "key": "3M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5016,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-14",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5016,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 317,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 1185,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-15",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5016,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1185,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 1382,
+            "title": "Could Heaven Ever Be Like This",
+            "artist": "Idris Muhammad",
+            "bpm": 122.8,
+            "key": "12M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-16",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5016,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 1382,
+            "title": "Could Heaven Ever Be Like This",
+            "artist": "Idris Muhammad",
+            "bpm": 122.8,
+            "key": "12M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-17",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5358,
+            "title": "Got To Give It Up - Pt. 1",
+            "artist": "Marvin Gaye",
+            "bpm": 122.6,
+            "key": "1M",
+            "year": 1983,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 4571,
+            "title": "Jamming",
+            "artist": "Bob Marley & The Wailers",
+            "bpm": 123.5,
+            "key": "3M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-18",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1382,
+            "title": "Could Heaven Ever Be Like This",
+            "artist": "Idris Muhammad",
+            "bpm": 122.8,
+            "key": "12M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2011,
+            "title": "Boogie Oogie Oogie - Remastered 2004",
+            "artist": "A Taste Of Honey",
+            "bpm": 119.7,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2012,
+            "title": "Boogie Oogie Oogie - Single Version 2   Remastered 1999",
+            "artist": "A Taste Of Honey",
+            "bpm": 123.9,
+            "key": "12M",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-19",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1382,
+            "title": "Could Heaven Ever Be Like This",
+            "artist": "Idris Muhammad",
+            "bpm": 122.8,
+            "key": "12M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2012,
+            "title": "Boogie Oogie Oogie - Single Version 2   Remastered 1999",
+            "artist": "A Taste Of Honey",
+            "bpm": 123.9,
+            "key": "12M",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-20",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2012,
+            "title": "Boogie Oogie Oogie - Single Version 2   Remastered 1999",
+            "artist": "A Taste Of Honey",
+            "bpm": 123.9,
+            "key": "12M",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 4571,
+            "title": "Jamming",
+            "artist": "Bob Marley & The Wailers",
+            "bpm": 123.5,
+            "key": "3M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-21",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2073,
+            "title": "I Can See Clearly Now",
+            "artist": "Johnny Nash",
+            "bpm": 124.4,
+            "key": "12M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 4571,
+            "title": "Jamming",
+            "artist": "Bob Marley & The Wailers",
+            "bpm": 123.5,
+            "key": "3M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-22",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 4571,
+            "title": "Jamming",
+            "artist": "Bob Marley & The Wailers",
+            "bpm": 123.5,
+            "key": "3M",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-23",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5572,
+            "title": "Rock Steady",
+            "artist": "Aretha Franklin",
+            "bpm": 104.6,
+            "key": "1M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 4502,
+            "title": "24K Magic",
+            "artist": "Bruno Mars",
+            "bpm": 107.0,
+            "key": "9M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2060,
+            "title": "Getaway",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 113.4,
+            "key": "9M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2369,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 107.1,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-24",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          {
+            "id": 2145,
+            "title": "September",
+            "artist": "Earth, Wind & Fire",
+            "bpm": 123.8,
+            "key": "4D",
+            "year": 1978,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-25",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2006,
+            "title": "Best of My Love",
+            "artist": "The Emotions",
+            "bpm": 115.4,
+            "key": "1D",
+            "year": 1977,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-26",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5573,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 107.1,
+            "key": "7M",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2090,
+            "title": "I Wish",
+            "artist": "Stevie Wonder",
+            "bpm": 105.9,
+            "key": "7M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2369,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 107.1,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5572,
+            "title": "Rock Steady",
+            "artist": "Aretha Franklin",
+            "bpm": 104.6,
+            "key": "1M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-27",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 2090,
+            "title": "I Wish",
+            "artist": "Stevie Wonder",
+            "bpm": 105.9,
+            "key": "7M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5573,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 107.1,
+            "key": "7M",
+            "year": 1974,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5572,
+            "title": "Rock Steady",
+            "artist": "Aretha Franklin",
+            "bpm": 104.6,
+            "key": "1M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-28",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5572,
+            "title": "Rock Steady",
+            "artist": "Aretha Franklin",
+            "bpm": 104.6,
+            "key": "1M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2090,
+            "title": "I Wish",
+            "artist": "Stevie Wonder",
+            "bpm": 105.9,
+            "key": "7M",
+            "year": 1976,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 4502,
+            "title": "24K Magic",
+            "artist": "Bruno Mars",
+            "bpm": 107.0,
+            "key": "9M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-29",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          null,
+          {
+            "id": 2010,
+            "title": "Boogie On Reggae Woman",
+            "artist": "Stevie Wonder",
+            "bpm": 106.9,
+            "key": "7M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-30",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 4502,
+            "title": "24K Magic",
+            "artist": "Bruno Mars",
+            "bpm": 107.0,
+            "key": "9M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 5572,
+            "title": "Rock Steady",
+            "artist": "Aretha Franklin",
+            "bpm": 104.6,
+            "key": "1M",
+            "year": 1972,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2947,
+            "title": "Last Night a D.J. Saved My Life",
+            "artist": "Indeep",
+            "bpm": 113.9,
+            "key": "4D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-31",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 5363,
+            "title": "Grease",
+            "artist": "Frankie Valli",
+            "bpm": 108.9,
+            "key": "6D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-32",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 196,
+            "title": "Funky Kingston",
+            "artist": "Toots & The Maytals",
+            "bpm": 99.5,
+            "key": "4M",
+            "year": 1973,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      }
+    ],
+    "created_at": "2026-02-23T00:07:08.496170+00:00",
+    "updated_at": "2026-02-23T00:07:08.496178+00:00"
   }
 }

@@ -4132,20 +4132,13 @@ tr.ws-seed-selected {
 
 /* ── Dance Tab ─────────────────────────────────────────────── */
 
-.dance-layout {
-    display: flex;
-    height: calc(100vh - 46px - 130px);  /* nav bar + base drawer */
-    overflow: hidden;
-    position: relative;
-}
-
-.dance-main {
-    flex: 1;
+/* Performance view: fills the tab, centers the 3 robots */
+.dance-performance {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    height: calc(100vh - 46px - 130px);  /* nav bar + base drawer */
     overflow: hidden;
     position: relative;
 }
@@ -4218,47 +4211,71 @@ tr.ws-seed-selected {
     display: none;
 }
 
-/* ── Dance: Settings Drawer ─────────────────────────────── */
-.dance-settings-drawer {
-    position: fixed;
-    top: 46px;
-    right: 0;
-    bottom: 0;
-    width: 320px;
-    background: var(--surface);
-    border-left: 1px solid var(--border);
-    transform: translateX(100%);
-    transition: transform 0.35s ease;
-    z-index: 200;
+/* ── Dance: Settings View (full-page) ──────────────────── */
+.dance-settings-view {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 46px - 130px);
+    overflow: hidden;
+}
+
+.dance-settings-view-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.dance-settings-view-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.dance-back-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+.dance-back-btn:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+/* Body: controls left + preview right */
+.dance-settings-view-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Left: scrollable controls column */
+.dance-settings-controls {
+    flex: 0 0 340px;
+    border-right: 1px solid var(--border);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.dance-settings-drawer.open {
-    transform: translateX(0);
-}
-.dance-settings-header {
+/* Right: preview area, centered */
+.dance-settings-preview {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--border);
+    justify-content: center;
+    overflow: hidden;
 }
-.dance-settings-header h3 {
-    margin: 0;
-    font-size: 1rem;
-}
-.dance-settings-close {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 0 0.25rem;
-    line-height: 1;
-}
-.dance-settings-close:hover {
-    color: var(--text);
+
+.dance-preview-panel {
+    position: relative;
+    overflow: visible;
 }
 
 /* ── Dance: Settings Toggle Button ──────────────────────── */
@@ -4286,11 +4303,7 @@ tr.ws-seed-selected {
     border-color: var(--text-muted);
 }
 
-.dance-settings-btn.active {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: rgba(233,69,96,0.1);
-}
+/* .dance-settings-btn.active removed — gear now navigates to settings view */
 
 /* ── Robot Panel (legacy) ─────────────────────────────────── */
 
@@ -4512,6 +4525,13 @@ tr.ws-seed-selected {
 /* ── Stances Panel ───────────────────────────────────────── */
 
 .robot-stances {
+    width: 100%;
+    padding: 0.5rem 1rem 1rem;
+}
+
+/* ── Primitives Panel ────────────────────────────────────── */
+
+.robot-primitives {
     width: 100%;
     padding: 0.5rem 1rem 1rem;
 }

@@ -2,7 +2,7 @@
    3 robots in still pose on load, 5-second fade-in.
    After fade: enters Workshop play mode → base drawer appears.
    BPM sync: robot tempo matches currently playing track.
-   Settings drawer: gear button toggles robot controls panel.
+   Settings view: gear button navigates to full-page settings with preview robot.
    Uses the Workshop's base drawer (same bottom drawer across all tabs).
    ──────────────────────────────────────────────────────────── */
 (function () {
@@ -18,8 +18,9 @@
   let _fadeCompleted = false;
   let _fadingOut = false;     // true while fade-out transition is running
 
-  // Settings drawer
-  let _settingsOpen = false;
+  // Settings view
+  let _settingsVisible = false;
+  let _previewStageAdded = false;
 
   // ── DOM refs ───────────────────────────────────────────────
   let _els = {};
@@ -31,15 +32,33 @@
     }
   }
 
-  // ── Settings drawer toggle ────────────────────────────────
-  function _toggleSettings() {
-    _settingsOpen = !_settingsOpen;
-    if (_els.settingsDrawer) _els.settingsDrawer.classList.toggle("open", _settingsOpen);
-    if (_els.settingsBtn) _els.settingsBtn.classList.toggle("active", _settingsOpen);
-    // Exit pose preview when closing the drawer
-    if (!_settingsOpen && typeof exitRobotPosePreview === "function") {
-      exitRobotPosePreview();
+  // ── Settings view navigation ─────────────────────────────
+  function _openSettings() {
+    if (_settingsVisible) return;
+    _settingsVisible = true;
+
+    if (_els.performance) _els.performance.classList.add("hidden");
+    if (_els.settingsView) _els.settingsView.classList.remove("hidden");
+
+    // Lazy: add preview stage the first time settings opens
+    if (!_previewStageAdded && typeof addRobotStage === "function" && _els.previewPanel) {
+      addRobotStage(_els.previewPanel, 1.5);
+      _previewStageAdded = true;
     }
+
+    // Ensure animation running for preview
+    if (typeof startRobotDancer === "function") startRobotDancer();
+  }
+
+  function _closeSettings() {
+    if (!_settingsVisible) return;
+    _settingsVisible = false;
+
+    if (_els.settingsView) _els.settingsView.classList.add("hidden");
+    if (_els.performance) _els.performance.classList.remove("hidden");
+
+    // Exit pose preview so performance robots return to dancing
+    if (typeof exitRobotPosePreview === "function") exitRobotPosePreview();
   }
 
   // ── Workshop detection ─────────────────────────────────────
@@ -174,22 +193,25 @@
 
     // Cache DOM refs
     _els = {
-      settingsBtn:    document.getElementById("dance-settings-btn"),
-      settingsDrawer: document.getElementById("dance-settings-drawer"),
-      settingsClose:  document.getElementById("dance-settings-close"),
+      settingsBtn:  document.getElementById("dance-settings-btn"),
+      backBtn:      document.getElementById("dance-back-btn"),
+      performance:  document.getElementById("dance-performance"),
+      settingsView: document.getElementById("dance-settings-view"),
+      previewPanel: document.getElementById("dance-preview-panel"),
     };
 
-    // Init robots with controls built into the hidden settings drawer
+    // Init robots: 3 dance stages in #robot-panel, controls in settings panel
     if (typeof initRobotDancer === "function") {
-      initRobotDancer(_els.settingsDrawer, { showControls: true });
+      const ctrlsTarget = document.getElementById("dance-settings-controls");
+      initRobotDancer(ctrlsTarget, { showControls: true });
     }
 
-    // Settings drawer toggle
+    // Settings navigation
     if (_els.settingsBtn) {
-      _els.settingsBtn.addEventListener("click", _toggleSettings);
+      _els.settingsBtn.addEventListener("click", _openSettings);
     }
-    if (_els.settingsClose) {
-      _els.settingsClose.addEventListener("click", _toggleSettings);
+    if (_els.backBtn) {
+      _els.backBtn.addEventListener("click", _closeSettings);
     }
 
     // Show still pose
@@ -223,6 +245,12 @@
 
     if (_bootPhase !== "ready") return;
 
+    // If in settings view, just ensure preview robot is running
+    if (_settingsVisible) {
+      if (typeof startRobotDancer === "function") startRobotDancer();
+      return;
+    }
+
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
       // Already in play mode — sync robots + ensure base drawer is visible
       _playing = true;
@@ -243,12 +271,14 @@
 
   // Full stop: stop robots, but leave workshop audio/base drawer untouched
   window.stopDancePlayback = function () {
+    _closeSettings();
     if (typeof stopRobotDancer === "function") stopRobotDancer();
   };
 
   // Visual-only stop: stop robots, leave audio playing
   // Used when switching Dance → Workshop (playback continues in Workshop UI)
   window.stopDanceVisuals = function () {
+    _closeSettings();
     if (typeof stopRobotDancer === "function") stopRobotDancer();
   };
 

@@ -251,6 +251,92 @@
     let _startTime = 0;
     let _artworkLoaded = false;
 
+    // ─── Primitives state (per-segment / per-part multipliers) ──
+    const PRIM_DEFAULTS = {
+      // Skeleton segment multipliers
+      sk_spine: 1.0, sk_neck: 1.0, sk_shoulderW: 1.0,
+      sk_upperArm: 1.0, sk_forearm: 1.0, sk_hand: 1.0,
+      sk_hipW: 1.0, sk_thigh: 1.0, sk_shin: 1.0,
+      // Block size multipliers (linked L/R)
+      bk_head_w: 1.0,  bk_head_h: 1.0,
+      bk_torso_w: 1.0, bk_torso_h: 1.0,
+      bk_armU_w: 1.0,  bk_armU_h: 1.0,
+      bk_armL_w: 1.0,  bk_armL_h: 1.0,
+      bk_legU_w: 1.0,  bk_legU_h: 1.0,
+      bk_legL_w: 1.0,  bk_legL_h: 1.0,
+    };
+
+    // Map body part DOM names to primitive keys (links L/R pairs)
+    const PRIM_PART_MAP = {
+      head:  { w: "bk_head_w",  h: "bk_head_h" },
+      torso: { w: "bk_torso_w", h: "bk_torso_h" },
+      armLU: { w: "bk_armU_w",  h: "bk_armU_h" },
+      armRU: { w: "bk_armU_w",  h: "bk_armU_h" },
+      armLL: { w: "bk_armL_w",  h: "bk_armL_h" },
+      armRL: { w: "bk_armL_w",  h: "bk_armL_h" },
+      legLU: { w: "bk_legU_w",  h: "bk_legU_h" },
+      legRU: { w: "bk_legU_w",  h: "bk_legU_h" },
+      legLL: { w: "bk_legL_w",  h: "bk_legL_h" },
+      legRL: { w: "bk_legL_w",  h: "bk_legL_h" },
+    };
+
+    const _prim = { ...PRIM_DEFAULTS };
+    let _primPanel = null;        // DOM container for primitives tab
+
+    function _loadPrimitivesFromStorage() {
+      try {
+        const raw = localStorage.getItem("robotDancer_primitives");
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        for (const k of Object.keys(PRIM_DEFAULTS)) {
+          if (typeof data[k] === "number") _prim[k] = data[k];
+        }
+      } catch (e) { /* ignore corrupt data */ }
+    }
+    _loadPrimitivesFromStorage();
+
+    let _primSaveTimer = null;
+    function _savePrimitivesToStorage() {
+      clearTimeout(_primSaveTimer);
+      _primSaveTimer = setTimeout(() => {
+        try {
+          localStorage.setItem("robotDancer_primitives", JSON.stringify({ ..._prim }));
+        } catch (e) { /* quota exceeded etc */ }
+      }, 300);
+    }
+
+    // ─── Primitives slider definitions ───────────────────────────
+    const PRIM_SLIDERS = [
+      { group: "Skeleton" },
+      { key: "sk_spine",     label: "Spine",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_neck",      label: "Neck",          min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_shoulderW", label: "Shoulder Width", min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_upperArm",  label: "Upper Arm",     min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_forearm",   label: "Forearm",       min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_hand",      label: "Hand",          min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_hipW",      label: "Hip Width",     min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_thigh",     label: "Thigh",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "sk_shin",      label: "Shin",          min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Head" },
+      { key: "bk_head_w",    label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_head_h",    label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Torso" },
+      { key: "bk_torso_w",   label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_torso_h",   label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Upper Arms" },
+      { key: "bk_armU_w",    label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_armU_h",    label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Forearms" },
+      { key: "bk_armL_w",    label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_armL_h",    label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Upper Legs" },
+      { key: "bk_legU_w",    label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_legU_h",    label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { group: "Lower Legs" },
+      { key: "bk_legL_w",    label: "Width",         min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "bk_legL_h",    label: "Height",        min: 0.3, max: 2.0, step: 0.05, fmt: v => v.toFixed(2) },
+    ];
+
     // ─── Stances editor state ─────────────────────────────────
     let _previewFrozen = false;   // true when stances tab is previewing a pose
     let _frozenPose = null;       // the pose object being previewed
@@ -393,7 +479,7 @@
     function ss() {
       const f = _cfg.skelScale;
       const o = {};
-      for (const k in S_BASE) o[k] = S_BASE[k] * f;
+      for (const k in S_BASE) o[k] = S_BASE[k] * f * (_prim["sk_" + k] || 1);
       return o;
     }
 
@@ -401,7 +487,10 @@
       const [w, h] = SIZES_BASE[name];
       const f = _cfg.blockScale;
       const r = Math.sqrt(_cfg.blockRatio);
-      return [w * f * r, h * f / r];
+      const pk = PRIM_PART_MAP[name];
+      const pw = pk ? (_prim[pk.w] || 1) : 1;
+      const ph = pk ? (_prim[pk.h] || 1) : 1;
+      return [w * f * r * pw, h * f / r * ph];
     }
 
     function partKeyColor(name) {
@@ -1333,6 +1422,82 @@
     }
 
     // ─── Stances tab: full panel ────────────────────────────────
+    function _buildPrimitivesTab() {
+      _primPanel = document.createElement("div");
+      _primPanel.className = "robot-primitives";
+      _primPanel.style.display = "none";
+
+      PRIM_SLIDERS.forEach(s => {
+        if (s.group) {
+          const hdr = document.createElement("div");
+          hdr.className = "robot-ctrl-group";
+          hdr.textContent = s.group;
+          _primPanel.appendChild(hdr);
+          return;
+        }
+
+        const row = document.createElement("div");
+        row.className = "robot-ctrl-row";
+
+        const lbl = document.createElement("label");
+        lbl.className = "robot-ctrl-label";
+        lbl.textContent = s.label;
+
+        const input = document.createElement("input");
+        input.type = "range";
+        input.className = "robot-ctrl-slider";
+        input.min = s.min;
+        input.max = s.max;
+        input.step = s.step;
+        input.value = _prim[s.key];
+        input.dataset.primKey = s.key;
+
+        const val = document.createElement("span");
+        val.className = "robot-ctrl-val";
+        val.textContent = s.fmt(_prim[s.key]);
+
+        input.addEventListener("input", () => {
+          const v = Number(input.value);
+          _prim[s.key] = v;
+          val.textContent = s.fmt(v);
+          _updateBlockSizes();
+          _savePrimitivesToStorage();
+        });
+
+        row.appendChild(lbl);
+        row.appendChild(input);
+        row.appendChild(val);
+        _primPanel.appendChild(row);
+      });
+
+      // Reset button
+      const btnRow = document.createElement("div");
+      btnRow.className = "robot-ctrl-btn-row";
+
+      const resetBtn = document.createElement("button");
+      resetBtn.className = "btn btn-sm btn-secondary";
+      resetBtn.textContent = "Reset";
+      resetBtn.addEventListener("click", () => {
+        Object.assign(_prim, PRIM_DEFAULTS);
+        _updateBlockSizes();
+        _savePrimitivesToStorage();
+        if (_primPanel) {
+          _primPanel.querySelectorAll("input[data-prim-key]").forEach(input => {
+            const s = PRIM_SLIDERS.find(x => x.key === input.dataset.primKey);
+            if (!s) return;
+            input.value = _prim[s.key];
+            const v = input.parentElement.querySelector(".robot-ctrl-val");
+            if (v) v.textContent = s.fmt(_prim[s.key]);
+          });
+        }
+      });
+
+      btnRow.appendChild(resetBtn);
+      _primPanel.appendChild(btnRow);
+
+      return _primPanel;
+    }
+
     function _buildStancesTab() {
       _stancesPanel = document.createElement("div");
       _stancesPanel.className = "robot-stances";
@@ -1408,8 +1573,13 @@
       stancesTab.className = "robot-tab";
       stancesTab.textContent = "Stances";
 
+      const primitivesTab = document.createElement("button");
+      primitivesTab.className = "robot-tab";
+      primitivesTab.textContent = "Primitives";
+
       tabBar.appendChild(movementTab);
       tabBar.appendChild(stancesTab);
+      tabBar.appendChild(primitivesTab);
       panel.appendChild(tabBar);
 
       // ── Movement panel (existing sliders) ──
@@ -1523,21 +1693,23 @@
       const stancesPanel = _buildStancesTab();
       panel.appendChild(stancesPanel);
 
-      // ── Tab switching ──
-      movementTab.addEventListener("click", () => {
-        movementTab.classList.add("active");
-        stancesTab.classList.remove("active");
-        _ctrlPanel.style.display = "";
-        stancesPanel.style.display = "none";
-        _exitPosePreview();
-      });
+      // ── Primitives panel ──
+      const primPanel = _buildPrimitivesTab();
+      panel.appendChild(primPanel);
 
-      stancesTab.addEventListener("click", () => {
-        stancesTab.classList.add("active");
-        movementTab.classList.remove("active");
-        stancesPanel.style.display = "";
-        _ctrlPanel.style.display = "none";
-      });
+      // ── Tab switching ──
+      const allTabs = [movementTab, stancesTab, primitivesTab];
+      const allPanels = [_ctrlPanel, stancesPanel, primPanel];
+
+      function switchTab(idx) {
+        allTabs.forEach((t, i) => t.classList.toggle("active", i === idx));
+        allPanels.forEach((p, i) => p.style.display = i === idx ? "" : "none");
+        if (idx !== 1) _exitPosePreview();
+      }
+
+      movementTab.addEventListener("click", () => switchTab(0));
+      stancesTab.addEventListener("click", () => switchTab(1));
+      primitivesTab.addEventListener("click", () => switchTab(2));
 
       // Activate default auto-drives + drift + auto-random on init
       _setAutoKeys(DEFAULT_AUTO);
@@ -1908,6 +2080,11 @@
 
   window.exitRobotPosePreview = function () {
     if (_inst && _inst.exitPosePreview) _inst.exitPosePreview();
+  };
+
+  window.addRobotStage = function (parentEl, scale) {
+    if (!_inst) return null;
+    return _inst.addStage(parentEl, scale);
   };
 
 })();

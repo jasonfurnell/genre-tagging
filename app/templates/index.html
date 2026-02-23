@@ -318,16 +318,22 @@
 
     <!-- ═══ Tab: Dance ═══ -->
     <div id="tab-dance" class="tab-content">
-        <div class="dance-layout">
-            <div class="dance-main">
-                <div id="robot-panel" class="dance-robot-panel"></div>
-                <button id="dance-settings-btn" class="dance-settings-btn" title="Robot Settings">&#9881;</button>
+        <!-- VIEW 1: Performance (default) -->
+        <div id="dance-performance" class="dance-performance">
+            <div id="robot-panel" class="dance-robot-panel"></div>
+            <button id="dance-settings-btn" class="dance-settings-btn" title="Robot Settings">&#9881;</button>
+        </div>
+
+        <!-- VIEW 2: Settings (hidden until gear click) -->
+        <div id="dance-settings-view" class="dance-settings-view hidden">
+            <div class="dance-settings-view-header">
+                <button id="dance-back-btn" class="dance-back-btn">&#8592; Back to Dance</button>
+                <h3>Dance Settings</h3>
             </div>
-            <!-- Settings drawer (slides from right) -->
-            <div id="dance-settings-drawer" class="dance-settings-drawer">
-                <div class="dance-settings-header">
-                    <h3>Robot Settings</h3>
-                    <button id="dance-settings-close" class="dance-settings-close" title="Close">&times;</button>
+            <div class="dance-settings-view-body">
+                <div id="dance-settings-controls" class="dance-settings-controls"></div>
+                <div class="dance-settings-preview">
+                    <div id="dance-preview-panel" class="dance-preview-panel"></div>
                 </div>
             </div>
         </div>
