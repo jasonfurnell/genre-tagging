@@ -110,11 +110,11 @@
 
     // ─── Base body-part cover sizes [w, h] ─────────────────────
     const SIZES_BASE = {
-      head:  [25, 25], torso: [30, 36],
-      armLU: [14, 23], armRU: [14, 23],
-      armLL: [12, 20], armRL: [12, 20],
-      legLU: [17, 25], legRU: [17, 25],
-      legLL: [14, 23], legRL: [14, 23],
+      head:  [25, 25], torso: [36, 36],
+      armLU: [23, 23], armRU: [23, 23],
+      armLL: [20, 20], armRL: [20, 20],
+      legLU: [25, 25], legRU: [25, 25],
+      legLL: [23, 23], legRL: [23, 23],
     };
 
     // ─── Z-order (higher = in front) ──────────────────────────
@@ -225,7 +225,7 @@
     // ─── Tunable config (sliders modify these live) ────────────
     const DEFAULTS = {
       skelScale:  1.00,   blockScale: 1.00,
-      blockRatio: 1.05,   blockRound: 0,      keyColor: 0,
+      blockRatio: 1.00,   blockRound: 0,      keyColor: 0,
       waveAmp:    4.7,    waveSpeed:  0.3,
       waveLayers: 3,      waveColor:  0.70,
       bpm:        120,    poseHold:   130,
@@ -250,6 +250,14 @@
     let _frame = null;
     let _startTime = 0;
     let _artworkLoaded = false;
+
+    // ─── Artwork rotation state ─────────────────────────────────
+    // Swaps individual body-part images in sync with pose transitions.
+    // Every N pose changes, one random part gets fresh artwork.
+    let _poseChangeCount = 0;             // counts pose transitions
+    const _ART_SWAP_EVERY = 2;            // swap a part every N pose changes
+    let _artPartQueue = [];               // shuffled queue of part names to rotate through
+    let _artPreloaded = new Map();        // partName -> {artist, title, url} ready to apply
 
     // ─── Primitives state (per-segment / per-part multipliers) ──
     const PRIM_DEFAULTS = {
@@ -352,7 +360,7 @@
 
     // ─── Drift state (home ↔ random cycling) ──────────────────
     const DRIFT_KEYS = [
-      "skelScale", "blockScale", "blockRatio", "keyColor",
+      "skelScale", "blockScale", "keyColor",
       "waveAmp", "waveSpeed", "waveLayers", "waveColor",
       "poseHold", "poseTrans", "bobAmt", "swayAmt", "poseRandom",
     ];
@@ -415,8 +423,8 @@
       },
       blockScale: {
         moves: [
-          { lo: 0.40, hi: 0.75, weight: 0.4, holdLo: 3000, holdHi: 6000, moveDur: 700 },
-          { lo: 0.95, hi: 1.40, weight: 0.6, holdLo: 2000, holdHi: 5000, moveDur: 500 },
+          { lo: 1.00, hi: 1.50, weight: 0.4, holdLo: 3000, holdHi: 6000, moveDur: 700 },
+          { lo: 1.60, hi: 2.50, weight: 0.6, holdLo: 2000, holdHi: 5000, moveDur: 500 },
         ],
       },
       poseRandom: {
@@ -449,7 +457,7 @@
     const SLIDERS = [
       { group: "Body" },
       { key: "skelScale",  label: "Skeleton Scale",    min: 0.80, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
-      { key: "blockScale", label: "Block Size",         min: 0.25, max: 1.82, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "blockScale", label: "Block Size",         min: 1.00, max: 2.50, step: 0.05, fmt: v => v.toFixed(2) },
       { key: "blockRatio", label: "Block Ratio",        min: 0.20, max: 2.00, step: 0.05, fmt: v => v.toFixed(2) },
       { key: "keyColor",   label: "Key Colour",         min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
       { group: "Energy" },
@@ -1036,7 +1044,8 @@
           + `transition:box-shadow 0.08s ease;`;
 
         const img = document.createElement("img");
-        img.style.cssText = "width:100%;height:100%;object-fit:cover;display:none;";
+        img.style.cssText = "width:78%;height:78%;object-fit:cover;display:none;"
+          + "position:absolute;top:11%;left:11%;border-radius:8%;";
         img.alt = "";
         el.appendChild(img);
         _stage.appendChild(el);
@@ -1849,6 +1858,135 @@
       _artworkLoaded = true;
     }
 
+    // ─── Artwork rotation (swap parts on pose beats) ───────────
+
+    // Pre-fetch a small batch of random tracks so swaps are instant
+    function _prefetchArtForRotation() {
+      const api = _getGridApi();
+      if (!api) return;
+      const total = api.getDisplayedRowCount();
+      if (!total) return;
+
+      // Pick a handful of random tracks to have ready
+      const count = Math.min(6, total);
+      const tracks = [];
+      const seen = new Set();
+      while (tracks.length < count) {
+        const idx = Math.floor(Math.random() * total);
+        if (seen.has(idx)) continue;
+        seen.add(idx);
+        const data = api.getDisplayedRowAtIndex(idx)?.data;
+        if (data && data.artist && data.title) {
+          tracks.push({ artist: data.artist, title: data.title, key: data.key || null });
+        }
+      }
+      if (!tracks.length) return;
+
+      // Check which are already in artworkCache
+      const uncached = [];
+      const ready = [];
+      for (const t of tracks) {
+        const cacheKey = `${t.artist.toLowerCase()}||${t.title.toLowerCase()}`;
+        if (typeof artworkCache !== "undefined" && artworkCache.has(cacheKey)) {
+          ready.push({ ...t, url: artworkCache.get(cacheKey) });
+        } else {
+          uncached.push(t);
+        }
+      }
+
+      // Stash already-cached ones immediately
+      const names = Object.keys(SIZES_BASE);
+      ready.forEach(t => {
+        // Assign to a random part name for the pool
+        const name = names[Math.floor(Math.random() * names.length)];
+        _artPreloaded.set(name + "_" + Math.random(), t);
+      });
+
+      if (uncached.length === 0) return;
+
+      // Fetch uncached in background
+      fetch("/api/artwork/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(uncached.map(t => ({ artist: t.artist, title: t.title }))),
+      })
+        .then(r => r.ok ? r.json() : {})
+        .then(data => {
+          uncached.forEach(t => {
+            const cacheKey = `${t.artist.toLowerCase()}||${t.title.toLowerCase()}`;
+            const info = data[cacheKey];
+            const url = info ? (info.cover_url || "") : "";
+            if (typeof artworkCache !== "undefined") artworkCache.set(cacheKey, url);
+            if (url) {
+              // Pre-warm the browser image cache
+              const img = new Image();
+              img.src = url;
+            }
+          });
+        })
+        .catch(() => {});
+    }
+
+    // Called each time the pose transitions to a new hold
+    function _onPoseBeat() {
+      if (!_artworkLoaded) return;
+      _poseChangeCount++;
+      if (_poseChangeCount % _ART_SWAP_EVERY !== 0) return;
+
+      // Pick the next part to swap (cycle through all parts)
+      if (_artPartQueue.length === 0) {
+        _artPartQueue = Object.keys(SIZES_BASE).slice();
+        // Shuffle
+        for (let i = _artPartQueue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [_artPartQueue[i], _artPartQueue[j]] = [_artPartQueue[j], _artPartQueue[i]];
+        }
+        // Prefetch a fresh batch for the next round
+        _prefetchArtForRotation();
+      }
+
+      const partName = _artPartQueue.pop();
+      _swapOnePart(partName);
+    }
+
+    function _swapOnePart(partName) {
+      const api = _getGridApi();
+      if (!api) return;
+      const total = api.getDisplayedRowCount();
+      if (!total) return;
+
+      // Pick a random track
+      const idx = Math.floor(Math.random() * total);
+      const data = api.getDisplayedRowAtIndex(idx)?.data;
+      if (!data || !data.artist || !data.title) return;
+
+      const cacheKey = `${data.artist.toLowerCase()}||${data.title.toLowerCase()}`;
+      if (data.key) _partCamelot[partName] = data.key;
+
+      // If artwork URL already cached, apply instantly
+      if (typeof artworkCache !== "undefined" && artworkCache.has(cacheKey)) {
+        _applyArt(partName, artworkCache.get(cacheKey));
+        _updateBlockColors();
+        return;
+      }
+
+      // Otherwise fetch just this one
+      fetch("/api/artwork/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([{ artist: data.artist, title: data.title }]),
+      })
+        .then(r => r.ok ? r.json() : {})
+        .then(result => {
+          const info = result[cacheKey];
+          const url = info ? (info.cover_url || "") : "";
+          if (typeof artworkCache !== "undefined") artworkCache.set(cacheKey, url);
+          _applyArt(partName, url);
+          _updateBlockColors();
+        })
+        .catch(() => {});
+    }
+
     // ─── Animation tick ────────────────────────────────────────
     function _tick() {
       const now = performance.now();
@@ -1889,6 +2027,7 @@
           _phase = "hold";
           _phaseStart = now;
           _curHold = _rollHold();
+          _onPoseBeat();
         }
 
         const effTrans = _curTrans / tempo;
@@ -2029,7 +2168,8 @@
           + `overflow:hidden;background:${PH[i]};box-shadow:0 0 8px rgba(233,69,96,0.3);`
           + `transition:box-shadow 0.08s ease;`;
         const img = document.createElement("img");
-        img.style.cssText = "width:100%;height:100%;object-fit:cover;display:none;";
+        img.style.cssText = "width:78%;height:78%;object-fit:cover;display:none;"
+          + "position:absolute;top:11%;left:11%;border-radius:8%;";
         img.alt = "";
         el.appendChild(img);
         stageEl.appendChild(el);
