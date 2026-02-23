@@ -2,7 +2,7 @@ import { memo, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { camelotColor } from '@/lib/camelot'
 import type { TrackOption } from '@/schemas'
-import { WS, bpmToY } from '@/stores/workshop'
+import { WS } from '@/stores/workshop'
 
 interface TrackSlotProps {
   track: TrackOption
@@ -32,8 +32,6 @@ export const TrackSlot = memo(function TrackSlot({
     )
   }
 
-  const bpm = track.bpm ?? 100
-  const y = bpmToY(bpm)
   const keyColor = camelotColor(track.key)
 
   const artSrc = `/api/artwork/small/${encodeURIComponent(track.artist)}/${encodeURIComponent(track.title)}`
@@ -44,7 +42,7 @@ export const TrackSlot = memo(function TrackSlot({
         isSelected ? 'z-10 ring-2 shadow-lg' : 'opacity-60 hover:opacity-90'
       }`}
       style={{
-        top: y - WS.IMG / 2,
+        top: bpmOffset - WS.IMG / 2,
         width: WS.IMG,
         height: WS.IMG,
         ...(isSelected && keyColor

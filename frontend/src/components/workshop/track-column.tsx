@@ -62,21 +62,33 @@ export const TrackColumn = memo(function TrackColumn({
           <span className="text-[10px] text-muted-foreground/50">+</span>
         </div>
       ) : (
-        slot.tracks.map((track, ti) => {
-          if (!track) return null
-          const bpm = track.bpm ?? WS.BPM_LEVELS[ti] ?? 100
-          const y = bpmToY(bpm)
-          return (
-            <TrackSlot
-              key={track.id}
-              track={track}
-              isSelected={slot.selectedTrackIndex === ti}
-              bpmOffset={y}
-              onClick={() => onTrackClick(slot.id, ti)}
-              isLoading={isLoading}
-            />
-          )
-        })
+        (() => {
+          // Offset the entire column so the selected track sits at its actual BPM height
+          const selTrack =
+            slot.selectedTrackIndex != null ? slot.tracks[slot.selectedTrackIndex] : null
+          const rawOffset = selTrack
+            ? bpmToY(selTrack.bpm ?? selTrack.bpm_level ?? 100) -
+              bpmToY(selTrack.bpm_level ?? selTrack.bpm ?? 100)
+            : 0
+          // Clamp to ±48px (one track height)
+          const colOffset = Math.max(-WS.IMG, Math.min(WS.IMG, rawOffset))
+
+          return slot.tracks.map((track, ti) => {
+            if (!track) return null
+            const bpm = track.bpm_level ?? track.bpm ?? WS.BPM_LEVELS[ti] ?? 100
+            const y = bpmToY(bpm) + colOffset
+            return (
+              <TrackSlot
+                key={track.id}
+                track={track}
+                isSelected={slot.selectedTrackIndex === ti}
+                bpmOffset={y}
+                onClick={() => onTrackClick(slot.id, ti)}
+                isLoading={isLoading}
+              />
+            )
+          })
+        })()
       )}
     </div>
   )
