@@ -1,13 +1,10 @@
 import { useState, useMemo, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import type { TrackRow } from '@/schemas'
 
 type SortField = 'title' | 'artist' | 'bpm' | 'key' | 'year'
 type SortDir = 'asc' | 'desc'
-
-function artworkUrl(artist: string, title: string): string {
-  return `/artwork/${encodeURIComponent(artist)}||${encodeURIComponent(title)}`
-}
 
 interface PlaylistTrackTableProps {
   tracks: TrackRow[]
@@ -88,14 +85,7 @@ export function PlaylistTrackTable({ tracks, onRemoveTrack }: PlaylistTrackTable
           {sortedTracks.map((t) => (
             <tr key={t.id} className="border-b border-border/50 hover:bg-accent/50">
               <td className="px-2 py-1.5">
-                <img
-                  src={artworkUrl(t.artist, t.title)}
-                  alt=""
-                  className="h-7 w-7 rounded object-cover"
-                  onError={(e) => {
-                    ;(e.target as HTMLImageElement).style.display = 'none'
-                  }}
-                />
+                <ArtworkImg artist={t.artist} title={t.title} className="h-7 w-7" />
               </td>
               <td className="max-w-[200px] truncate px-2 py-1.5">{t.title}</td>
               <td className="max-w-[160px] truncate px-2 py-1.5 text-muted-foreground">

@@ -1,6 +1,7 @@
 import { memo, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { camelotColor } from '@/lib/camelot'
+import { useArtworkUrl } from '@/hooks/use-artwork'
 import type { TrackOption } from '@/schemas'
 import { WS } from '@/stores/workshop'
 
@@ -20,6 +21,7 @@ export const TrackSlot = memo(function TrackSlot({
   isLoading,
 }: TrackSlotProps) {
   const [imgError, setImgError] = useState(false)
+  const artSrc = useArtworkUrl(track.artist, track.title)
 
   if (isLoading) {
     return (
@@ -33,8 +35,6 @@ export const TrackSlot = memo(function TrackSlot({
   }
 
   const keyColor = camelotColor(track.key)
-
-  const artSrc = `/api/artwork/small/${encodeURIComponent(track.artist)}/${encodeURIComponent(track.title)}`
 
   return (
     <button
@@ -52,7 +52,7 @@ export const TrackSlot = memo(function TrackSlot({
       onClick={onClick}
       title={`${track.artist} — ${track.title}\nBPM: ${track.bpm ?? '?'} | Key: ${track.key ?? '?'}`}
     >
-      {!imgError ? (
+      {!imgError && artSrc ? (
         <img
           src={artSrc}
           alt=""

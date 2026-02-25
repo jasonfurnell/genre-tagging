@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import type { TrackOption } from '@/schemas'
 
 interface BaseDrawerProps {
@@ -39,14 +40,7 @@ export function BaseDrawer({
       <div className="flex items-center gap-4">
         {/* Artwork + info */}
         <div className="flex items-center gap-3">
-          <img
-            src={`/api/artwork/small/${encodeURIComponent(track.artist)}/${encodeURIComponent(track.title)}`}
-            alt=""
-            className="h-10 w-10 shrink-0 rounded object-cover"
-            onError={(e) => {
-              ;(e.target as HTMLImageElement).style.display = 'none'
-            }}
-          />
+          <ArtworkImg artist={track.artist} title={track.title} className="h-10 w-10" />
           <div className="min-w-0">
             <div className="truncate text-xs font-medium">{track.title}</div>
             <div className="truncate text-[11px] text-muted-foreground">{track.artist}</div>

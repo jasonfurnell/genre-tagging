@@ -33052,6 +33052,2955 @@
       }
     ],
     "created_at": "2026-02-23T00:07:08.496170+00:00",
-    "updated_at": "2026-02-23T00:07:08.496178+00:00"
+    "updated_at": "2026-02-23T00:07:08.496178+00:00",
+    "phase_profile_id": "classic_arc"
+  },
+  "8dbc3922": {
+    "id": "8dbc3922",
+    "name": "Auto Set \u2014 Trip-Hop Collection",
+    "slots": [
+      {
+        "id": "autoset-slot-0",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3875,
+            "title": "A_Comfort_Drums_04",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "1M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3896,
+            "title": "C_Atmo_Uprising_02",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "2D",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3893,
+            "title": "C_Morse_Code",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "3M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-1",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3887,
+            "title": "B_Sub_Marine_08",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "2M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3893,
+            "title": "C_Morse_Code",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "3M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3610,
+            "title": "A3 Kick&Bas&Timbale",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "6D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-2",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3892,
+            "title": "C_-_Atmo_Uprising",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3909,
+            "title": "D_Chords_07",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2004,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3893,
+            "title": "C_Morse_Code",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "3M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-3",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3612,
+            "title": "A5 Stab&Timbale",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "4M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3614,
+            "title": "A5 Stab&Timbale",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "4M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3015,
+            "title": "Ring My Bell",
+            "artist": "Blood Sisters",
+            "bpm": 66.1,
+            "key": "10M",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-4",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3882,
+            "title": "B_Sub_Marine_03",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "11M",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3909,
+            "title": "D_Chords_07",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2004,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3015,
+            "title": "Ring My Bell",
+            "artist": "Blood Sisters",
+            "bpm": 66.1,
+            "key": "10M",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-5",
+        "source": {
+          "type": "autoset",
+          "id": "act-0",
+          "name": "Warm-Up"
+        },
+        "tracks": [
+          {
+            "id": 3893,
+            "title": "C_Morse_Code",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "3M",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3015,
+            "title": "Ring My Bell",
+            "artist": "Blood Sisters",
+            "bpm": 66.1,
+            "key": "10M",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3630,
+            "title": "C1-LowTimb&HH",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "10M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-6",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 2330,
+            "title": "Humming",
+            "artist": "Portishead",
+            "bpm": 74.0,
+            "key": "6D",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 6186,
+            "title": "Vento",
+            "artist": "Feater",
+            "bpm": 74.0,
+            "key": "12M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 4012,
+            "title": "Grace",
+            "artist": "Anna Morgan",
+            "bpm": 80.0,
+            "key": "1M",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 4373,
+            "title": "Beat Goes On",
+            "artist": "The All Seeing I",
+            "bpm": 77.4,
+            "key": "12D",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 545,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-7",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 4294,
+            "title": "You're Nicked",
+            "artist": "Laurel and Hardy",
+            "bpm": 73.0,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4373,
+            "title": "Beat Goes On",
+            "artist": "The All Seeing I",
+            "bpm": 77.4,
+            "key": "12D",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 2417,
+            "title": "The Truth",
+            "artist": "Handsome Boy Modeling School, R\u00f3is\u00edn, J-Live",
+            "bpm": 79.7,
+            "key": "12M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1018,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1107,
+            "title": "Bergschrund",
+            "artist": "DJ Shadow,Nils Frahm",
+            "bpm": 91.5,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-8",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 4373,
+            "title": "Beat Goes On",
+            "artist": "The All Seeing I",
+            "bpm": 77.4,
+            "key": "12D",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3429,
+            "title": "Smoothpipe",
+            "artist": "Flamingo Star",
+            "bpm": 86.0,
+            "key": "11D",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 4012,
+            "title": "Grace",
+            "artist": "Anna Morgan",
+            "bpm": 80.0,
+            "key": "1M",
+            "year": 2017,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1233,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-9",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 1018,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 5290,
+            "title": "You're Nicked",
+            "artist": "Laurel and Hardy",
+            "bpm": 76.0,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 5003,
+            "title": "Choked Out Saturday Night",
+            "artist": "Sleepy's Theme",
+            "bpm": 83.0,
+            "key": "2M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 215,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 545,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-10",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 506,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 1018,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 215,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 830,
+            "title": "Bluebird",
+            "artist": "One Self",
+            "bpm": 86.3,
+            "key": "12M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1233,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-11",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 1810,
+            "title": "Parade Skank - Blood Wine or Honey Remix",
+            "artist": "Magic Drum Orchestra,Blood Wine Or Honey",
+            "bpm": 72.5,
+            "key": "10M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 1233,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 545,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 215,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3429,
+            "title": "Smoothpipe",
+            "artist": "Flamingo Star",
+            "bpm": 86.0,
+            "key": "11D",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-12",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 506,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4373,
+            "title": "Beat Goes On",
+            "artist": "The All Seeing I",
+            "bpm": 77.4,
+            "key": "12D",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1107,
+            "title": "Bergschrund",
+            "artist": "DJ Shadow,Nils Frahm",
+            "bpm": 91.5,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3429,
+            "title": "Smoothpipe",
+            "artist": "Flamingo Star",
+            "bpm": 86.0,
+            "key": "11D",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-13",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 3627,
+            "title": "B6 BassLegato",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "2M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 190,
+            "title": "Drop It Like It's Hot",
+            "artist": "Magic Drum Orchestra",
+            "bpm": 57.5,
+            "key": "11D",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3908,
+            "title": "D_Chords_05",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 6254,
+            "title": "Autumn Perspective",
+            "artist": "Vanessa Daou",
+            "bpm": 117.0,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3911,
+            "title": "C_FX_Uprising",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "2M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-14",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 3627,
+            "title": "B6 BassLegato",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "2M",
+            "year": 2015,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3645,
+            "title": "LooseCongaDry",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "2M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3908,
+            "title": "D_Chords_05",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 6254,
+            "title": "Autumn Perspective",
+            "artist": "Vanessa Daou",
+            "bpm": 117.0,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-15",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 1010,
+            "title": "Be Your Own",
+            "artist": "One Self",
+            "bpm": 97.0,
+            "key": "5M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5779,
+            "title": "cherries v1",
+            "artist": "",
+            "bpm": 104.7,
+            "key": "5M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 852,
+            "title": "Bergschrund",
+            "artist": "DJ Shadow,Nils Frahm",
+            "bpm": 91.5,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3879,
+            "title": "B_Comfort_Kick_03",
+            "artist": "Comfort Fit",
+            "bpm": 110.2,
+            "key": "8D",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5641,
+            "title": "Tokyo Story",
+            "artist": "Miho Hatori",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-16",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 478,
+            "title": "Be Thankful For What You've Got - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 92.1,
+            "key": "3M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 852,
+            "title": "Bergschrund",
+            "artist": "DJ Shadow,Nils Frahm",
+            "bpm": 91.5,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1066,
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "key": "2D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1986,
+            "title": "Filthy",
+            "artist": "Saint Etienne",
+            "bpm": 103.0,
+            "key": "1M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-17",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 478,
+            "title": "Be Thankful For What You've Got - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 92.1,
+            "key": "3M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1009,
+            "title": "Be Thankful For What You've Got - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 92.1,
+            "key": "3M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 4281,
+            "title": "Walk On",
+            "artist": "Smith & Mighty",
+            "bpm": 96.0,
+            "key": "10D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-18",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 478,
+            "title": "Be Thankful For What You've Got - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 92.1,
+            "key": "3M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3056,
+            "title": "Third World - Pt. I",
+            "artist": "Paladin",
+            "bpm": 102.8,
+            "key": "2M",
+            "year": 2002,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-19",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 793,
+            "title": "Be Your Own",
+            "artist": "One Self",
+            "bpm": 97.0,
+            "key": "5M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 849,
+            "title": "Witness (1 Hope)",
+            "artist": "Roots Manuva",
+            "bpm": 92.0,
+            "key": "6M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 2396,
+            "title": "Dope on Plastic",
+            "artist": "Uptown",
+            "bpm": 103.6,
+            "key": "7D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3425,
+            "title": "Mr DG",
+            "artist": "Colman Brothers",
+            "bpm": 98.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1986,
+            "title": "Filthy",
+            "artist": "Saint Etienne",
+            "bpm": 103.0,
+            "key": "1M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-20",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 1250,
+            "title": "Lyrical Soldier",
+            "artist": "DJ Vadim,Demolition Man",
+            "bpm": 94.5,
+            "key": "9M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 2396,
+            "title": "Dope on Plastic",
+            "artist": "Uptown",
+            "bpm": 103.6,
+            "key": "7D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1010,
+            "title": "Be Your Own",
+            "artist": "One Self",
+            "bpm": 97.0,
+            "key": "5M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 76,
+            "title": "Holy Calamity [Bear Witness II]",
+            "artist": "Handsome Boy Modeling School,DJ Shadow,DJ Quest",
+            "bpm": 99.1,
+            "key": "6M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1066,
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "key": "2D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-21",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 3425,
+            "title": "Mr DG",
+            "artist": "Colman Brothers",
+            "bpm": 98.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 793,
+            "title": "Be Your Own",
+            "artist": "One Self",
+            "bpm": 97.0,
+            "key": "5M",
+            "year": 2005,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5779,
+            "title": "cherries v1",
+            "artist": "",
+            "bpm": 104.7,
+            "key": "5M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 2396,
+            "title": "Dope on Plastic",
+            "artist": "Uptown",
+            "bpm": 103.6,
+            "key": "7D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-22",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 1199,
+            "title": "Holy Calamity [Bear Witness II]",
+            "artist": "Handsome Boy Modeling School,DJ Shadow,DJ Quest",
+            "bpm": 99.1,
+            "key": "6M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1250,
+            "title": "Lyrical Soldier",
+            "artist": "DJ Vadim,Demolition Man",
+            "bpm": 94.5,
+            "key": "9M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 76,
+            "title": "Holy Calamity [Bear Witness II]",
+            "artist": "Handsome Boy Modeling School,DJ Shadow,DJ Quest",
+            "bpm": 99.1,
+            "key": "6M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 5779,
+            "title": "cherries v1",
+            "artist": "",
+            "bpm": 104.7,
+            "key": "5M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-23",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 1250,
+            "title": "Lyrical Soldier",
+            "artist": "DJ Vadim,Demolition Man",
+            "bpm": 94.5,
+            "key": "9M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5779,
+            "title": "cherries v1",
+            "artist": "",
+            "bpm": 104.7,
+            "key": "5M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1199,
+            "title": "Holy Calamity [Bear Witness II]",
+            "artist": "Handsome Boy Modeling School,DJ Shadow,DJ Quest",
+            "bpm": 99.1,
+            "key": "6M",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5641,
+            "title": "Tokyo Story",
+            "artist": "Miho Hatori",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-24",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 4281,
+            "title": "Walk On",
+            "artist": "Smith & Mighty",
+            "bpm": 96.0,
+            "key": "10D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 1250,
+            "title": "Lyrical Soldier",
+            "artist": "DJ Vadim,Demolition Man",
+            "bpm": 94.5,
+            "key": "9M",
+            "year": 1998,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 5641,
+            "title": "Tokyo Story",
+            "artist": "Miho Hatori",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 2396,
+            "title": "Dope on Plastic",
+            "artist": "Uptown",
+            "bpm": 103.6,
+            "key": "7D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1066,
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "key": "2D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 3
+      },
+      {
+        "id": "autoset-slot-25",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 3425,
+            "title": "Mr DG",
+            "artist": "Colman Brothers",
+            "bpm": 98.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 4281,
+            "title": "Walk On",
+            "artist": "Smith & Mighty",
+            "bpm": 96.0,
+            "key": "10D",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1986,
+            "title": "Filthy",
+            "artist": "Saint Etienne",
+            "bpm": 103.0,
+            "key": "1M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3056,
+            "title": "Third World - Pt. I",
+            "artist": "Paladin",
+            "bpm": 102.8,
+            "key": "2M",
+            "year": 2002,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-26",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 3210,
+            "title": "The Vanishing American Family",
+            "artist": "ScubaZ",
+            "bpm": 103.0,
+            "key": "10D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3149,
+            "title": "Phogtographt",
+            "artist": "Crossover",
+            "bpm": 100.0,
+            "key": "3M",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3425,
+            "title": "Mr DG",
+            "artist": "Colman Brothers",
+            "bpm": 98.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 5641,
+            "title": "Tokyo Story",
+            "artist": "Miho Hatori",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-27",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5641,
+            "title": "Tokyo Story",
+            "artist": "Miho Hatori",
+            "bpm": 103.0,
+            "key": "10M",
+            "year": 2021,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3056,
+            "title": "Third World - Pt. I",
+            "artist": "Paladin",
+            "bpm": 102.8,
+            "key": "2M",
+            "year": 2002,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3425,
+            "title": "Mr DG",
+            "artist": "Colman Brothers",
+            "bpm": 98.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1066,
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "key": "2D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ],
+        "selectedTrackIndex": 4
+      },
+      {
+        "id": "autoset-slot-28",
+        "source": {
+          "type": "autoset",
+          "id": "act-2",
+          "name": "Peak"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 6174,
+            "title": "Be Thankful For What You've Got - Perfecto Mix",
+            "artist": "Massive Attack, Tony Bryan, Paul Oakenfold, Steve Osbourne",
+            "bpm": 92.0,
+            "key": "3M",
+            "year": 1992,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 2396,
+            "title": "Dope on Plastic",
+            "artist": "Uptown",
+            "bpm": 103.6,
+            "key": "7D",
+            "year": 2001,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 1986,
+            "title": "Filthy",
+            "artist": "Saint Etienne",
+            "bpm": 103.0,
+            "key": "1M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 1066,
+            "title": "Cloud of Unknowing (feat. Bobby Womack and Sinfonia ViVA)",
+            "artist": "Gorillaz,Bobby Womack",
+            "bpm": 106.2,
+            "key": "2D",
+            "year": 2010,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 1830,
+            "title": "Nikolai Reptile",
+            "artist": "Shadowax",
+            "bpm": 110.0,
+            "key": "3M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 5
+      },
+      {
+        "id": "autoset-slot-29",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 3269,
+            "title": "Macumba",
+            "artist": "Claudia",
+            "bpm": 74.7,
+            "key": "9M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 1810,
+            "title": "Parade Skank - Blood Wine or Honey Remix",
+            "artist": "Magic Drum Orchestra,Blood Wine Or Honey",
+            "bpm": 72.5,
+            "key": "10M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 1028,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 5290,
+            "title": "You're Nicked",
+            "artist": "Laurel and Hardy",
+            "bpm": 76.0,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3881,
+            "title": "B_Sub_Marine_02",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 6
+      },
+      {
+        "id": "autoset-slot-30",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 1018,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 1233,
+            "title": "Lately - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 87.2,
+            "key": "10M",
+            "year": 2012,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 506,
+            "title": "Fever",
+            "artist": "Malia,Boris Blank",
+            "bpm": 75.0,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3429,
+            "title": "Smoothpipe",
+            "artist": "Flamingo Star",
+            "bpm": 86.0,
+            "key": "11D",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 235,
+            "title": "Sometimes It Hurts",
+            "artist": "Dojo Cuts",
+            "bpm": 92.2,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          {
+            "id": 3888,
+            "title": "A_Comfort_Snare_01",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "5M",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 8
+      },
+      {
+        "id": "autoset-slot-31",
+        "source": {
+          "type": "autoset",
+          "id": "act-1",
+          "name": "Build"
+        },
+        "tracks": [
+          {
+            "id": 3269,
+            "title": "Macumba",
+            "artist": "Claudia",
+            "bpm": 74.7,
+            "key": "9M",
+            "year": 2011,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 1019,
+            "title": "Five Man Army - 2012 Mix Master",
+            "artist": "Massive Attack",
+            "bpm": 80.9,
+            "key": "8M",
+            "year": 1991,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 4373,
+            "title": "Beat Goes On",
+            "artist": "The All Seeing I",
+            "bpm": 77.4,
+            "key": "12D",
+            "year": 1999,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          {
+            "id": 2330,
+            "title": "Humming",
+            "artist": "Portishead",
+            "bpm": 74.0,
+            "key": "6D",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 90
+          },
+          {
+            "id": 3429,
+            "title": "Smoothpipe",
+            "artist": "Flamingo Star",
+            "bpm": 86.0,
+            "key": "11D",
+            "year": 2007,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 4850,
+            "title": "The Snag",
+            "artist": "Magic In Threes,DeRobert Adams",
+            "bpm": 91.4,
+            "key": "7M",
+            "year": 2023,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          {
+            "id": 5592,
+            "title": "Badtimes",
+            "artist": "Laika",
+            "bpm": 153.6,
+            "key": "10M",
+            "year": 2000,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 2
+      },
+      {
+        "id": "autoset-slot-32",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 4983,
+            "title": "Inner Worlds, Outer Worlds",
+            "artist": "Soccer96",
+            "bpm": 65.5,
+            "key": "10M",
+            "year": 2022,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4946,
+            "title": "Inner Worlds, Outer Worlds",
+            "artist": "Soccer96",
+            "bpm": 65.5,
+            "key": "10M",
+            "year": 2022,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3374,
+            "title": "Since 1992",
+            "artist": "Aldous RH",
+            "bpm": 67.5,
+            "key": "7M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 6254,
+            "title": "Autumn Perspective",
+            "artist": "Vanessa Daou",
+            "bpm": 117.0,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-33",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 4187,
+            "title": "Pretty Bright Light",
+            "artist": "RSD",
+            "bpm": 70.0,
+            "key": "9D",
+            "year": 2009,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4983,
+            "title": "Inner Worlds, Outer Worlds",
+            "artist": "Soccer96",
+            "bpm": 65.5,
+            "key": "10M",
+            "year": 2022,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3374,
+            "title": "Since 1992",
+            "artist": "Aldous RH",
+            "bpm": 67.5,
+            "key": "7M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 5389,
+            "title": "Elevate My Mind",
+            "artist": "Stereo MC's",
+            "bpm": 115.2,
+            "key": "6M",
+            "year": 1990,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-34",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 4187,
+            "title": "Pretty Bright Light",
+            "artist": "RSD",
+            "bpm": 70.0,
+            "key": "9D",
+            "year": 2009,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3374,
+            "title": "Since 1992",
+            "artist": "Aldous RH",
+            "bpm": 67.5,
+            "key": "7M",
+            "year": 2020,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3645,
+            "title": "LooseCongaDry",
+            "artist": "DEMI",
+            "bpm": 63.0,
+            "key": "2M",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 6254,
+            "title": "Autumn Perspective",
+            "artist": "Vanessa Daou",
+            "bpm": 117.0,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 5389,
+            "title": "Elevate My Mind",
+            "artist": "Stereo MC's",
+            "bpm": 115.2,
+            "key": "6M",
+            "year": 1990,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 150
+          }
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-35",
+        "source": {
+          "type": "autoset",
+          "id": "act-3",
+          "name": "Wind-Down"
+        },
+        "tracks": [
+          {
+            "id": 3992,
+            "title": "Drop It Like It's Hot",
+            "artist": "Magic Drum Orchestra,Biggabush",
+            "bpm": 57.5,
+            "key": "11D",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4187,
+            "title": "Pretty Bright Light",
+            "artist": "RSD",
+            "bpm": 70.0,
+            "key": "9D",
+            "year": 2009,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          {
+            "id": 3868,
+            "title": "A_Comfort_Drums_01",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "11D",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 80
+          },
+          null,
+          {
+            "id": 6254,
+            "title": "Autumn Perspective",
+            "artist": "Vanessa Daou",
+            "bpm": 117.0,
+            "key": "9D",
+            "year": 2018,
+            "has_audio": false,
+            "bpm_level": 100
+          },
+          {
+            "id": 3426,
+            "title": "Patchwork Jazz",
+            "artist": "Cro-Magnon",
+            "bpm": 125.1,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": false,
+            "bpm_level": 110
+          },
+          {
+            "id": 3880,
+            "title": "B_Sub_Marine_01",
+            "artist": "Comfort Fit",
+            "bpm": 124.0,
+            "key": "",
+            "year": 2006,
+            "has_audio": false,
+            "bpm_level": 120
+          },
+          {
+            "id": 3878,
+            "title": "B_Comfort_Kick_02",
+            "artist": "Comfort Fit",
+            "bpm": 141.7,
+            "key": "7D",
+            "year": 2003,
+            "has_audio": false,
+            "bpm_level": 130
+          },
+          {
+            "id": 6187,
+            "title": "You're Not Alone",
+            "artist": "Olive",
+            "bpm": 134.2,
+            "key": "11M",
+            "year": 1997,
+            "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ],
+        "selectedTrackIndex": 1
+      },
+      {
+        "id": "autoset-slot-36",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          {
+            "id": 3885,
+            "title": "B_Sub_Marine_09",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "7D",
+            "year": 2008,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 3905,
+            "title": "D_Chords_02",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2004,
+            "has_audio": false,
+            "bpm_level": 70
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      },
+      {
+        "id": "autoset-slot-37",
+        "source": {
+          "type": "autoset",
+          "id": "act-4",
+          "name": "Outro"
+        },
+        "tracks": [
+          {
+            "id": 3905,
+            "title": "D_Chords_02",
+            "artist": "Comfort Fit",
+            "bpm": 62.0,
+            "key": "4M",
+            "year": 2004,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "selectedTrackIndex": 0
+      }
+    ],
+    "created_at": "2026-02-25T03:44:59.688772+00:00",
+    "updated_at": "2026-02-25T03:44:59.688778+00:00"
   }
 }

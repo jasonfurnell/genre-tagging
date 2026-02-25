@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import type { TrackOption } from '@/schemas'
 
 interface DrawerNowPlayingProps {
@@ -41,13 +42,11 @@ export function DrawerNowPlaying({
   return (
     <div className="flex flex-1 flex-col items-center gap-4 p-4">
       {/* Artwork */}
-      <img
-        src={`/api/artwork/big/${encodeURIComponent(track.artist)}/${encodeURIComponent(track.title)}`}
-        alt=""
-        className="h-48 w-48 rounded-lg object-cover shadow-lg"
-        onError={(e) => {
-          ;(e.target as HTMLImageElement).style.display = 'none'
-        }}
+      <ArtworkImg
+        artist={track.artist}
+        title={track.title}
+        size="big"
+        className="h-48 w-48 rounded-lg shadow-lg"
       />
 
       {/* Title & artist */}

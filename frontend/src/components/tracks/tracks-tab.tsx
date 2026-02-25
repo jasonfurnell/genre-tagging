@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { AllCommunityModule, type ColDef } from 'ag-grid-community'
 import { themeQuartz, colorSchemeDarkBlue } from 'ag-grid-community'
 import { Input } from '@/components/ui/input'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import { useTracks } from '@/hooks/use-tracks'
 import type { TrackRow } from '@/schemas'
 
@@ -31,16 +32,7 @@ export function TracksTab() {
         sortable: false,
         filter: false,
         cellRenderer: ({ data }: { data: TrackRow }) =>
-          data ? (
-            <img
-              src={`/artwork/${data.artist}||${data.title}`}
-              alt=""
-              className="h-8 w-8 rounded object-cover"
-              onError={(e) => {
-                ;(e.target as HTMLImageElement).style.display = 'none'
-              }}
-            />
-          ) : null,
+          data ? <ArtworkImg artist={data.artist} title={data.title} className="h-8 w-8" /> : null,
       },
       { field: 'title', minWidth: 140, flex: 1 },
       { field: 'artist', minWidth: 140, flex: 1 },

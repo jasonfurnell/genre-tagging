@@ -2,16 +2,13 @@ import { useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import type { Suggestion } from '@/schemas'
 
 interface SuggestionCardProps {
   suggestion: Suggestion
   onCreatePlaylist: (suggestion: Suggestion) => void
   isCreating?: boolean
-}
-
-function artworkUrl(artist: string, title: string): string {
-  return `/artwork/${encodeURIComponent(artist)}||${encodeURIComponent(title)}`
 }
 
 export function SuggestionCard({ suggestion, onCreatePlaylist, isCreating }: SuggestionCardProps) {
@@ -47,14 +44,7 @@ export function SuggestionCard({ suggestion, onCreatePlaylist, isCreating }: Sug
             <div className="flex flex-col gap-1">
               {suggestion.sample_tracks.slice(0, 5).map((t) => (
                 <div key={t.id} className="flex items-center gap-2">
-                  <img
-                    src={artworkUrl(t.artist, t.title)}
-                    alt=""
-                    className="h-6 w-6 shrink-0 rounded object-cover"
-                    onError={(e) => {
-                      ;(e.target as HTMLImageElement).style.display = 'none'
-                    }}
-                  />
+                  <ArtworkImg artist={t.artist} title={t.title} className="h-6 w-6" />
                   <span className="truncate text-xs">
                     {t.artist} — {t.title}
                   </span>

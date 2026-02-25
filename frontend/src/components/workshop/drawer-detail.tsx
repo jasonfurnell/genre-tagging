@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import { useSourceDetail } from '@/hooks/use-workshop'
 
 interface DrawerDetailProps {
@@ -68,14 +69,7 @@ export function DrawerDetail({
                 draggable
                 onDragStart={(e) => handleDragStart(e, track.id)}
               >
-                <img
-                  src={`/api/artwork/small/${encodeURIComponent(track.artist)}/${encodeURIComponent(track.title)}`}
-                  alt=""
-                  className="h-8 w-8 shrink-0 rounded object-cover"
-                  onError={(e) => {
-                    ;(e.target as HTMLImageElement).style.display = 'none'
-                  }}
-                />
+                <ArtworkImg artist={track.artist} title={track.title} className="h-8 w-8" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-medium">{track.title}</div>
                   <div className="truncate text-muted-foreground">{track.artist}</div>

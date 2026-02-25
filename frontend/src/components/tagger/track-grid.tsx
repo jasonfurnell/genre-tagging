@@ -4,6 +4,7 @@ import { AllCommunityModule, type ColDef, type CellValueChangedEvent } from 'ag-
 import { themeQuartz, colorSchemeDarkBlue } from 'ag-grid-community'
 import type { TrackRow } from '@/schemas'
 import { Button } from '@/components/ui/button'
+import { ArtworkImg } from '@/components/shared/artwork-img'
 import { useRetagTrack, useUpdateTrackComment, useClearTrack } from '@/hooks/use-tagger'
 
 interface TrackGridProps {
@@ -16,14 +17,7 @@ function ActionsCell({ data }: { data: TrackRow }) {
 
   return (
     <div className="flex items-center gap-1 py-1">
-      <img
-        src={`/artwork/${data.artist}||${data.title}`}
-        alt=""
-        className="h-10 w-10 rounded object-cover"
-        onError={(e) => {
-          ;(e.target as HTMLImageElement).style.display = 'none'
-        }}
-      />
+      <ArtworkImg artist={data.artist} title={data.title} className="h-10 w-10" />
       <Button
         variant="ghost"
         size="xs"
