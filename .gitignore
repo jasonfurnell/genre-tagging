@@ -27,9 +27,3 @@ output/app.log*
 # Runtime cache (rebuilt from disk artwork files)
 output/artwork_cache.json
 
-# V2 session state (autosave CSVs, upload metadata)
-output_v2/
-
-# Frontend build artifacts
-frontend/node_modules/
-frontend/dist/
