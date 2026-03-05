@@ -2489,7 +2489,28 @@ async function playFullTrack(idx) {
         if (gen !== setPlayGen) return; // stale — another track was requested
         if (err.name === 'AbortError') return; // source changed, not a real error
         console.error("Play Set audio failed:", err);
-        onPlaySetTrackError();
+        if (!isPlaySetMode()) return;
+
+        // Autoplay blocked by browser — wait for user click to resume
+        if (err.name === 'NotAllowedError') {
+            console.warn("Play Set: autoplay blocked, waiting for user interaction");
+            const resumeOnClick = () => {
+                document.removeEventListener("click", resumeOnClick, true);
+                if (gen !== setPlayGen) return;
+                if (!isPlaySetMode()) return;
+                setAudio.play().catch(() => {});
+            };
+            document.addEventListener("click", resumeOnClick, true);
+            return;
+        }
+
+        // Other errors (404, format, network) — skip to next track
+        const next = findNextPlaySetSlot(setPlaySetIndex + 1);
+        if (next >= 0) {
+            playFullTrack(next);
+        } else {
+            exitPlaySetMode();
+        }
     });
 
     // Update Now Playing drawer
