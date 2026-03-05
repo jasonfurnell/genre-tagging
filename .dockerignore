@@ -16,9 +16,8 @@ __pycache__/
 .venv/
 venv/
 
-# Frontend build artifacts (rebuilt in Docker)
-frontend/node_modules/
-frontend/dist/
+# Frontend (not used in V1 Docker build)
+frontend/
 
 # Development tools & docs
 docs/
@@ -28,7 +27,3 @@ docs/
 
 # macOS artifacts
 .DS_Store
-
-# Testing
-frontend/playwright-report/
-frontend/test-results/

@@ -71,14 +71,13 @@ jobs:
             docker stop genre-tagging 2>/dev/null || true
             docker rm genre-tagging 2>/dev/null || true
 
-            # Run new container
+            # Run new container (V1 Flask)
             docker run -d \
               --name genre-tagging \
               --restart unless-stopped \
               -p 127.0.0.1:5001:5001 \
               --env-file /data/genre-tagging/.env \
               -v /data/genre-tagging/output:/app/output \
-              -v /data/genre-tagging/output_v2:/app/output_v2 \
               -v /data/genre-tagging/config.json:/app/config.json:ro \
               "${IMAGE}"
 
