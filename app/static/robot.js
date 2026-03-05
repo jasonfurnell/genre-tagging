@@ -457,7 +457,7 @@
     const SLIDERS = [
       { group: "Body" },
       { key: "skelScale",  label: "Skeleton Scale",    min: 0.80, max: 1.40, step: 0.05, fmt: v => v.toFixed(2) },
-      { key: "blockScale", label: "Block Size",         min: 1.00, max: 2.50, step: 0.05, fmt: v => v.toFixed(2) },
+      { key: "blockScale", label: "Block Size",         min: 0.20, max: 2.50, step: 0.05, fmt: v => v.toFixed(2) },
       { key: "blockRatio", label: "Block Ratio",        min: 0.20, max: 2.00, step: 0.05, fmt: v => v.toFixed(2) },
       { key: "keyColor",   label: "Key Colour",         min: 0,   max: 1,    step: 0.05, fmt: v => (v*100|0) + "%" },
       { group: "Energy" },

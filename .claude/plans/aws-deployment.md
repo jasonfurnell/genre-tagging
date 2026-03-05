@@ -1,6 +1,6 @@
 # Plan: AWS Deployment
 > **Beads Epic**: `GenreTagging-qpw` (P3) — 4 subtasks
-> Updated for FastAPI + uv + uvicorn + React (Vite/Bun)
+> Simplified for V1 Flask deployment (no React/Bun frontend build)
 
 ## Architecture
 ```
@@ -8,16 +8,16 @@ GitHub (push to main)
         │
         v
 GitHub Actions
-  ├─ Build multi-stage Docker image (bun + uv)
+  ├─ Build Docker image (Python + uv + gunicorn)
   ├─ Push to Amazon ECR
   └─ SSH → EC2: pull & restart
         │
         v
 EC2 Instance (t3.micro, ~$9/mo)
-  ├─ Nginx (:80) ──proxy──> uvicorn (:5001)
+  ├─ Nginx (:80) ──proxy──> gunicorn (:5001)
   ├─ Docker container
-  │   ├─ FastAPI app (1 uvicorn worker, asyncio)
-  │   ├─ React SPA served at / and /assets
+  │   ├─ V1 Flask app (1 gunicorn worker, 4 threads)
+  │   ├─ Vanilla JS frontend (served by Flask from app/static/)
   │   ├─ /app/output/ → volume mount (persistent data)
   │   ├─ /app/config.json → bind mount (read-only)
   │   └─ .env → env-file (API keys)
@@ -25,8 +25,8 @@ EC2 Instance (t3.micro, ~$9/mo)
 ```
 
 ## Files Created
-1. `Dockerfile` — Multi-stage: bun frontend build + Python 3.13-slim + uv + uvicorn (1 worker, 300s timeout)
-2. `.dockerignore` — exclude .git, .env, output/, node_modules/, __pycache__, .venv, docs/
+1. `Dockerfile` — Single-stage: Python 3.13-slim + uv + gunicorn (1 worker, 4 threads, 600s timeout)
+2. `.dockerignore` — exclude .git, .env, output/, frontend/, __pycache__, .venv, docs/
 3. `.github/workflows/deploy.yml` — Build → ECR → SSH deploy to EC2
 4. `config.json.example` — Template for server config (sanitized defaults)
 
@@ -151,7 +151,6 @@ sudo systemctl start nginx
 ### Step 3: Create persistent data directories
 ```bash
 sudo mkdir -p /data/genre-tagging/output/artwork
-sudo mkdir -p /data/genre-tagging/output_v2
 sudo chown -R ec2-user:ec2-user /data/genre-tagging
 ```
 
@@ -186,9 +185,8 @@ rsync -avz --exclude='artwork/' output/ ec2-user@<IP>:/data/genre-tagging/output
 ```
 
 ## Key Decisions
-- **1 uvicorn worker required** — AppState is an in-memory singleton with thread locks
-- **asyncio concurrency** — uvicorn event loop handles concurrent requests (SSE, artwork, tagging)
-- **300s keep-alive timeout** — tree-building LLM calls can take 5+ minutes
+- **1 gunicorn worker + 4 threads** — `_state` dict is an in-memory singleton, 1 worker keeps it consistent, threads handle concurrent requests (SSE, artwork, background tasks)
+- **600s timeout** — tree-building and tagging LLM calls can take 5-10 minutes
 - **Port 5001 NOT exposed externally** — Nginx proxies :80 → :5001 on localhost only
 - **Elastic IP recommended** — public IP changes on EC2 stop/start without it
 - **Docker volumes for output/** — 7 persistent JSON files + 9K artwork images survive container updates
