@@ -86,6 +86,17 @@
       }
     });
 
+    // Audio actually started playing — handles autoplay resume after user click
+    if (typeof setAudio !== "undefined" && setAudio) {
+      setAudio.addEventListener("playing", () => {
+        if (!_playing && _bootPhase === "ready" &&
+            typeof isPlaySetMode === "function" && isPlaySetMode()) {
+          _playing = true;
+          _fadeInDancers();
+        }
+      });
+    }
+
     // Play mode stopped — fade out dancers, then freeze
     window.addEventListener("playset-stopped", () => {
       _playing = false;
@@ -139,6 +150,16 @@
 
     // Verify it actually entered play mode
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
+      // If autoplay was blocked, don't start dancers — wait for user to click play
+      if (typeof setAutoplayBlocked !== "undefined" && setAutoplayBlocked) {
+        // Still transition drawers so the play button is visible
+        setTimeout(() => {
+          if (typeof closeDrawer === "function") closeDrawer();
+          if (setDrawer) setDrawer.style.visibility = "";
+        }, 100);
+        return;
+      }
+
       _playing = true;
 
       // Start robots immediately or after a delay (lets the song get going first)

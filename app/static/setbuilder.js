@@ -27,6 +27,7 @@ let setPlaySetIndex = 0;
 let setPlayGen = 0;    // generation counter to detect stale error events on skip
 let setAudio = null;   // separate Audio element for full-track playback
 let setResumeSlotIdx = -1;  // slot index to resume from after user-stop, -1 = none
+let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllowedError)
 
 function isPlaySetMode() { return setWorkshopMode === "playset"; }
 
@@ -2295,6 +2296,7 @@ function exitPlaySetMode(opts) {
     }
 
     setWorkshopMode = "workshop";
+    setAutoplayBlocked = false;
     setPlayGen++;  // invalidate any pending error handlers
     if (setAudio) {
         setAudio.pause();
@@ -2491,16 +2493,13 @@ async function playFullTrack(idx) {
         console.error("Play Set audio failed:", err);
         if (!isPlaySetMode()) return;
 
-        // Autoplay blocked by browser — wait for user click to resume
+        // Autoplay blocked by browser — flag it so togglePlaySetPause resumes on click
         if (err.name === 'NotAllowedError') {
             console.warn("Play Set: autoplay blocked, waiting for user interaction");
-            const resumeOnClick = () => {
-                document.removeEventListener("click", resumeOnClick, true);
-                if (gen !== setPlayGen) return;
-                if (!isPlaySetMode()) return;
-                setAudio.play().catch(() => {});
-            };
-            document.addEventListener("click", resumeOnClick, true);
+            setAutoplayBlocked = true;
+            // Update buttons to show play (not pause) since audio isn't actually playing
+            document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+            document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
             return;
         }
 
@@ -2628,6 +2627,14 @@ function loadNowPlayingArtwork(artist, title, imgEl) {
 
 function togglePlaySetPause() {
     if (!setAudio) return;
+    // Autoplay was blocked — user click resumes playback
+    if (setAutoplayBlocked && isPlaySetMode()) {
+        setAutoplayBlocked = false;
+        document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
+        document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
+        setAudio.play().catch(() => {});
+        return;
+    }
     if (isPlaySetMode()) {
         // Stop: exit play mode, keep base drawer for resume
         exitPlaySetMode({ userStop: true });
