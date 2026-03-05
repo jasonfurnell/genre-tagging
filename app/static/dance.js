@@ -76,17 +76,13 @@
     if (_eventsHooked) return;
     _eventsHooked = true;
 
-    // Track change — sync BPM + auto-resume dancers if stopped
+    // Track change — sync BPM (dancers start from audio 'playing' event, not here)
     window.addEventListener("playset-track", (e) => {
       _syncBpm(e.detail.track);
-      // Auto-fade-in dancers when a track starts (ties visibility to actual playback)
-      if (!_playing && _bootPhase === "ready") {
-        _playing = true;
-        _fadeInDancers();
-      }
     });
 
-    // Audio actually started playing — handles autoplay resume after user click
+    // Audio actually started playing — this is the ONLY place dancers start.
+    // Handles normal playback, autoplay-blocked-then-resumed, and tab switches.
     if (typeof setAudio !== "undefined" && setAudio) {
       setAudio.addEventListener("playing", () => {
         if (!_playing && _bootPhase === "ready" &&
@@ -137,8 +133,9 @@
   }
 
   // ── Enter play mode → base drawer appears ──────────────────
-  // dancerDelay: ms to wait after song starts before robots begin dancing
-  function _enterPlayMode(dancerDelay) {
+  // Dancers are NOT started here — they start when audio actually plays
+  // (via the 'playing' event listener in _hookWorkshopEvents).
+  function _enterPlayMode() {
     if (!_hasWorkshopSet()) return;
 
     // Hide the right-hand drawer so it doesn't flash during the transition
@@ -150,31 +147,9 @@
 
     // Verify it actually entered play mode
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
-      // If autoplay was blocked, don't start dancers — wait for user to click play
-      if (typeof setAutoplayBlocked !== "undefined" && setAutoplayBlocked) {
-        // Still transition drawers so the play button is visible
-        setTimeout(() => {
-          if (typeof closeDrawer === "function") closeDrawer();
-          if (setDrawer) setDrawer.style.visibility = "";
-        }, 100);
-        return;
-      }
-
-      _playing = true;
-
-      // Start robots immediately or after a delay (lets the song get going first)
-      if (dancerDelay > 0) {
-        setTimeout(() => {
-          if (_playing) _fadeInDancers();
-        }, dancerDelay);
-      } else {
-        _fadeInDancers();
-      }
-
       // Transition from the (hidden) right drawer to the base drawer
       setTimeout(() => {
         if (typeof closeDrawer === "function") closeDrawer();
-        // Restore visibility after closeDrawer removes .open synchronously
         if (setDrawer) setDrawer.style.visibility = "";
       }, 100);
     } else {
@@ -192,16 +167,17 @@
     _fadeCompleted = true;
     _bootPhase = "ready";
 
-    // Switch from boot animation to CSS transition for future play/stop fades
+    // Keep robots hidden — they fade in only when audio actually plays
+    // (via _fadeInDancers triggered by setAudio 'playing' event)
     const robotPanel = document.getElementById("robot-panel");
     if (robotPanel) {
       robotPanel.classList.remove("dance-fade-in");
-      robotPanel.style.opacity = "1";
+      robotPanel.style.opacity = "0";
       robotPanel.classList.add("dance-live");
     }
 
     _hookWorkshopEvents();
-    _enterPlayMode(3000);  // let the song play for 3s before robots start
+    _enterPlayMode();
   }
 
   // ═══════════════════════════════════════════════════════════
@@ -235,18 +211,13 @@
       _els.backBtn.addEventListener("click", _closeSettings);
     }
 
-    // Show still pose
+    // Show still pose, keep hidden until audio plays
     if (typeof stillRobotDancer === "function") stillRobotDancer();
-
-    // Start 5-second fade-in
     const robotPanel = document.getElementById("robot-panel");
-    if (robotPanel) {
-      robotPanel.classList.add("dance-fade-in");
-      robotPanel.addEventListener("animationend", _onFadeComplete, { once: true });
-    }
-    _bootPhase = "fading_in";
+    if (robotPanel) robotPanel.style.opacity = "0";
 
-    // Fallback in case animationend doesn't fire
+    // Wait for set data to load before attempting play mode
+    _bootPhase = "fading_in";
     setTimeout(_onFadeComplete, 5200);
   };
 
@@ -254,7 +225,7 @@
   window.refreshDance = function () {
     if (!_inited) return;
     if (_bootPhase === "ready" && !_playing) {
-      _enterPlayMode(0);
+      _enterPlayMode();
     }
     // If still fading, _enterPlayMode will run when boot reaches "ready"
   };
@@ -273,9 +244,11 @@
     }
 
     if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
-      // Already in play mode — sync robots + ensure base drawer is visible
-      _playing = true;
-      _fadeInDancers();
+      // Already in play mode — only start dancers if audio is actually playing
+      if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+        _playing = true;
+        _fadeInDancers();
+      }
 
       // Make sure base drawer is showing (it may have been closed on another tab)
       const bd = document.getElementById("base-drawer");
@@ -284,7 +257,7 @@
       }
     } else if (!_playing) {
       // Not yet in play mode — try to enter
-      _enterPlayMode(0);
+      _enterPlayMode();
     }
   };
 
