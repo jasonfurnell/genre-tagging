@@ -14,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    outputs:
-      image_uri: ${{ steps.build.outputs.image_uri }}
+    # image_uri output removed — not consumed by deploy job
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,7 +41,7 @@ jobs:
           docker tag "${IMAGE_URI}" "${ECR_REGISTRY}/${ECR_REPO}:latest"
           docker push "${IMAGE_URI}"
           docker push "${ECR_REGISTRY}/${ECR_REPO}:latest"
-          echo "image_uri=${IMAGE_URI}" >> "$GITHUB_OUTPUT"
+          echo "Build complete: ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}"
 
   deploy:
     name: Deploy to EC2
@@ -55,9 +54,10 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-          script_stop: true
           command_timeout: 5m
           script: |
+            set -e
+
             # Login to ECR
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
               | docker login --username AWS --password-stdin \
@@ -83,7 +83,7 @@ jobs:
 
             # Wait for health check
             sleep 3
-            docker ps | grep genre-tagging && echo "Deploy successful" || echo "Deploy FAILED"
+            docker ps | grep genre-tagging && echo "Deploy successful" || exit 1
 
             # Clean up old images
             docker image prune -f
