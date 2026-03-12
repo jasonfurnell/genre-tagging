@@ -896,70 +896,89 @@ async function resetSettings() {
     await openSettings();
 }
 
-// ── Tab Switching ──────────────────────────────────────────
-let _activeTab = "dance";  // dance is the default active tab
+// ── Mode + Tab Switching ──────────────────────────────────
+// Mode tabs double as navigation: clicking "DANCE MODE" switches to dance mode
+// AND navigates to the Dance page. Sub-tabs are filtered per mode.
+const MODE_SUB_TABS = {
+    dance: ["sets", "tree", "chat"],
+    dj:    ["sets", "tagger", "intersections", "workshop", "tracks", "tree", "phases", "autoset", "chat"],
+};
+const MODE_HOME_TAB = { dance: "dance", dj: "setbuilder" };
+
+let _currentMode = localStorage.getItem("gt-mode") || "dance";
+let _activeTab = "dance";
+
+function switchTab(target) {
+    const previousTab = _activeTab;
+    _activeTab = target;
+
+    // Determine which mode this tab belongs to
+    const mode = target === "dance" ? "dance" : target === "setbuilder" ? "dj" : _currentMode;
+    if (mode !== _currentMode) {
+        _currentMode = mode;
+        localStorage.setItem("gt-mode", mode);
+    }
+
+    // Show/hide sub-tabs for current mode
+    const visibleSubs = new Set(MODE_SUB_TABS[_currentMode]);
+    $$(".tab-btn").forEach(btn => {
+        if (btn.dataset.mode) {
+            // Mode buttons: always visible
+            btn.style.display = "";
+        } else {
+            btn.style.display = visibleSubs.has(btn.dataset.tab) ? "" : "none";
+        }
+    });
+
+    // Active highlight: only ONE tab is red at a time
+    $$(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === target);
+    });
+
+    // Show correct tab content + controls
+    $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
+    $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
+
+    // Close chat drawer when leaving chat tab
+    if (target !== "chat" && typeof _chatCloseDrawer === "function" && typeof _chatDrawerOpen !== "undefined" && _chatDrawerOpen) {
+        _chatCloseDrawer();
+    }
+
+    // Dance ↔ Workshop seamless switching (shared playback)
+    if (target === "dance") {
+        if (typeof startDance === "function") startDance();
+    } else if (previousTab === "dance" && target === "setbuilder") {
+        if (typeof stopDanceVisuals === "function") stopDanceVisuals();
+    } else if (previousTab === "dance") {
+        if (typeof stopDancePlayback === "function") stopDancePlayback();
+    }
+
+    // Lazy init tabs
+    if (target === "intersections" && !intersectionsInitialized) { intersectionsInitialized = true; if (typeof initIntersections === "function") initIntersections(); }
+    if (target === "workshop" && !workshopInitialized) { workshopInitialized = true; if (typeof initWorkshop === "function") initWorkshop(); }
+    if (target === "tracks" && !tracksInitialized) { tracksInitialized = true; if (typeof initTracks === "function") initTracks(); }
+    if (target === "tree" && !treeInitialized) { treeInitialized = true; if (typeof initTree === "function") initTree(); }
+    if (target === "setbuilder" && !setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
+    if (target === "phases" && !phasesInitialized) { if (typeof initPhasesTab === "function") initPhasesTab(); }
+    if (target === "sets") { if (typeof initSetsTab === "function") initSetsTab(); if (typeof loadSetsList === "function") loadSetsList(); }
+    if (target === "autoset" && !autosetInitialized) { autosetInitialized = true; if (typeof initAutoSetTab === "function") initAutoSetTab(); }
+    if (target === "chat" && !chatInitialized) { chatInitialized = true; if (typeof initChatTab === "function") initChatTab(); }
+}
+
 $$(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         const target = btn.dataset.tab;
-        const previousTab = _activeTab;
-        _activeTab = target;
-        $$(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
-        $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
-        $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
-
-        // Close chat drawer when leaving chat tab
-        if (target !== "chat" && typeof _chatCloseDrawer === "function" && typeof _chatDrawerOpen !== "undefined" && _chatDrawerOpen) {
-            _chatCloseDrawer();
-        }
-
-        // Dance ↔ Workshop seamless switching (shared playback)
-        if (target === "dance") {
-            if (typeof startDance === "function") startDance();
-        } else if (previousTab === "dance" && target === "setbuilder") {
-            // Dance → Workshop: keep audio playing, just stop robots + hide player
-            if (typeof stopDanceVisuals === "function") stopDanceVisuals();
-        } else if (previousTab === "dance") {
-            // Dance → other tab: full stop (pause standalone audio, stop robots)
-            if (typeof stopDancePlayback === "function") stopDancePlayback();
-        }
-
-        if (target === "intersections" && !intersectionsInitialized) {
-            intersectionsInitialized = true;
-            if (typeof initIntersections === "function") initIntersections();
-        }
-        if (target === "workshop" && !workshopInitialized) {
-            workshopInitialized = true;
-            if (typeof initWorkshop === "function") initWorkshop();
-        }
-        if (target === "tracks" && !tracksInitialized) {
-            tracksInitialized = true;
-            if (typeof initTracks === "function") initTracks();
-        }
-        if (target === "tree" && !treeInitialized) {
-            treeInitialized = true;
-            if (typeof initTree === "function") initTree();
-        }
-        if (target === "setbuilder" && !setBuilderInitialized) {
-            setBuilderInitialized = true;
-            if (typeof initSetBuilder === "function") initSetBuilder();
-        }
-        if (target === "phases" && !phasesInitialized) {
-            if (typeof initPhasesTab === "function") initPhasesTab();
-        }
-        if (target === "sets") {
-            if (typeof initSetsTab === "function") initSetsTab();
-            if (typeof loadSetsList === "function") loadSetsList();
-        }
-        if (target === "autoset" && !autosetInitialized) {
-            autosetInitialized = true;
-            if (typeof initAutoSetTab === "function") initAutoSetTab();
-        }
-        if (target === "chat" && !chatInitialized) {
-            chatInitialized = true;
-            if (typeof initChatTab === "function") initChatTab();
+        // Mode button click: always navigate to the mode's home tab
+        if (btn.dataset.mode) {
+            switchTab(MODE_HOME_TAB[btn.dataset.mode]);
+        } else {
+            switchTab(target);
         }
     });
 });
+
+// Apply saved mode on load
+switchTab(MODE_HOME_TAB[_currentMode]);
 
 // ── Initialize grid on page load ────────────────────────────
 initGrid();

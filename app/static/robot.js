@@ -250,6 +250,7 @@
     let _frame = null;
     let _startTime = 0;
     let _artworkLoaded = false;
+    let _artworkLocked = false;  // when true, skip all art swapping
 
     // ─── Artwork rotation state ─────────────────────────────────
     // Swaps individual body-part images in sync with pose transitions.
@@ -1093,6 +1094,7 @@
     }
 
     function _updateBlockColors() {
+      if (_artworkLocked) return; // preserve externally-applied background-image
       const names = Object.keys(SIZES_BASE);
       names.forEach((name, i) => {
         const kc = partKeyColor(name);
@@ -1893,7 +1895,7 @@
     }
 
     function _loadArt() {
-      if (_artworkLoaded) return;
+      if (_artworkLoaded || _artworkLocked) return;
       const picks = _pickRandomTracks();
       if (!picks) return;
 
@@ -2021,7 +2023,7 @@
 
     // Called each time the pose transitions to a new hold
     function _onPoseBeat() {
-      if (!_artworkLoaded) return;
+      if (!_artworkLoaded || _artworkLocked) return;
       _poseChangeCount++;
       if (_poseChangeCount % _ART_SWAP_EVERY !== 0) return;
 
@@ -2303,7 +2305,23 @@
       }
     }
 
-    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage, setBpm, exitPosePreview: _exitPosePreview };
+    function getPartPositions(poseIdx) {
+      if (!_stage) init();
+      const p = _poses[poseIdx !== undefined ? poseIdx : _sequence[0]];
+      const j = fk(p);
+      const pos = partPos(j);
+      pos.head.rot = p.hd || 0;
+      const result = {};
+      for (const name of Object.keys(SIZES_BASE)) {
+        const [w, h] = sz(name);
+        result[name] = { x: pos[name].x, y: pos[name].y, w, h, rot: pos[name].rot };
+      }
+      return result;
+    }
+
+    function lockArtwork() { _artworkLoaded = true; _artworkLocked = true; }
+
+    return { init, start, stop, still, refreshArtwork, addStage, stage: () => _stage, setBpm, exitPosePreview: _exitPosePreview, getPartPositions, lockArtwork };
   }
 
   // ═══ PUBLIC API (single instance, multiple synced stages) ═══

@@ -399,6 +399,22 @@ body {
     color: #fff;
     border-color: var(--accent);
 }
+
+/* ── Mode tabs (DANCE MODE / DJ WORKSHOP) ─────────────── */
+.tab-btn-mode {
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+}
+
+/* ── Divider between mode tabs and sub-tabs ───────────── */
+.tab-divider {
+    width: 8px;
+    flex-shrink: 0;
+}
+/* Reset border-radius around divider */
+.tab-divider + .tab-btn { border-radius: var(--radius) 0 0 var(--radius); border-left: 1px solid var(--border); }
+.tab-btn-mode:last-of-type { border-radius: 0 var(--radius) var(--radius) 0; }
 .tab-btn:hover:not(.active) {
     background: rgba(233, 69, 96, 0.1);
 }
@@ -3013,6 +3029,57 @@ tr.ws-seed-selected {
     font-style: italic;
 }
 .now-playing-comment:empty {
+    display: none;
+}
+
+/* -- Dancer Drawer (shatter animation) ----------------------------------- */
+.dancer-drawer-container {
+    position: relative;
+    overflow: visible;
+    margin: 0 auto;
+}
+.dancer-drawer-container.hidden {
+    display: none;
+}
+.dancer-drawer-robot.hidden {
+    display: none;
+}
+.dancer-shard {
+    pointer-events: none;
+}
+.dancer-mode-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+.dancer-mode-btn:hover {
+    opacity: 1;
+    background: var(--surface-hover);
+}
+.dancer-mode-btn.active {
+    opacity: 1;
+    background: rgba(233, 69, 96, 0.2);
+    border-color: #e94560;
+    box-shadow: 0 0 8px rgba(233, 69, 96, 0.4);
+    color: #e94560;
+}
+.dancer-mode-btn.hidden {
     display: none;
 }
 
