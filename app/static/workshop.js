@@ -87,8 +87,7 @@ function handleSearchSort(col) {
 // ── Cross-tab navigation helper ─────────────────────────────
 
 function switchToTab(tabName) {
-    const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
-    if (btn) btn.click();
+    if (typeof switchTab === "function") switchTab(tabName);
 }
 
 // ── Init ─────────────────────────────────────────────────────
@@ -1269,6 +1268,7 @@ function renderScoredSearchResults(resultTracks, isSorted) {
     container.innerHTML = `
         <div class="ws-results-toolbar">
             <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${resultTracks.length}) to Playlist</button>
+            <button class="btn btn-accent btn-sm" id="ws-btn-save-search" title="Save all results as a new playlist">Save as New Playlist</button>
             <button class="btn btn-secondary btn-sm" id="ws-btn-llm-refine" title="Ask the AI to pick the best tracks for this vibe">
                 Refine with AI
             </button>
@@ -1319,10 +1319,11 @@ function renderScoredSearchResults(resultTracks, isSorted) {
         loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
-    // Wire add-all button
+    // Wire add-all and save-search buttons
     document.getElementById("ws-btn-add-all").addEventListener("click", () => {
         showAddToPlaylistModal(wsSearchTrackIds);
     });
+    document.getElementById("ws-btn-save-search").addEventListener("click", saveSearchAsNewPlaylist);
 
     // Wire per-track add buttons
     container.querySelectorAll("[data-add-id]").forEach(btn => {
@@ -1401,6 +1402,7 @@ function renderSearchResults(resultTracks, isSorted) {
     container.innerHTML = `
         <div class="ws-results-toolbar">
             <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${resultTracks.length}) to Playlist</button>
+            <button class="btn btn-accent btn-sm" id="ws-btn-save-search" title="Save all results as a new playlist">Save as New Playlist</button>
             <button class="btn btn-secondary btn-sm" id="ws-btn-seed-generate" disabled title="Select tracks as seeds, then generate playlists">Generate from Selection (<span id="ws-seed-count">0</span>)</button>
         </div>
         <table class="ws-results-table">
@@ -1447,10 +1449,11 @@ function renderSearchResults(resultTracks, isSorted) {
         loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
-    // Wire add-all button
+    // Wire add-all and save-search buttons
     document.getElementById("ws-btn-add-all").addEventListener("click", () => {
         showAddToPlaylistModal(wsSearchTrackIds);
     });
+    document.getElementById("ws-btn-save-search").addEventListener("click", saveSearchAsNewPlaylist);
 
     // Wire per-track add buttons
     container.querySelectorAll("[data-add-id]").forEach(btn => {
@@ -1567,6 +1570,7 @@ function renderRerankedResults(tracks, flowNotes) {
     container.innerHTML = `
         <div class="ws-results-toolbar">
             <button class="btn btn-primary btn-sm" id="ws-btn-add-all">Add All (${tracks.length}) to Playlist</button>
+            <button class="btn btn-accent btn-sm" id="ws-btn-save-search" title="Save all results as a new playlist">Save as New Playlist</button>
             ${flowNotes ? `<span class="ws-flow-notes" title="${escapeHtml(flowNotes)}">AI flow notes</span>` : ""}
         </div>
         ${flowNotes ? `<p class="ws-rerank-notes">${escapeHtml(flowNotes)}</p>` : ""}
@@ -1606,10 +1610,11 @@ function renderRerankedResults(tracks, flowNotes) {
         loadArtwork(img.dataset.artist, img.dataset.title, img);
     });
 
-    // Wire add-all and per-track add buttons
+    // Wire add-all, save-search, and per-track add buttons
     document.getElementById("ws-btn-add-all").addEventListener("click", () => {
         showAddToPlaylistModal(wsSearchTrackIds);
     });
+    document.getElementById("ws-btn-save-search").addEventListener("click", saveSearchAsNewPlaylist);
     container.querySelectorAll("[data-add-id]").forEach(btn => {
         btn.addEventListener("click", () => {
             showAddToPlaylistModal([parseInt(btn.dataset.addId)]);
@@ -1622,9 +1627,13 @@ function renderRerankedResults(tracks, flowNotes) {
 function showAddToPlaylistModal(trackIds) {
     const modal = $("#add-to-playlist-modal");
     const list = $("#atp-playlist-list");
+    const nameInput = $("#atp-new-name");
+    const createBtn = $("#atp-create-add");
+
+    nameInput.value = "";
 
     if (wsPlaylists.length === 0) {
-        list.innerHTML = '<p class="ws-placeholder">No playlists yet. Create one first.</p>';
+        list.innerHTML = '<p class="ws-placeholder">No existing playlists.</p>';
     } else {
         list.innerHTML = wsPlaylists.map(p => `
             <button class="atp-item" data-pid="${p.id}">
@@ -1641,7 +1650,17 @@ function showAddToPlaylistModal(trackIds) {
         });
     }
 
+    // Wire create-and-add button
+    createBtn.onclick = async () => {
+        const name = nameInput.value.trim();
+        if (!name) { nameInput.focus(); return; }
+        modal.classList.add("hidden");
+        await createPlaylistWithTracks(name, trackIds);
+    };
+    nameInput.onkeydown = (e) => { if (e.key === "Enter") createBtn.click(); };
+
     modal.classList.remove("hidden");
+    nameInput.focus();
     $("#atp-cancel").onclick = () => modal.classList.add("hidden");
     modal.onclick = (e) => { if (e.target === modal) modal.classList.add("hidden"); };
 }
@@ -1660,6 +1679,34 @@ async function addTracksToPlaylist(playlistId, trackIds) {
     } catch (err) {
         alert("Failed to add tracks: " + err.message);
     }
+}
+
+async function createPlaylistWithTracks(name, trackIds, source = "search") {
+    try {
+        const res = await fetch("/api/workshop/playlists", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, source }),
+        });
+        const data = await res.json();
+        const pid = data.playlist.id;
+        await fetch(`/api/workshop/playlists/${pid}/tracks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ track_ids: trackIds }),
+        });
+        await loadPlaylists();
+        selectPlaylist(pid);
+    } catch (err) {
+        alert("Failed to create playlist: " + err.message);
+    }
+}
+
+function saveSearchAsNewPlaylist() {
+    if (!wsSearchTrackIds || wsSearchTrackIds.length === 0) return;
+    const name = prompt("New playlist name:");
+    if (!name) return;
+    createPlaylistWithTracks(name.trim(), wsSearchTrackIds);
 }
 
 // ── Playlist Builder ────────────────────────────────────────
@@ -1711,13 +1758,14 @@ function _wsSourceBadgeClass(source) {
     if (source === "chat") return "chat";
     if (source === "llm") return "llm";
     if (source === "import") return "import";
+    if (source === "search") return "search";
     if (source && source.includes("tree")) return "tree";
     return "manual";
 }
 
 function _wsSourceLabel(source) {
     const labels = {
-        manual: "Manual", llm: "AI", import: "Import",
+        manual: "Manual", llm: "AI", import: "Import", search: "Search",
         chat: "Chat", tree: "Tree", "scene-tree": "Scene",
         "collection-tree": "Collection",
     };

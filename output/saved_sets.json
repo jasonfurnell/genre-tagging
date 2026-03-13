@@ -1,2033 +1,4 @@
 {
-  "747c6072": {
-    "id": "747c6072",
-    "name": "Test Set 1",
-    "slots": [
-      {
-        "id": "slot-1770965899981-v9le",
-        "selectedTrackIndex": null,
-        "source": null,
-        "tracks": []
-      },
-      {
-        "id": "slot-1770967006836-72dn",
-        "selectedTrackIndex": 6,
-        "source": {
-          "id": "source-material-diggers-paradise",
-          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          null,
-          {
-            "artist": "Wendy Rene",
-            "bpm": 75.1,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 2936,
-            "key": "7M",
-            "title": "Bar-B-Q",
-            "year": 2019
-          },
-          {
-            "artist": "Bill Withers",
-            "bpm": 82.6,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 969,
-            "key": "2M",
-            "title": "Grandma's Hands",
-            "year": 1971
-          },
-          {
-            "artist": "Jean Knight",
-            "bpm": 92,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2125,
-            "key": "10D",
-            "title": "Mr. Big Stuff",
-            "year": 1971
-          },
-          {
-            "artist": "Lord Echo, Lisa Tomlins",
-            "bpm": 97.6,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 2949,
-            "key": "12M",
-            "title": "Low to the Street",
-            "year": 2017
-          },
-          {
-            "artist": "Commodores",
-            "bpm": 110.8,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2077,
-            "key": "2M",
-            "title": "I Feel Sanctified - Single Version",
-            "year": 2001
-          },
-          {
-            "artist": "Marvin Gaye",
-            "bpm": 122.6,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 1185,
-            "key": "1M",
-            "title": "Got To Give It Up - Pt. 1",
-            "year": 1977
-          },
-          {
-            "artist": "Mass Production",
-            "bpm": 133.4,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5912,
-            "key": "7M",
-            "title": "Can't You See I'm Fired Up",
-            "year": 1979
-          },
-          {
-            "artist": "The Isley Brothers",
-            "bpm": 125.4,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 2162,
-            "key": "9M",
-            "title": "That Lady, Pts. 1 & 2",
-            "year": 1973
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770961323509-gz3v",
-        "selectedTrackIndex": 4,
-        "source": {
-          "id": "source-material-diggers-paradise",
-          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          null,
-          {
-            "artist": "Wendy Rene",
-            "bpm": 75.1,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 2936,
-            "key": "7M",
-            "title": "Bar-B-Q",
-            "year": 2019
-          },
-          {
-            "artist": "Bill Withers",
-            "bpm": 82.6,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 969,
-            "key": "2M",
-            "title": "Grandma's Hands",
-            "year": 1971
-          },
-          {
-            "artist": "Jean Knight",
-            "bpm": 92,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2125,
-            "key": "10D",
-            "title": "Mr. Big Stuff",
-            "year": 1971
-          },
-          {
-            "artist": "Timmy Thomas",
-            "bpm": 100.5,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 2182,
-            "key": "3M",
-            "title": "Why Can't We Live Together",
-            "year": 2004
-          },
-          {
-            "artist": "Commodores",
-            "bpm": 110.8,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2077,
-            "key": "2M",
-            "title": "I Feel Sanctified - Single Version",
-            "year": 2001
-          },
-          {
-            "artist": "Cymande",
-            "bpm": 118.2,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5307,
-            "key": "12M",
-            "title": "Bra",
-            "year": 1972
-          },
-          {
-            "artist": "Mass Production",
-            "bpm": 133.4,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5912,
-            "key": "7M",
-            "title": "Can't You See I'm Fired Up",
-            "year": 1979
-          },
-          {
-            "artist": "The Isley Brothers",
-            "bpm": 125.4,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 2162,
-            "key": "9M",
-            "title": "That Lady, Pts. 1 & 2",
-            "year": 1973
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-15",
-        "selectedTrackIndex": 4,
-        "source": {
-          "id": "source-material-diggers-paradise",
-          "name": "Crate Essentials: Soul, Funk & Breaks 1958-1981",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          null,
-          {
-            "artist": "Wendy Rene",
-            "bpm": 75.1,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 2936,
-            "key": "7M",
-            "title": "Bar-B-Q",
-            "year": 2019
-          },
-          {
-            "artist": "Bill Withers",
-            "bpm": 82.6,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 969,
-            "key": "2M",
-            "title": "Grandma's Hands",
-            "year": 1971
-          },
-          {
-            "artist": "Jean Knight",
-            "bpm": 92,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2125,
-            "key": "10D",
-            "title": "Mr. Big Stuff",
-            "year": 1971
-          },
-          {
-            "artist": "Sharon Jones & The Dap-Kings",
-            "bpm": 104,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 2329,
-            "key": "8M",
-            "title": "How Long Do I Have to Wait for You?",
-            "year": 2005
-          },
-          {
-            "artist": "Commodores",
-            "bpm": 110.8,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2077,
-            "key": "2M",
-            "title": "I Feel Sanctified - Single Version",
-            "year": 2001
-          },
-          {
-            "artist": "Cymande",
-            "bpm": 118.2,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5307,
-            "key": "12M",
-            "title": "Bra",
-            "year": 1972
-          },
-          {
-            "artist": "Mass Production",
-            "bpm": 133.4,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5912,
-            "key": "7M",
-            "title": "Can't You See I'm Fired Up",
-            "year": 1979
-          },
-          {
-            "artist": "The Isley Brothers",
-            "bpm": 125.4,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 2162,
-            "key": "9M",
-            "title": "That Lady, Pts. 1 & 2",
-            "year": 1973
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-6",
-        "selectedTrackIndex": 0,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "C.W. Stoneking",
-            "bpm": 76.4,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1346,
-            "key": "1M",
-            "title": "The Zombie",
-            "year": 2008
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.4,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5594,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-1",
-        "selectedTrackIndex": 8,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Junior Parker",
-            "bpm": 77.1,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5687,
-            "key": "12M",
-            "title": "Taxman",
-            "year": 1991
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.4,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5594,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-4",
-        "selectedTrackIndex": 3,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5609,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Charlie Musselwhite",
-            "bpm": 82.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 3028,
-            "key": "10M",
-            "title": "Christo Redemptor",
-            "year": 2006
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.5,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5704,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-3",
-        "selectedTrackIndex": 6,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Bill Withers",
-            "bpm": 61.4,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5359,
-            "key": "2M",
-            "title": "Railroad Man",
-            "year": 2013
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Charlie Musselwhite",
-            "bpm": 82.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 3028,
-            "key": "10M",
-            "title": "Christo Redemptor",
-            "year": 2006
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.4,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5594,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Slim Harpo",
-            "bpm": 121.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5542,
-            "key": "9M",
-            "title": "Baby, Scratch My Back",
-            "year": 1957
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          {
-            "artist": "Ruth Brown",
-            "bpm": 151.8,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5818,
-            "key": "8M",
-            "title": "I Don't Know",
-            "year": 2003
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-16",
-        "selectedTrackIndex": 2,
-        "source": {
-          "id": "southern-crossroads-juke-joint-blues",
-          "name": "Juke Joint Spirits: Delta Blues & Voodoo Transmissions",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5694,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "Floyd Dixon",
-            "bpm": 70.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 5609,
-            "key": "1D",
-            "title": "450 Pound Woman",
-            "year": 1996
-          },
-          {
-            "artist": "John Hammond",
-            "bpm": 76.3,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1055,
-            "key": "12M",
-            "title": "Get Behind The Mule",
-            "year": 1998
-          },
-          {
-            "artist": "Koko Taylor",
-            "bpm": 90.4,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 5594,
-            "key": "8M",
-            "title": "Voodoo Woman",
-            "year": 2002
-          },
-          {
-            "artist": "Etta James",
-            "bpm": 100.2,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5300,
-            "key": "8M",
-            "title": "I Just Want To Make Love To You - Single Version",
-            "year": 1960
-          },
-          {
-            "artist": "Bessie Smith",
-            "bpm": 106.3,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1554,
-            "key": "10M",
-            "title": "Devil's Gonna Git You",
-            "year": 1929
-          },
-          {
-            "artist": "Little Milton",
-            "bpm": 116.9,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5626,
-            "key": "12D",
-            "title": "If You Love Me",
-            "year": 2023
-          },
-          null,
-          null,
-          null
-        ]
-      },
-      {
-        "id": "slot-1770953615731-r5cd",
-        "selectedTrackIndex": 8,
-        "source": {
-          "id": "baroque-chamber-sophisticates",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "Sade",
-            "bpm": 99.4,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5068,
-            "key": "10M",
-            "title": "Turn My Back On You",
-            "year": 1988
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 109.6,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
-            "key": "10M",
-            "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 135.7,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5890,
-            "key": "9M",
-            "title": "The Sensual World",
-            "year": 1989
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          }
-        ]
-      },
-      {
-        "id": "slot-1770892344453-18",
-        "selectedTrackIndex": 5,
-        "source": {
-          "id": "baroque-chamber-sophisticates",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "Sade",
-            "bpm": 99.4,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5068,
-            "key": "10M",
-            "title": "Turn My Back On You",
-            "year": 1988
-          },
-          {
-            "artist": "Roxy Music",
-            "bpm": 113.2,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 5411,
-            "key": "8M",
-            "title": "The Space Between",
-            "year": 1982
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770969373748-zikg",
-        "selectedTrackIndex": 4,
-        "source": {
-          "type": "tree_node",
-          "id": "baroque-chamber-sophisticates",
-          "tree_type": "scene",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "Sade",
-            "bpm": 99.4,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5068,
-            "key": "10M",
-            "title": "Turn My Back On You",
-            "year": 1988
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 109.6,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
-            "key": "10M",
-            "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-19",
-        "selectedTrackIndex": 4,
-        "source": {
-          "type": "tree_node",
-          "id": "baroque-chamber-sophisticates",
-          "tree_type": "scene",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 102,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5094,
-            "key": "11M",
-            "title": "Why We Cry Why We Die",
-            "year": 2020
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 109.6,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
-            "key": "10M",
-            "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770958686883-vcwl",
-        "selectedTrackIndex": 7,
-        "source": {
-          "type": "tree_node",
-          "id": "baroque-chamber-sophisticates",
-          "tree_type": "scene",
-          "name": "Champagne Socialists: British Art-Pop Orchestration & Sophisti-Soul"
-        },
-        "tracks": [
-          {
-            "artist": "Sade",
-            "bpm": 59,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 3482,
-            "key": "1M",
-            "title": "Slave Song",
-            "year": 2000
-          },
-          {
-            "artist": "Procol Harum",
-            "bpm": 74.8,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 469,
-            "key": "1D",
-            "title": "A Whiter Shade of Pale - Original Single Version",
-            "year": 1967
-          },
-          {
-            "artist": "SAULT",
-            "bpm": 76.5,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 5079,
-            "key": "12M",
-            "title": "Masterpiece",
-            "year": 2019
-          },
-          {
-            "artist": "David McCallum",
-            "bpm": 90.2,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2581,
-            "key": "12M",
-            "title": "The Edge - Remastered",
-            "year": 2001
-          },
-          {
-            "artist": "Blue Boy",
-            "bpm": 100.9,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 5252,
-            "key": "8D",
-            "title": "Remember Me - Original Mix",
-            "year": 1997
-          },
-          {
-            "artist": "Kate Bush",
-            "bpm": 109.6,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2281,
-            "key": "10M",
-            "title": "Running Up That Hill (A Deal With God)",
-            "year": 1985
-          },
-          {
-            "artist": "The Doors",
-            "bpm": 119.8,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 578,
-            "key": "3M",
-            "title": "People Are Strange",
-            "year": 1967
-          },
-          {
-            "artist": "Elton John",
-            "bpm": 129.6,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3162,
-            "key": "2D",
-            "title": "Amoreena",
-            "year": 1970
-          },
-          {
-            "artist": "Coldplay",
-            "bpm": 138,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 4578,
-            "key": "9D",
-            "title": "Viva La Vida",
-            "year": 2008
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770892344453-5",
-        "selectedTrackIndex": 4,
-        "source": {
-          "id": "boom-bap-modernists",
-          "name": "Post-Boom-Bap Maximalism: When Underground Met Stadium Sound",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Diddy,Nicole Scherzinger",
-            "bpm": 0,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 1629,
-            "key": "",
-            "title": "Come to Me (feat. Nicole Scherzinger)",
-            "year": 2006
-          },
-          {
-            "artist": "Big Mama Thornton",
-            "bpm": 67.3,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4859,
-            "key": "2M",
-            "title": "Hound Dog",
-            "year": 1989
-          },
-          {
-            "artist": "DJ Shadow,Run The Jewels",
-            "bpm": 80,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1919,
-            "key": "1M",
-            "title": "Nobody Speak",
-            "year": 2016
-          },
-          {
-            "artist": "MC Lyte",
-            "bpm": 91.3,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 2236,
-            "key": "11D",
-            "title": "Cha Cha Cha",
-            "year": 2009
-          },
-          {
-            "artist": "Sampa the Great",
-            "bpm": 96,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 2903,
-            "key": "2M",
-            "title": "Final Form",
-            "year": 2019
-          },
-          {
-            "artist": "Q-Tip,Amanda Diva",
-            "bpm": 109.8,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 4055,
-            "key": "2M",
-            "title": "ManWomanBoogie",
-            "year": 2008
-          },
-          {
-            "artist": "Common",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 957,
-            "key": "9M",
-            "title": "Universal Mind Control (UMC) - With Intro",
-            "year": 2008
-          },
-          {
-            "artist": "Flo Rida,T-Pain",
-            "bpm": 128,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 4681,
-            "key": "7M",
-            "title": "Low (feat. T-Pain)",
-            "year": 2008
-          },
-          {
-            "artist": "DJ Shiftee",
-            "bpm": 140,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3731,
-            "key": "",
-            "title": "Shiftee Smells v4",
-            "year": 2009
-          },
-          {
-            "artist": "OutKast",
-            "bpm": 159,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 318,
-            "key": "2M",
-            "title": "Hey Ya!",
-            "year": 2003
-          }
-        ]
-      },
-      {
-        "id": "slot-1770969306314-m52p",
-        "selectedTrackIndex": 8,
-        "source": {
-          "id": "revival-global-bass-influence",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "artist": "A Guy Called Gerald",
-            "bpm": 0,
-            "bpm_level": 100,
-            "id": 5833,
-            "key": "",
-            "title": "Groove of the Ghetto - Original Mix",
-            "year": 2013,
-            "has_audio": true
-          },
-          {
-            "artist": "Logic1000",
-            "bpm": 117,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1511,
-            "key": "5D",
-            "title": "Precision",
-            "year": 2020
-          },
-          {
-            "artist": "Parallel Dance Ensemble",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 415,
-            "key": "2M",
-            "title": "Weight Watchers - Original",
-            "year": 2014
-          },
-          {
-            "artist": "Daphni",
-            "bpm": 129,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1538,
-            "key": "7M",
-            "title": "Ye Ye",
-            "year": 2012
-          },
-          {
-            "artist": "Roy Davis Jr.,Peven Everett",
-            "bpm": 128.5,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5420,
-            "key": "5D",
-            "title": "Gabriel - Live Garage Mix",
-            "year": 1996
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770958659880-t7cj",
-        "selectedTrackIndex": 0,
-        "source": {
-          "id": "revival-global-bass-influence",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "A Guy Called Gerald",
-            "bpm": 0,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5833,
-            "key": "",
-            "title": "Groove of the Ghetto - Original Mix",
-            "year": 2013
-          },
-          null,
-          null,
-          null,
-          {
-            "artist": "Nuyorican Soul",
-            "bpm": 108.1,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3428,
-            "key": "8M",
-            "title": "Shoshana",
-            "year": 1997
-          },
-          {
-            "artist": "Logic1000",
-            "bpm": 117,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 1511,
-            "key": "5D",
-            "title": "Precision",
-            "year": 2020
-          },
-          {
-            "artist": "Parallel Dance Ensemble",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 415,
-            "key": "2M",
-            "title": "Weight Watchers - Original",
-            "year": 2014
-          },
-          {
-            "artist": "Daphni",
-            "bpm": 129,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1538,
-            "key": "7M",
-            "title": "Ye Ye",
-            "year": 2012
-          },
-          {
-            "artist": "Yaeji",
-            "bpm": 128,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 452,
-            "key": "3M",
-            "title": "Raingurl",
-            "year": 2016
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770967037856-d7me",
-        "selectedTrackIndex": 5,
-        "source": {
-          "id": "revival-global-bass-influence",
-          "name": "Afro-Latin House Continuum: Spiritual Percussion Meets 2010s Garage Revival",
-          "tree_type": "scene",
-          "type": "tree_node"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "artist": "Nuyorican Soul",
-            "bpm": 108.1,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 3428,
-            "key": "8M",
-            "title": "Shoshana",
-            "year": 1997
-          },
-          {
-            "artist": "Parallel Dance Ensemble",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 415,
-            "key": "2M",
-            "title": "Weight Watchers - Original",
-            "year": 2014
-          },
-          {
-            "artist": "Daphni",
-            "bpm": 129,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1538,
-            "key": "7M",
-            "title": "Ye Ye",
-            "year": 2012
-          },
-          {
-            "artist": "Yaeji",
-            "bpm": 128,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 452,
-            "key": "3M",
-            "title": "Raingurl",
-            "year": 2016
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770953615731-mau4",
-        "selectedTrackIndex": 1,
-        "source": {
-          "id": "dubstep-lineage-bristol-shadows",
-          "name": "Sub-Frequency Chronicles: UK Bass Weight & Grime's Dark Matter",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Saskia",
-            "bpm": 57.9,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5480,
-            "key": "8M",
-            "title": "You Left Your Soul Behind",
-            "year": 2020
-          },
-          {
-            "artist": "Digital Mystikz",
-            "bpm": 69.5,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4860,
-            "key": "4M",
-            "title": "Misty Winter",
-            "year": 2022
-          },
-          {
-            "artist": "Pablo Dread,Fixate",
-            "bpm": 85,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 4004,
-            "key": "8M",
-            "title": "Fyah Burnin' - Fixate Remix",
-            "year": 2019
-          },
-          {
-            "artist": "Fixate",
-            "bpm": 86,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 3930,
-            "key": "4M",
-            "title": "What Goes Around",
-            "year": 2017
-          },
-          {
-            "artist": "Shygirl",
-            "bpm": 98,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 1415,
-            "key": "12D",
-            "title": "UCKERS",
-            "year": 2022
-          },
-          {
-            "artist": "Wiley, Stefflon Don, Sean Paul, Idris Elba",
-            "bpm": 103,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 2508,
-            "key": "7M",
-            "title": "Boasty (feat. Idris Elba)",
-            "year": 2019
-          },
-          {
-            "artist": "Pearson Sound",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 1003,
-            "key": "12M",
-            "title": "Rubble",
-            "year": 2012
-          },
-          {
-            "artist": "Metrist",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1833,
-            "key": "11D",
-            "title": "OL Face You Got",
-            "year": 2019
-          },
-          {
-            "artist": "Untold",
-            "bpm": 136,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 3004,
-            "key": "11M",
-            "title": "Fly Girls",
-            "year": 2010
-          },
-          {
-            "artist": "Sully",
-            "bpm": 164,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 5168,
-            "key": "10M",
-            "title": "Soundboy Don't Push Your Luck",
-            "year": 2018
-          }
-        ]
-      },
-      {
-        "id": "slot-1770969296883-irf3",
-        "selectedTrackIndex": 6,
-        "source": {
-          "type": "tree_node",
-          "id": "uk-industrial-dystopia",
-          "tree_type": "scene",
-          "name": "Post-Brexit Brutalism: UK's Dark Industrial Strain"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "artist": "Phil Kieran, Douglas McCarthy",
-            "bpm": 121,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 6245,
-            "key": "4M",
-            "title": "Fall Rise - Druggs Mix",
-            "year": 2019
-          },
-          {
-            "id": 6245,
-            "title": "Fall Rise - Druggs Mix",
-            "artist": "Phil Kieran, Douglas McCarthy",
-            "bpm": 121,
-            "key": "4M",
-            "year": 2019,
-            "bpm_level": 120
-          },
-          {
-            "artist": "Anunaku",
-            "bpm": 128,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 3340,
-            "key": "4M",
-            "title": "Teleported",
-            "year": 2020
-          },
-          {
-            "artist": "Ntel",
-            "bpm": 136,
-            "bpm_level": 140,
-            "has_audio": true,
-            "id": 5056,
-            "key": "8M",
-            "title": "Swarm - Scanner Version",
-            "year": 2020
-          },
-          null
-        ]
-      },
-      {
-        "id": "slot-1770969291374-f9b6",
-        "selectedTrackIndex": 0,
-        "source": {
-          "id": "new-wave-synth-evolution",
-          "name": "New Wave & Synth Evolution",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "KOMPROMAT, Vitalic, Rebeka Warrior",
-            "bpm": 0,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5838,
-            "key": "",
-            "title": "Niemand",
-            "year": 2019
-          },
-          {
-            "artist": "Gil Scott-Heron,Jamie xx",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4208,
-            "key": "3M",
-            "title": "NY Is Killing Me",
-            "year": 2011
-          },
-          {
-            "artist": "Ulla Straus",
-            "bpm": 80.1,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1039,
-            "key": "8D",
-            "title": "Sister",
-            "year": 2021
-          },
-          {
-            "artist": "KDMS,Simple Symmetry",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 1114,
-            "key": "2D",
-            "title": "Bones - Simple Symmetry Remix",
-            "year": 2016
-          },
-          {
-            "artist": "Modeselektor, TTC",
-            "bpm": 100,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3151,
-            "key": "5M",
-            "title": "2000007",
-            "year": 2007
-          },
-          {
-            "artist": "MUNKIB",
-            "bpm": 110,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 6128,
-            "key": "12M",
-            "title": "Hurt (Dead Don't Dance Mix)",
-            "year": 2018
-          },
-          {
-            "artist": "Super Drama",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5181,
-            "key": "7M",
-            "title": "Unforgettable Runway",
-            "year": 2019
-          },
-          {
-            "artist": "Metrist",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1833,
-            "key": "11D",
-            "title": "OL Face You Got",
-            "year": 2019
-          },
-          {
-            "artist": "DJ Shiftee",
-            "bpm": 140,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3761,
-            "key": "",
-            "title": "GRIME",
-            "year": 2011
-          },
-          {
-            "artist": "The Cure",
-            "bpm": 150.3,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4585,
-            "key": "3D",
-            "title": "Just Like Heaven",
-            "year": 1987
-          }
-        ]
-      },
-      {
-        "id": "slot-1770969300130-nbyp",
-        "selectedTrackIndex": 0,
-        "source": {
-          "id": "new-wave-synth-evolution",
-          "name": "New Wave & Synth Evolution",
-          "tree_type": "genre",
-          "type": "tree_node"
-        },
-        "tracks": [
-          {
-            "artist": "Siriusmo",
-            "bpm": 0,
-            "bpm_level": 60,
-            "has_audio": true,
-            "id": 5846,
-            "key": "",
-            "title": "Itchy",
-            "year": 2013
-          },
-          {
-            "artist": "Gil Scott-Heron,Jamie xx",
-            "bpm": 70,
-            "bpm_level": 70,
-            "has_audio": true,
-            "id": 4208,
-            "key": "3M",
-            "title": "NY Is Killing Me",
-            "year": 2011
-          },
-          {
-            "artist": "Ulla Straus",
-            "bpm": 80.1,
-            "bpm_level": 80,
-            "has_audio": true,
-            "id": 1039,
-            "key": "8D",
-            "title": "Sister",
-            "year": 2021
-          },
-          {
-            "artist": "KDMS,Simple Symmetry",
-            "bpm": 90,
-            "bpm_level": 90,
-            "has_audio": true,
-            "id": 1114,
-            "key": "2D",
-            "title": "Bones - Simple Symmetry Remix",
-            "year": 2016
-          },
-          {
-            "artist": "Modeselektor, TTC",
-            "bpm": 100,
-            "bpm_level": 100,
-            "has_audio": true,
-            "id": 3151,
-            "key": "5M",
-            "title": "2000007",
-            "year": 2007
-          },
-          {
-            "artist": "MUNKIB",
-            "bpm": 110,
-            "bpm_level": 110,
-            "has_audio": true,
-            "id": 6128,
-            "key": "12M",
-            "title": "Hurt (Dead Don't Dance Mix)",
-            "year": 2018
-          },
-          {
-            "artist": "Super Drama",
-            "bpm": 120,
-            "bpm_level": 120,
-            "has_audio": true,
-            "id": 5181,
-            "key": "7M",
-            "title": "Unforgettable Runway",
-            "year": 2019
-          },
-          {
-            "artist": "Metrist",
-            "bpm": 130,
-            "bpm_level": 130,
-            "has_audio": true,
-            "id": 1833,
-            "key": "11D",
-            "title": "OL Face You Got",
-            "year": 2019
-          },
-          {
-            "artist": "DJ Shiftee",
-            "bpm": 140,
-            "bpm_level": 140,
-            "has_audio": false,
-            "id": 3761,
-            "key": "",
-            "title": "GRIME",
-            "year": 2011
-          },
-          {
-            "artist": "The Cure",
-            "bpm": 150.3,
-            "bpm_level": 150,
-            "has_audio": true,
-            "id": 4585,
-            "key": "3D",
-            "title": "Just Like Heaven",
-            "year": 1987
-          }
-        ]
-      },
-      {
-        "id": "slot-1770969781186-dkp9",
-        "source": null,
-        "tracks": [],
-        "selectedTrackIndex": null
-      }
-    ],
-    "created_at": "2026-02-13T03:56:40.636218+00:00",
-    "updated_at": "2026-02-13T09:03:23.555672+00:00"
-  },
   "2c3f707b": {
     "id": "2c3f707b",
     "name": "early set",
@@ -18367,125 +16338,152 @@
     "name": "Auto Set \u2014 African Rhythms: Roots to Ritual (1970s-2020s)",
     "slots": [
       {
+        "id": "slot-1773409842235-qnti",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
         "id": "autoset-slot-0",
+        "selectedTrackIndex": 0,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           {
             "id": 3983,
             "title": "Digida",
             "artist": "Swordman Kitala,Village Cuts",
-            "bpm": 63.0,
+            "bpm": 63,
             "key": "9M",
             "year": 2022,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 60
           },
           null,
-          null,
-          null,
           {
-            "id": 992,
+            "id": 48,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 724,
             "title": "Los Tambores Te Llaman - Casamena Remix",
             "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
-            "key": "10M",
-            "year": 2015,
-            "has_audio": false,
+            "bpm": 120,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 3407,
-            "title": "Pari Pari",
-            "artist": "Aili, Transistorcake",
-            "bpm": 121.0,
-            "key": "3M",
-            "year": 2021,
-            "has_audio": false,
+            "id": 386,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
-            "id": 5307,
-            "title": "Bra",
-            "artist": "Cymande",
-            "bpm": 118.2,
-            "key": "12M",
-            "year": 1972,
-            "has_audio": false,
+            "id": 1795,
+            "title": "Fuerza (feat. Nani Castle)",
+            "artist": "Tony Quattro,Nani Castle",
+            "bpm": 127,
+            "key": "7M",
+            "year": 2017,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 4334,
-            "title": "Amadoda - Shy One Remix",
-            "artist": "She's Drunk,Sho Madjozi,Shy One",
-            "bpm": 126.0,
-            "key": "3D",
-            "year": 2019,
-            "has_audio": false,
+            "id": 3431,
+            "title": "Uam Uam",
+            "artist": "Povo",
+            "bpm": 120,
+            "key": "7M",
+            "year": 2008,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
+            "id": 1476,
+            "title": "Ax\u00e9 Acapella (Shapeless Versus Maria Gad\u00fa)",
+            "artist": "Maria Gad\u00fa,Shapeless",
+            "bpm": 125,
+            "key": "9M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 140
           },
           {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
+            "id": 2322,
+            "title": "Esperanza",
+            "artist": "Mel\u00e9",
+            "bpm": 130,
+            "key": "7M",
+            "year": 2020,
+            "has_audio": true,
             "bpm_level": 150
           }
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
         "id": "autoset-slot-1",
+        "selectedTrackIndex": 4,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
+            "id": 3173,
+            "title": "Fleur tropicale",
+            "artist": "Francis Bebey",
+            "bpm": 75.9,
+            "key": "3D",
+            "year": 2012,
+            "has_audio": true,
             "bpm_level": 60
           },
           {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
+            "id": 1027,
+            "title": "Juju Space Jazz",
+            "artist": "Brian Eno",
+            "bpm": 76.5,
+            "key": "4M",
+            "year": 1983,
+            "has_audio": true,
             "bpm_level": 70
           },
           {
-            "id": 1284,
-            "title": "Oba",
-            "artist": "Ohxala",
-            "bpm": 95.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 172,
+            "title": "Bani",
+            "artist": "Susso",
+            "bpm": 96.5,
+            "key": "1M",
+            "year": 2018,
+            "has_audio": true,
             "bpm_level": 80
           },
           {
@@ -18495,222 +16493,270 @@
             "bpm": 105.4,
             "key": "12M",
             "year": 1976,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
             "id": 2823,
             "title": "Malunguinho",
             "artist": "Abayomy Afrobeat Orquestra",
-            "bpm": 96.0,
+            "bpm": 96,
             "key": "7M",
             "year": 2013,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 224,
-            "title": "Masimbabele",
-            "artist": "The Unknown Cases",
-            "bpm": 92.0,
-            "key": "5M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 5248,
+            "title": "No Condition Is Permanent",
+            "artist": "Marijata",
+            "bpm": 105.4,
+            "key": "12M",
+            "year": 1976,
+            "has_audio": true,
             "bpm_level": 110
           },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
+          {
+            "id": 277,
+            "title": "Get Up",
+            "artist": "Magic Drum Orchestra",
+            "bpm": 115,
+            "key": "8M",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 2314,
+            "title": "Afro Shigida",
+            "artist": "The Bahama Soul Club, Kojato",
+            "bpm": 110,
+            "key": "8M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 2338,
+            "title": "Atomic Bomb - Cover",
+            "artist": "Hot Chip, William Onyeabor",
+            "bpm": 125.6,
+            "key": "6M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          {
+            "id": 5782,
+            "title": "Bolero",
+            "artist": "Drummers Of The Societe Absolument Guinin",
+            "bpm": 144.4,
+            "key": "11M",
+            "year": 2017,
+            "has_audio": true,
+            "bpm_level": 150
+          }
+        ]
       },
       {
         "id": "autoset-slot-2",
+        "selectedTrackIndex": 3,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
-          {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 60
-          },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
+          null,
+          null,
           {
             "id": 46,
             "title": "Masimbabele",
             "artist": "The Unknown Cases",
-            "bpm": 92.0,
+            "bpm": 92,
             "key": "5M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 80
           },
           {
             "id": 224,
             "title": "Masimbabele",
             "artist": "The Unknown Cases",
-            "bpm": 92.0,
+            "bpm": 92,
             "key": "5M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
-            "id": 1284,
-            "title": "Oba",
-            "artist": "Ohxala",
-            "bpm": 95.0,
-            "key": "11M",
+            "id": 1102,
+            "title": "Banga 2",
+            "artist": "Ranga",
+            "bpm": 119.5,
+            "key": "3M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 1495,
+            "title": "Haki",
+            "artist": "Mim Suleiman",
+            "bpm": 130,
+            "key": "4M",
+            "year": 2012,
+            "has_audio": true,
             "bpm_level": 110
           },
-          null,
-          null,
-          null,
+          {
+            "id": 1829,
+            "title": "Aye Ata",
+            "artist": "Danvers",
+            "bpm": 124.8,
+            "key": "10D",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 5057,
+            "title": "UZE",
+            "artist": "D\u2019Monk",
+            "bpm": 121.5,
+            "key": "7M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1213,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121,
+            "key": "8D",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 140
+          },
           null
-        ],
-        "selectedTrackIndex": 3
+        ]
       },
       {
         "id": "autoset-slot-3",
+        "selectedTrackIndex": 3,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
-          {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 60
-          },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
-          {
-            "id": 1284,
-            "title": "Oba",
-            "artist": "Ohxala",
-            "bpm": 95.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 80
-          },
+          null,
+          null,
+          null,
           {
             "id": 46,
             "title": "Masimbabele",
             "artist": "The Unknown Cases",
-            "bpm": 92.0,
+            "bpm": 92,
             "key": "5M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 4201,
+            "title": "Candomble - Original Mix",
+            "artist": "Thomash",
+            "bpm": 105,
+            "key": "5M",
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 1389,
-            "title": "Nomalizo",
-            "artist": "Letta Mbulu",
-            "bpm": 98.3,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 3350,
+            "title": "Amos",
+            "artist": "Mulya",
+            "bpm": 116,
+            "key": "5M",
+            "year": 2021,
+            "has_audio": true,
             "bpm_level": 110
           },
-          null,
-          null,
-          null,
+          {
+            "id": 1815,
+            "title": "Que Es - Kiko Navarro 4 la Troppa Re-Edit",
+            "artist": "Thomas Marlow,Kiko Navarro",
+            "bpm": 120,
+            "key": "3M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 3961,
+            "title": "Auto Machine",
+            "artist": "Osunlade",
+            "bpm": 120,
+            "key": "3M",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1193,
+            "title": "Heat - Extended Mix",
+            "artist": "Austin Ato",
+            "bpm": 123,
+            "key": "3D",
+            "year": 2022,
+            "has_audio": true,
+            "bpm_level": 140
+          },
           null
-        ],
-        "selectedTrackIndex": 3
+        ]
       },
       {
         "id": "autoset-slot-4",
+        "selectedTrackIndex": 3,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
+            "id": 3295,
+            "title": "Xica da Silva",
+            "artist": "Miriam Makeba",
+            "bpm": 77.4,
+            "key": "1M",
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 60
           },
           {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
+            "id": 2878,
+            "title": "Selfish Gene",
+            "artist": "Jimi Tenor, Tony Allen",
+            "bpm": 79.3,
+            "key": "3M",
+            "year": 2009,
+            "has_audio": true,
             "bpm_level": 70
           },
           {
-            "id": 3401,
-            "title": "Electricity",
-            "artist": "Ibibio Sound Machine",
-            "bpm": 98.3,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
+            "id": 477,
+            "title": "Bani",
+            "artist": "Susso",
+            "bpm": 96.5,
+            "key": "1M",
+            "year": 2018,
+            "has_audio": true,
             "bpm_level": 80
           },
           {
@@ -18720,42 +16766,70 @@
             "bpm": 91.5,
             "key": "2M",
             "year": 2013,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
-            "id": 1389,
-            "title": "Nomalizo",
-            "artist": "Letta Mbulu",
-            "bpm": 98.3,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 3192,
+            "title": "Look up in the Sky - N\u00e9gro Nature",
+            "artist": "Francis The Great",
+            "bpm": 107.6,
+            "key": "1M",
+            "year": 2015,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 6237,
+            "title": "Safari Strut",
+            "artist": "Whitefield Brothers",
+            "bpm": 110.3,
+            "key": "1M",
+            "year": 2010,
+            "has_audio": true,
             "bpm_level": 110
           },
-          null,
-          null,
-          null,
+          {
+            "id": 6263,
+            "title": "Golden Dunes",
+            "artist": "The Budos Band",
+            "bpm": 122,
+            "key": "3M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 3261,
+            "title": "Filhos De Zambi",
+            "artist": "Trio Ternura",
+            "bpm": 112.3,
+            "key": "1M",
+            "year": 1974,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1326,
+            "title": "Spill the Wine",
+            "artist": "War",
+            "bpm": 120.5,
+            "key": "9M",
+            "year": 1970,
+            "has_audio": true,
+            "bpm_level": 140
+          },
           null
-        ],
-        "selectedTrackIndex": 3
+        ]
       },
       {
         "id": "autoset-slot-5",
+        "selectedTrackIndex": 4,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           {
@@ -18765,37 +16839,37 @@
             "bpm": 58.4,
             "key": "7M",
             "year": 2020,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 60
           },
           {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
+            "id": 4235,
+            "title": "Like a Ship",
+            "artist": "Pastor T.L. Barrett and the Youth for Christ Choir",
+            "bpm": 85,
+            "key": "7M",
+            "year": 1971,
+            "has_audio": true,
             "bpm_level": 70
           },
           {
-            "id": 1284,
-            "title": "Oba",
-            "artist": "Ohxala",
-            "bpm": 95.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 665,
+            "title": "The Barber",
+            "artist": "Mop Mop,Anthony Joseph",
+            "bpm": 82,
+            "key": "9M",
+            "year": 2008,
+            "has_audio": true,
             "bpm_level": 80
           },
           {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
+            "id": 2376,
+            "title": "Love And Death",
+            "artist": "Ebo Taylor, Uhuru-Yenzu",
+            "bpm": 107.5,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
@@ -18805,353 +16879,530 @@
             "bpm": 98.3,
             "key": "12M",
             "year": 1976,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
-          {
-            "id": 3401,
-            "title": "Electricity",
-            "artist": "Ibibio Sound Machine",
-            "bpm": 98.3,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-6",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
-        },
-        "tracks": [
-          {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 60
-          },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
-          {
-            "id": 3401,
-            "title": "Electricity",
-            "artist": "Ibibio Sound Machine",
-            "bpm": 98.3,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 80
-          },
-          {
-            "id": 1284,
-            "title": "Oba",
-            "artist": "Ohxala",
-            "bpm": 95.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 3
-      },
-      {
-        "id": "autoset-slot-7",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
-        },
-        "tracks": [
-          {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 60
-          },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
-          null,
-          {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3401,
-            "title": "Electricity",
-            "artist": "Ibibio Sound Machine",
-            "bpm": 98.3,
-            "key": "11M",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-8",
-        "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
-        },
-        "tracks": [
-          {
-            "id": 5043,
-            "title": "Sizwile",
-            "artist": "SPAZA,Nonku Phiri,Malcolm Jiyane,Gontse Makhene,Ariel Zamonsky",
-            "bpm": 58.4,
-            "key": "7M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 60
-          },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
-          null,
-          null,
-          null,
-          {
-            "id": 3197,
-            "title": "No Condition Is Permanent",
-            "artist": "Marijata",
-            "bpm": 105.4,
-            "key": "12M",
-            "year": 1976,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-9",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
           {
             "id": 3481,
             "title": "Shepherd Song",
             "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
+            "bpm": 120,
             "key": "12M",
             "year": 2020,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 3407,
-            "title": "Pari Pari",
-            "artist": "Aili, Transistorcake",
-            "bpm": 121.0,
-            "key": "3M",
-            "year": 2021,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
-            "id": 5048,
-            "title": "We've Landed",
-            "artist": "Tony Allen,Hugh Masekela",
-            "bpm": 117.0,
-            "key": "10D",
-            "year": 2020,
-            "has_audio": false,
+            "id": 2377,
+            "title": "Ne Noya",
+            "artist": "Cos-Ber-Zam",
+            "bpm": 121.2,
+            "key": "10M",
+            "year": 2010,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 4334,
-            "title": "Amadoda - Shy One Remix",
-            "artist": "She's Drunk,Sho Madjozi,Shy One",
-            "bpm": 126.0,
+            "id": 2368,
+            "title": "Atomic Bomb",
+            "artist": "William Onyeabor",
+            "bpm": 116.4,
+            "key": "6M",
+            "year": 2013,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 2709,
+            "title": "Wanna Be Startin' Somethin'",
+            "artist": "Michael Jackson",
+            "bpm": 122.2,
             "key": "3D",
-            "year": 2019,
+            "year": 1982,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-6",
+        "selectedTrackIndex": 3,
+        "source": {
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__organic-sun-ritual",
+          "tree_type": "collection",
+          "name": "Afro-House Mysticism: Global Sunset Ritual"
+        },
+        "tracks": [
+          {
+            "id": 3621,
+            "title": "B3 CabasaSolo",
+            "artist": "DEMI",
+            "bpm": 63,
+            "key": "4M",
+            "year": 2018,
             "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 4165,
+            "title": "Xanana",
+            "artist": "Vissungo",
+            "bpm": 90,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 226,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 1284,
+            "title": "Oba",
+            "artist": "Ohxala",
+            "bpm": 95,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 1181,
+            "title": "Get Up",
+            "artist": "Magic Drum Orchestra",
+            "bpm": 115,
+            "key": "8M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 6225,
+            "title": "Amos",
+            "artist": "Mulya",
+            "bpm": 115,
+            "key": "5M",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 5301,
+            "title": "Mama Calling - Tedd Patterson Remix",
+            "artist": "Kiko Navarro,Buika,Tedd Patterson",
+            "bpm": 127,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 989,
+            "title": "Indio",
+            "artist": "Tamburi Neri",
+            "bpm": 121,
+            "key": "8D",
+            "year": 2019,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
             "id": 1971,
             "title": "Afrika",
             "artist": "De Gama",
-            "bpm": 126.0,
+            "bpm": 126,
             "key": "12M",
             "year": 2011,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 140
           },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-7",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
+        },
+        "tracks": [
           {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
+            "id": 1339,
+            "title": "The Coffee Cola Song",
+            "artist": "Francis Bebey",
+            "bpm": 55.3,
+            "key": "11M",
+            "year": 1981,
+            "has_audio": true,
+            "bpm_level": 60
+          },
+          {
+            "id": 323,
+            "title": "Mulato Bamba",
+            "artist": "Leal Brito,Odete,Sandoval Dias,Ze Menezes",
+            "bpm": 85.6,
+            "key": "12D",
+            "year": 1978,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 3456,
+            "title": "Electricity",
+            "artist": "Ibibio Sound Machine",
+            "bpm": 98.3,
+            "key": "11M",
+            "year": 2022,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 1103,
+            "title": "Bani",
+            "artist": "Susso",
+            "bpm": 96.5,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 3401,
+            "title": "Electricity",
+            "artist": "Ibibio Sound Machine",
+            "bpm": 98.3,
+            "key": "11M",
+            "year": 2022,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 5045,
+            "title": "Soul Makossa",
+            "artist": "Manu Dibango",
+            "bpm": 115,
+            "key": "12M",
+            "year": 2000,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 2839,
+            "title": "Vidigal",
+            "artist": "Banda Black Rio",
+            "bpm": 101.2,
+            "key": "1M",
+            "year": 2002,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 3995,
+            "title": "Enjoy Your Life",
+            "artist": "Oby Onyioha",
+            "bpm": 116.2,
+            "key": "9M",
+            "year": 2015,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 3282,
+            "title": "Princesa Negra De Angola",
+            "artist": "Bebeto",
+            "bpm": 128.9,
+            "key": "2M",
+            "year": 1976,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-8",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
+        },
+        "tracks": [
+          {
+            "id": 624,
+            "title": "The Volcano Song",
+            "artist": "The Budos Band",
+            "bpm": 57.4,
+            "key": "2M",
+            "year": 2009,
+            "has_audio": true,
+            "bpm_level": 60
+          },
+          {
+            "id": 3224,
+            "title": "Me Libertei",
+            "artist": "Toni Tornado",
+            "bpm": 86,
+            "key": "5D",
+            "year": 1971,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 1251,
+            "title": "M'PasiI Ya M'Pamba",
+            "artist": "Zazou Bikaye",
+            "bpm": 92,
+            "key": "3M",
+            "year": 1983,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 241,
+            "title": "The Global Village - Vocal Version",
+            "artist": "Nickodemus,Polo",
+            "bpm": 95,
+            "key": "11M",
+            "year": 2008,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 5088,
+            "title": "Warrior",
+            "artist": "SAULT",
+            "bpm": 89.8,
+            "key": "12D",
+            "year": 2022,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3197,
+            "title": "No Condition Is Permanent",
+            "artist": "Marijata",
+            "bpm": 105.4,
+            "key": "12M",
+            "year": 1976,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 1626,
+            "title": "Bofou Safou",
+            "artist": "Amadou & Mariam",
+            "bpm": 118,
+            "key": "1M",
+            "year": 2008,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 1093,
+            "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
+            "artist": "Ekambi Brillant,John Talabot,Pional",
+            "bpm": 118,
+            "key": "2M",
             "year": 2012,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 6
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-9",
+        "selectedTrackIndex": 6,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__afrobeat-jazz-funk-renaissance",
+          "tree_type": "collection",
+          "name": "Afrobeat Continuum: From Fela's Lagos to Global Dancefloors"
+        },
+        "tracks": [
+          null,
+          {
+            "id": 1338,
+            "title": "The Barber",
+            "artist": "Mop Mop,Anthony Joseph",
+            "bpm": 82,
+            "key": "9M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 3488,
+            "title": "Y Dah - Sleep D Remix (Radio Edit)",
+            "artist": "Gordon Koang, Sleep D",
+            "bpm": 100,
+            "key": "11M",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 4082,
+            "title": "Ore Y\u00e8y\u00e9 O - Lucas Croon Remix",
+            "artist": "Aron Ottignon,\u00ccF\u00c9,Lucas Croon",
+            "bpm": 108.3,
+            "key": "2M",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 898,
+            "title": "Get Up",
+            "artist": "Magic Drum Orchestra",
+            "bpm": 115,
+            "key": "8M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 6235,
+            "title": "Nomalizo",
+            "artist": "Letta Mbulu",
+            "bpm": 98.3,
+            "key": "12M",
+            "year": 1996,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 5048,
+            "title": "We've Landed",
+            "artist": "Tony Allen,Hugh Masekela",
+            "bpm": 117,
+            "key": "10D",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 5297,
+            "title": "Golden Dunes",
+            "artist": "The Budos Band",
+            "bpm": 122.7,
+            "key": "3M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 4009,
+            "title": "Golden Dunes",
+            "artist": "The Budos Band",
+            "bpm": 122.7,
+            "key": "3M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          null
+        ]
       },
       {
         "id": "autoset-slot-10",
+        "selectedTrackIndex": 0,
         "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
+          "type": "tree_node",
+          "id": "70s-source-code__afrobeat-jazz-funk-renaissance",
+          "tree_type": "collection",
+          "name": "Afrobeat Continuum: From Fela's Lagos to Global Dancefloors"
         },
         "tracks": [
           {
             "id": 5342,
             "title": "Coconut",
             "artist": "Manu Dibango",
-            "bpm": 0.0,
+            "bpm": 0,
             "key": "",
             "year": 1972,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 60
-          },
-          {
-            "id": 1339,
-            "title": "The Coffee Cola Song",
-            "artist": "Francis Bebey",
-            "bpm": 55.3,
-            "key": "11M",
-            "year": 1981,
-            "has_audio": false,
-            "bpm_level": 70
           },
           null,
           {
-            "id": 5070,
-            "title": "Darkest Light - Remastered",
-            "artist": "Lafayette Afro Rock Band",
-            "bpm": 104.6,
-            "key": "6M",
-            "year": 2021,
-            "has_audio": false,
+            "id": 5695,
+            "title": "Lihue",
+            "artist": "Nohelani Cypriano, Peter Moon, Jerry Byrd, Kapono Beamer, Roscoe Wright, Master Henry Gibson, John Raposa, Kata Maduli, Wayne Hobbs, Henry Kapono, Winner Female Vocalist of the Year Hoku, Winner Contemporary Hawaiian Album of the Year Hoku",
+            "bpm": 95.5,
+            "key": "12M",
+            "year": 1978,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 6196,
+            "title": "The Birds Rejoice",
+            "artist": "Nu Genea, Tony Allen",
+            "bpm": 105,
+            "key": "10M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
+            "id": 5503,
+            "title": "Third Eye",
+            "artist": "Cosmos Universal Band",
+            "bpm": 111.3,
+            "key": "2M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 280,
-            "title": "Laventille Road March",
-            "artist": "Bacao Rhythm & Steel Band",
-            "bpm": 103.9,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
+            "id": 1309,
+            "title": "Rhythm Is All You Can Dance - Wolf Muller Remix",
+            "artist": "Africaine 808,Wolf M\u00fcller",
+            "bpm": 109,
+            "key": "5D",
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
-            "id": 3052,
-            "title": "Road Close - Dance Dub",
-            "artist": "Tony Allen",
-            "bpm": 114.6,
-            "key": "9M",
-            "year": 1985,
-            "has_audio": false,
+            "id": 5193,
+            "title": "Atomic Bomb",
+            "artist": "William Onyeabor",
+            "bpm": 116.4,
+            "key": "6M",
+            "year": 2013,
+            "has_audio": true,
             "bpm_level": 120
           },
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
         "id": "autoset-slot-11",
+        "selectedTrackIndex": 0,
         "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           {
@@ -19161,11 +17412,50 @@
             "bpm": 55.3,
             "key": "11M",
             "year": 1981,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 60
           },
           null,
-          null,
+          {
+            "id": 39,
+            "title": "Bani",
+            "artist": "Susso",
+            "bpm": 96.5,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 2993,
+            "title": "African Rhythms",
+            "artist": "Oneness Of Juju",
+            "bpm": 97.9,
+            "key": "8D",
+            "year": 2017,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 3968,
+            "title": "Brothers On The Slide",
+            "artist": "Patchworks Ginger Xpress",
+            "bpm": 116,
+            "key": "9M",
+            "year": 1974,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3502,
+            "title": "Je pense \u00e0 toi",
+            "artist": "Amadou & Mariam",
+            "bpm": 106.3,
+            "key": "2M",
+            "year": 1998,
+            "has_audio": true,
+            "bpm_level": 110
+          },
           {
             "id": 5070,
             "title": "Darkest Light - Remastered",
@@ -19173,450 +17463,554 @@
             "bpm": 104.6,
             "key": "6M",
             "year": 2021,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 3052,
-            "title": "Road Close - Dance Dub",
-            "artist": "Tony Allen",
-            "bpm": 114.6,
-            "key": "9M",
-            "year": 1985,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 2828,
-            "title": "Olhos De S\u00e1",
-            "artist": "Joutro Mundo",
-            "bpm": 100.0,
-            "key": "9M",
-            "year": 2017,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
         "id": "autoset-slot-12",
+        "selectedTrackIndex": 4,
         "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
           {
-            "id": 3397,
+            "id": 3447,
             "title": "Cacao",
             "artist": "ASA MOTO",
-            "bpm": 108.0,
+            "bpm": 108,
             "key": "2D",
             "year": 2021,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           {
             "id": 2828,
             "title": "Olhos De S\u00e1",
             "artist": "Joutro Mundo",
-            "bpm": 100.0,
+            "bpm": 100,
             "key": "9M",
             "year": 2017,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
-          {
-            "id": 3052,
-            "title": "Road Close - Dance Dub",
-            "artist": "Tony Allen",
-            "bpm": 114.6,
-            "key": "9M",
-            "year": 1985,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-13",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 280,
-            "title": "Laventille Road March",
-            "artist": "Bacao Rhythm & Steel Band",
-            "bpm": 103.9,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 3052,
-            "title": "Road Close - Dance Dub",
-            "artist": "Tony Allen",
-            "bpm": 114.6,
-            "key": "9M",
-            "year": 1985,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-14",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 5070,
-            "title": "Darkest Light - Remastered",
-            "artist": "Lafayette Afro Rock Band",
-            "bpm": 104.6,
-            "key": "6M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 280,
-            "title": "Laventille Road March",
-            "artist": "Bacao Rhythm & Steel Band",
-            "bpm": 103.9,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-15",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          {
-            "id": 280,
-            "title": "Laventille Road March",
-            "artist": "Bacao Rhythm & Steel Band",
-            "bpm": 103.9,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 4
-      },
-      {
-        "id": "autoset-slot-16",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 90
-          },
-          null,
-          {
-            "id": 2376,
-            "title": "Love And Death",
-            "artist": "Ebo Taylor, Uhuru-Yenzu",
-            "bpm": 107.5,
-            "key": "1M",
-            "year": 1977,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-17",
-        "source": {
-          "type": "autoset",
-          "id": "act-1",
-          "name": "Development"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 3397,
-            "title": "Cacao",
-            "artist": "ASA MOTO",
-            "bpm": 108.0,
-            "key": "2D",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-18",
-        "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 2372,
-            "title": "Enjoy Your Life",
-            "artist": "Oby Onyioha",
-            "bpm": 116.2,
-            "key": "10M",
-            "year": 2015,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 2314,
-            "title": "Afro Shigida",
-            "artist": "The Bahama Soul Club, Kojato",
-            "bpm": 110.0,
-            "key": "8M",
-            "year": 2010,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 695,
-            "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
-            "artist": "Ekambi Brillant,John Talabot,Pional",
-            "bpm": 118.0,
-            "key": "2M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
-            "key": "8M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          null,
-          null
-        ],
-        "selectedTrackIndex": 5
-      },
-      {
-        "id": "autoset-slot-19",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
           {
             "id": 992,
             "title": "Los Tambores Te Llaman - Casamena Remix",
             "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
+            "bpm": 120,
             "key": "10M",
             "year": 2015,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1829,
-            "title": "Aye Ata",
-            "artist": "Danvers",
-            "bpm": 124.8,
-            "key": "10D",
-            "year": 2018,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
-            "id": 3481,
-            "title": "Shepherd Song",
-            "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2020,
-            "has_audio": false,
+            "id": 432,
+            "title": "Gidafi Na feat. Asgodom - Red Axes Edit",
+            "artist": "Kino Todo,Tesfit Asgodom,Red Axes",
+            "bpm": 120,
+            "key": "10M",
+            "year": 2017,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 386,
-            "title": "Los Tambores Te Llaman - Casamena Remix",
-            "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
-            "key": "1M",
+            "id": 41,
+            "title": "Candomble - Dreems Remix",
+            "artist": "Thomash",
+            "bpm": 110,
+            "key": "7M",
             "year": 2016,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
+            "id": 3608,
+            "title": "A1-IntroConga",
+            "artist": "DEMI",
+            "bpm": 126,
+            "key": "2M",
+            "year": 2018,
             "has_audio": false,
+            "bpm_level": 140
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-13",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__afro-warehouse-futurism",
+          "tree_type": "collection",
+          "name": "Lagos-Detroit Axis: Afrobeat Meets Warehouse Minimalism"
+        },
+        "tracks": [
+          {
+            "id": 4205,
+            "title": "Leywole - Edit",
+            "artist": "Falle Nioke,Ghost Culture",
+            "bpm": 57,
+            "key": "12M",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 60
+          },
+          null,
+          {
+            "id": 2756,
+            "title": "Odogwu",
+            "artist": "Burna Boy",
+            "bpm": 96,
+            "key": "12M",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 6140,
+            "title": "Prelude",
+            "artist": "Nu Genea, Tony Allen",
+            "bpm": 105,
+            "key": "7M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 47,
+            "title": "Mori Baka",
+            "artist": "Peter Power",
+            "bpm": 105,
+            "key": "12M",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3052,
+            "title": "Road Close - Dance Dub",
+            "artist": "Tony Allen",
+            "bpm": 114.6,
+            "key": "9M",
+            "year": 1985,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 1239,
+            "title": "Let Me Go",
+            "artist": "SAULT",
+            "bpm": 120.4,
+            "key": "1M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 1799,
+            "title": "Lagen",
+            "artist": "Zotobr\u00e9",
+            "bpm": 116.6,
+            "key": "12M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-14",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 1099,
+            "title": "Bai\u00e3o Destemperado",
+            "artist": "Barbatuques",
+            "bpm": 95.7,
+            "key": "6M",
+            "year": 2013,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 2040,
+            "title": "Fencewalk",
+            "artist": "Mandrill",
+            "bpm": 105.4,
+            "key": "1M",
+            "year": 2001,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 5070,
+            "title": "Darkest Light - Remastered",
+            "artist": "Lafayette Afro Rock Band",
+            "bpm": 104.6,
+            "key": "6M",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 4223,
+            "title": "Forest Nativity",
+            "artist": "Francis Bebey",
+            "bpm": 103.4,
+            "key": "4M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-15",
+        "selectedTrackIndex": 4,
+        "source": {
+          "type": "tree_node",
+          "id": "kingston-diaspora-pressure__global-riddim-mutations",
+          "tree_type": "collection",
+          "name": "Crescent City Roots: Caribbean Rhythms in American Soul"
+        },
+        "tracks": [
+          {
+            "id": 4481,
+            "title": "Memphis Soul Stew",
+            "artist": "King Curtis",
+            "bpm": 56.5,
+            "key": "2M",
+            "year": 1967,
+            "has_audio": false,
+            "bpm_level": 60
+          },
+          {
+            "id": 316,
+            "title": "Echate Palla",
+            "artist": "Quantic,Flowering Inferno",
+            "bpm": 70.7,
+            "key": "10M",
+            "year": 2008,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 2296,
+            "title": "Tryna Go",
+            "artist": "Rare Essence, Raheem DeVaughn, Dee Boy",
+            "bpm": 94,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 3534,
+            "title": "Insane in the Brain",
+            "artist": "Prince Fatty, Horseman",
+            "bpm": 102.2,
+            "key": "3D",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 280,
+            "title": "Laventille Road March",
+            "artist": "Bacao Rhythm & Steel Band",
+            "bpm": 103.9,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3533,
+            "title": "Groove Me",
+            "artist": "King Floyd",
+            "bpm": 104.3,
+            "key": "3M",
+            "year": 1994,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 2439,
+            "title": "Who's Gonna Help a Brother Get Further?",
+            "artist": "Lee Dorsey",
+            "bpm": 138.1,
+            "key": "8M",
+            "year": 2006,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 1385,
+            "title": "Hafi Deo",
+            "artist": "Tabu Ley Rochereau",
+            "bpm": 123.4,
+            "key": "4D",
+            "year": 1985,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1262,
+            "title": "Mashed Potatoes",
+            "artist": "Rufus Thomas",
+            "bpm": 122.6,
+            "key": "11M",
+            "year": 1962,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          {
+            "id": 4630,
+            "title": "Vibrations Groove",
+            "artist": "Lord Shorty & Vibrations International",
+            "bpm": 136.7,
+            "key": "7M",
+            "year": 2012,
+            "has_audio": true,
+            "bpm_level": 150
+          }
+        ]
+      },
+      {
+        "id": "autoset-slot-16",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2376,
+            "title": "Love And Death",
+            "artist": "Ebo Taylor, Uhuru-Yenzu",
+            "bpm": 107.5,
+            "key": "1M",
+            "year": 1977,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-17",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3969,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 1124,
+            "title": "Candomble - Dreems Remix",
+            "artist": "Thomash",
+            "bpm": 110,
+            "key": "7M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3397,
+            "title": "Cacao",
+            "artist": "ASA MOTO",
+            "bpm": 108,
+            "key": "2D",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 1255,
+            "title": "Mama Calling - Tedd Patterson Remix",
+            "artist": "Kiko Navarro,Buika,Tedd Patterson",
+            "bpm": 127,
+            "key": "12M",
+            "year": 2015,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 5149,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1439,
+            "title": "Tummy, Tummy",
+            "artist": "Africaine 808",
+            "bpm": 120.2,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-18",
+        "selectedTrackIndex": 5,
+        "source": {
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "id": 2314,
+            "title": "Afro Shigida",
+            "artist": "The Bahama Soul Club, Kojato",
+            "bpm": 110,
+            "key": "8M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": "autoset-slot-19",
+        "selectedTrackIndex": 9,
+        "source": {
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
+        },
+        "tracks": [
+          null,
+          null,
+          null,
+          {
+            "id": 3377,
+            "title": "Sussussussu",
+            "artist": "Maria Beraldo",
+            "bpm": 100,
+            "key": "11M",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 6074,
+            "title": "Oud Ou Ray",
+            "artist": "Sultan Shakes",
+            "bpm": 120,
+            "key": "5D",
+            "year": 2017,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 3246,
+            "title": "Balumba",
+            "artist": "Anilza Leoni",
+            "bpm": 110.3,
+            "key": "1M",
+            "year": 2012,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 6261,
+            "title": "Cuban Jakkin'",
+            "artist": "Rio Rhythm Band",
+            "bpm": 116.2,
+            "key": "11M",
+            "year": 2012,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 2905,
+            "title": "Grande de folie - DJ Gregory's Prassay Dub",
+            "artist": "Raw Instinct, DJ Gregory",
+            "bpm": 124.2,
+            "key": "4D",
+            "year": 2000,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 1825,
+            "title": "Tummy, Tummy",
+            "artist": "Africaine 808",
+            "bpm": 120.2,
+            "key": "12M",
+            "year": 2013,
+            "has_audio": true,
             "bpm_level": 140
           },
           {
@@ -19626,42 +18020,70 @@
             "bpm": 175.5,
             "key": "11M",
             "year": 2016,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 150
           }
-        ],
-        "selectedTrackIndex": 9
+        ]
       },
       {
         "id": "autoset-slot-20",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
+          "type": "tree_node",
+          "id": "afro-diasporic-bass-lagos-rio-johannesburg__afro-warehouse-futurism",
+          "tree_type": "collection",
+          "name": "Afrobeat's Electronic Continuum"
         },
         "tracks": [
           null,
-          null,
-          null,
-          null,
           {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
-            "key": "8M",
+            "id": 216,
+            "title": "Lekeleke",
+            "artist": "Ohxala",
+            "bpm": 90,
+            "key": "1M",
+            "year": 2023,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 5226,
+            "title": "Bani",
+            "artist": "Susso",
+            "bpm": 96.5,
+            "key": "1M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 5588,
+            "title": "Afrobeat Jam",
+            "artist": "Tony Allen",
+            "bpm": 106,
+            "key": "3D",
+            "year": 2012,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 1706,
+            "title": "On Tap",
+            "artist": "kadiata",
+            "bpm": 108,
+            "key": "6M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 695,
-            "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
-            "artist": "Ekambi Brillant,John Talabot,Pional",
-            "bpm": 118.0,
-            "key": "2M",
-            "year": 2012,
-            "has_audio": false,
+            "id": 3307,
+            "title": "Ballie",
+            "artist": "Idris Elba, Kah-Lo",
+            "bpm": 124,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
@@ -19671,56 +18093,48 @@
             "bpm": 116.2,
             "key": "10M",
             "year": 2015,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 3350,
-            "title": "Amos",
-            "artist": "Mulya",
-            "bpm": 116.0,
-            "key": "5M",
-            "year": 2021,
-            "has_audio": false,
+            "id": 3974,
+            "title": "Cry Freedom",
+            "artist": "Romie Singh",
+            "bpm": 120,
+            "key": "11M",
+            "year": 2019,
+            "has_audio": true,
             "bpm_level": 130
           },
-          null,
+          {
+            "id": 4778,
+            "title": "Caminho De Dreyfus (Rebolledo Remix) (Adam Ten 303 Retouch)",
+            "artist": "Red Axes,Abr\u00e3o,Rebolledo,Adam Ten",
+            "bpm": 122,
+            "key": "3D",
+            "year": 2022,
+            "has_audio": true,
+            "bpm_level": 140
+          },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-21",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           null,
           null,
           null,
           null,
-          {
-            "id": 695,
-            "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
-            "artist": "Ekambi Brillant,John Talabot,Pional",
-            "bpm": 118.0,
-            "key": "2M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
-            "key": "8M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 110
-          },
+          null,
+          null,
           {
             "id": 2368,
             "title": "Atomic Bomb",
@@ -19728,117 +18142,165 @@
             "bpm": 116.4,
             "key": "6M",
             "year": 2013,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
-          {
-            "id": 3350,
-            "title": "Amos",
-            "artist": "Mulya",
-            "bpm": 116.0,
-            "key": "5M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 130
-          },
+          null,
           null,
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-22",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
-          null,
           {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
-            "key": "8M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 6198,
+            "title": "Sussussussu",
+            "artist": "Maria Beraldo",
+            "bpm": 100,
+            "key": "11M",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 486,
+            "title": "Candomble - Dreems Remix",
+            "artist": "Thomash",
+            "bpm": 110,
+            "key": "7M",
+            "year": 2016,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 695,
-            "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
-            "artist": "Ekambi Brillant,John Talabot,Pional",
-            "bpm": 118.0,
-            "key": "2M",
-            "year": 2012,
-            "has_audio": false,
+            "id": 1802,
+            "title": "Los Tambores Te Llaman - Casamena Remix",
+            "artist": "Osunlade,Carlos Mena",
+            "bpm": 120,
+            "key": "1M",
+            "year": 2020,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
             "id": 3350,
             "title": "Amos",
             "artist": "Mulya",
-            "bpm": 116.0,
+            "bpm": 116,
             "key": "5M",
             "year": 2021,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
-          null,
-          null,
+          {
+            "id": 1884,
+            "title": "Mama Calling - Tedd Patterson Remix",
+            "artist": "Kiko Navarro,Buika,Tedd Patterson",
+            "bpm": 127,
+            "key": "12M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 6139,
+            "title": "People Of Wakanda",
+            "artist": "Mr Joe",
+            "bpm": 124,
+            "key": "12M",
+            "year": 2023,
+            "has_audio": true,
+            "bpm_level": 140
+          },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-23",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
+          "type": "tree_node",
+          "id": "modern-diaspora-revival__afrobeat-jazz-funk-renaissance",
+          "tree_type": "collection",
+          "name": "Afrobeat Refracted: Mediterranean Studio Craft & Balearic Edits"
         },
         "tracks": [
-          null,
-          null,
-          null,
-          null,
           {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
-            "key": "8M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 100
+            "id": 4248,
+            "title": "Wonama yo ema",
+            "artist": "Falle Nioke,sir Was",
+            "bpm": 75,
+            "key": "4M",
+            "year": 2021,
+            "has_audio": true,
+            "bpm_level": 60
           },
+          {
+            "id": 812,
+            "title": "The Barber",
+            "artist": "Mop Mop,Anthony Joseph",
+            "bpm": 82,
+            "key": "9M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 613,
+            "title": "The Barber",
+            "artist": "Mop Mop,Anthony Joseph",
+            "bpm": 82,
+            "key": "9M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 240,
+            "title": "The Barber",
+            "artist": "Mop Mop,Anthony Joseph",
+            "bpm": 82,
+            "key": "9M",
+            "year": 2014,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          null,
           null,
           {
             "id": 695,
             "title": "Afrika Afrika - John Talabot & Pional 'Lost Scripts' Rerub",
             "artist": "Ekambi Brillant,John Talabot,Pional",
-            "bpm": 118.0,
+            "bpm": 118,
             "key": "2M",
             "year": 2012,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-24",
+        "selectedTrackIndex": 0,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           {
@@ -19848,19 +18310,10 @@
             "bpm": 58.4,
             "key": "7M",
             "year": 2020,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 60
           },
-          {
-            "id": 5088,
-            "title": "Warrior",
-            "artist": "SAULT",
-            "bpm": 89.8,
-            "key": "12D",
-            "year": 2022,
-            "has_audio": false,
-            "bpm_level": 70
-          },
+          null,
           null,
           null,
           null,
@@ -19869,165 +18322,123 @@
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 0
+        ]
       },
       {
         "id": "autoset-slot-25",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
-          null,
           {
-            "id": 386,
+            "id": 5477,
+            "title": "Music Trance",
+            "artist": "Charanga 76",
+            "bpm": 105.8,
+            "key": "2M",
+            "year": 2010,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 1245,
             "title": "Los Tambores Te Llaman - Casamena Remix",
             "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
+            "bpm": 120,
             "key": "1M",
             "year": 2016,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
+            "id": 1967,
+            "title": "Kayamba - Tribal Mix",
+            "artist": "Alex Guesta",
+            "bpm": 123,
+            "key": "7D",
+            "year": 2017,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
             "id": 992,
             "title": "Los Tambores Te Llaman - Casamena Remix",
             "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
+            "bpm": 120,
             "key": "10M",
             "year": 2015,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 5261,
+            "title": "Candomble - Dreems Remix",
+            "artist": "Thomash",
+            "bpm": 110,
+            "key": "7M",
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
-            "id": 1825,
-            "title": "Tummy, Tummy",
-            "artist": "Africaine 808",
-            "bpm": 120.2,
+            "id": 1937,
+            "title": "Mama Calling - Tedd Patterson Remix",
+            "artist": "Kiko Navarro,Buika,Tedd Patterson",
+            "bpm": 127,
             "key": "12M",
-            "year": 2013,
-            "has_audio": false,
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 140
           },
-          {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 6
+          null
+        ]
       },
       {
         "id": "autoset-slot-26",
+        "selectedTrackIndex": 5,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           null,
           null,
           null,
           null,
-          {
-            "id": 3481,
-            "title": "Shepherd Song",
-            "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 100
-          },
+          null,
           {
             "id": 5045,
             "title": "Soul Makossa",
             "artist": "Manu Dibango",
-            "bpm": 115.0,
+            "bpm": 115,
             "key": "12M",
             "year": 2000,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 110
           },
-          {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 386,
-            "title": "Los Tambores Te Llaman - Casamena Remix",
-            "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 3407,
-            "title": "Pari Pari",
-            "artist": "Aili, Transistorcake",
-            "bpm": 121.0,
-            "key": "3M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 5
+          null,
+          null,
+          null,
+          null
+        ]
       },
       {
         "id": "autoset-slot-27",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
@@ -20035,23 +18446,23 @@
           null,
           null,
           {
-            "id": 386,
-            "title": "Los Tambores Te Llaman - Casamena Remix",
-            "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
-            "key": "1M",
-            "year": 2016,
-            "has_audio": false,
+            "id": 3236,
+            "title": "Vou Falar-Lhe Francamente",
+            "artist": "Elizabeth!",
+            "bpm": 115.9,
+            "key": "10M",
+            "year": 2014,
+            "has_audio": true,
             "bpm_level": 100
           },
           {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
+            "id": 2933,
+            "title": "Spending Week - Ron Trent Remix",
+            "artist": "Jungle By Night, Ron Trent",
+            "bpm": 124,
+            "key": "12M",
+            "year": 2020,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
@@ -20061,62 +18472,54 @@
             "bpm": 120.2,
             "key": "12M",
             "year": 2013,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
+            "id": 1972,
+            "title": "Babarabatiri - Alex Guesta Tribal Mix",
+            "artist": "Alex Guesta",
+            "bpm": 124,
+            "key": "8M",
+            "year": 2017,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
+            "id": 1343,
+            "title": "The Latin Track",
+            "artist": "Mel\u00e9",
+            "bpm": 125,
+            "key": "2D",
+            "year": 2015,
+            "has_audio": true,
             "bpm_level": 140
           },
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-28",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
           null,
+          null,
           {
-            "id": 3481,
-            "title": "Shepherd Song",
-            "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
+            "id": 3625,
+            "title": "Snare-Carnevale",
+            "artist": "DEMI",
+            "bpm": 126,
+            "key": "1M",
+            "year": 2015,
             "has_audio": false,
             "bpm_level": 110
           },
@@ -20124,156 +18527,204 @@
             "id": 386,
             "title": "Los Tambores Te Llaman - Casamena Remix",
             "artist": "Osunlade,Carlos Mena",
-            "bpm": 120.0,
+            "bpm": 120,
             "key": "1M",
             "year": 2016,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 1829,
-            "title": "Aye Ata",
-            "artist": "Danvers",
-            "bpm": 124.8,
-            "key": "10D",
-            "year": 2018,
-            "has_audio": false,
-            "bpm_level": 140
-          },
-          {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 6
-      },
-      {
-        "id": "autoset-slot-29",
-        "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
-        },
-        "tracks": [
-          null,
-          null,
-          null,
-          null,
-          {
-            "id": 3481,
-            "title": "Shepherd Song",
-            "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 3307,
-            "title": "Ballie",
-            "artist": "Idris Elba, Kah-Lo",
-            "bpm": 124.0,
-            "key": "11M",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 120
-          },
-          {
-            "id": 1829,
-            "title": "Aye Ata",
-            "artist": "Danvers",
-            "bpm": 124.8,
-            "key": "10D",
-            "year": 2018,
-            "has_audio": false,
+            "id": 1183,
+            "title": "Gidafi Na feat. Asgodom - Red Axes Edit",
+            "artist": "Kino Todo,Tesfit Asgodom,Red Axes",
+            "bpm": 120,
+            "key": "10M",
+            "year": 2017,
+            "has_audio": true,
             "bpm_level": 130
           },
           {
             "id": 4334,
             "title": "Amadoda - Shy One Remix",
             "artist": "She's Drunk,Sho Madjozi,Shy One",
-            "bpm": 126.0,
+            "bpm": 126,
             "key": "3D",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 140
           },
-          {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 150
-          }
-        ],
-        "selectedTrackIndex": 6
+          null
+        ]
       },
       {
-        "id": "autoset-slot-30",
+        "id": "autoset-slot-29",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-2",
-          "name": "Deepening"
+          "type": "tree_node",
+          "id": "afro-diasporic-bass-lagos-rio-johannesburg__afro-warehouse-futurism",
+          "tree_type": "collection",
+          "name": "Afrobeat's Electronic Continuum"
         },
         "tracks": [
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
           {
-            "id": 1181,
-            "title": "Get Up",
-            "artist": "Magic Drum Orchestra",
-            "bpm": 115.0,
+            "id": 2811,
+            "title": "Bora Passear (del\u00edcia Remix)",
+            "artist": "Curumin, Cam\u00f5es, Lucas Alves",
+            "bpm": 87,
+            "key": "12M",
+            "year": 2020,
+            "has_audio": true,
+            "bpm_level": 70
+          },
+          {
+            "id": 437,
+            "title": "La Diaspora (feat. Zap Mama)",
+            "artist": "Nitty Scott,Zap Mama",
+            "bpm": 100,
+            "key": "7M",
+            "year": 2016,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 697,
+            "title": "Bai\u00e3o Destemperado",
+            "artist": "Barbatuques",
+            "bpm": 95.7,
+            "key": "6M",
+            "year": 2013,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 1470,
+            "title": "All Night",
+            "artist": "Romare",
+            "bpm": 106.4,
+            "key": "12D",
+            "year": 2015,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 2863,
+            "title": "Ariya",
+            "artist": "Tony Allen",
+            "bpm": 117.8,
             "key": "8M",
+            "year": 2011,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 3307,
+            "title": "Ballie",
+            "artist": "Idris Elba, Kah-Lo",
+            "bpm": 124,
+            "key": "11M",
             "year": 2019,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
+      },
+      {
+        "id": "autoset-slot-30",
+        "selectedTrackIndex": 6,
+        "source": {
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__organic-sun-ritual",
+          "tree_type": "collection",
+          "name": "Afro-House Mysticism: Global Sunset Ritual"
+        },
+        "tracks": [
+          null,
+          null,
+          {
+            "id": 5054,
+            "title": "Pachangon 2",
+            "artist": "Kike Harvey",
+            "bpm": 98.5,
+            "key": "8M",
+            "year": 1993,
+            "has_audio": true,
+            "bpm_level": 80
+          },
+          {
+            "id": 748,
+            "title": "Yamaha - Asa Moto Remix",
+            "artist": "Aleksandir,ASA MOTO",
+            "bpm": 110,
+            "key": "10M",
+            "year": 2018,
+            "has_audio": true,
+            "bpm_level": 90
+          },
+          {
+            "id": 711,
+            "title": "Gengis - Asa Moto Remix",
+            "artist": "Polo & Pan,ASA MOTO",
+            "bpm": 120,
+            "key": "10D",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 100
+          },
+          {
+            "id": 6231,
+            "title": "La Pampara (Mystic Bill Remix)",
+            "artist": "ELO, Mystic Bill",
+            "bpm": 124,
+            "key": "9D",
+            "year": 2023,
+            "has_audio": true,
+            "bpm_level": 110
+          },
+          {
+            "id": 1181,
+            "title": "Get Up",
+            "artist": "Magic Drum Orchestra",
+            "bpm": 115,
+            "key": "8M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 120
+          },
+          {
+            "id": 4112,
+            "title": "She's Out There - Local Artist Cult Mix",
+            "artist": "Klein Zage,Local Artist",
+            "bpm": 125,
+            "key": "7M",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 130
+          },
+          {
+            "id": 3388,
+            "title": "Womanhood",
+            "artist": "Klein Zage",
+            "bpm": 120,
+            "key": "5D",
+            "year": 2019,
+            "has_audio": true,
+            "bpm_level": 140
+          },
+          null
+        ]
       },
       {
         "id": "autoset-slot-31",
+        "selectedTrackIndex": 3,
         "source": {
-          "type": "autoset",
-          "id": "act-0",
-          "name": "Foundation"
+          "type": "tree_node",
+          "id": "70s-source-code__pan-african-spiritual-groove",
+          "tree_type": "collection",
+          "name": "Polyrhythmic Diaspora: Afrobeat's Global Conversation"
         },
         "tracks": [
           null,
@@ -20286,7 +18737,7 @@
             "bpm": 89.8,
             "key": "12D",
             "year": 2022,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 90
           },
           null,
@@ -20295,39 +18746,31 @@
           null,
           null,
           null
-        ],
-        "selectedTrackIndex": 3
+        ]
       },
       {
         "id": "autoset-slot-32",
+        "selectedTrackIndex": 6,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
           null,
+          null,
           {
-            "id": 5307,
-            "title": "Bra",
-            "artist": "Cymande",
-            "bpm": 118.2,
-            "key": "12M",
-            "year": 1972,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
+            "id": 3407,
+            "title": "Pari Pari",
+            "artist": "Aili, Transistorcake",
+            "bpm": 121,
+            "key": "3M",
+            "year": 2021,
+            "has_audio": true,
             "bpm_level": 110
           },
           {
@@ -20337,102 +18780,66 @@
             "bpm": 124.8,
             "key": "10D",
             "year": 2018,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 120
           },
-          {
-            "id": 1495,
-            "title": "Haki",
-            "artist": "Mim Suleiman",
-            "bpm": 130.0,
-            "key": "4M",
-            "year": 2012,
-            "has_audio": false,
-            "bpm_level": 130
-          },
-          {
-            "id": 4334,
-            "title": "Amadoda - Shy One Remix",
-            "artist": "She's Drunk,Sho Madjozi,Shy One",
-            "bpm": 126.0,
-            "key": "3D",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 140
-          },
+          null,
+          null,
           null
-        ],
-        "selectedTrackIndex": 6
+        ]
       },
       {
         "id": "autoset-slot-33",
+        "selectedTrackIndex": 7,
         "source": {
-          "type": "autoset",
-          "id": "act-3",
-          "name": "Culmination"
+          "type": "tree_node",
+          "id": "south-african-tribal-matrix__tribal-warehouse-ceremony",
+          "tree_type": "collection",
+          "name": "Ancestral Frequencies: Afro-House's Sacred Warehouse Rituals"
         },
         "tracks": [
           null,
           null,
           null,
           null,
-          {
-            "id": 3481,
-            "title": "Shepherd Song",
-            "artist": "Keleketla!, Coldcut, Tony Allen, Nono Nkoane, Thabang Tabane, Gally Ngoveni, Sibusile Xaba, Afla Sackey, Antibalas",
-            "bpm": 120.0,
-            "key": "12M",
-            "year": 2020,
-            "has_audio": false,
-            "bpm_level": 100
-          },
-          {
-            "id": 3407,
-            "title": "Pari Pari",
-            "artist": "Aili, Transistorcake",
-            "bpm": 121.0,
-            "key": "3M",
-            "year": 2021,
-            "has_audio": false,
-            "bpm_level": 110
-          },
-          {
-            "id": 1971,
-            "title": "Afrika",
-            "artist": "De Gama",
-            "bpm": 126.0,
-            "key": "12M",
-            "year": 2011,
-            "has_audio": false,
-            "bpm_level": 120
-          },
+          null,
+          null,
+          null,
           {
             "id": 1495,
             "title": "Haki",
             "artist": "Mim Suleiman",
-            "bpm": 130.0,
+            "bpm": 130,
             "key": "4M",
             "year": 2012,
-            "has_audio": false,
+            "has_audio": true,
             "bpm_level": 130
           },
-          {
-            "id": 4334,
-            "title": "Amadoda - Shy One Remix",
-            "artist": "She's Drunk,Sho Madjozi,Shy One",
-            "bpm": 126.0,
-            "key": "3D",
-            "year": 2019,
-            "has_audio": false,
-            "bpm_level": 140
-          },
+          null,
           null
-        ],
-        "selectedTrackIndex": 7
+        ]
+      },
+      {
+        "id": "slot-1773409842235-o515",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
+        "id": "slot-1773409842235-062b",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
+      },
+      {
+        "id": "slot-1773409842235-e6b4",
+        "selectedTrackIndex": null,
+        "source": null,
+        "tracks": []
       }
     ],
     "created_at": "2026-02-18T21:07:11.703073+00:00",
-    "updated_at": "2026-02-18T21:07:11.703079+00:00"
+    "updated_at": "2026-03-13T13:51:56.096560+00:00"
   },
   "cbe768ae": {
     "id": "cbe768ae",

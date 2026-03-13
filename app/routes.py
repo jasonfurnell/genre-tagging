@@ -33,6 +33,10 @@ from app.playlist import (
     generate_seed_suggestions, generate_intersection_suggestions,
     rerank_tracks, export_m3u, export_csv, import_m3u,
 )
+from app.dedup import (
+    find_duplicate_groups, pick_winners, execute_cleanup,
+    dedup_dataframe,
+)
 from app.tree import (
     build_collection_tree, expand_tree_from_ungrouped,
     build_curated_collection,
@@ -400,6 +404,9 @@ def upload():
     if "comment" not in df.columns:
         df["comment"] = ""
 
+    # Deduplicate on upload — keep richest row per (artist, title)
+    df, dupes_removed = dedup_dataframe(df)
+
     # Stop any running tagging
     _state["stop_flag"].set()
     _state["df"] = df
@@ -413,7 +420,9 @@ def upload():
     _autosave()
     _save_last_upload_meta()
 
-    return jsonify(_summary())
+    result = _summary()
+    result["duplicates_removed"] = dupes_removed
+    return jsonify(result)
 
 
 # ---------------------------------------------------------------------------
@@ -3144,9 +3153,9 @@ def set_workshop_refill_bpm():
             tree = _resolve_tree(tree_type) if src_type == "tree_node" else None
 
             # Resolve source track pool
-            if src_type == "adhoc":
+            if src_type in ("adhoc", "autoset"):
                 pool_ids = [t["id"] for t in tracks if t and t.get("id") is not None]
-                # Auto-expand single-track adhoc via collection leaf
+                # Auto-expand single-track pool via collection leaf
                 if len(pool_ids) <= 1:
                     coll_tree = _resolve_tree("collection")
                     leaf = find_leaf_for_track(coll_tree, anchor_id)
@@ -3947,3 +3956,101 @@ def chat_clear():
 def chat_stop():
     _state["chat_stop_flag"].set()
     return jsonify({"stopped": True})
+
+
+# ---------------------------------------------------------------------------
+# Library Deduplication
+# ---------------------------------------------------------------------------
+
+@api.route("/api/library/duplicates")
+def library_duplicates():
+    """Preview duplicate groups in the current library."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No library loaded"}), 400
+
+    groups = find_duplicate_groups(df)
+    if not groups:
+        return jsonify({"duplicate_groups": [], "total_duplicates": 0})
+
+    picks = pick_winners(df, groups)
+
+    # Build JSON-safe preview
+    preview = []
+    for pick in picks:
+        group_tracks = []
+        all_ids = [pick["winner"]] + pick["losers"]
+        for idx in all_ids:
+            row = df.loc[idx]
+            group_tracks.append({
+                "id": int(idx),
+                "artist": _safe_val(row.get("artist", "")),
+                "title": _safe_val(row.get("title", "")),
+                "comment": _safe_val(row.get("comment", "")),
+                "location": _safe_val(row.get("location", "")),
+                "bpm": _safe_val(row.get("bpm", "")),
+                "key": _safe_val(row.get("key", "")),
+                "year": _safe_val(row.get("year", "")),
+                "is_winner": idx == pick["winner"],
+            })
+        preview.append({
+            "winner": pick["winner"],
+            "tracks": group_tracks,
+            "location_conflict": pick["location_conflict"],
+        })
+
+    total_dupes = sum(len(p["losers"]) for p in picks)
+    return jsonify({
+        "duplicate_groups": preview,
+        "total_duplicates": total_dupes,
+        "total_groups": len(preview),
+        "location_conflicts": sum(1 for p in preview if p["location_conflict"]),
+    })
+
+
+@api.route("/api/library/deduplicate", methods=["POST"])
+def library_deduplicate():
+    """Execute deduplication on the current library."""
+    df = _state["df"]
+    if df is None:
+        return jsonify({"error": "No library loaded"}), 400
+
+    # Allow caller to override winners
+    body = request.get_json(silent=True) or {}
+    overrides = body.get("winner_overrides", {})
+
+    groups = find_duplicate_groups(df)
+    picks = pick_winners(df, groups)
+
+    # Apply any user overrides (winner_overrides: {group_index: winner_id})
+    for idx_str, winner_id in overrides.items():
+        idx = int(idx_str)
+        if 0 <= idx < len(picks):
+            pick = picks[idx]
+            all_ids = [pick["winner"]] + pick["losers"]
+            if winner_id in all_ids:
+                pick["losers"] = [i for i in all_ids if i != winner_id]
+                pick["winner"] = winner_id
+
+    result = execute_cleanup(df, picks)
+
+    if result["status"] == "no_duplicates":
+        return jsonify({"status": "no_duplicates", "removed": 0})
+
+    # Update in-memory state
+    _state["df"] = result["new_df"]
+    _state["_analysis_cache"] = None
+    _state["_chord_cache"] = None
+    _state["_preview_cache"] = {}
+
+    # Save updated CSV
+    _autosave()
+
+    return jsonify({
+        "status": "ok",
+        "removed": result["removed"],
+        "kept": result["kept"],
+        "duplicate_groups": result["duplicate_groups"],
+        "location_conflicts": result["location_conflicts"],
+        "remap_results": result["remap_results"],
+    })

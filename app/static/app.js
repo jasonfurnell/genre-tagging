@@ -26,7 +26,6 @@ let intersectionsInitialized = false;
 let workshopInitialized = false;
 let tracksInitialized = false;
 let treeInitialized = false;
-let setBuilderInitialized = false;
 let autosetInitialized = false;
 let chatInitialized = false;
 
@@ -649,13 +648,14 @@ async function uploadFile(file) {
             return;
         }
         updateSummary(data);
+        if (data.duplicates_removed > 0) {
+            showToast(`Removed ${data.duplicates_removed} duplicate tracks on upload`);
+        }
         await loadTracks();
         toolbar.classList.remove("hidden");
         summary.classList.remove("hidden");
         $("#unified-header").classList.remove("hidden");
-        if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
-        if (typeof initDanceTab === "function") initDanceTab();
-        if (typeof refreshDance === "function") refreshDance();
+        if (typeof initSetBuilder === "function") initSetBuilder();
         checkAndWarmArtworkCache();
     } catch (err) {
         alert("Upload error: " + err.message);
@@ -897,16 +897,27 @@ async function resetSettings() {
 }
 
 // ── Mode + Tab Switching ──────────────────────────────────
-// Mode tabs double as navigation: clicking "DANCE MODE" switches to dance mode
-// AND navigates to the Dance page. Sub-tabs are filtered per mode.
 const MODE_SUB_TABS = {
     dance: ["sets", "tree", "chat"],
     dj:    ["sets", "tagger", "intersections", "workshop", "tracks", "tree", "phases", "autoset", "chat"],
 };
 const MODE_HOME_TAB = { dance: "dance", dj: "setbuilder" };
 
-let _currentMode = localStorage.getItem("gt-mode") || "dance";
+const TAB_LABELS = {
+    dance: "Dance", setbuilder: "Workshop", sets: "Sets", tagger: "Tagger",
+    intersections: "Intersections", workshop: "Playlists", tracks: "Tracks",
+    tree: "Trees", phases: "Phases", autoset: "Auto Set", chat: "Chat",
+};
+
+let _currentMode = "dance";  // Always start on Booty Shaker; mode persists only within session
 let _activeTab = "dance";
+
+function _updateModeToggleUI() {
+    const track = document.getElementById("mode-toggle-track");
+    if (!track) return;
+    track.classList.toggle("dance", _currentMode === "dance");
+    track.classList.toggle("dj", _currentMode === "dj");
+}
 
 function switchTab(target) {
     const previousTab = _activeTab;
@@ -919,36 +930,51 @@ function switchTab(target) {
         localStorage.setItem("gt-mode", mode);
     }
 
-    // Show/hide sub-tabs for current mode
-    const visibleSubs = new Set(MODE_SUB_TABS[_currentMode]);
-    $$(".tab-btn").forEach(btn => {
-        if (btn.dataset.mode) {
-            // Mode buttons: always visible
-            btn.style.display = "";
-        } else {
-            btn.style.display = visibleSubs.has(btn.dataset.tab) ? "" : "none";
-        }
+    _updateModeToggleUI();
+
+    // Update active highlight in hamburger menu
+    $$(".hamburger-item[data-tab]").forEach(item => {
+        item.classList.toggle("active", item.dataset.tab === target);
     });
 
-    // Active highlight: only ONE tab is red at a time
-    $$(".tab-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === target);
+    // Show/hide context-sensitive hamburger items
+    const setBuilderActions = ["set-save-btn", "set-save-as-btn", "set-search-btn",
+        "set-export-btn", "set-refill-btn"];
+    setBuilderActions.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = (target === "setbuilder" && id !== "set-save-btn") ? "" : "none";
     });
+    const chatClearBtn = document.getElementById("chat-clear-btn");
+    if (chatClearBtn) chatClearBtn.style.display = target === "chat" ? "" : "none";
 
-    // Show correct tab content + controls
+    // Show correct tab content
     $$(".tab-content").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-${target}`));
-    $$(".tab-controls").forEach(tc => tc.classList.toggle("hidden", tc.id !== `tab-controls-${target}`));
 
     // Close chat drawer when leaving chat tab
     if (target !== "chat" && typeof _chatCloseDrawer === "function" && typeof _chatDrawerOpen !== "undefined" && _chatDrawerOpen) {
         _chatCloseDrawer();
     }
 
-    // Dance ↔ Workshop seamless switching (shared playback)
+    // Dance ↔ Workshop seamless switching (shared playback + drawer)
     if (target === "dance") {
         if (typeof startDance === "function") startDance();
+        // Switch to base drawer if audio is playing
+        if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+            if (typeof closeDrawer === "function" && typeof setDrawerOpen !== "undefined" && setDrawerOpen) closeDrawer();
+            if (typeof baseDrawerOpen !== "undefined" && !baseDrawerOpen && typeof transitionToBaseDrawer === "function") {
+                // Open base drawer directly (side drawer already closed above)
+                baseDrawerOpen = true;
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
+                document.getElementById("base-drawer").classList.add("open");
+                if (typeof syncBaseDrawer === "function") syncBaseDrawer();
+            }
+        }
     } else if (previousTab === "dance" && target === "setbuilder") {
         if (typeof stopDanceVisuals === "function") stopDanceVisuals();
+        // Switch from base drawer to side drawer if audio is playing
+        if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+            if (typeof baseDrawerOpen !== "undefined" && baseDrawerOpen && typeof closeBaseDrawer === "function") closeBaseDrawer();
+        }
     } else if (previousTab === "dance") {
         if (typeof stopDancePlayback === "function") stopDancePlayback();
     }
@@ -958,33 +984,92 @@ function switchTab(target) {
     if (target === "workshop" && !workshopInitialized) { workshopInitialized = true; if (typeof initWorkshop === "function") initWorkshop(); }
     if (target === "tracks" && !tracksInitialized) { tracksInitialized = true; if (typeof initTracks === "function") initTracks(); }
     if (target === "tree" && !treeInitialized) { treeInitialized = true; if (typeof initTree === "function") initTree(); }
-    if (target === "setbuilder" && !setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
+    if (target === "setbuilder") {
+        if (typeof initSetBuilder === "function") initSetBuilder(); // idempotent via internal guard
+        // Ensure now-playing side drawer is open when landing on Workshop during playback
+        if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+            if (typeof setDrawerOpen !== "undefined" && !setDrawerOpen && typeof openDrawer === "function") {
+                openDrawer("now-playing", null);
+            }
+        }
+    }
     if (target === "phases" && !phasesInitialized) { if (typeof initPhasesTab === "function") initPhasesTab(); }
     if (target === "sets") { if (typeof initSetsTab === "function") initSetsTab(); if (typeof loadSetsList === "function") loadSetsList(); }
     if (target === "autoset" && !autosetInitialized) { autosetInitialized = true; if (typeof initAutoSetTab === "function") initAutoSetTab(); }
     if (target === "chat" && !chatInitialized) { chatInitialized = true; if (typeof initChatTab === "function") initChatTab(); }
 }
 
-$$(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const target = btn.dataset.tab;
-        // Mode button click: always navigate to the mode's home tab
-        if (btn.dataset.mode) {
-            switchTab(MODE_HOME_TAB[btn.dataset.mode]);
-        } else {
-            switchTab(target);
+// ── Hamburger menu ────────────────────────────────────────
+const _hamburgerBtn = document.getElementById("hamburger-btn");
+const _hamburgerMenu = document.getElementById("hamburger-menu");
+
+function _toggleHamburger() {
+    _hamburgerMenu.classList.toggle("hidden");
+}
+function _closeHamburger() {
+    _hamburgerMenu.classList.add("hidden");
+}
+
+_hamburgerBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    _toggleHamburger();
+});
+
+// Close menu when clicking outside
+document.addEventListener("click", (e) => {
+    if (!_hamburgerMenu.contains(e.target) && e.target !== _hamburgerBtn) {
+        _closeHamburger();
+    }
+});
+
+// Hamburger menu item clicks (only items with data-tab navigate)
+$$(".hamburger-item[data-tab]").forEach(item => {
+    item.addEventListener("click", () => {
+        const target = item.dataset.tab;
+        // Auto-switch mode if needed
+        if (target === "dance") {
+            _currentMode = "dance";
+            localStorage.setItem("gt-mode", "dance");
+        } else if (target === "setbuilder") {
+            _currentMode = "dj";
+            localStorage.setItem("gt-mode", "dj");
         }
+        switchTab(target);
+        _closeHamburger();
     });
 });
 
-// Apply saved mode on load
-switchTab(MODE_HOME_TAB[_currentMode]);
+// Action items in hamburger (save, search, etc.) close menu on click
+$$(".hamburger-item[data-action]").forEach(item => {
+    item.addEventListener("click", () => _closeHamburger());
+});
 
-// ── Initialize grid on page load ────────────────────────────
-initGrid();
+// ── Mode toggle switch ────────────────────────────────────
+document.getElementById("mode-toggle-track").addEventListener("click", (e) => {
+    // Determine which side was clicked
+    const track = document.getElementById("mode-toggle-track");
+    const rect = track.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const half = rect.width / 2;
+    const clickedMode = clickX < half ? "dance" : "dj";
 
-// ── Auto-restore last session on refresh ────────────────────
-(async function tryRestore() {
+    // Only switch if clicking the other side
+    if (clickedMode !== _currentMode) {
+        _currentMode = clickedMode;
+        localStorage.setItem("gt-mode", clickedMode);
+        switchTab(MODE_HOME_TAB[clickedMode]);
+    }
+});
+
+// ── Boot sequence (called from inline script after all JS files load) ────
+async function boot() {
+    // 1. Init AG Grid (cheap, just creates empty grid)
+    initGrid();
+
+    // 2. Show saved mode's home tab (lazy inits fire for that tab)
+    switchTab(MODE_HOME_TAB[_currentMode]);
+
+    // 3. Restore session data from autosave
     try {
         const res = await fetch("/api/restore");
         const data = await res.json();
@@ -994,13 +1079,13 @@ initGrid();
             toolbar.classList.remove("hidden");
             summary.classList.remove("hidden");
             $("#unified-header").classList.remove("hidden");
-            if (!setBuilderInitialized) { setBuilderInitialized = true; if (typeof initSetBuilder === "function") initSetBuilder(); }
-            if (typeof initDanceTab === "function") initDanceTab();
-            if (typeof refreshDance === "function") refreshDance();
+            // Always init SetBuilder — it's the playback engine (audio + set state)
+            // needed by Dance tab's Play button even when not on Workshop tab
+            if (typeof initSetBuilder === "function") await initSetBuilder();
             checkAndWarmArtworkCache();
         }
     } catch (_) { /* no autosave available */ }
-})();
+}
 
 // ── Dropbox Integration ─────────────────────────────────────
 let dropboxConnected = false;
@@ -1072,3 +1157,158 @@ async function disconnectDropbox() {
 }
 
 checkDropboxStatus();
+
+// ── Toast notifications ─────────────────────────────────────
+function showToast(msg, duration = 4000) {
+    const el = document.createElement("div");
+    el.className = "toast-msg";
+    el.textContent = msg;
+    document.body.appendChild(el);
+    requestAnimationFrame(() => el.classList.add("show"));
+    setTimeout(() => {
+        el.classList.remove("show");
+        setTimeout(() => el.remove(), 300);
+    }, duration);
+}
+
+// ── Library Dedup Modal ─────────────────────────────────────
+let _dedupData = null;
+
+document.getElementById("dedup-btn")?.addEventListener("click", async () => {
+    // Close hamburger menu
+    document.getElementById("hamburger-menu")?.classList.add("hidden");
+    const modal = document.getElementById("dedup-modal");
+    const summaryEl = document.getElementById("dedup-summary");
+    const groupsEl = document.getElementById("dedup-groups");
+    const confirmBtn = document.getElementById("dedup-confirm");
+
+    summaryEl.innerHTML = "Scanning for duplicates...";
+    groupsEl.innerHTML = "";
+    confirmBtn.disabled = true;
+    modal.classList.remove("hidden");
+
+    try {
+        const res = await fetch("/api/library/duplicates");
+        const data = await res.json();
+        _dedupData = data;
+
+        if (!data.duplicate_groups || data.duplicate_groups.length === 0) {
+            summaryEl.innerHTML = "No duplicates found in your library.";
+            return;
+        }
+
+        summaryEl.innerHTML = `
+            <strong>${data.total_duplicates}</strong> duplicate tracks in
+            <strong>${data.total_groups}</strong> groups will be merged.
+            ${data.location_conflicts > 0
+                ? `<span class="dedup-warning">${data.location_conflicts} group(s) have different file locations — review below.</span>`
+                : ""}
+        `;
+
+        // Render groups
+        groupsEl.innerHTML = data.duplicate_groups.map((group, gi) => {
+            const rows = group.tracks.map(t => {
+                const isWinner = t.is_winner;
+                const comment = t.comment ? t.comment.substring(0, 80) + (t.comment.length > 80 ? "..." : "") : "(no comment)";
+                return `
+                    <label class="dedup-row ${isWinner ? "dedup-winner" : "dedup-loser"}">
+                        <input type="radio" name="dedup-group-${gi}" value="${t.id}"
+                               ${isWinner ? "checked" : ""}>
+                        <span class="dedup-row-info">
+                            <span class="dedup-row-meta">${t.bpm || "?"} BPM · ${t.key || "?"} · ${t.year || "?"}</span>
+                            <span class="dedup-row-comment">${comment}</span>
+                            ${group.location_conflict ? `<span class="dedup-row-location">${t.location || "(no location)"}</span>` : ""}
+                        </span>
+                        <span class="dedup-badge">${isWinner ? "KEEP" : "REMOVE"}</span>
+                    </label>
+                `;
+            }).join("");
+            return `
+                <div class="dedup-group ${group.location_conflict ? "dedup-conflict" : ""}">
+                    <div class="dedup-group-title">${group.tracks[0].artist} — ${group.tracks[0].title}
+                        <span class="dedup-group-count">(${group.tracks.length} copies)</span>
+                    </div>
+                    ${rows}
+                </div>
+            `;
+        }).join("");
+
+        // Radio button changes update badges
+        groupsEl.querySelectorAll("input[type=radio]").forEach(radio => {
+            radio.addEventListener("change", () => {
+                const groupDiv = radio.closest(".dedup-group");
+                groupDiv.querySelectorAll(".dedup-row").forEach(row => {
+                    const r = row.querySelector("input[type=radio]");
+                    const badge = row.querySelector(".dedup-badge");
+                    if (r.checked) {
+                        row.classList.add("dedup-winner");
+                        row.classList.remove("dedup-loser");
+                        badge.textContent = "KEEP";
+                    } else {
+                        row.classList.remove("dedup-winner");
+                        row.classList.add("dedup-loser");
+                        badge.textContent = "REMOVE";
+                    }
+                });
+            });
+        });
+
+        confirmBtn.disabled = false;
+    } catch (err) {
+        summaryEl.innerHTML = `Error: ${err.message}`;
+    }
+});
+
+document.getElementById("dedup-cancel")?.addEventListener("click", () => {
+    document.getElementById("dedup-modal").classList.add("hidden");
+    _dedupData = null;
+});
+
+document.getElementById("dedup-confirm")?.addEventListener("click", async () => {
+    const confirmBtn = document.getElementById("dedup-confirm");
+    const summaryEl = document.getElementById("dedup-summary");
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Cleaning...";
+
+    // Collect winner overrides from radio buttons
+    const overrides = {};
+    if (_dedupData) {
+        _dedupData.duplicate_groups.forEach((group, gi) => {
+            const checked = document.querySelector(`input[name="dedup-group-${gi}"]:checked`);
+            if (checked) {
+                const winnerId = parseInt(checked.value);
+                if (winnerId !== group.winner) {
+                    overrides[gi] = winnerId;
+                }
+            }
+        });
+    }
+
+    try {
+        const res = await fetch("/api/library/deduplicate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ winner_overrides: overrides }),
+        });
+        const data = await res.json();
+
+        if (data.status === "no_duplicates") {
+            showToast("No duplicates to remove");
+        } else {
+            showToast(`Removed ${data.removed} duplicates — ${data.kept} tracks remaining`);
+            // Reload tracks to reflect new IDs
+            await loadTracks();
+            const sumRes = await fetch("/api/tracks");
+            const newTracks = await sumRes.json();
+            updateSummary({ total: newTracks.length, tagged: newTracks.filter(t => t.comment && t.comment.trim()).length, untagged: newTracks.filter(t => !t.comment || !t.comment.trim()).length });
+        }
+
+        document.getElementById("dedup-modal").classList.add("hidden");
+    } catch (err) {
+        summaryEl.innerHTML = `Error: ${err.message}`;
+    } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = "Remove Duplicates";
+        _dedupData = null;
+    }
+});

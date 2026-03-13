@@ -417,8 +417,7 @@ function applyToWorkshop() {
     showToast(`Applied "${name}" phase profile`);
 
     // Switch to Set Workshop tab
-    const btn = document.querySelector('.tab-btn[data-tab="setbuilder"]');
-    if (btn) btn.click();
+    if (typeof switchTab === "function") switchTab("setbuilder");
 }
 
 

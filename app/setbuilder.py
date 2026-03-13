@@ -99,6 +99,30 @@ def list_saved_sets():
             and len(sl["tracks"]) > (sl["selectedTrackIndex"] or 0)
             and sl["tracks"][sl["selectedTrackIndex"]] is not None
         )
+        # Extract exemplar tracks (up to 5) + BPM/key ranges
+        exemplars = []
+        bpms = []
+        keys_seen = []
+        for sl in slots:
+            si = sl.get("selectedTrackIndex")
+            if si is None:
+                continue
+            trks = sl.get("tracks") or []
+            if len(trks) <= si or trks[si] is None:
+                continue
+            t = trks[si]
+            if t.get("bpm"):
+                bpms.append(float(t["bpm"]))
+            if t.get("key") and t["key"] not in keys_seen:
+                keys_seen.append(t["key"])
+            if len(exemplars) < 5:
+                exemplars.append({
+                    "artist": t.get("artist", ""),
+                    "title": t.get("title", ""),
+                    "bpm": t.get("bpm"),
+                    "key": t.get("key", ""),
+                })
+
         result.append({
             "id": s["id"],
             "name": s["name"],
@@ -107,6 +131,9 @@ def list_saved_sets():
             "duration_minutes": len(slots) * 3,
             "created_at": s.get("created_at", ""),
             "updated_at": s.get("updated_at", ""),
+            "exemplars": exemplars,
+            "bpm_range": [int(min(bpms)), int(max(bpms))] if bpms else None,
+            "keys": keys_seen[:8],
         })
     return result
 

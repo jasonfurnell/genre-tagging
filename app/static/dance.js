@@ -1,9 +1,8 @@
 /* ── Dance Tab ─────────────────────────────────────────────
-   3 robots in still pose on load, 5-second fade-in.
-   After fade: enters Workshop play mode → base drawer appears.
+   Big Play button on every load. Click → dancers fade in,
+   Full Track playback starts from slot 0.
    BPM sync: robot tempo matches currently playing track.
-   Settings view: gear button navigates to full-page settings with preview robot.
-   Uses the Workshop's base drawer (same bottom drawer across all tabs).
+   Settings view: gear button → full-page settings with preview robot.
    ──────────────────────────────────────────────────────────── */
 (function () {
   "use strict";
@@ -12,11 +11,7 @@
   let _inited = false;
   let _playing = false;
   let _eventsHooked = false;
-
-  // Boot sequence
-  let _bootPhase = "idle";   // "idle" | "fading_in" | "ready"
-  let _fadeCompleted = false;
-  let _fadingOut = false;     // true while fade-out transition is running
+  let _fadingOut = false;
 
   // Settings view
   let _settingsVisible = false;
@@ -40,13 +35,10 @@
     if (_els.performance) _els.performance.classList.add("hidden");
     if (_els.settingsView) _els.settingsView.classList.remove("hidden");
 
-    // Lazy: add preview stage the first time settings opens
     if (!_previewStageAdded && typeof addRobotStage === "function" && _els.previewPanel) {
       addRobotStage(_els.previewPanel, 1.5);
       _previewStageAdded = true;
     }
-
-    // Ensure animation running for preview
     if (typeof startRobotDancer === "function") startRobotDancer();
   }
 
@@ -56,8 +48,6 @@
 
     if (_els.settingsView) _els.settingsView.classList.add("hidden");
     if (_els.performance) _els.performance.classList.remove("hidden");
-
-    // Exit pose preview so performance robots return to dancing
     if (typeof exitRobotPosePreview === "function") exitRobotPosePreview();
   }
 
@@ -76,24 +66,21 @@
     if (_eventsHooked) return;
     _eventsHooked = true;
 
-    // Track change — sync BPM (dancers start from audio 'playing' event, not here)
+    // Track change — sync BPM
     window.addEventListener("playset-track", (e) => {
       _syncBpm(e.detail.track);
     });
 
-    // Audio actually started playing — this is the ONLY place dancers start.
-    // Handles normal playback, autoplay-blocked-then-resumed, and tab switches.
-    if (typeof setAudio !== "undefined" && setAudio) {
-      setAudio.addEventListener("playing", () => {
-        if (!_playing && _bootPhase === "ready" &&
-            typeof isPlaySetMode === "function" && isPlaySetMode()) {
-          _playing = true;
-          _fadeInDancers();
-        }
-      });
-    }
+    // Audio actually started playing — fade in dancers
+    // (uses window event because setAudio may not exist yet at dance init time)
+    window.addEventListener("playset-playing", () => {
+      if (!_playing) {
+        _playing = true;
+        _fadeInDancers();
+      }
+    });
 
-    // Play mode stopped — fade out dancers, then freeze
+    // Playback stopped — fade out dancers
     window.addEventListener("playset-stopped", () => {
       _playing = false;
       _fadeOutDancers();
@@ -109,7 +96,6 @@
 
     function onEnd() {
       robotPanel.removeEventListener("transitionend", onEnd);
-      // Only freeze if we haven't started playing again mid-fade
       if (_fadingOut) {
         if (typeof stopRobotDancer === "function") stopRobotDancer();
         if (typeof stillRobotDancer === "function") stillRobotDancer();
@@ -124,60 +110,28 @@
     const robotPanel = document.getElementById("robot-panel");
     if (!robotPanel) return;
 
-    // Cancel any in-progress fade-out
     if (_fadingOut) _fadingOut = false;
 
-    // Start dancers before fading in so they're already moving as they appear
     if (typeof startRobotDancer === "function") startRobotDancer();
     robotPanel.style.opacity = "1";
   }
 
-  // ── Enter play mode → base drawer appears ──────────────────
-  // Dancers are NOT started here — they start when audio actually plays
-  // (via the 'playing' event listener in _hookWorkshopEvents).
-  function _enterPlayMode() {
-    if (!_hasWorkshopSet()) return;
+  // ── Big Play button handler ─────────────────────────────────
+  function _onPlayClick() {
+    const overlay = document.getElementById("dance-play-overlay");
 
-    // Hide the right-hand drawer so it doesn't flash during the transition
-    const setDrawer = document.getElementById("set-drawer");
-    if (setDrawer) setDrawer.style.visibility = "hidden";
-
-    // Enter play set mode (starts first track, opens right drawer)
-    if (typeof switchMode === "function") switchMode("playset");
-
-    // Verify it actually entered play mode
-    if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
-      // Transition from the (hidden) right drawer to the base drawer
-      setTimeout(() => {
-        if (typeof closeDrawer === "function") closeDrawer();
-        if (setDrawer) setDrawer.style.visibility = "";
-      }, 100);
-    } else {
-      // Restore if play mode wasn't entered
-      if (setDrawer) setDrawer.style.visibility = "";
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════
-  // BOOT SEQUENCE — fade-in → enter play mode → base drawer
-  // ═══════════════════════════════════════════════════════════
-
-  function _onFadeComplete() {
-    if (_fadeCompleted) return; // guard against double-fire
-    _fadeCompleted = true;
-    _bootPhase = "ready";
-
-    // Keep robots hidden — they fade in only when audio actually plays
-    // (via _fadeInDancers triggered by setAudio 'playing' event)
-    const robotPanel = document.getElementById("robot-panel");
-    if (robotPanel) {
-      robotPanel.classList.remove("dance-fade-in");
-      robotPanel.style.opacity = "0";
-      robotPanel.classList.add("dance-live");
+    // Fade out the overlay
+    if (overlay) {
+      overlay.classList.add("fade-out");
+      setTimeout(() => { overlay.style.display = "none"; }, 700);
     }
 
-    _hookWorkshopEvents();
-    _enterPlayMode();
+    // Start Full Track playback from slot 0
+    if (_hasWorkshopSet()) {
+      if (typeof enterPlaySetMode === "function") {
+        enterPlaySetMode();
+      }
+    }
   }
 
   // ═══════════════════════════════════════════════════════════
@@ -204,82 +158,55 @@
     }
 
     // Settings navigation
-    if (_els.settingsBtn) {
-      _els.settingsBtn.addEventListener("click", _openSettings);
-    }
-    if (_els.backBtn) {
-      _els.backBtn.addEventListener("click", _closeSettings);
-    }
+    if (_els.settingsBtn) _els.settingsBtn.addEventListener("click", _openSettings);
+    if (_els.backBtn) _els.backBtn.addEventListener("click", _closeSettings);
 
-    // Show still pose, keep hidden until audio plays
+    // Robots hidden until Play is clicked
     if (typeof stillRobotDancer === "function") stillRobotDancer();
     const robotPanel = document.getElementById("robot-panel");
     if (robotPanel) robotPanel.style.opacity = "0";
 
-    // Wait for set data to load before attempting play mode
-    _bootPhase = "fading_in";
-    setTimeout(_onFadeComplete, 5200);
-  };
+    // Big Play button
+    const playBtn = document.getElementById("dance-play-btn");
+    if (playBtn) playBtn.addEventListener("click", _onPlayClick);
 
-  // ── Called after CSV upload/restore to refresh state ────────
-  window.refreshDance = function () {
-    if (!_inited) return;
-    if (_bootPhase === "ready" && !_playing) {
-      _enterPlayMode();
-    }
-    // If still fading, _enterPlayMode will run when boot reaches "ready"
+    // Hook workshop events early so dancers respond to audio state
+    _hookWorkshopEvents();
   };
 
   // ── Tab Enter ──────────────────────────────────────────────
-
   window.startDance = function () {
     if (!_inited) initDanceTab();
 
-    if (_bootPhase !== "ready") return;
-
-    // If in settings view, just ensure preview robot is running
     if (_settingsVisible) {
       if (typeof startRobotDancer === "function") startRobotDancer();
       return;
     }
 
-    if (typeof isPlaySetMode === "function" && isPlaySetMode()) {
-      // Already in play mode — only start dancers if audio is actually playing
-      if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
-        _playing = true;
-        _fadeInDancers();
-      }
+    // If audio is already playing (user started from Workshop), show dancers
+    if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+      _playing = true;
+      _fadeInDancers();
 
-      // Make sure base drawer is showing (it may have been closed on another tab)
-      const bd = document.getElementById("base-drawer");
-      if (bd && !bd.classList.contains("open")) {
-        if (typeof transitionToBaseDrawer === "function") transitionToBaseDrawer();
+      // Hide the play overlay since music is already going
+      const overlay = document.getElementById("dance-play-overlay");
+      if (overlay) {
+        overlay.classList.add("fade-out");
+        overlay.style.display = "none";
       }
-    } else if (!_playing) {
-      // Not yet in play mode — try to enter
-      _enterPlayMode();
     }
   };
 
   // ── Tab Leave ──────────────────────────────────────────────
-
-  // Full stop: stop robots, but leave workshop audio/base drawer untouched
   window.stopDancePlayback = function () {
     _closeSettings();
     if (typeof stopRobotDancer === "function") stopRobotDancer();
   };
 
-  // Visual-only stop: stop robots, leave audio playing
-  // Used when switching Dance → Workshop (playback continues in Workshop UI)
   window.stopDanceVisuals = function () {
     _closeSettings();
     if (typeof stopRobotDancer === "function") stopRobotDancer();
   };
 
-  // ── Eager init ─────────────────────────────────────────────
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => initDanceTab());
-  } else {
-    initDanceTab();
-  }
+  // Init handled by switchTab("dance") → startDance() → initDanceTab()
 })();

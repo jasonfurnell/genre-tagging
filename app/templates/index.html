@@ -12,56 +12,56 @@
 
 <header id="unified-header" class="unified-header">
     <nav id="tab-bar" class="tab-bar">
-        <button class="tab-btn tab-btn-mode active" data-tab="dance" data-mode="dance">DANCE MODE</button>
-        <button class="tab-btn tab-btn-mode" data-tab="setbuilder" data-mode="dj">DJ WORKSHOP</button>
-        <span class="tab-divider"></span>
-        <button class="tab-btn" data-tab="sets">Sets</button>
-        <button class="tab-btn" data-tab="tagger">Tagger</button>
-        <button class="tab-btn" data-tab="intersections">Intersections</button>
-        <button class="tab-btn" data-tab="workshop">Playlists</button>
-        <button class="tab-btn" data-tab="tracks">Tracks</button>
-        <button class="tab-btn" data-tab="tree">Trees</button>
-        <button class="tab-btn" data-tab="phases">Phases</button>
-        <button class="tab-btn" data-tab="autoset">Auto Set</button>
-        <button class="tab-btn" data-tab="chat">Chat</button>
+        <!-- Hamburger menu (left) -->
+        <div class="hamburger-wrap">
+            <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div id="hamburger-menu" class="hamburger-menu hidden">
+                <div class="hamburger-group-label">Booty Shaker</div>
+                <button class="hamburger-item" data-tab="dance">Dance</button>
+                <button class="hamburger-item" data-tab="sets" data-modes="dance dj">Sets</button>
+                <button class="hamburger-item" data-tab="tree" data-modes="dance dj">Trees</button>
+                <button class="hamburger-item" data-tab="chat" data-modes="dance dj">Chat</button>
+                <div class="hamburger-group-label">DJ Maker</div>
+                <button class="hamburger-item" data-tab="setbuilder">Workshop</button>
+                <button class="hamburger-item" data-tab="tagger">Tagger</button>
+                <button class="hamburger-item" data-tab="intersections">Intersections</button>
+                <button class="hamburger-item" data-tab="workshop">Playlists</button>
+                <button class="hamburger-item" data-tab="tracks">Tracks</button>
+                <button class="hamburger-item" data-tab="phases">Phases</button>
+                <button class="hamburger-item" data-tab="autoset">Auto Set</button>
+                <div class="hamburger-group-label">Tools</div>
+                <div class="hamburger-item hamburger-item--tools">
+                    <span id="set-current-name" class="set-current-name"></span>
+                </div>
+                <button id="set-save-btn" class="hamburger-item" style="display:none;" data-action="save">Save Set</button>
+                <button id="set-save-as-btn" class="hamburger-item" data-action="save-as">Save Set As</button>
+                <button id="set-search-btn" class="hamburger-item" data-action="search">Search Tracks</button>
+                <button id="set-export-btn" class="hamburger-item" data-action="export" disabled>Export M3U8 (Lexicon)</button>
+                <button id="set-refill-btn" class="hamburger-item" data-action="refill" disabled title="Re-fill all BPM rows using current anchor tracks">Refill BPM</button>
+                <button id="chat-clear-btn" class="hamburger-item" data-action="chat-clear">Clear Chat</button>
+                <button id="dedup-btn" class="hamburger-item" data-action="dedup">Clean Library (Remove Duplicates)</button>
+                <div class="hamburger-group-label">Connections</div>
+                <div class="hamburger-item hamburger-item--status">
+                    <span id="dropbox-status-text">Dropbox</span>
+                    <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
+                    <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
+                </div>
+                <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
+            </div>
+        </div>
+
+        <!-- Mode toggle switch (center) -->
+        <div id="mode-toggle" class="mode-toggle">
+            <div class="mode-toggle-track" id="mode-toggle-track">
+                <span class="mode-toggle-option mode-toggle-option--left">Booty Shaker</span>
+                <span class="mode-toggle-option mode-toggle-option--right">DJ Maker</span>
+                <div class="mode-toggle-thumb"></div>
+            </div>
+        </div>
+
     </nav>
-
-    <!-- Tab-specific controls (only active tab's div is visible) -->
-    <div id="tab-controls-dance" class="tab-controls"></div>
-    <div id="tab-controls-setbuilder" class="tab-controls hidden">
-        <span id="set-current-name" class="set-current-name"></span>
-        <button id="set-save-btn" class="hdr-btn hdr-btn-save" style="display:none;">Save</button>
-        <button id="set-save-as-btn" class="hdr-btn hdr-btn-save-as">Save As</button>
-        <span class="hdr-sep"></span>
-        <button id="set-search-btn" class="hdr-btn hdr-btn-search">Search</button>
-        <button id="set-preview-all-btn" class="hdr-btn hdr-btn-preview" disabled>Preview</button>
-        <div class="set-mode-toggle">
-            <button id="set-mode-workshop" class="set-mode-btn active">Workshop</button>
-            <button id="set-mode-playset" class="set-mode-btn" disabled>Play</button>
-        </div>
-        <button id="set-export-btn" class="hdr-btn hdr-btn-export" disabled>Export M3U8 (Lexicon)</button>
-        <button id="set-refill-btn" class="hdr-btn" disabled title="Re-fill all BPM rows using current anchor tracks">Refill BPM</button>
-    </div>
-    <div id="tab-controls-sets" class="tab-controls hidden"></div>
-    <div id="tab-controls-tagger" class="tab-controls hidden"></div>
-    <div id="tab-controls-intersections" class="tab-controls hidden"></div>
-    <div id="tab-controls-workshop" class="tab-controls hidden"></div>
-    <div id="tab-controls-tracks" class="tab-controls hidden"></div>
-    <div id="tab-controls-tree" class="tab-controls hidden"></div>
-    <div id="tab-controls-phases" class="tab-controls hidden"></div>
-    <div id="tab-controls-autoset" class="tab-controls hidden"></div>
-    <div id="tab-controls-chat" class="tab-controls hidden">
-        <button id="chat-clear-btn" class="hdr-btn">Clear</button>
-    </div>
-
-    <div class="hdr-status">
-        <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
-        <div id="dropbox-status" class="dropbox-status">
-            <span id="dropbox-status-text">Dropbox</span>
-            <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
-            <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
-        </div>
-    </div>
 </header>
 
 <main>
@@ -312,6 +312,7 @@
             <h2>Saved Sets</h2>
             <button id="sets-new-btn" class="btn btn-primary btn-sm">New Set</button>
         </div>
+        <div id="sets-stats" class="sets-stats hidden"></div>
         <div id="sets-grid" class="sets-grid">
             <p class="sets-empty">No saved sets yet. Build a set in the Set Workshop and save it.</p>
         </div>
@@ -319,6 +320,10 @@
 
     <!-- ═══ Tab: Dance ═══ -->
     <div id="tab-dance" class="tab-content">
+        <!-- Big Play button overlay (shown on every page load) -->
+        <div id="dance-play-overlay" class="dance-play-overlay">
+            <button id="dance-play-btn" class="dance-play-btn" title="Start Playing">&#9654;</button>
+        </div>
         <!-- VIEW 1: Performance (default) -->
         <div id="dance-performance" class="dance-performance">
             <div id="robot-panel" class="dance-robot-panel"></div>
@@ -572,6 +577,10 @@
                     <button id="now-playing-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
                     <button id="now-playing-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
                 </div>
+                <div class="set-mode-toggle set-mode-toggle--drawer">
+                    <button id="set-mode-playset" class="set-mode-btn active">Full Track</button>
+                    <button id="set-mode-workshop" class="set-mode-btn">Short Preview</button>
+                </div>
                 <div id="now-playing-counter" class="now-playing-counter"></div>
             </div>
         </div>
@@ -606,6 +615,10 @@
                     <span id="base-np-current-time">0:00</span>
                     <span id="base-np-duration">0:00</span>
                 </div>
+            </div>
+            <div class="set-mode-toggle set-mode-toggle--base">
+                <button class="set-mode-btn base-mode-playset active">Full Track</button>
+                <button class="set-mode-btn base-mode-workshop">Short Preview</button>
             </div>
             <div id="base-np-counter" class="base-np-counter"></div>
         </div>
@@ -673,9 +686,27 @@
 <div id="add-to-playlist-modal" class="modal-overlay hidden">
     <div class="modal" style="max-width:400px">
         <h2>Add to Playlist</h2>
+        <div class="atp-create-row">
+            <input type="text" id="atp-new-name" placeholder="New playlist name…" class="atp-new-input">
+            <button id="atp-create-add" class="btn btn-primary btn-sm">Create &amp; Add</button>
+        </div>
+        <div class="atp-divider"><span>or add to existing</span></div>
         <div id="atp-playlist-list" class="atp-playlist-list"></div>
         <div class="modal-actions">
             <button id="atp-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dedup modal -->
+<div id="dedup-modal" class="modal-overlay hidden">
+    <div class="modal" style="max-width:700px; max-height:80vh; display:flex; flex-direction:column;">
+        <h2>Clean Library — Remove Duplicates</h2>
+        <div id="dedup-summary" class="dedup-summary"></div>
+        <div id="dedup-groups" class="dedup-groups" style="overflow-y:auto; flex:1;"></div>
+        <div class="modal-actions">
+            <button id="dedup-cancel" class="btn btn-secondary">Cancel</button>
+            <button id="dedup-confirm" class="btn btn-primary" disabled>Remove Duplicates</button>
         </div>
     </div>
 </div>
@@ -690,5 +721,6 @@
 <script src="/static/dance.js"></script>
 <script src="/static/dancer-drawer.js"></script>
 <script src="/static/chat.js"></script>
+<script>boot();</script>
 </body>
 </html>

@@ -16,18 +16,16 @@ let baseDrawerOpen = false;       // bottom base-drawer state
 // ── Drag State ──
 let setDragTrack = null;          // track being dragged from drawer
 
-// ── Preview All State (30-sec Deezer previews) ──
-let setPlayAllActive = false;
-let setPlayAllIndex = 0;
-let _setPlayAllOnEnded = null;  // current ended listener (for cleanup)
 
-// ── Play Set State (full-track local playback) ──
-let setWorkshopMode = "workshop";  // "workshop" | "playset"
+// ── Playback State ──
+let setWorkshopMode = "playset";  // "workshop" (Short Preview) | "playset" (Full Track)
 let setPlaySetIndex = 0;
 let setPlayGen = 0;    // generation counter to detect stale error events on skip
-let setAudio = null;   // separate Audio element for full-track playback
+let setAudio = null;   // single Audio element for ALL set playback (full + preview)
 let setResumeSlotIdx = -1;  // slot index to resume from after user-stop, -1 = none
 let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllowedError)
+let _previewStartTime = 0;  // start time for 30s Short Preview window
+const PREVIEW_DURATION = 30; // seconds for Short Preview mode
 
 function isPlaySetMode() { return setWorkshopMode === "playset"; }
 
@@ -102,18 +100,25 @@ async function initSetBuilder() {
     // Toolbar buttons
     document.getElementById("set-save-btn").addEventListener("click", saveCurrentSet);
     document.getElementById("set-save-as-btn").addEventListener("click", saveSetAs);
-    document.getElementById("set-preview-all-btn").addEventListener("click", togglePreviewAll);
+    // Mode toggle in side drawer
     document.getElementById("set-mode-workshop").addEventListener("click", () => switchMode("workshop"));
     document.getElementById("set-mode-playset").addEventListener("click", () => switchMode("playset"));
+    // Mode toggle in base drawer (mirror)
+    document.querySelector(".base-mode-workshop").addEventListener("click", () => switchMode("workshop"));
+    document.querySelector(".base-mode-playset").addEventListener("click", () => switchMode("playset"));
     document.getElementById("set-export-btn").addEventListener("click", exportSet);
     document.getElementById("set-refill-btn").addEventListener("click", refillAllBpm);
 
-    // Play Set: dedicated Audio element (separate from previewAudio)
+    // Single Audio element for all set playback (Full Track + Short Preview)
     setAudio = new Audio();
     setAudio.volume = 0.7;
     setAudio.addEventListener("timeupdate", updatePlaySetProgress);
     setAudio.addEventListener("ended", onPlaySetTrackEnded);
     setAudio.addEventListener("error", onPlaySetTrackError);
+    // Broadcast playing event so dance tab can react (setAudio doesn't exist at dance init time)
+    setAudio.addEventListener("playing", () => {
+        window.dispatchEvent(new CustomEvent("playset-playing"));
+    });
 
     // Now Playing controls
     document.getElementById("now-playing-play-pause").addEventListener("click", togglePlaySetPause);
@@ -170,18 +175,31 @@ async function initSetBuilder() {
     // Keyboard
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-            if (isPlaySetMode()) exitPlaySetMode();
-            else if (setResumeSlotIdx >= 0) {
-                setResumeSlotIdx = -1;
-                if (baseDrawerOpen) closeBaseDrawer();
-            }
+            if (!setAudio.paused) stopPlayback();
             else if (setDrawerOpen) closeDrawer();
-            else if (setPlayAllActive) stopSetPreviewAll();
         }
     });
 
     // Load saved state or init empty grid
     await loadSavedSetState();
+
+    // Pre-select slot 0 and prepare now-playing info (no audio yet)
+    const firstSlot = findNextPlaySetSlot(0);
+    if (firstSlot >= 0) {
+        setPlaySetIndex = firstSlot;
+        const slot = setSlots[firstSlot];
+        const track = slot.tracks[slot.selectedTrackIndex];
+        if (track) {
+            // Populate now-playing drawer with slot 0 info
+            updateNowPlayingDrawer(track, firstSlot);
+            // If landing directly on setbuilder tab, open the drawer
+            const currentTab = document.querySelector(".tab-content:not(.hidden)");
+            if (currentTab && currentTab.id === "tab-setbuilder") {
+                openDrawer("now-playing", null);
+            }
+        }
+    }
+    updateModeToggleUI();
 }
 
 
@@ -430,6 +448,25 @@ async function loadSetsList() {
     }
 }
 
+function renderSetsStats(sets) {
+    const el = document.getElementById("sets-stats");
+    if (!el) return;
+    if (sets.length === 0) { el.classList.add("hidden"); return; }
+    el.classList.remove("hidden");
+
+    const totalTracks = sets.reduce((n, s) => n + (s.track_count || 0), 0);
+    const totalMin = sets.reduce((n, s) => n + (s.duration_minutes || 0), 0);
+    const durH = Math.floor(totalMin / 60);
+    const durM = totalMin % 60;
+    const durStr = durH > 0 ? `${durH}h ${durM}m` : `${durM}m`;
+
+    el.innerHTML = [
+        { v: sets.length, l: "Sets" },
+        { v: totalTracks, l: "Total Tracks" },
+        { v: durStr, l: "Total Duration" },
+    ].map(s => `<div class="sets-stat"><div class="sets-stat-value">${s.v}</div><div class="sets-stat-label">${s.l}</div></div>`).join("");
+}
+
 function renderSetsGrid(sets) {
     const grid = document.getElementById("sets-grid");
     if (!grid) return;
@@ -437,6 +474,9 @@ function renderSetsGrid(sets) {
 
     // Remove old cards
     grid.querySelectorAll(".set-card").forEach(el => el.remove());
+
+    // Stats bar
+    renderSetsStats(sets);
 
     if (sets.length === 0) {
         if (emptyMsg) emptyMsg.classList.remove("hidden");
@@ -456,19 +496,60 @@ function renderSetsGrid(sets) {
             ? new Date(s.updated_at).toLocaleDateString()
             : "";
 
+        // Build tags
+        let tagsHtml = "";
+        if (s.bpm_range) {
+            tagsHtml += `<span class="set-tag set-tag-bpm">${s.bpm_range[0]}-${s.bpm_range[1]} BPM</span>`;
+        }
+        if (s.keys && s.keys.length) {
+            const keyStr = s.keys.length > 4 ? s.keys.slice(0, 4).join(", ") + "..." : s.keys.join(", ");
+            tagsHtml += `<span class="set-tag set-tag-key">${escHtml(keyStr)}</span>`;
+        }
+        tagsHtml += `<span class="set-tag set-tag-dur">${durStr}</span>`;
+        if (dateStr) {
+            tagsHtml += `<span class="set-tag set-tag-date">${dateStr}</span>`;
+        }
+
+        // Build exemplar tracks
+        let exHtml = "";
+        if (s.exemplars && s.exemplars.length) {
+            const rows = s.exemplars.map(t => `
+                <div class="set-example-track">
+                    <img class="set-example-art" data-artist="${escHtml(t.artist || "")}" data-title="${escHtml(t.title || "")}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+                    <div class="set-example-info">
+                        <div class="set-example-title">${escHtml(t.title || "")}</div>
+                        <div class="set-example-artist">${escHtml(t.artist || "")}</div>
+                    </div>
+                </div>
+            `).join("");
+            exHtml = `<div class="set-card-examples"><div class="set-card-examples-title">Tracks</div>${rows}</div>`;
+        }
+
         card.innerHTML = `
-            <div class="set-card-name">${escHtml(s.name)}</div>
-            <div class="set-card-meta">
-                <span>${s.track_count} tracks</span>
-                <span>${durStr}</span>
-                <span>${dateStr}</span>
+            <div class="set-card-header">
+                <div class="set-card-name">${escHtml(s.name)}</div>
+                <span class="set-card-badge">${s.track_count} tracks</span>
             </div>
+            <div class="set-card-tags">${tagsHtml}</div>
+            ${exHtml}
             <div class="set-card-actions">
                 <button class="btn btn-sm btn-secondary set-card-load">Load</button>
                 <button class="btn btn-sm btn-secondary set-card-export" title="Export M3U8 (Lexicon)">Export</button>
                 <button class="btn btn-sm btn-danger set-card-delete" title="Delete">&times;</button>
             </div>
         `;
+
+        // Load artwork for exemplar tracks
+        card.querySelectorAll(".set-example-art").forEach(img => {
+            const artist = img.dataset.artist;
+            const title = img.dataset.title;
+            if (artist || title) {
+                fetch(`/api/artwork?artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}`)
+                    .then(r => r.json())
+                    .then(data => { if (data.url) img.src = data.url; })
+                    .catch(() => {});
+            }
+        });
 
         card.querySelector(".set-card-load").addEventListener("click", (e) => {
             e.stopPropagation();
@@ -579,15 +660,8 @@ function renderSet() {
 
 function updateToolbarState() {
     const hasSelection = setSlots.some(s => s.selectedTrackIndex != null && s.tracks[s.selectedTrackIndex]);
-    const hasAudioTracks = setSlots.some(s => {
-        if (s.selectedTrackIndex == null) return false;
-        const t = s.tracks[s.selectedTrackIndex];
-        return t && t.has_audio;
-    });
-    document.getElementById("set-preview-all-btn").disabled = !hasSelection || isPlaySetMode();
-    document.getElementById("set-mode-playset").disabled = !hasAudioTracks;
     document.getElementById("set-export-btn").disabled = !hasSelection;
-    document.getElementById("set-refill-btn").disabled = !hasSelection || isPlaySetMode();
+    document.getElementById("set-refill-btn").disabled = !hasSelection;
 }
 
 
@@ -1207,16 +1281,13 @@ function renderPreviewRow() {
 
         if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
             const track = slot.tracks[slot.selectedTrackIndex];
+            const si = setSlots.indexOf(slot);
             const btn = document.createElement("button");
             btn.className = "btn-preview";
             btn.title = "Play 30s preview";
             btn.textContent = "\u25B6";
-            btn.dataset.artist = track.artist || "";
-            btn.dataset.title = track.title || "";
             btn.addEventListener("click", () => {
-                if (typeof togglePreview === "function") {
-                    togglePreview(track.artist, track.title, btn);
-                }
+                if (track.has_audio) playSlotPreview(si);
             });
             cell.appendChild(btn);
         }
@@ -1261,19 +1332,14 @@ function onTrackClick(slotId, trackIdx) {
         scheduleAutoSave();
     }
 
-    if (isPlaySetMode()) {
-        // Play Set mode: jump full-track playback to this slot
-        if (track.has_audio) playFullTrack(si);
+    // Play the track respecting current mode (Full Track or Short Preview)
+    // playSlot also opens the drawer and updates now-playing info
+    if (track.has_audio) {
+        playSlot(si);
     } else {
-        // Workshop mode: play/toggle 30-sec Deezer preview
-        if (typeof togglePreview === "function") {
-            const btn = getSlotPreviewBtn(si);
-            if (btn) togglePreview(track.artist, track.title, btn);
-        }
-        // If preview-all active, redirect to this slot
-        if (setPlayAllActive && !wasSelected) {
-            previewTrackAt(si);
-        }
+        // No audio — just show track info in drawer
+        openDrawer("now-playing", null);
+        updateNowPlayingDrawer(track, si);
     }
 }
 
@@ -1307,8 +1373,8 @@ function handleSlotControl(slotId, action) {
             // If we deleted the playing slot, advance to next playable
             if (wasCurrent) {
                 const next = findNextPlaySetSlot(Math.min(setPlaySetIndex, setSlots.length - 1));
-                if (next >= 0) playFullTrack(next);
-                else exitPlaySetMode();
+                if (next >= 0) playSlot(next);
+                else stopPlayback();
             }
             break;
         }
@@ -2082,132 +2148,7 @@ async function refillAllBpm() {
 // Preview All (30-sec Deezer previews)
 // ═══════════════════════════════════════════════════════════════════════════
 
-function togglePreviewAll() {
-    if (setPlayAllActive) {
-        stopSetPreviewAll();
-    } else {
-        previewAllSet();
-    }
-}
-
-function previewAllSet() {
-    // Stop Play Set if active
-    if (isPlaySetMode()) exitPlaySetMode();
-
-    setPlayAllActive = true;
-    setPlayAllIndex = 0;
-    document.getElementById("set-preview-all-btn").textContent = "Stop";
-
-    // Find first slot with a selected track
-    const first = findNextPreviewableSlot(0);
-    if (first >= 0) {
-        previewTrackAt(first);
-    } else {
-        stopSetPreviewAll();
-    }
-}
-
-function findNextPreviewableSlot(fromIdx) {
-    for (let i = fromIdx; i < setSlots.length; i++) {
-        const slot = setSlots[i];
-        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-async function previewTrackAt(idx) {
-    if (!setPlayAllActive || idx >= setSlots.length) {
-        stopSetPreviewAll();
-        return;
-    }
-
-    setPlayAllIndex = idx;
-
-    // Skip empty slots
-    const slot = setSlots[idx];
-    if (!slot || slot.selectedTrackIndex == null || !slot.tracks[slot.selectedTrackIndex]) {
-        const next = findNextPreviewableSlot(idx + 1);
-        if (next >= 0) previewTrackAt(next);
-        else stopSetPreviewAll();
-        return;
-    }
-
-    // Highlight column
-    document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
-    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
-    if (col) {
-        col.classList.add("play-all-active");
-        col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
-
-    const track = slot.tracks[slot.selectedTrackIndex];
-    const btn = getSlotPreviewBtn(idx);
-
-    // Clean up previous ended listener, then attach a new one
-    if (typeof previewAudio !== "undefined" && previewAudio) {
-        if (_setPlayAllOnEnded) {
-            previewAudio.removeEventListener("ended", _setPlayAllOnEnded);
-            previewAudio.removeEventListener("error", _setPlayAllOnEnded);
-        }
-        const onEnded = () => {
-            previewAudio.removeEventListener("ended", onEnded);
-            previewAudio.removeEventListener("error", onEnded);
-            _setPlayAllOnEnded = null;
-            if (setPlayAllActive) {
-                const next = findNextPreviewableSlot(idx + 1);
-                if (next >= 0) previewTrackAt(next);
-                else stopSetPreviewAll();
-            }
-        };
-        _setPlayAllOnEnded = onEnded;
-        previewAudio.addEventListener("ended", onEnded);
-        previewAudio.addEventListener("error", onEnded);
-    }
-
-    // Play
-    if (typeof togglePreview === "function" && btn) {
-        togglePreview(track.artist, track.title, btn);
-    } else {
-        // No preview available, skip after short delay
-        setTimeout(() => {
-            if (setPlayAllActive) {
-                const next = findNextPreviewableSlot(idx + 1);
-                if (next >= 0) previewTrackAt(next);
-                else stopSetPreviewAll();
-            }
-        }, 500);
-    }
-}
-
-function stopSetPreviewAll() {
-    setPlayAllActive = false;
-    document.getElementById("set-preview-all-btn").textContent = "Preview";
-    document.querySelectorAll(".set-column.play-all-active").forEach(el => el.classList.remove("play-all-active"));
-
-    // Clean up ended listener
-    if (typeof previewAudio !== "undefined" && previewAudio && _setPlayAllOnEnded) {
-        previewAudio.removeEventListener("ended", _setPlayAllOnEnded);
-        previewAudio.removeEventListener("error", _setPlayAllOnEnded);
-        _setPlayAllOnEnded = null;
-    }
-
-    // Stop audio
-    if (typeof previewAudio !== "undefined" && previewAudio && !previewAudio.paused) {
-        previewAudio.pause();
-        previewAudio.currentTime = 0;
-    }
-
-    // Reset any playing preview buttons
-    if (typeof resetAllPreviewButtons === "function") {
-        resetAllPreviewButtons();
-    }
-    document.querySelectorAll(".btn-preview.playing").forEach(btn => {
-        btn.textContent = "\u25B6";
-        btn.classList.remove("playing");
-    });
-}
+// Preview All removed — Short Preview mode IS "preview all"
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2215,96 +2156,60 @@ function stopSetPreviewAll() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function switchMode(mode) {
-    if (mode === "playset" && isPlaySetMode()) {
-        // Already in Play Mode — reopen the Now Playing drawer
-        openDrawer("now-playing", null);
-        return;
-    }
-    if (mode === setWorkshopMode) {
-        // Already in target mode — but clear resume state if user chose Workshop explicitly
-        if (mode === "workshop" && setResumeSlotIdx >= 0) {
-            setResumeSlotIdx = -1;
-            if (baseDrawerOpen) closeBaseDrawer();
-        }
-        return;
-    }
-    if (mode === "playset") enterPlaySetMode();
-    else exitPlaySetMode();
-}
+    if (mode === setWorkshopMode) return; // already in target mode
 
-function updateModeToggleUI() {
-    const workshopBtn = document.getElementById("set-mode-workshop");
-    const playsetBtn  = document.getElementById("set-mode-playset");
-    workshopBtn.classList.toggle("active", setWorkshopMode === "workshop");
-    playsetBtn.classList.toggle("active",  setWorkshopMode === "playset");
-}
-
-function enterPlaySetMode() {
-    // Stop preview if playing
-    if (setPlayAllActive) stopSetPreviewAll();
-    if (typeof previewAudio !== "undefined" && !previewAudio.paused) {
-        previewAudio.pause();
-        previewAudio.currentTime = 0;
-    }
-    if (typeof resetAllPreviewButtons === "function") resetAllPreviewButtons();
-
-    setWorkshopMode = "playset";
-    setPlaySetIndex = 0;
+    const currentIdx = setPlaySetIndex;
+    setWorkshopMode = mode;
     updateModeToggleUI();
     updateToolbarState();
 
-    // Open drawer in now-playing mode
-    openDrawer("now-playing", null);
-
-    // Start energy line animation
-    startEnergyLineAnim();
-
-    // Use resume position if available, otherwise start from 0
-    const startFrom = setResumeSlotIdx >= 0 ? setResumeSlotIdx : 0;
-    setResumeSlotIdx = -1;
-
-    const first = findNextPlaySetSlot(startFrom);
-    console.log("Play Set: first playable slot =", first, "(startFrom=" + startFrom + ")",
-        "| slots with has_audio:", setSlots.filter(s =>
-            s.selectedTrackIndex != null && s.tracks[s.selectedTrackIndex]?.has_audio
-        ).length);
-    if (first >= 0) {
-        playFullTrack(first);
-    } else if (startFrom > 0) {
-        // Resume position exhausted — try from beginning
-        const retry = findNextPlaySetSlot(0);
-        if (retry >= 0) {
-            playFullTrack(retry);
-        } else {
-            console.warn("Play Set: no tracks with has_audio found");
-            exitPlaySetMode();
-        }
-    } else {
-        console.warn("Play Set: no tracks with has_audio found");
-        exitPlaySetMode();
+    // Continue playback from current position in the new mode
+    const idx = findNextPlaySetSlot(currentIdx >= 0 ? currentIdx : 0);
+    if (idx >= 0) {
+        playSlot(idx);
     }
 }
 
-function exitPlaySetMode(opts) {
-    const userStop = opts && opts.userStop === true;
+function updateModeToggleUI() {
+    const isWorkshop = setWorkshopMode === "workshop";
+    // Side drawer toggle
+    const workshopBtn = document.getElementById("set-mode-workshop");
+    const playsetBtn  = document.getElementById("set-mode-playset");
+    workshopBtn.classList.toggle("active", isWorkshop);
+    playsetBtn.classList.toggle("active", !isWorkshop);
+    // Base drawer toggle (mirror)
+    const baseWs = document.querySelector(".base-mode-workshop");
+    const basePl = document.querySelector(".base-mode-playset");
+    if (baseWs) baseWs.classList.toggle("active", isWorkshop);
+    if (basePl) basePl.classList.toggle("active", !isWorkshop);
+}
 
-    // Save or clear resume position
-    if (userStop) {
-        setResumeSlotIdx = setPlaySetIndex;
-    } else {
-        setResumeSlotIdx = -1;
+// Start playing from slot 0 in Full Track mode (used by startup/dance boot)
+function enterPlaySetMode() {
+    setAudio.pause();
+    _previewStartTime = 0;
+    setWorkshopMode = "playset";
+    updateModeToggleUI();
+    updateToolbarState();
+    startEnergyLineAnim();
+
+    // Start from slot 0 (playSlot handles drawer opening)
+    const first = findNextPlaySetSlot(0);
+    if (first >= 0) {
+        playSlot(first);
     }
+}
 
-    setWorkshopMode = "workshop";
+// Stop all playback and clean up visual state
+function stopPlayback() {
     setAutoplayBlocked = false;
-    setPlayGen++;  // invalidate any pending error handlers
+    setPlayGen++;
     if (setAudio) {
         setAudio.pause();
         setAudio.currentTime = 0;
         setAudio.src = "";
     }
-    updateModeToggleUI();
-    updateToolbarState();
+    _previewStartTime = 0;
     stopEnergyLineAnim();
     removeAllEqOverlays();
     document.querySelectorAll(".set-column.play-set-active").forEach(
@@ -2324,59 +2229,41 @@ function exitPlaySetMode(opts) {
     document.getElementById("base-np-duration").textContent = "0:00";
     document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
 
-    // Close right drawer if in now-playing mode
-    if (setDrawerMode === "now-playing") {
-        setDrawerOpen = false;
-        setDrawerTargetSlotId = null;
-        setDrawerMode = null;
-        document.getElementById("set-drawer").classList.remove("open");
-        const tab = document.getElementById("tab-setbuilder");
-        if (tab) tab.classList.remove("drawer-open");
-    }
-
-    // Base drawer: keep open on user-stop (shows play button), close on natural end
-    if (!userStop && baseDrawerOpen) closeBaseDrawer();
-
     // Notify Dance tab
     window.dispatchEvent(new CustomEvent("playset-stopped"));
 }
 
-// Lightweight re-entry from base drawer (no right drawer, stays compact)
-function resumePlaySet() {
-    if (setResumeSlotIdx < 0) return;
-
-    setWorkshopMode = "playset";
+// Legacy alias — still called from some places
+function exitPlaySetMode(opts) {
+    stopPlayback();
+    setWorkshopMode = "workshop";
     updateModeToggleUI();
     updateToolbarState();
-    startEnergyLineAnim();
-
-    const target = findNextPlaySetSlot(setResumeSlotIdx);
-    setResumeSlotIdx = -1;
-
-    if (target >= 0) {
-        playFullTrack(target);
-    } else {
-        // Resume position exhausted — try from beginning
-        const first = findNextPlaySetSlot(0);
-        if (first >= 0) {
-            playFullTrack(first);
-        } else {
-            exitPlaySetMode();
-        }
-    }
 }
+
 
 function syncPlaySetIndex(slotId) {
     const idx = setSlots.findIndex(s => s.id === slotId);
     if (idx >= 0) setPlaySetIndex = idx;
 }
 
-function findNextPlaySetSlot(fromIdx) {
+function findNextPlaySetSlot(fromIdx, wrap = true) {
+    // Search forward from fromIdx
     for (let i = fromIdx; i < setSlots.length; i++) {
         const slot = setSlots[i];
         if (slot.selectedTrackIndex != null) {
             const track = slot.tracks[slot.selectedTrackIndex];
             if (track && track.has_audio) return i;
+        }
+    }
+    // Wrap around to beginning if enabled
+    if (wrap && fromIdx > 0) {
+        for (let i = 0; i < fromIdx; i++) {
+            const slot = setSlots[i];
+            if (slot.selectedTrackIndex != null) {
+                const track = slot.tracks[slot.selectedTrackIndex];
+                if (track && track.has_audio) return i;
+            }
         }
     }
     return -1;
@@ -2448,13 +2335,34 @@ function removeAllEqOverlays() {
     document.querySelectorAll(".set-eq-overlay").forEach(el => el.remove());
 }
 
+// Central dispatch: play slot respecting current mode
+function playSlot(idx) {
+    // Choose drawer based on current tab: dance mode → base drawer, DJ mode → side drawer
+    const isDanceTab = !document.getElementById("tab-dance")?.classList.contains("hidden");
+    if (isDanceTab) {
+        // Dance mode: use bottom base drawer
+        if (!baseDrawerOpen) {
+            baseDrawerOpen = true;
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
+            document.getElementById("base-drawer").classList.add("open");
+        }
+    } else {
+        // DJ mode: use side drawer
+        if (!setDrawerOpen || setDrawerMode !== "now-playing") {
+            openDrawer("now-playing", null);
+        }
+    }
+    if (isPlaySetMode()) {
+        playFullTrack(idx);
+    } else {
+        playSlotPreview(idx);
+    }
+}
+
 async function playFullTrack(idx) {
     const gen = ++setPlayGen;
 
-    if (!isPlaySetMode() || idx < 0 || idx >= setSlots.length) {
-        exitPlaySetMode();
-        return;
-    }
+    if (idx < 0 || idx >= setSlots.length) return;
 
     // Pause current playback before switching source
     setAudio.pause();
@@ -2487,17 +2395,16 @@ async function playFullTrack(idx) {
     // Set audio source to the backend streaming endpoint
     setAudio.src = `/api/audio/${track.id}`;
     setAudio.load();
+    _previewStartTime = 0; // Full track mode — no preview window
     setAudio.play().catch(err => {
         if (gen !== setPlayGen) return; // stale — another track was requested
         if (err.name === 'AbortError') return; // source changed, not a real error
-        console.error("Play Set audio failed:", err);
-        if (!isPlaySetMode()) return;
+        console.error("Playback failed:", err);
 
         // Autoplay blocked by browser — flag it so togglePlaySetPause resumes on click
         if (err.name === 'NotAllowedError') {
-            console.warn("Play Set: autoplay blocked, waiting for user interaction");
+            console.warn("Autoplay blocked, waiting for user interaction");
             setAutoplayBlocked = true;
-            // Update buttons to show play (not pause) since audio isn't actually playing
             document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
             document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
             return;
@@ -2507,8 +2414,6 @@ async function playFullTrack(idx) {
         const next = findNextPlaySetSlot(setPlaySetIndex + 1);
         if (next >= 0) {
             playFullTrack(next);
-        } else {
-            exitPlaySetMode();
         }
     });
 
@@ -2516,6 +2421,79 @@ async function playFullTrack(idx) {
     updateNowPlayingDrawer(track, idx);
 
     // Notify Dance tab of track change
+    window.dispatchEvent(new CustomEvent("playset-track", { detail: { track, idx } }));
+}
+
+// Play a 30-second preview from the middle of the track using backend streaming
+async function playSlotPreview(idx) {
+    const gen = ++setPlayGen;
+
+    if (idx < 0 || idx >= setSlots.length) return;
+
+    setAudio.pause();
+
+    setPlaySetIndex = idx;
+    const slot = setSlots[idx];
+    const track = slot.tracks[slot.selectedTrackIndex];
+    if (!track) return;
+
+    // Highlight column + EQ overlay
+    document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        removeEqOverlay(el);
+        el.classList.remove("play-set-active");
+    });
+    document.querySelectorAll(".set-key-cell.play-set-active").forEach(
+        el => el.classList.remove("play-set-active")
+    );
+    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
+    if (col) {
+        col.classList.add("play-set-active");
+        createEqOverlay(col, track.bpm);
+        col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+    const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
+    if (keyCell) keyCell.classList.add("play-set-active");
+
+    // Update play/pause button
+    document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
+    document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
+
+    // Load track and seek to middle once metadata is available
+    _previewStartTime = 0;
+    setAudio.src = `/api/audio/${track.id}`;
+    setAudio.load();
+
+    // Wait for duration to be known, then seek to middle
+    const onLoaded = () => {
+        setAudio.removeEventListener("loadedmetadata", onLoaded);
+        if (gen !== setPlayGen) return; // stale
+        const dur = setAudio.duration || 0;
+        _previewStartTime = Math.max(0, dur / 2 - PREVIEW_DURATION / 2);
+        setAudio.currentTime = _previewStartTime;
+    };
+    setAudio.addEventListener("loadedmetadata", onLoaded);
+
+    setAudio.play().catch(err => {
+        if (gen !== setPlayGen) return;
+        if (err.name === 'AbortError') return;
+        console.error("Short Preview audio failed:", err);
+
+        if (err.name === 'NotAllowedError') {
+            setAutoplayBlocked = true;
+            document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+            document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
+            return;
+        }
+
+        // Skip to next track on error
+        const next = findNextPlaySetSlot(setPlaySetIndex + 1);
+        if (next >= 0) playSlotPreview(next);
+    });
+
+    // Update Now Playing drawer
+    updateNowPlayingDrawer(track, idx);
+
+    // Notify Dance tab
     window.dispatchEvent(new CustomEvent("playset-track", { detail: { track, idx } }));
 }
 
@@ -2627,62 +2605,64 @@ function loadNowPlayingArtwork(artist, title, imgEl) {
 
 function togglePlaySetPause() {
     if (!setAudio) return;
+
     // Autoplay was blocked — user click resumes playback
-    if (setAutoplayBlocked && isPlaySetMode()) {
+    if (setAutoplayBlocked) {
         setAutoplayBlocked = false;
         document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
         document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
         setAudio.play().catch(() => {});
         return;
     }
-    if (isPlaySetMode()) {
-        // Stop: exit play mode, keep base drawer for resume
-        exitPlaySetMode({ userStop: true });
-    } else if (setResumeSlotIdx >= 0) {
-        // Resume from saved position
-        resumePlaySet();
+
+    if (!setAudio.paused) {
+        // Pause
+        setAudio.pause();
+        document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+        document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
+    } else if (setAudio.src && setAudio.currentTime > 0) {
+        // Resume from current position
+        setAudio.play().catch(() => {});
+        document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
+        document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
+    } else {
+        // Nothing playing yet — start from current slot or slot 0
+        const idx = findNextPlaySetSlot(setPlaySetIndex >= 0 ? setPlaySetIndex : 0);
+        if (idx >= 0) playSlot(idx);
     }
 }
 
 function playSetPrev() {
-    // When stopped with resume, navigate and auto-resume
-    if (!isPlaySetMode() && setResumeSlotIdx >= 0) {
-        const prev = findPrevPlaySetSlot(setResumeSlotIdx - 1);
-        if (prev >= 0) {
-            setResumeSlotIdx = prev;
-            resumePlaySet();
-        }
-        return;
-    }
-    if (!isPlaySetMode()) return;
     const prev = findPrevPlaySetSlot(setPlaySetIndex - 1);
-    if (prev >= 0) playFullTrack(prev);
+    if (prev >= 0) playSlot(prev);
 }
 
 function playSetNext() {
-    // When stopped with resume, navigate and auto-resume
-    if (!isPlaySetMode() && setResumeSlotIdx >= 0) {
-        const next = findNextPlaySetSlot(setResumeSlotIdx + 1);
-        if (next >= 0) {
-            setResumeSlotIdx = next;
-            resumePlaySet();
-        } else {
-            setResumeSlotIdx = -1;
-            if (baseDrawerOpen) closeBaseDrawer();
-        }
-        return;
-    }
-    if (!isPlaySetMode()) return;
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
-    if (next >= 0) {
-        playFullTrack(next);
-    } else {
-        exitPlaySetMode();
-    }
+    if (next >= 0) playSlot(next);
 }
 
 function updatePlaySetProgress() {
     if (!setAudio || !setAudio.duration) return;
+
+    // Short Preview mode: enforce 30s limit, then advance to next slot
+    if (!isPlaySetMode() && _previewStartTime > 0) {
+        const elapsed = setAudio.currentTime - _previewStartTime;
+        if (elapsed >= PREVIEW_DURATION) {
+            onPreviewEnded();
+            return;
+        }
+        // Show progress relative to the 30s preview window
+        const pct = (elapsed / PREVIEW_DURATION) * 100;
+        document.getElementById("now-playing-progress-fill").style.width = pct + "%";
+        document.getElementById("now-playing-current-time").textContent = formatPlaySetTime(elapsed);
+        document.getElementById("now-playing-duration").textContent = formatPlaySetTime(PREVIEW_DURATION);
+        document.getElementById("base-np-progress-fill").style.width = pct + "%";
+        document.getElementById("base-np-current-time").textContent = formatPlaySetTime(elapsed);
+        document.getElementById("base-np-duration").textContent = formatPlaySetTime(PREVIEW_DURATION);
+        return;
+    }
+
     const pct = (setAudio.currentTime / setAudio.duration) * 100;
     document.getElementById("now-playing-progress-fill").style.width = pct + "%";
     document.getElementById("now-playing-current-time").textContent = formatPlaySetTime(setAudio.currentTime);
@@ -2693,6 +2673,12 @@ function updatePlaySetProgress() {
     document.getElementById("base-np-duration").textContent = formatPlaySetTime(setAudio.duration);
 }
 
+// Called when a Short Preview 30s window ends — advance to next slot (with wrap)
+function onPreviewEnded() {
+    const next = findNextPlaySetSlot(setPlaySetIndex + 1);
+    if (next >= 0) playSlotPreview(next);
+}
+
 function formatPlaySetTime(seconds) {
     if (!seconds || isNaN(seconds)) return "0:00";
     const m = Math.floor(seconds / 60);
@@ -2700,30 +2686,30 @@ function formatPlaySetTime(seconds) {
     return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+// Called when setAudio "ended" fires (full track finished naturally)
 function onPlaySetTrackEnded() {
-    if (!isPlaySetMode()) return;
-    const next = findNextPlaySetSlot(setPlaySetIndex + 1);
-    if (next >= 0) {
-        playFullTrack(next);
-    } else {
-        exitPlaySetMode();
+    // In Full Track mode: advance to next slot (with wrap-around)
+    if (isPlaySetMode()) {
+        const next = findNextPlaySetSlot(setPlaySetIndex + 1);
+        if (next >= 0) {
+            playFullTrack(next);
+        }
+        return;
     }
+    // In Short Preview mode: the timeupdate handler (onPreviewEnded) handles advance,
+    // but if the track is shorter than the preview window, ended fires naturally
+    onPreviewEnded();
 }
 
 function onPlaySetTrackError() {
-    if (!isPlaySetMode()) return;
     // If currentTime is 0, this is likely a stale error from an aborted load
     // (changing src aborts the previous fetch and fires an error event).
     // Genuine initial load failures are handled by play().catch() above.
     // Only auto-advance on mid-stream errors where audio was already playing.
     if (setAudio.currentTime === 0) return;
-    console.warn("Play Set: mid-stream audio error, skipping to next track");
+    console.warn("Playback: mid-stream audio error, skipping to next track");
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
-    if (next >= 0) {
-        playFullTrack(next);
-    } else {
-        exitPlaySetMode();
-    }
+    if (next >= 0) playSlot(next);
 }
 
 
@@ -3042,13 +3028,17 @@ function renderSelectedTrack(container, track, collectionLeaf) {
     });
     img.addEventListener("dragend", () => { setDragTrack = null; });
 
-    // 30s Preview button
+    // 30s Preview button — uses backend streaming from middle
     const previewBtn = hero.querySelector(".selected-track-preview-btn");
     previewBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (typeof togglePreview === "function") {
-            togglePreview(track.artist, track.title, previewBtn);
-        }
+        // Find the slot index for this track and play preview
+        const si = setSlots.findIndex(s => {
+            if (s.selectedTrackIndex == null) return false;
+            const t = s.tracks[s.selectedTrackIndex];
+            return t && t.id === track.id;
+        });
+        if (si >= 0 && track.has_audio) playSlotPreview(si);
     });
 
     // Full-track play button
@@ -3059,14 +3049,9 @@ function renderSelectedTrack(container, track, collectionLeaf) {
     const durationEl = hero.querySelector(".selected-track-duration");
 
     playBtn.addEventListener("click", () => {
-        // Stop Play Set if active
-        if (isPlaySetMode()) exitPlaySetMode();
-        // Stop Deezer preview if playing
-        if (typeof previewAudio !== "undefined" && !previewAudio.paused) {
-            previewAudio.pause();
-            previewAudio.currentTime = 0;
-        }
-        if (typeof resetAllPreviewButtons === "function") resetAllPreviewButtons();
+        // Stop any current set playback
+        setAudio.pause();
+        _previewStartTime = 0;
 
         if (!setAudio.paused && setAudio._searchTrackId === track.id) {
             // Pause current

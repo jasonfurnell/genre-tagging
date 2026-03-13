@@ -401,8 +401,7 @@ async function _asOpenInWorkshop() {
     const sourceName = selected?.textContent?.trim() || "Source";
 
     // Switch to Set Workshop tab and load the set
-    const wsBtn = document.querySelector('.tab-btn[data-tab="setbuilder"]');
-    if (wsBtn) wsBtn.click();
+    if (typeof switchTab === "function") switchTab("setbuilder");
 
     // Trigger set load in setbuilder.js (if available)
     if (typeof loadSavedSet === "function") {
