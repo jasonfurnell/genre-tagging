@@ -972,7 +972,9 @@ function switchTab(target) {
     } else if (previousTab === "dance" && target === "setbuilder") {
         if (typeof stopDanceVisuals === "function") stopDanceVisuals();
         // Switch from base drawer to side drawer if audio is playing
-        if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
+        // On mobile: keep base drawer open (side drawer unusable on small screens)
+        const _isMobile = window.matchMedia("(max-width: 768px)").matches;
+        if (!_isMobile && typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
             if (typeof baseDrawerOpen !== "undefined" && baseDrawerOpen && typeof closeBaseDrawer === "function") closeBaseDrawer();
         }
     } else if (previousTab === "dance") {
@@ -986,10 +988,22 @@ function switchTab(target) {
     if (target === "tree" && !treeInitialized) { treeInitialized = true; if (typeof initTree === "function") initTree(); }
     if (target === "setbuilder") {
         if (typeof initSetBuilder === "function") initSetBuilder(); // idempotent via internal guard
-        // Ensure now-playing side drawer is open when landing on Workshop during playback
+        // Ensure now-playing drawer is open when landing on Workshop during playback
+        const _isMobileSB = window.matchMedia("(max-width: 768px)").matches;
         if (typeof setAudio !== "undefined" && setAudio && !setAudio.paused) {
-            if (typeof setDrawerOpen !== "undefined" && !setDrawerOpen && typeof openDrawer === "function") {
-                openDrawer("now-playing", null);
+            if (_isMobileSB) {
+                // Mobile: use base drawer instead of side drawer
+                if (typeof baseDrawerOpen !== "undefined" && !baseDrawerOpen && typeof transitionToBaseDrawer === "function") {
+                    baseDrawerOpen = true;
+                    document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
+                    document.getElementById("base-drawer").classList.add("open");
+                    if (typeof syncBaseDrawer === "function") syncBaseDrawer();
+                }
+            } else {
+                // Desktop: use side drawer
+                if (typeof setDrawerOpen !== "undefined" && !setDrawerOpen && typeof openDrawer === "function") {
+                    openDrawer("now-playing", null);
+                }
             }
         }
     }

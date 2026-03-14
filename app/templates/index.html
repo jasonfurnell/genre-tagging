@@ -589,6 +589,7 @@
 
 <!-- Base Drawer (bottom slide-up, horizontal now-playing) -->
 <div id="base-drawer" class="base-drawer">
+    <!-- Compact bar (always visible) -->
     <div class="base-drawer-panels">
         <!-- Left panel: artwork + track info -->
         <div class="base-drawer-panel base-drawer-left">
@@ -632,6 +633,26 @@
             </div>
             <button id="base-drawer-expand" class="base-drawer-dig-btn">Dig Deeper<br>Open the draw<br>Grab some more</button>
         </div>
+
+        <!-- Mobile expand chevron (between controls and track info via CSS order) -->
+        <button id="base-drawer-chevron" class="base-drawer-chevron" aria-label="Expand player">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12.5L10 7.5L15 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+    </div>
+
+    <!-- Expanded detail (mobile only, hidden by default) -->
+    <div id="base-drawer-detail" class="base-drawer-detail">
+        <div class="base-detail-artwork">
+            <img id="base-detail-artwork-img" class="base-detail-artwork-img" alt="" src="">
+        </div>
+        <div class="base-detail-track-info">
+            <div id="base-detail-title" class="base-detail-title"></div>
+            <div id="base-detail-artist" class="base-detail-artist"></div>
+            <div id="base-detail-meta" class="base-detail-meta"></div>
+            <div id="base-detail-comment" class="base-detail-comment"></div>
+        </div>
+        <div id="base-detail-collection" class="base-detail-collection"></div>
+        <div id="base-detail-also-in" class="base-detail-also-in"></div>
     </div>
 </div>
 

@@ -2338,7 +2338,9 @@
     if (!panel) return;
 
     const wantControls = opts?.showControls !== false;
-    const scale = 2.0;
+    // Responsive scale: on mobile, fit single dancer to ~85% of viewport width
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const scale = isMobile ? Math.min(2.0, (window.innerWidth * 0.85) / VW) : 2.0;
 
     // Row of 3 synced robots
     panel.innerHTML = "";

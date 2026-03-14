@@ -146,6 +146,13 @@ async function initSetBuilder() {
     });
     document.getElementById("base-drawer-expand").addEventListener("click", expandFromBaseDrawer);
     document.getElementById("base-np-source").addEventListener("click", expandFromBaseDrawer);
+    // Mobile: tap track details row to expand, tap detail panel to collapse
+    document.querySelector(".base-drawer-left").addEventListener("click", () => {
+        if (_isMobileView()) toggleBaseDrawerExpanded();
+    });
+    document.getElementById("base-drawer-detail").addEventListener("click", () => {
+        if (_isMobileView()) collapseBaseDrawerExpanded();
+    });
 
     // Drawer source search (debounced)
     let searchTimer = null;
@@ -1338,8 +1345,18 @@ function onTrackClick(slotId, trackIdx) {
         playSlot(si);
     } else {
         // No audio — just show track info in drawer
-        openDrawer("now-playing", null);
-        updateNowPlayingDrawer(track, si);
+        if (_isMobileView()) {
+            if (!baseDrawerOpen) {
+                baseDrawerOpen = true;
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
+                document.getElementById("base-drawer").classList.add("open");
+            }
+            updateNowPlayingDrawer(track, si);
+            syncBaseDrawer();
+        } else {
+            openDrawer("now-playing", null);
+            updateNowPlayingDrawer(track, si);
+        }
     }
 }
 
@@ -1578,8 +1595,11 @@ function transitionToBaseDrawer() {
 
 function closeBaseDrawer() {
     baseDrawerOpen = false;
-    document.getElementById("base-drawer").classList.remove("open");
-    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-open"));
+    const drawer = document.getElementById("base-drawer");
+    drawer.classList.remove("open", "expanded");
+    document.querySelectorAll(".tab-content").forEach(t => {
+        t.classList.remove("base-drawer-open", "base-drawer-expanded");
+    });
 }
 
 function expandFromBaseDrawer() {
@@ -1636,6 +1656,85 @@ function syncBaseDrawer() {
     document.getElementById("base-np-duration").textContent =
         document.getElementById("now-playing-duration").textContent;
 }
+
+
+// ── Mobile Base Drawer: expand/collapse ──
+
+function _isMobileView() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function toggleBaseDrawerExpanded() {
+    const drawer = document.getElementById("base-drawer");
+    const isExpanded = drawer.classList.toggle("expanded");
+    if (isExpanded) {
+        syncBaseDrawerDetail();
+        document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
+    } else {
+        document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+    }
+}
+
+function collapseBaseDrawerExpanded() {
+    const drawer = document.getElementById("base-drawer");
+    drawer.classList.remove("expanded");
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+}
+
+function syncBaseDrawerDetail() {
+    // Copy full detail from the now-playing side drawer into the expanded bottom drawer
+    const title = document.getElementById("now-playing-title").textContent;
+    const artist = document.getElementById("now-playing-artist").textContent;
+    const bpm = document.getElementById("now-playing-bpm").textContent;
+    const key = document.getElementById("now-playing-key").textContent;
+    const year = document.getElementById("now-playing-year").textContent;
+    const comment = document.getElementById("now-playing-comment").textContent;
+    const artSrc = document.getElementById("now-playing-artwork").src;
+
+    document.getElementById("base-detail-title").textContent = title;
+    document.getElementById("base-detail-artist").textContent = artist;
+    document.getElementById("base-detail-meta").textContent =
+        [bpm, key, year].filter(Boolean).join("  \u00b7  ");
+    document.getElementById("base-detail-comment").textContent = comment;
+    if (artSrc) document.getElementById("base-detail-artwork-img").src = artSrc;
+
+    // Collection info
+    const collSrc = document.getElementById("now-playing-collection-leaf");
+    const leafH4 = collSrc.querySelector("h4");
+    const descEl = collSrc.querySelector(".set-search-card-desc");
+    const collEl = document.getElementById("base-detail-collection");
+    if (leafH4) {
+        let html = "<strong>" + leafH4.textContent + "</strong>";
+        if (descEl) {
+            html += "<br><span style='font-size:0.7rem;color:var(--text-muted);'>" +
+                descEl.textContent.replace(/Show (More|Less)/g, "").trim() + "</span>";
+        }
+        collEl.innerHTML = html;
+    } else {
+        collEl.innerHTML = "";
+    }
+
+    // Also in
+    const alsoSrc = document.getElementById("now-playing-also-in");
+    const links = alsoSrc.querySelectorAll(".also-in-link");
+    const alsoEl = document.getElementById("base-detail-also-in");
+    if (links.length) {
+        alsoEl.innerHTML = "<span style='font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;'>Also appears in</span><br>" +
+            Array.from(links).map(l => l.textContent).join(", ");
+    } else {
+        alsoEl.textContent = "";
+    }
+}
+
+// Override expandFromBaseDrawer on mobile: expand in-place instead of opening side drawer
+const _originalExpandFromBaseDrawer = expandFromBaseDrawer;
+expandFromBaseDrawer = function() {
+    if (_isMobileView()) {
+        toggleBaseDrawerExpanded();
+    } else {
+        _originalExpandFromBaseDrawer();
+    }
+};
 
 
 // ── Browse Mode ──
@@ -2337,17 +2436,17 @@ function removeAllEqOverlays() {
 
 // Central dispatch: play slot respecting current mode
 function playSlot(idx) {
-    // Choose drawer based on current tab: dance mode → base drawer, DJ mode → side drawer
+    // Choose drawer: mobile always uses base drawer, desktop uses tab-based logic
     const isDanceTab = !document.getElementById("tab-dance")?.classList.contains("hidden");
-    if (isDanceTab) {
-        // Dance mode: use bottom base drawer
+    const useBaseDrawer = isDanceTab || _isMobileView();
+    if (useBaseDrawer) {
         if (!baseDrawerOpen) {
             baseDrawerOpen = true;
             document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
             document.getElementById("base-drawer").classList.add("open");
         }
     } else {
-        // DJ mode: use side drawer
+        // Desktop DJ mode: use side drawer
         if (!setDrawerOpen || setDrawerMode !== "now-playing") {
             openDrawer("now-playing", null);
         }
