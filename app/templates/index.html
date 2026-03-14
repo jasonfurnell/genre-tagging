@@ -320,9 +320,13 @@
 
     <!-- ═══ Tab: Dance ═══ -->
     <div id="tab-dance" class="tab-content">
-        <!-- Big Play button overlay (shown on every page load) -->
+        <!-- Init sequence overlay (shown on every page load) -->
         <div id="dance-play-overlay" class="dance-play-overlay">
-            <button id="dance-play-btn" class="dance-play-btn" title="Start Playing">&#9654;</button>
+            <div class="dance-init-container">
+                <div id="dance-init-log" class="dance-init-log"></div>
+                <button id="dance-play-btn" class="dance-play-btn hidden" title="Start Playing">&#9654;</button>
+                <div id="dance-init-error" class="dance-init-error hidden"></div>
+            </div>
         </div>
         <!-- VIEW 1: Performance (default) -->
         <div id="dance-performance" class="dance-performance">

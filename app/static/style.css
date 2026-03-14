@@ -4443,11 +4443,70 @@ tr.ws-seed-selected {
     justify-content: center;
     padding-left: 8px; /* optical center for play triangle */
 }
+.dance-play-btn.hidden { display: none; }
 .dance-play-btn:hover {
     background: rgba(29, 185, 84, 0.4);
     border-color: #1db954;
     transform: scale(1.08);
 }
+.dance-play-btn.dance-ready {
+    animation: danceReadyPulse 1.5s ease-in-out infinite;
+}
+@keyframes danceReadyPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); }
+    50% { box-shadow: 0 0 20px 8px rgba(29, 185, 84, 0.25); }
+}
+
+/* Init sequence */
+.dance-init-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 360px;
+    width: 100%;
+}
+.dance-init-log {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+}
+.dance-init-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+}
+.dance-init-step.active {
+    color: rgba(255, 255, 255, 0.85);
+}
+.dance-init-step.done {
+    color: #1db954;
+}
+.dance-init-step.fail {
+    color: #e74c3c;
+}
+.dance-init-step .init-icon {
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.dance-init-step.active .init-icon::after { content: "\25CB"; }  /* ○ */
+.dance-init-step.done .init-icon::after { content: "\2713"; }    /* ✓ */
+.dance-init-step.fail .init-icon::after { content: "\2717"; }    /* ✗ */
+.dance-init-step:not(.active):not(.done):not(.fail) .init-icon::after { content: "\00B7"; } /* · */
+
+.dance-init-error {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+}
+.dance-init-error.hidden { display: none; }
 
 /* Performance view: fills the tab, centers the 3 robots */
 .dance-performance {

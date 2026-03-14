@@ -1,6 +1,6 @@
 /* ── Dance Tab ─────────────────────────────────────────────
-   Big Play button on every load. Click → dancers fade in,
-   Full Track playback starts from slot 0.
+   Init sequence shows real loading steps before Play button.
+   Click → dancers fade in, Full Track playback starts from slot 0.
    BPM sync: robot tempo matches currently playing track.
    Settings view: gear button → full-page settings with preview robot.
    ──────────────────────────────────────────────────────────── */
@@ -12,6 +12,7 @@
   let _playing = false;
   let _eventsHooked = false;
   let _fadingOut = false;
+  let _initRan = false;  // true once init sequence has completed (or failed)
 
   // Settings view
   let _settingsVisible = false;
@@ -135,6 +136,108 @@
   }
 
   // ═══════════════════════════════════════════════════════════
+  // INIT SEQUENCE — step-by-step loading with status messages
+  // ═══════════════════════════════════════════════════════════
+
+  function _addStep(log, label) {
+    const el = document.createElement("div");
+    el.className = "dance-init-step";
+    el.innerHTML = `<span class="init-icon"></span><span>${label}</span>`;
+    log.appendChild(el);
+    return el;
+  }
+
+  function _markStep(el, state) {
+    el.classList.remove("active", "done", "fail");
+    el.classList.add(state);
+  }
+
+  async function _runInitSequence() {
+    if (_initRan) return;
+    _initRan = true;
+
+    const log = document.getElementById("dance-init-log");
+    const playBtn = document.getElementById("dance-play-btn");
+    const errorEl = document.getElementById("dance-init-error");
+    if (!log) return;
+
+    log.innerHTML = "";
+
+    // Step 1: Initialize audio engine
+    const stepAudio = _addStep(log, "Initializing audio engine");
+    _markStep(stepAudio, "active");
+
+    try {
+      // initSetBuilder is idempotent — safe to call if already done
+      if (typeof initSetBuilder === "function") {
+        await initSetBuilder();
+      }
+      _markStep(stepAudio, "done");
+    } catch (e) {
+      console.error("initSetBuilder failed:", e);
+      _markStep(stepAudio, "fail");
+    }
+
+    // Step 2: Load set data
+    const stepSet = _addStep(log, "Loading set data");
+    _markStep(stepSet, "active");
+    // initSetBuilder already called loadSavedSetState, so check if slots loaded
+    const hasSlots = typeof setSlots !== "undefined" && setSlots.length > 0
+      && setSlots.some(s => s.selectedTrackIndex != null);
+    _markStep(stepSet, hasSlots ? "done" : "fail");
+
+    if (!hasSlots) {
+      if (errorEl) {
+        errorEl.textContent = "No set loaded. Build a set in Set Workshop first.";
+        errorEl.classList.remove("hidden");
+      }
+      return;
+    }
+
+    // Step 3: Check audio availability
+    const stepFlags = _addStep(log, "Checking audio availability");
+    _markStep(stepFlags, "active");
+
+    try {
+      if (typeof setAudioFlagsReady !== "undefined" && setAudioFlagsReady) {
+        await setAudioFlagsReady;
+      }
+      _markStep(stepFlags, "done");
+    } catch (e) {
+      console.error("Audio flags check failed:", e);
+      _markStep(stepFlags, "fail");
+    }
+
+    // Step 4: Verify playable tracks
+    const stepPlayable = _addStep(log, "Finding playable tracks");
+    _markStep(stepPlayable, "active");
+
+    const ready = _hasWorkshopSet();
+    _markStep(stepPlayable, ready ? "done" : "fail");
+
+    if (!ready) {
+      if (errorEl) {
+        errorEl.textContent = "No playable tracks found. Check audio files are available.";
+        errorEl.classList.remove("hidden");
+      }
+      return;
+    }
+
+    // Step 5: Prepare dancers
+    const stepDancers = _addStep(log, "Preparing dancers");
+    _markStep(stepDancers, "active");
+    // Small delay so the step is visible before it completes
+    await new Promise(r => setTimeout(r, 200));
+    _markStep(stepDancers, "done");
+
+    // All good — reveal play button
+    if (playBtn) {
+      playBtn.classList.remove("hidden");
+      playBtn.classList.add("dance-ready");
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
   // INIT
   // ═══════════════════════════════════════════════════════════
 
@@ -194,6 +297,18 @@
         overlay.classList.add("fade-out");
         overlay.style.display = "none";
       }
+      return;
+    }
+
+    // Run init sequence (shows loading steps, then reveals play button)
+    if (!_initRan) {
+      // Reset overlay visibility in case of re-entry
+      const overlay = document.getElementById("dance-play-overlay");
+      if (overlay) {
+        overlay.classList.remove("fade-out");
+        overlay.style.display = "";
+      }
+      _runInitSequence();
     }
   };
 

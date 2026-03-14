@@ -24,6 +24,7 @@ let setPlayGen = 0;    // generation counter to detect stale error events on ski
 let setAudio = null;   // single Audio element for ALL set playback (full + preview)
 let setResumeSlotIdx = -1;  // slot index to resume from after user-stop, -1 = none
 let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllowedError)
+let setAudioFlagsReady = null;   // promise resolved when refreshHasAudioFlags completes
 let _previewStartTime = 0;  // start time for 30s Short Preview window
 const PREVIEW_DURATION = 30; // seconds for Short Preview mode
 
@@ -307,7 +308,7 @@ async function loadSavedSetState() {
             ensureBookendSlots();
             renderSet();
             updateSaveButtons();
-            refreshHasAudioFlags();
+            setAudioFlagsReady = refreshHasAudioFlags();
             return;
         }
     } catch (e) {
