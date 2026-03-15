@@ -5388,7 +5388,7 @@ tr.ws-seed-selected {
     }
     .base-detail-artwork-img {
         width: 100%;
-        max-width: 280px;
+        max-width: 140px;
         aspect-ratio: 1;
         border-radius: var(--radius);
         object-fit: cover;
