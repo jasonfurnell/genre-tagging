@@ -255,7 +255,11 @@ def _to_dropbox_path(location):
     return None
 
 def _dropbox_file_exists(dropbox_path):
-    """Check if a file exists in Dropbox, with in-memory caching and timeout."""
+    """Check if a file exists in Dropbox, with in-memory caching.
+
+    Uses a 5s timeout via ThreadPoolExecutor to prevent any single
+    metadata call from hanging the worker.
+    """
     if not dropbox_path:
         return False
     cache = _state.get("_dropbox_exists_cache", {})
@@ -265,8 +269,6 @@ def _dropbox_file_exists(dropbox_path):
     if not dbx:
         return False
     try:
-        # 5s timeout per metadata call — prevents hung init audio checks
-        # without affecting audio streaming (which needs longer)
         from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
         with ThreadPoolExecutor(max_workers=1) as pool:
             future = pool.submit(dbx.files_get_metadata, dropbox_path)
@@ -274,10 +276,8 @@ def _dropbox_file_exists(dropbox_path):
         cache[dropbox_path] = True
     except dropbox.exceptions.ApiError:
         cache[dropbox_path] = False
-    except FuturesTimeout:
-        logging.warning("Dropbox metadata check timed out (5s) for %s", dropbox_path)
-        return False
-    except Exception:
+    except (FuturesTimeout, Exception):
+        # Timeout or network error — don't cache, might work later
         return False
     _state["_dropbox_exists_cache"] = cache
     return cache.get(dropbox_path, False)
@@ -3289,12 +3289,19 @@ def set_workshop_track_context(track_id):
 
 @api.route("/api/set-workshop/check-audio", methods=["POST"])
 def set_workshop_check_audio():
-    """Check which track IDs have playable audio (Dropbox or local)."""
+    """Check which track IDs have playable audio (Dropbox or local).
+
+    Parallelises Dropbox metadata checks (up to 10 concurrent) so a batch
+    of ~200 tracks completes in seconds rather than minutes.
+    """
     df = _state["df"]
     if df is None:
         return jsonify({}), 200
     body = request.get_json() or {}
     track_ids = body.get("track_ids", [])
+
+    # Build work items: (str_id, raw_location)
+    work = []
     result = {}
     for tid in track_ids:
         tid = int(tid)
@@ -3302,7 +3309,21 @@ def set_workshop_check_audio():
             result[str(tid)] = False
             continue
         raw_loc = str(df.loc[tid].get("location", ""))
-        result[str(tid)] = _check_has_audio(raw_loc)
+        work.append((str(tid), raw_loc))
+
+    # Run checks in parallel (I/O-bound Dropbox calls benefit from threads)
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        futures = {
+            pool.submit(_check_has_audio, loc): str_id
+            for str_id, loc in work
+        }
+        for future in as_completed(futures):
+            str_id = futures[future]
+            try:
+                result[str_id] = future.result()
+            except Exception:
+                result[str_id] = False
+
     return jsonify(result)
 
 

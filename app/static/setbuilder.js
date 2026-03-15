@@ -647,21 +647,12 @@ async function deleteSavedSet(setId, setName) {
 }
 
 
-async function refreshHasAudioFlags() {
-    // Collect all unique track IDs across all slots
-    const trackIds = new Set();
-    for (const slot of setSlots) {
-        for (const t of (slot.tracks || [])) {
-            if (t && t.id != null) trackIds.add(t.id);
-        }
-    }
-    if (trackIds.size === 0) return;
-
+async function _checkAudioBatch(trackIds, timeoutMs = 15000) {
+    /**Fetch has_audio flags for a set of track IDs. Returns {id: bool} map.*/
+    if (trackIds.size === 0) return {};
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-        // 15s timeout — Dropbox checks can hang if network is slow
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 15000);
-
         const res = await fetch("/api/set-workshop/check-audio", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -669,24 +660,58 @@ async function refreshHasAudioFlags() {
             signal: controller.signal,
         });
         clearTimeout(timer);
-        if (!res.ok) return;
-        const audioMap = await res.json();
+        if (!res.ok) return {};
+        return await res.json();
+    } catch (e) {
+        clearTimeout(timer);
+        if (e.name === "AbortError") {
+            console.warn(`Audio check timed out (${timeoutMs}ms) for ${trackIds.size} tracks`);
+        } else {
+            console.error("Audio check failed:", e);
+        }
+        return {};
+    }
+}
 
-        // Patch all tracks in all slots
-        for (const slot of setSlots) {
-            for (const t of (slot.tracks || [])) {
-                if (t && t.id != null) {
-                    t.has_audio = !!audioMap[String(t.id)];
-                }
+function _applyAudioMap(audioMap) {
+    /**Patch has_audio flags on all slot tracks from an {id: bool} map.*/
+    for (const slot of setSlots) {
+        for (const t of (slot.tracks || [])) {
+            if (t && t.id != null && String(t.id) in audioMap) {
+                t.has_audio = !!audioMap[String(t.id)];
             }
         }
-        updateToolbarState();
-    } catch (e) {
-        if (e.name === "AbortError") {
-            console.warn("Audio availability check timed out (15s) — skipping");
-        } else {
-            console.error("Failed to refresh has_audio flags:", e);
+    }
+}
+
+async function refreshHasAudioFlags() {
+    // Stage 1: Check only selected tracks (fast — ~40 tracks max)
+    const selectedIds = new Set();
+    const otherIds = new Set();
+    for (const slot of setSlots) {
+        const tracks = slot.tracks || [];
+        for (let i = 0; i < tracks.length; i++) {
+            const t = tracks[i];
+            if (!t || t.id == null) continue;
+            if (i === slot.selectedTrackIndex) {
+                selectedIds.add(t.id);
+            } else {
+                otherIds.add(t.id);
+            }
         }
+    }
+
+    // Stage 1: selected tracks — blocks init
+    const selectedMap = await _checkAudioBatch(selectedIds, 10000);
+    _applyAudioMap(selectedMap);
+    updateToolbarState();
+
+    // Stage 2: remaining tracks — runs in background, doesn't block init
+    if (otherIds.size > 0) {
+        _checkAudioBatch(otherIds, 30000).then(otherMap => {
+            _applyAudioMap(otherMap);
+            updateToolbarState();
+        });
     }
 }
 
