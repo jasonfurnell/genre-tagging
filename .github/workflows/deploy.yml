@@ -81,9 +81,22 @@ jobs:
               -v /data/genre-tagging/config.json:/app/config.json:ro \
               "${IMAGE}"
 
-            # Wait for health check
-            sleep 3
-            docker ps | grep genre-tagging && echo "Deploy successful" || exit 1
+            # Wait for container to pass health check
+            echo "Waiting for health check..."
+            for i in $(seq 1 10); do
+              STATUS=$(docker inspect --format='{{.State.Health.Status}}' genre-tagging 2>/dev/null || echo "starting")
+              echo "  Attempt $i: $STATUS"
+              if [ "$STATUS" = "healthy" ]; then
+                echo "Deploy successful"
+                break
+              fi
+              if [ "$i" = "10" ]; then
+                echo "Health check failed after 10 attempts"
+                docker logs genre-tagging --tail 20
+                exit 1
+              fi
+              sleep 5
+            done
 
             # Clean up old images
             docker image prune -f

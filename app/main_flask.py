@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import time
 from logging.handlers import RotatingFileHandler
 
 # Ensure the project root is on sys.path so `app` package is importable
@@ -13,6 +14,13 @@ from app.routes import api
 app = Flask(__name__)
 app.register_blueprint(api)
 
+# Cache busting: use app startup timestamp as version
+_boot_ts = int(time.time())
+
+@app.context_processor
+def inject_version():
+    return dict(v=_boot_ts)
+
 # --- File-based logging ---
 _log_file = os.path.join(_project_root, "output", "app.log")
 os.makedirs(os.path.dirname(_log_file), exist_ok=True)
@@ -23,6 +31,12 @@ _handler.setFormatter(logging.Formatter(
 ))
 logging.root.addHandler(_handler)
 logging.root.setLevel(logging.DEBUG)
+
+
+@app.route("/healthz")
+def healthz():
+    """Lightweight health check — Docker pings this to detect frozen workers."""
+    return "ok", 200
 
 
 @app.route("/")
