@@ -202,7 +202,9 @@ def _init_dropbox_client(refresh_token):
             oauth2_refresh_token=refresh_token,
             app_key=app_key,
             app_secret=app_secret,
-            timeout=10,  # default timeout — prevents hung token refresh at startup
+            # No global timeout — audio playback (files_get_temporary_link)
+            # needs room to breathe. Startup protection is handled by the
+            # per-call 5s timeout in _dropbox_file_exists() instead.
         )
         _state["_dropbox_client"] = dbx
     except Exception:
