@@ -24,7 +24,7 @@
   // ── Dancer window sizing ─────────────────────────────────
   // Dynamically measures nav bar and bottom drawer to compute
   // the true visible area, then sizes #dancer-window to fit.
-  const DANCER_EXPANDED_H = 200;
+  const DANCER_EXPANDED_H = 300;
 
   function _updateDancerWindow() {
     const win = document.getElementById("dancer-window");
