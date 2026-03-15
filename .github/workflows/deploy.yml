@@ -82,17 +82,19 @@ jobs:
               "${IMAGE}"
 
             # Wait for container to pass health check
+            # Docker HEALTHCHECK: start-period=10s, interval=30s, retries=3
+            # Need ~70s+ for first "healthy" status, so allow up to 2 minutes
             echo "Waiting for health check..."
-            for i in $(seq 1 10); do
+            for i in $(seq 1 24); do
               STATUS=$(docker inspect --format='{{.State.Health.Status}}' genre-tagging 2>/dev/null || echo "starting")
               echo "  Attempt $i: $STATUS"
               if [ "$STATUS" = "healthy" ]; then
                 echo "Deploy successful"
                 break
               fi
-              if [ "$i" = "10" ]; then
-                echo "Health check failed after 10 attempts"
-                docker logs genre-tagging --tail 20
+              if [ "$i" = "24" ]; then
+                echo "Health check failed after 24 attempts (2 minutes)"
+                docker logs genre-tagging --tail 30
                 exit 1
               fi
               sleep 5
