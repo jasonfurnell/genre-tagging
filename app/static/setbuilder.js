@@ -122,7 +122,11 @@ async function initSetBuilder() {
     // Broadcast playing event so dance tab can react (setAudio doesn't exist at dance init time)
     setAudio.addEventListener("playing", () => {
         _clearAutoplayBlockedHint();
+        startEnergyLineAnim();
         window.dispatchEvent(new CustomEvent("playset-playing"));
+    });
+    setAudio.addEventListener("pause", () => {
+        stopEnergyLineAnim();
     });
 
     // Now Playing controls
@@ -980,7 +984,7 @@ function stopEnergyLineAnim() {
 }
 
 function _energyAnimTick() {
-    if (!isPlaySetMode()) { stopEnergyLineAnim(); return; }
+    if (!setAudio || setAudio.paused) { stopEnergyLineAnim(); return; }
 
     const svg = document.getElementById("set-energy-svg");
     if (!svg) { _energyAnimFrame = null; return; }
@@ -2525,7 +2529,6 @@ function enterPlaySetMode() {
     setWorkshopMode = "playset";
     updateModeToggleUI();
     updateToolbarState();
-    startEnergyLineAnim();
 
     // Start from slot 0 (playSlot handles drawer opening)
     const first = findNextPlaySetSlot(0);
