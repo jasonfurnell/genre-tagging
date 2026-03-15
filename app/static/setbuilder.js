@@ -1593,6 +1593,10 @@ function _isMobileView() {
 }
 
 // ── Mobile: vertically center grid in available viewport space ──
+// When the expanded detail drawer is open, cap height at 5 track covers
+// so the selected track sits in the middle with ~2 above and ~2 below.
+const SET_MOBILE_EXPANDED_H = 5 * (SET_IMG + SET_PAD * 2);  // 5 × 56 = 280
+
 function _updateWorkshopGridPosition() {
     const wrapper = document.getElementById("set-grid-wrapper");
     if (!wrapper) return;
@@ -1604,13 +1608,25 @@ function _updateWorkshopGridPosition() {
 
     const nav = document.getElementById("tab-bar");
     const drawer = document.getElementById("base-drawer");
+    const header = document.querySelector(".unified-header");
 
     const navH = nav ? nav.getBoundingClientRect().height : 0;
-    const drawerH = (drawer && drawer.classList.contains("open"))
-        ? drawer.getBoundingClientRect().height : 0;
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    const isExpanded = drawer && drawer.classList.contains("expanded");
 
-    const available = window.innerHeight - navH - drawerH;
-    wrapper.style.height = Math.max(available, 100) + "px";
+    if (isExpanded) {
+        // Fixed 5-cover grid height; drawer fills the remaining space
+        wrapper.style.height = SET_MOBILE_EXPANDED_H + "px";
+        const drawerH = window.innerHeight - headerH - SET_MOBILE_EXPANDED_H;
+        if (drawer) drawer.style.height = Math.max(drawerH, 120) + "px";
+    } else {
+        // Clear explicit drawer height from expanded mode
+        if (drawer) drawer.style.height = "";
+        const drawerH = (drawer && drawer.classList.contains("open"))
+            ? drawer.getBoundingClientRect().height : 0;
+        const available = window.innerHeight - navH - drawerH;
+        wrapper.style.height = Math.max(available, 100) + "px";
+    }
 }
 
 // ── Center view on the selected track image in the active column ──

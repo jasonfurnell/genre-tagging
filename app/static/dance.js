@@ -24,19 +24,35 @@
   // ── Dancer window sizing ─────────────────────────────────
   // Dynamically measures nav bar and bottom drawer to compute
   // the true visible area, then sizes #dancer-window to fit.
+  // 5 track covers high when drawer is expanded (matches workshop grid)
+  const DANCER_EXPANDED_H = 5 * 56;  // 5 × (48img + 8pad) = 280
+
   function _updateDancerWindow() {
     const win = document.getElementById("dancer-window");
     if (!win) return;
 
     const nav = document.getElementById("tab-bar");
     const drawer = document.getElementById("base-drawer");
+    const header = document.querySelector(".unified-header");
 
     const navH = nav ? nav.getBoundingClientRect().height : 0;
-    const drawerH = (drawer && drawer.classList.contains("open"))
-      ? drawer.getBoundingClientRect().height : 0;
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    const isExpanded = drawer && drawer.classList.contains("expanded");
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    const available = window.innerHeight - navH - drawerH;
-    win.style.height = Math.max(available, 100) + "px";
+    let h;
+    if (isExpanded && isMobile) {
+      // Fixed 5-cover height; drawer fills the rest
+      h = DANCER_EXPANDED_H;
+      const drawerH = window.innerHeight - headerH - DANCER_EXPANDED_H;
+      if (drawer) drawer.style.height = Math.max(drawerH, 120) + "px";
+    } else {
+      if (drawer) drawer.style.height = "";
+      const drawerH = (drawer && drawer.classList.contains("open"))
+        ? drawer.getBoundingClientRect().height : 0;
+      h = window.innerHeight - navH - drawerH;
+    }
+    win.style.height = Math.max(h, 100) + "px";
 
     // Scale robot panel to fit within 80% of the dancer window
     const panel = document.getElementById("robot-panel");
@@ -44,7 +60,7 @@
       // Reset scale to measure natural height
       panel.style.transform = "";
       const naturalH = panel.scrollHeight;
-      const maxH = available * 0.8;
+      const maxH = h * 0.8;
       if (naturalH > maxH && naturalH > 0) {
         const s = maxH / naturalH;
         panel.style.transform = `scale(${s})`;

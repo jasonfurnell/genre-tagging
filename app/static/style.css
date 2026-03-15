@@ -5368,11 +5368,17 @@ tr.ws-seed-selected {
     .base-drawer.expanded .base-drawer-detail {
         display: block;
         padding-top: 0.5rem;
-        max-height: 60vh;
+        flex: 1;
+        min-height: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+    }
+    /* Drawer height is set dynamically by JS; use flex column so detail fills it */
+    .base-drawer.expanded {
+        display: flex;
+        flex-direction: column;
     }
 
     /* Detail panel styles */
@@ -5438,7 +5444,8 @@ tr.ws-seed-selected {
         padding-bottom: 140px;
     }
     .tab-content.base-drawer-expanded {
-        padding-bottom: 70vh;
+        /* Drawer height is dynamic (screen − header − grid), pad enough to clear it */
+        padding-bottom: calc(100vh - 280px);
     }
 }
 
