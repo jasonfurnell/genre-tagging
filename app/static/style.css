@@ -5445,7 +5445,7 @@ tr.ws-seed-selected {
     }
     .tab-content.base-drawer-expanded {
         /* Drawer height is dynamic (screen − header − grid), pad enough to clear it */
-        padding-bottom: calc(100vh - 224px);
+        padding-bottom: calc(100vh - 200px);
     }
 }
 

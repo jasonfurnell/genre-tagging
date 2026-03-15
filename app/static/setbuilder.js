@@ -1605,7 +1605,7 @@ function _isMobileView() {
 // ── Mobile: vertically center grid in available viewport space ──
 // When the expanded detail drawer is open, cap height at 5 track covers
 // so the selected track sits in the middle with ~2 above and ~2 below.
-const SET_MOBILE_EXPANDED_H = 4 * (SET_IMG + SET_PAD * 2);  // 4 × 56 = 224
+const SET_MOBILE_EXPANDED_H = 200;
 
 function _updateWorkshopGridPosition() {
     const wrapper = document.getElementById("set-grid-wrapper");
