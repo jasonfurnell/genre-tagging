@@ -2222,82 +2222,6 @@ tr.ws-seed-selected {
     filter: brightness(1.1);
 }
 
-/* -- Slot Headers (source indicator + controls) ------------------------- */
-.set-slot-headers-area {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 18px;
-}
-.set-slot-headers {
-    display: flex;
-    gap: 6px;
-}
-.set-slot-header {
-    width: 56px;
-    text-align: center;
-    min-height: 42px;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-.set-slot-header.drag-over {
-    background: rgba(78,204,163,0.12);
-}
-.set-source-name {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 3px 0;
-    border-radius: 3px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid transparent;
-    line-height: 1.3;
-    margin-bottom: 2px;
-    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-}
-.set-source-name:hover {
-    color: var(--success);
-    background: rgba(78,204,163,0.06);
-    border-color: rgba(78,204,163,0.25);
-}
-.set-add-source-btn {
-    width: 100%;
-    height: 28px;
-    border: 1px dashed var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: inherit;
-    transition: all 0.2s;
-}
-.set-add-source-btn:hover {
-    border-color: var(--success);
-    color: var(--success);
-}
-
-/* -- Source Group (consecutive same-source slots) ----------------------- */
-.set-source-group {
-    cursor: grab;
-    min-height: 42px;
-    text-align: center;
-    position: relative;
-}
-.set-source-group:active {
-    cursor: grabbing;
-}
-.set-source-group .set-group-label {
-    width: 100%;
-    max-width: 100%;
-    border: 1px solid rgba(78, 204, 163, 0.25);
-    background: rgba(78, 204, 163, 0.06);
-}
-
 /* -- Insert Row (circled "+" buttons between source groups) ------------- */
 .set-insert-row-area {
     display: flex;
@@ -2661,22 +2585,6 @@ tr.ws-seed-selected {
     gap: 0.5rem;
     font-size: 0.65rem;
     color: var(--text-muted);
-}
-
-/* -- Preview row -------------------------------------------------------- */
-.set-preview-area {
-    display: flex;
-    align-items: center;
-    margin-top: 2px;
-}
-.set-preview-row {
-    display: flex;
-    gap: 6px;
-}
-.set-preview-cell {
-    width: 56px;
-    display: flex;
-    justify-content: center;
 }
 
 /* -- Time row ----------------------------------------------------------- */
@@ -4600,6 +4508,32 @@ tr.ws-seed-selected {
     padding: 0.5rem 0;
 }
 
+/* ── Autoplay Blocked — enlarged pulsing play button ──── */
+.now-playing-btn-main {
+    transition: width 0.4s ease, height 0.4s ease, font-size 0.4s ease, box-shadow 0.4s ease;
+}
+/* Side drawer: 48→96 */
+.now-playing-buttons .now-playing-btn.autoplay-blocked {
+    width: 96px;
+    height: 96px;
+    font-size: 2.2rem;
+    animation: autoplay-pulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4);
+}
+/* Base drawer: 42→84 */
+.base-np-controls .now-playing-btn.autoplay-blocked {
+    width: 84px;
+    height: 84px;
+    font-size: 1.9rem;
+    animation: autoplay-pulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4);
+}
+@keyframes autoplay-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.5); }
+    50%  { box-shadow: 0 0 0 12px rgba(29, 185, 84, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
+}
+
 /* Performance view: fills the tab, positions the dancer window */
 .dance-performance {
     position: relative;
@@ -4616,6 +4550,11 @@ tr.ws-seed-selected {
     width: 100%;
     overflow: hidden;
     /* height set dynamically by JS */
+}
+
+/* Hide side dancer bodies; keep them in layout so energy waves still animate */
+.robot-side {
+    visibility: hidden;
 }
 
 .dance-robot-panel {
@@ -5282,6 +5221,9 @@ tr.ws-seed-selected {
         --font-size-base: 13px;
     }
 
+    /* Hide workshop track tooltip on mobile */
+    .set-track-tooltip { display: none !important; }
+
     /* Header: shrink mode toggle text */
     .mode-toggle-option { font-size: 11px; }
     .mode-toggle-track { min-width: 160px; }
@@ -5322,14 +5264,26 @@ tr.ws-seed-selected {
     .mode-toggle-option { font-size: 10px; letter-spacing: 0.02em; }
     .mode-toggle-track { min-width: 150px; padding: 3px; }
 
+    /* ── Set Workshop: vertically center grid in available space ── */
+    #tab-setbuilder {
+        padding-top: 0;
+    }
+    .set-grid-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        /* height set dynamically by JS (_updateWorkshopGridPosition) */
+    }
+    .set-grid-scroll {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
     /* ── Dance tab: dancer window height set dynamically by JS ──── */
     .dance-robot-panel {
         transform-origin: center center;
-    }
-    /* Hide side robots, show only center */
-    .robot-sub-panel:first-child,
-    .robot-sub-panel:last-child {
-        display: none;
     }
     .robot-row {
         justify-content: center !important;

@@ -2338,9 +2338,8 @@
     if (!panel) return;
 
     const wantControls = opts?.showControls !== false;
-    // Responsive scale: on mobile, fit single dancer to ~85% of viewport width
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const scale = isMobile ? Math.min(2.0, (window.innerWidth * 0.85) / VW) : 2.0;
+    // Scale dancers based on available height (80% of viewport height)
+    const scale = Math.min(2.0, (window.innerHeight * 0.8) / VH);
 
     // Row of 3 synced robots
     panel.innerHTML = "";
@@ -2355,19 +2354,19 @@
 
     // Left stage
     const leftSub = document.createElement("div");
-    leftSub.className = "robot-sub-panel";
+    leftSub.className = "robot-sub-panel robot-side";
     leftSub.style.cssText = `width:${VW * scale}px;height:${VH * scale}px;flex-shrink:0;overflow:visible;`;
     row.appendChild(leftSub);
 
     // Center panel (primary — factory builds into this)
     const centerSub = document.createElement("div");
-    centerSub.className = "robot-sub-panel";
+    centerSub.className = "robot-sub-panel robot-center";
     centerSub.style.cssText = `width:${VW * scale}px;height:${VH * scale}px;flex-shrink:0;overflow:visible;`;
     row.appendChild(centerSub);
 
     // Right stage
     const rightSub = document.createElement("div");
-    rightSub.className = "robot-sub-panel";
+    rightSub.className = "robot-sub-panel robot-side";
     rightSub.style.cssText = `width:${VW * scale}px;height:${VH * scale}px;flex-shrink:0;overflow:visible;`;
     row.appendChild(rightSub);
 

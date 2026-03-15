@@ -121,6 +121,7 @@ async function initSetBuilder() {
     setAudio.addEventListener("error", onPlaySetTrackError);
     // Broadcast playing event so dance tab can react (setAudio doesn't exist at dance init time)
     setAudio.addEventListener("playing", () => {
+        _clearAutoplayBlockedHint();
         window.dispatchEvent(new CustomEvent("playset-playing"));
     });
 
@@ -190,6 +191,17 @@ async function initSetBuilder() {
             else if (setDrawerOpen) closeDrawer();
         }
     });
+
+    // Mobile: vertically center grid in available space
+    _updateWorkshopGridPosition();
+    window.addEventListener("resize", _updateWorkshopGridPosition);
+    // Recalculate when base drawer opens/closes (class change triggers transition)
+    const baseDrawerEl = document.getElementById("base-drawer");
+    if (baseDrawerEl) {
+        new MutationObserver(_updateWorkshopGridPosition).observe(baseDrawerEl, {
+            attributes: true, attributeFilter: ["class"]
+        });
+    }
 
     // Run the init sequence (loads state, checks audio, transitions to now-playing)
     const currentTab = document.querySelector(".tab-content:not(.hidden)");
@@ -671,13 +683,11 @@ async function refreshHasAudioFlags() {
 
 function renderSet() {
     renderPhaseRow();
-    renderSlotHeaders();
     renderInsertRow();
     renderKeyRow();
     renderBpmGrid();
     renderEnergyWave();
     renderTrackColumns();
-    renderPreviewRow();
     renderTimeRow();
     updateToolbarState();
 }
@@ -689,35 +699,6 @@ function updateToolbarState() {
     document.getElementById("set-refill-btn").disabled = !hasSelection;
 }
 
-
-// ── Source Grouping ──
-
-function buildSourceGroups() {
-    const groups = [];
-    let i = 0;
-    while (i < setSlots.length) {
-        const slot = setSlots[i];
-        if (slot.source) {
-            const key = `${slot.source.type}:${slot.source.id}`;
-            let count = 1;
-            while (i + count < setSlots.length &&
-                   setSlots[i + count].source &&
-                   `${setSlots[i + count].source.type}:${setSlots[i + count].source.id}` === key) {
-                count++;
-            }
-            groups.push({
-                startIdx: i, count, key,
-                source: slot.source,
-                slotIds: setSlots.slice(i, i + count).map(s => s.id)
-            });
-            i += count;
-        } else {
-            groups.push({ startIdx: i, count: 1, key: null, source: null, slotIds: [slot.id] });
-            i++;
-        }
-    }
-    return groups;
-}
 
 // ── Phase Row (energy phase indicators) ──
 
@@ -773,116 +754,58 @@ function renderPhaseRow() {
     }
 }
 
-// ── Slot Headers ──
+// ── Source Grouping ──
 
-function renderSlotHeaders() {
-    const row = document.getElementById("set-slot-headers");
-    row.innerHTML = "";
-
-    const groups = buildSourceGroups();
-
-    for (const group of groups) {
-        if (group.count === 1) {
-            // Single slot — render as before
-            const slot = setSlots[group.startIdx];
-            const header = document.createElement("div");
-            header.className = "set-slot-header";
-            header.dataset.slotId = slot.id;
-
-            if (!slot.source) {
-                header.innerHTML = `
-                    <button class="set-add-source-btn" title="Assign source">+</button>
-                `;
-                header.querySelector(".set-add-source-btn").addEventListener("click", () => {
-                    openDrawer("browse", slot.id);
-                });
-            } else {
-                const safeName = escHtml(slot.source.name || "Source");
-                header.innerHTML = `
-                    <div class="set-source-name" title="${safeName}">${safeName}</div>
-                `;
-                header.querySelector(".set-source-name").addEventListener("click", () => {
-                    openDrawer("detail", slot.id);
-                });
+function buildSourceGroups() {
+    const groups = [];
+    let i = 0;
+    while (i < setSlots.length) {
+        const slot = setSlots[i];
+        if (slot.source) {
+            const key = `${slot.source.type}:${slot.source.id}`;
+            let count = 1;
+            while (i + count < setSlots.length &&
+                   setSlots[i + count].source &&
+                   `${setSlots[i + count].source.type}:${setSlots[i + count].source.id}` === key) {
+                count++;
             }
-
-            // Drag to reorder + accept track drops
-            header.draggable = true;
-            header.addEventListener("dragstart", (e) => onSlotDragStart(e, slot.id));
-            header.addEventListener("dragover", (e) => {
-                onSlotDragOver(e);
-                if (setDragTrack) header.classList.add("drag-over");
+            groups.push({
+                startIdx: i, count, key,
+                source: slot.source,
+                slotIds: setSlots.slice(i, i + count).map(s => s.id)
             });
-            header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
-            header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
-            header.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
-
-            row.appendChild(header);
+            i += count;
         } else {
-            // Grouped slots — single spanning header
-            const groupW = group.count * (SET_COL_W + SET_GAP) - SET_GAP;
-            const header = document.createElement("div");
-            header.className = "set-slot-header set-source-group";
-            header.style.width = `${groupW}px`;
-            header.dataset.slotIds = JSON.stringify(group.slotIds);
-            header.dataset.slotId = group.slotIds[0]; // primary for drop target
-
-            const safeName = escHtml(group.source.name || "Source");
-            header.innerHTML = `
-                <div class="set-source-name set-group-label" title="${safeName}">${safeName}</div>
-            `;
-
-            header.querySelector(".set-group-label").addEventListener("click", () => {
-                openDrawer("detail", group.slotIds[0]);
-            });
-
-            // Drag entire group
-            header.draggable = true;
-            header.addEventListener("dragstart", (e) => onGroupDragStart(e, group.slotIds));
-            header.addEventListener("dragover", (e) => {
-                onSlotDragOver(e);
-                if (setDragTrack) header.classList.add("drag-over");
-            });
-            header.addEventListener("dragleave", () => header.classList.remove("drag-over"));
-            header.addEventListener("drop", (e) => { header.classList.remove("drag-over"); onSlotDrop(e, group.slotIds[0]); });
-            header.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
-
-            row.appendChild(header);
+            groups.push({ startIdx: i, count: 1, key: null, source: null, slotIds: [slot.id] });
+            i++;
         }
     }
+    return groups;
 }
 
-// ── Insert Row (circled "+" buttons between source groups) ──
+// ── Insert Row (delete buttons + "+" insert between every slot) ──
 
 function renderInsertRow() {
     const row = document.getElementById("set-insert-row");
     row.innerHTML = "";
 
-    const groups = buildSourceGroups();
+    for (let i = 0; i < setSlots.length; i++) {
+        const slot = setSlots[i];
 
-    for (let gi = 0; gi < groups.length; gi++) {
-        const group = groups[gi];
-        // Container for delete buttons matching the group's width
-        const spacer = document.createElement("div");
-        spacer.className = "set-insert-spacer";
-        const w = group.count * (SET_COL_W + SET_GAP) - SET_GAP;
-        spacer.style.width = `${w}px`;
+        // Delete button for this slot
+        const cell = document.createElement("div");
+        cell.className = "set-insert-spacer";
+        cell.style.width = `${SET_COL_W}px`;
+        const delBtn = document.createElement("span");
+        delBtn.className = "set-delete-col-btn";
+        delBtn.textContent = "\u2715";
+        delBtn.title = "Delete column";
+        delBtn.addEventListener("click", () => handleSlotControl(slot.id, "delete"));
+        cell.appendChild(delBtn);
+        row.appendChild(cell);
 
-        // Add a delete button per column within this group
-        for (let si = 0; si < group.count; si++) {
-            const slotId = group.slotIds[si];
-            const delBtn = document.createElement("span");
-            delBtn.className = "set-delete-col-btn";
-            delBtn.textContent = "\u2715";
-            delBtn.title = "Delete column";
-            delBtn.addEventListener("click", () => handleSlotControl(slotId, "delete"));
-            spacer.appendChild(delBtn);
-        }
-
-        row.appendChild(spacer);
-
-        // "+" button + vertical line between groups (not after the last one)
-        if (gi < groups.length - 1) {
+        // "+" insert button between every pair of slots
+        if (i < setSlots.length - 1) {
             const wrap = document.createElement("div");
             wrap.className = "set-insert-col-btn";
             const circle = document.createElement("span");
@@ -892,7 +815,7 @@ function renderInsertRow() {
             line.className = "set-insert-line";
             wrap.appendChild(circle);
             wrap.appendChild(line);
-            const insertIdx = group.startIdx + group.count;
+            const insertIdx = i + 1;
             wrap.addEventListener("click", () => insertBlankColumn(insertIdx));
             row.appendChild(wrap);
         }
@@ -1294,34 +1217,6 @@ function renderTrackColumns() {
 }
 
 
-// ── Preview Row ──
-
-function renderPreviewRow() {
-    const row = document.getElementById("set-preview-row");
-    row.innerHTML = "";
-
-    setSlots.forEach((slot) => {
-        const cell = document.createElement("div");
-        cell.className = "set-preview-cell";
-
-        if (slot.selectedTrackIndex != null && slot.tracks[slot.selectedTrackIndex]) {
-            const track = slot.tracks[slot.selectedTrackIndex];
-            const si = setSlots.indexOf(slot);
-            const btn = document.createElement("button");
-            btn.className = "btn-preview";
-            btn.title = "Play 30s preview";
-            btn.textContent = "\u25B6";
-            btn.addEventListener("click", () => {
-                if (track.has_audio) playSlotPreview(si);
-            });
-            cell.appendChild(btn);
-        }
-
-        row.appendChild(cell);
-    });
-}
-
-
 // ── Time Row ──
 
 function renderTimeRow() {
@@ -1366,8 +1261,12 @@ function onTrackClick(slotId, trackIdx) {
         if (_isMobileView()) {
             if (!baseDrawerOpen) {
                 baseDrawerOpen = true;
+                const drawer = document.getElementById("base-drawer");
                 document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
-                document.getElementById("base-drawer").classList.add("open");
+                drawer.classList.add("open");
+                // Default to expanded detail view on mobile
+                drawer.classList.add("expanded");
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
             }
             updateNowPlayingDrawer(track, si);
             syncBaseDrawer();
@@ -1378,13 +1277,6 @@ function onTrackClick(slotId, trackIdx) {
     }
 }
 
-function getSlotPreviewBtn(slotIdx) {
-    const row = document.getElementById("set-preview-row");
-    if (row && row.children[slotIdx]) {
-        return row.children[slotIdx].querySelector(".btn-preview");
-    }
-    return null;
-}
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1565,8 +1457,8 @@ function openDrawer(mode, targetSlotId) {
     // After layout shift, keep the target slot visible
     if (targetSlotId) {
         setTimeout(() => {
-            const header = document.querySelector(`.set-slot-header[data-slot-id="${targetSlotId}"]`);
-            if (header) header.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+            const col = document.querySelector(`.set-column[data-slot-id="${targetSlotId}"]`);
+            if (col) _scrollToActiveTrack(col);
         }, 320);  // wait for the 0.3s CSS transition
     }
 }
@@ -1609,7 +1501,14 @@ function transitionToBaseDrawer() {
     // Open the base drawer after right drawer starts sliding out
     setTimeout(() => {
         baseDrawerOpen = true;
-        document.getElementById("base-drawer").classList.add("open");
+        const drawer = document.getElementById("base-drawer");
+        drawer.classList.add("open");
+        // Default to expanded detail view on mobile
+        if (_isMobileView()) {
+            drawer.classList.add("expanded");
+            syncBaseDrawerDetail();
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
+        }
     }, 150);
 
     // Sync current now-playing data to base drawer
@@ -1689,6 +1588,70 @@ function _isMobileView() {
     return window.matchMedia("(max-width: 768px)").matches;
 }
 
+// ── Mobile: vertically center grid in available viewport space ──
+function _updateWorkshopGridPosition() {
+    const wrapper = document.getElementById("set-grid-wrapper");
+    if (!wrapper) return;
+
+    if (!_isMobileView()) {
+        wrapper.style.height = "";
+        return;
+    }
+
+    const nav = document.getElementById("tab-bar");
+    const drawer = document.getElementById("base-drawer");
+
+    const navH = nav ? nav.getBoundingClientRect().height : 0;
+    const drawerH = (drawer && drawer.classList.contains("open"))
+        ? drawer.getBoundingClientRect().height : 0;
+
+    const available = window.innerHeight - navH - drawerH;
+    wrapper.style.height = Math.max(available, 100) + "px";
+}
+
+// ── Center view on the selected track image in the active column ──
+// Scrolls both horizontally (set-grid-scroll) and vertically (set-grid-wrapper on
+// mobile, or set-bpm-grid area) so the playing track's cover art is as close to
+// the center of the visible area as possible.
+function _scrollToActiveTrack(col) {
+    if (!col) return;
+
+    // Find the selected track element within this column
+    const trackEl = col.querySelector(".set-track-slot.selected");
+    if (!trackEl) return;
+
+    const scroller = document.getElementById("set-grid-scroll");
+    if (!scroller) return;
+
+    const scrollerRect = scroller.getBoundingClientRect();
+    const trackRect = trackEl.getBoundingClientRect();
+
+    // Horizontal offset: center track in viewport
+    const trackCenterX = trackRect.left + trackRect.width / 2;
+    const scrollerCenterX = scrollerRect.left + scrollerRect.width / 2;
+    const offsetX = trackCenterX - scrollerCenterX;
+
+    // Vertical offset: only on mobile where the scroller is also vertically scrollable
+    let offsetY = 0;
+    if (_isMobileView() && scroller.scrollHeight > scroller.clientHeight) {
+        const trackCenterY = trackRect.top + trackRect.height / 2;
+        const scrollerCenterY = scrollerRect.top + scrollerRect.height / 2;
+        offsetY = trackCenterY - scrollerCenterY;
+    }
+
+    // Single scrollBy call for both axes to avoid cancellation
+    scroller.scrollBy({ left: offsetX, top: offsetY, behavior: "smooth" });
+}
+
+function _recenterAfterDrawerChange() {
+    // After drawer height changes, recalculate grid size and re-center on active track
+    setTimeout(() => {
+        _updateWorkshopGridPosition();
+        const activeCol = document.querySelector(".set-column.play-set-active");
+        if (activeCol) _scrollToActiveTrack(activeCol);
+    }, 350); // wait for CSS transition
+}
+
 function toggleBaseDrawerExpanded() {
     const drawer = document.getElementById("base-drawer");
     const isExpanded = drawer.classList.toggle("expanded");
@@ -1698,12 +1661,14 @@ function toggleBaseDrawerExpanded() {
     } else {
         document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
     }
+    _recenterAfterDrawerChange();
 }
 
 function collapseBaseDrawerExpanded() {
     const drawer = document.getElementById("base-drawer");
     drawer.classList.remove("expanded");
     document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+    _recenterAfterDrawerChange();
 }
 
 function syncBaseDrawerDetail() {
@@ -1934,25 +1899,25 @@ async function _runSetInitSequence(opts = {}) {
         errorEl.classList.remove("hidden");
     }
 
-    // ── Step 5: Ready ──
-    const stepReady = _addInitStep(log, "Workshop ready");
-    _markInitStep(stepReady, "active");
-    _setInitProgress(stepReady, 50);
+    // ── Step 5: Position grid ──
+    const stepPosition = _addInitStep(log, "Positioning workshop grid");
+    _markInitStep(stepPosition, "active");
+    _setInitProgress(stepPosition, 50);
     await new Promise(r => setTimeout(r, 300));
-    _setInitProgress(stepReady, 100);
-    _markInitStep(stepReady, "done");
+    _setInitProgress(stepPosition, 100);
+    _markInitStep(stepPosition, "done");
 
     updateModeToggleUI();
     _setInitRunning = false;
 
     // ── Transition out after a brief pause ──
     await new Promise(r => setTimeout(r, 600));
-    _completeInitSequence(firstTrack, firstSlot);
+    _completeInitSequence(firstTrack, firstSlot, !!opts.isNewLoad);
 
     return !!firstTrack;
 }
 
-function _completeInitSequence(firstTrack, firstSlotIdx) {
+function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
     const isMobile = _isMobileView();
 
     if (isMobile) {
@@ -1963,14 +1928,20 @@ function _completeInitSequence(firstTrack, firstSlotIdx) {
         document.getElementById("base-drawer-detail").style.display = "";
 
         if (firstTrack) {
-            // Collapse expanded state, show minimised track details
+            // Show expanded detail view by default on mobile
             const baseDrawer = document.getElementById("base-drawer");
-            baseDrawer.classList.remove("expanded");
-            document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+            baseDrawer.classList.add("expanded");
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
             // Sync track info to base drawer
             syncBaseDrawer();
-            // Auto-play first track
-            if (firstSlotIdx >= 0 && firstTrack.has_audio) playSlot(firstSlotIdx);
+            syncBaseDrawerDetail();
+            // Auto-play only on user-triggered set load (not cold start)
+            if (isNewLoad && firstSlotIdx >= 0 && firstTrack.has_audio) {
+                playSlot(firstSlotIdx);
+            } else if (!isNewLoad && firstTrack.has_audio) {
+                // Cold start — invite user to tap play
+                _showAutoplayBlockedHint();
+            }
         } else {
             // No track — close the base drawer entirely
             closeBaseDrawer();
@@ -1979,11 +1950,24 @@ function _completeInitSequence(firstTrack, firstSlotIdx) {
         // Desktop: switch from init drawer to now-playing with first track
         if (firstTrack) {
             openDrawer("now-playing", null);
-            // Auto-play first track
-            if (firstSlotIdx >= 0 && firstTrack.has_audio) playSlot(firstSlotIdx);
+            // Auto-play only on user-triggered set load (not cold start)
+            if (isNewLoad && firstSlotIdx >= 0 && firstTrack.has_audio) {
+                playSlot(firstSlotIdx);
+            } else if (!isNewLoad && firstTrack.has_audio) {
+                // Cold start — invite user to tap play
+                _showAutoplayBlockedHint();
+            }
         } else {
             closeDrawer();
         }
+    }
+
+    // Scroll to the first track in the set (center both horizontally and vertically)
+    if (firstSlotIdx >= 0) {
+        setTimeout(() => {
+            const col = document.querySelector(`.set-column[data-slot-id="${workshopSlots[firstSlotIdx]?.id}"]`);
+            if (col) _scrollToActiveTrack(col);
+        }, 400);
     }
 }
 
@@ -2693,8 +2677,14 @@ function playSlot(idx) {
     if (useBaseDrawer) {
         if (!baseDrawerOpen) {
             baseDrawerOpen = true;
+            const drawer = document.getElementById("base-drawer");
             document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
-            document.getElementById("base-drawer").classList.add("open");
+            drawer.classList.add("open");
+            // Default to expanded detail view on mobile
+            if (_isMobileView()) {
+                drawer.classList.add("expanded");
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
+            }
         }
     } else {
         // Desktop DJ mode: use side drawer
@@ -2733,7 +2723,7 @@ async function playFullTrack(idx) {
     if (col) {
         col.classList.add("play-set-active");
         createEqOverlay(col, track.bpm);
-        col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        _scrollToActiveTrack(col);
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");
@@ -2755,8 +2745,7 @@ async function playFullTrack(idx) {
         if (err.name === 'NotAllowedError') {
             console.warn("Autoplay blocked, waiting for user interaction");
             setAutoplayBlocked = true;
-            document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
-            document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
+            _showAutoplayBlockedHint();
             return;
         }
 
@@ -2799,7 +2788,7 @@ async function playSlotPreview(idx) {
     if (col) {
         col.classList.add("play-set-active");
         createEqOverlay(col, track.bpm);
-        col.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        _scrollToActiveTrack(col);
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");
@@ -2830,8 +2819,7 @@ async function playSlotPreview(idx) {
 
         if (err.name === 'NotAllowedError') {
             setAutoplayBlocked = true;
-            document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
-            document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
+            _showAutoplayBlockedHint();
             return;
         }
 
@@ -2919,6 +2907,12 @@ async function updateNowPlayingDrawer(track, slotIdx) {
     } catch (e) {
         console.error("Failed to load track context:", e);
     }
+
+    // If the expanded base drawer is open (mobile detail view), sync it
+    const baseDrawer = document.getElementById("base-drawer");
+    if (baseDrawer && baseDrawer.classList.contains("expanded")) {
+        syncBaseDrawerDetail();
+    }
 }
 
 function renderAlsoAppearsIn(container, leaves) {
@@ -2953,12 +2947,31 @@ function loadNowPlayingArtwork(artist, title, imgEl) {
         .catch(() => {});
 }
 
+// ── Autoplay blocked hint (pulsing play button) ──
+
+function _showAutoplayBlockedHint() {
+    const npBtn = document.getElementById("now-playing-play-pause");
+    const baseBtn = document.getElementById("base-np-play-pause");
+    npBtn.innerHTML = "&#9654;";
+    baseBtn.innerHTML = "&#9654;";
+    npBtn.classList.add("autoplay-blocked");
+    baseBtn.classList.add("autoplay-blocked");
+}
+
+function _clearAutoplayBlockedHint() {
+    // Removing the class lets the CSS transition on .now-playing-btn-main
+    // smoothly animate width/height back to their default values
+    document.getElementById("now-playing-play-pause").classList.remove("autoplay-blocked");
+    document.getElementById("base-np-play-pause").classList.remove("autoplay-blocked");
+}
+
 function togglePlaySetPause() {
     if (!setAudio) return;
 
     // Autoplay was blocked — user click resumes playback
     if (setAutoplayBlocked) {
         setAutoplayBlocked = false;
+        _clearAutoplayBlockedHint();
         document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
         document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
         setAudio.play().catch(() => {});

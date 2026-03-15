@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(uv run:*)",
-      "Bash(echo \"EXIT CODE: $?\")"
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(for c:*)",
+      "Bash(do echo:*)",
+      "Bash(git show:*)",
+      "Bash(do printf:*)"
     ],
     "additionalDirectories": [
       "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/frontend"

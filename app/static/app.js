@@ -1011,6 +1011,11 @@ function switchTab(target) {
     if (target === "sets") { if (typeof initSetsTab === "function") initSetsTab(); if (typeof loadSetsList === "function") loadSetsList(); }
     if (target === "autoset" && !autosetInitialized) { autosetInitialized = true; if (typeof initAutoSetTab === "function") initAutoSetTab(); }
     if (target === "chat" && !chatInitialized) { chatInitialized = true; if (typeof initChatTab === "function") initChatTab(); }
+
+    // Reposition workshop grid after mode toggle (drawer/layout may have changed)
+    if ((target === "setbuilder" || target === "dance") && typeof _recenterAfterDrawerChange === "function") {
+        _recenterAfterDrawerChange();
+    }
 }
 
 // ── Hamburger menu ────────────────────────────────────────
