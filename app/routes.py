@@ -202,7 +202,6 @@ def _init_dropbox_client(refresh_token):
             oauth2_refresh_token=refresh_token,
             app_key=app_key,
             app_secret=app_secret,
-            timeout=5,  # 5s per-request timeout — prevents hung audio checks
         )
         _state["_dropbox_client"] = dbx
     except Exception:
@@ -253,7 +252,7 @@ def _to_dropbox_path(location):
     return None
 
 def _dropbox_file_exists(dropbox_path):
-    """Check if a file exists in Dropbox, with in-memory caching."""
+    """Check if a file exists in Dropbox, with in-memory caching and timeout."""
     if not dropbox_path:
         return False
     cache = _state.get("_dropbox_exists_cache", {})
@@ -263,10 +262,18 @@ def _dropbox_file_exists(dropbox_path):
     if not dbx:
         return False
     try:
-        dbx.files_get_metadata(dropbox_path)
+        # 5s timeout per metadata call — prevents hung init audio checks
+        # without affecting audio streaming (which needs longer)
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(dbx.files_get_metadata, dropbox_path)
+            future.result(timeout=5)
         cache[dropbox_path] = True
     except dropbox.exceptions.ApiError:
         cache[dropbox_path] = False
+    except FuturesTimeout:
+        logging.warning("Dropbox metadata check timed out (5s) for %s", dropbox_path)
+        return False
     except Exception:
         return False
     _state["_dropbox_exists_cache"] = cache
