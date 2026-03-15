@@ -15,9 +15,10 @@ GitHub Actions (automated pipeline)
   2. Pushes it to Amazon ECR (a private image warehouse)
   3. SSHes into your EC2 server and:
      - Pulls the new image
-     - Stops the old container
-     - Starts the new container
-     - Waits for it to pass a health check
+     - Starts a "canary" copy alongside the old container
+     - Waits for the canary to pass a health check
+     - If healthy: swaps in the new container
+     - If unhealthy: kills the canary, old container stays up
         |
         v
 EC2 Instance (your server, ~$9/month)
@@ -25,7 +26,7 @@ EC2 Instance (your server, ~$9/month)
   Docker handles restart/recovery automatically
 ```
 
-**In plain English**: every time you push to `main`, a robot builds your app, ships it to your server, swaps in the new version, and confirms it's working. If it's not working, the deploy fails and the GitHub Actions log tells you why.
+**In plain English**: every time you push to `main`, a robot builds your app, ships it to your server, tests the new version alongside the old one, and only swaps if the new version is healthy. If it's not working, the deploy fails but the old version keeps running — the site stays up.
 
 ---
 
@@ -46,10 +47,11 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **Impact**: Zero — gunicorn handles the swap seamlessly between requests. Users don't notice
 - **Config**: `Dockerfile` lines 44-45 (`--max-requests 500 --max-requests-jitter 50`)
 
-### 3. Deploy Health Check
-- **What**: After starting the new container, the deploy script polls Docker's health status for up to 2 minutes
-- **Why**: Catches broken deployments before declaring success. If the app can't start, the deploy fails loudly in GitHub Actions rather than silently leaving a broken site
-- **Config**: `.github/workflows/deploy.yml` lines 84-101
+### 3. Blue-Green Deploy with Auto-Rollback
+- **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's Docker health check for up to 2 minutes. If the canary is healthy, the old container is swapped out. If it's not, the canary is removed and the old container keeps running untouched
+- **Why**: Prevents failed deploys from taking the site down. Before this, the deploy script would stop the old container *first*, then start the new one. If the new one couldn't boot (e.g. a hung network call during init), the site was down with no rollback
+- **The lesson we learned**: A trivial CSS change (`dance.js` height tweak) triggered a deploy where gunicorn's worker hung during startup. Because the old container was already stopped, the site was down until the next manual intervention. The fix was never to stop the old container until the new image has proven it can boot
+- **Config**: `.github/workflows/deploy.yml` — the `deploy` job's SSH script
 
 ### 4. Timeouts on External Calls
 - **What**: All Dropbox API calls have a 10s default timeout. Individual metadata checks have a tighter 5s timeout
@@ -116,9 +118,8 @@ This means:
 
 | Symptom | Likely cause | Fix |
 |---------|-------------|-----|
-| Health check failed after 24 attempts | App can't start — import error, missing env var, or hung init | Check `docker logs` on EC2 for tracebacks |
-| "starting" for all attempts | Worker hanging during import (probably a network call at startup) | Check Dropbox/API timeouts in `routes.py` |
-| "unhealthy" after starting | App starts but `/healthz` fails (rare — usually means the route is broken) | Check `main_flask.py` for the `/healthz` route |
+| Canary went unhealthy — aborting deploy | App can't start — import error, missing env var, or hung init. **Site is still up** (old container untouched) | Check canary logs in the GitHub Actions output, or `docker logs` on EC2 |
+| Canary "starting" for all 24 attempts | Worker hanging during import (probably a network call at startup). **Site is still up** | Re-run the deploy — transient hangs usually pass. If persistent, check Dropbox/API timeouts in `routes.py` |
 | ECR login failed | AWS credentials expired or misconfigured | Check GitHub Secrets |
 | SSH connection refused | EC2 instance stopped or security group changed | Check AWS Console |
 
@@ -148,16 +149,17 @@ Every push to `main` triggers this (`.github/workflows/deploy.yml`):
 4. Tags it with the commit SHA and `latest`
 5. Pushes both tags to ECR
 
-### Job 2: Deploy to EC2 (~55s)
+### Job 2: Deploy to EC2 (~2-3 min)
 1. SSHes into your EC2 instance
 2. Logs Docker into ECR (so it can pull images)
 3. Pulls the new `latest` image
-4. Stops + removes the old container
-5. Starts a new container with your env vars, volumes, and port config
-6. Polls the Docker health check for up to 2 minutes
-7. Cleans up old images to save disk space
+4. Starts a **canary container** (`genre-tagging-canary`) on port 5002 — the old container keeps running on 5001
+5. Polls the canary's Docker health check for up to 2 minutes
+6. **If canary is healthy**: stops the old container, starts the proven image as `genre-tagging` on port 5001
+7. **If canary is unhealthy**: removes the canary, old container untouched, deploy fails (site stays up)
+8. Cleans up old images to save disk space
 
-**Important**: There's a brief window (~5-15 seconds) between stopping the old container and the new one passing its health check where the site is down. This is a "rolling restart" gap — acceptable for a single-user tool, not great for production SaaS.
+**Downtime**: There's a brief window (~5-15 seconds) during step 6 while swapping containers. This only happens on *successful* deploys. Failed deploys cause **zero downtime** — the old container keeps serving.
 
 ---
 
@@ -223,11 +225,19 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - **Fix**: Removed tight timeout from constructor (set to 10s default), added targeted 5s timeout only on `_dropbox_file_exists()` metadata checks using `ThreadPoolExecutor`
 - **Lesson**: Global timeouts are dangerous — always scope them to the specific calls that need them
 
+### 2026-03-15 — Site down after failed deploy (no rollback)
+- **Symptom**: Site completely unreachable after deploying a trivial CSS change (`dance.js` height 200→300). GitHub Actions showed "Health check failed after 24 attempts"
+- **Cause**: gunicorn master started but the worker never booted (hung during init — likely a transient Dropbox/network call). The deploy script had already stopped and removed the old (working) container before starting the new one, so there was nothing to fall back to
+- **Root issue**: The deploy pipeline was "stop first, start second" — any startup failure left the site with no running container
+- **Fix**: Implemented blue-green deploy — new image is tested as a canary container on a temp port before touching the live container. If the canary fails, the old container stays running. Failed deploys now cause zero downtime
+- **Lesson**: Never stop the working container until the replacement has proven it can boot. Infrastructure changes should never assume the new version will start successfully
+
 ---
 
-## Future Improvements (not urgent)
+## Future Improvements
 
+- [x] ~~**Blue-green deploy with rollback**: Test new image as canary before swapping — failed deploys no longer take the site down~~ *(done 2026-03-15)*
+- [ ] **Monitoring/alerts** *(recommended next — `GenreTagging-2u3`)* : Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually. Blue-green prevents deploy-caused downtime, but runtime crashes or server issues still need external detection
 - [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)
-- [ ] **Monitoring/alerts**: Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually
 - [ ] **Log rotation on EC2**: The `app.log` file rotates automatically (2MB x 3 backups), but Docker container logs grow unbounded. Add `--log-opt max-size=10m --log-opt max-file=3` to the `docker run` command

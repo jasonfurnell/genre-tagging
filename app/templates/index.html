@@ -611,7 +611,15 @@
         <div class="base-drawer-panel base-drawer-center">
             <div class="base-np-controls">
                 <button id="base-np-prev" class="now-playing-btn" title="Previous">&#9664;&#9664;</button>
-                <button id="base-np-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                <div class="base-np-bpm-stack">
+                    <button id="base-np-bpm-up" class="now-playing-btn bpm-arrow-btn" title="Higher BPM" disabled>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 9L7 5L11 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button id="base-np-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                    <button id="base-np-bpm-down" class="now-playing-btn bpm-arrow-btn" title="Lower BPM" disabled>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
                 <button id="base-np-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
             </div>
             <div class="base-drawer-progress">

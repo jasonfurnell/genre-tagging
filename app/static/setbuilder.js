@@ -27,6 +27,7 @@ let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllow
 let setAudioFlagsReady = null;   // promise resolved when refreshHasAudioFlags completes
 let _previewStartTime = 0;  // start time for 30s Short Preview window
 const PREVIEW_DURATION = 30; // seconds for Short Preview mode
+let _bpmSwapContext = null;  // {direction: "up"|"down", origIndex: N, slotIdx: N} when BPM arrow triggered playback
 
 function isPlaySetMode() { return setWorkshopMode === "playset"; }
 
@@ -122,6 +123,7 @@ async function initSetBuilder() {
     // Broadcast playing event so dance tab can react (setAudio doesn't exist at dance init time)
     setAudio.addEventListener("playing", () => {
         _clearAutoplayBlockedHint();
+        _bpmSwapContext = null;  // playback succeeded — clear BPM swap state
         startEnergyLineAnim();
         window.dispatchEvent(new CustomEvent("playset-playing"));
     });
@@ -147,6 +149,8 @@ async function initSetBuilder() {
     document.getElementById("base-np-play-pause").addEventListener("click", togglePlaySetPause);
     document.getElementById("base-np-prev").addEventListener("click", playSetPrev);
     document.getElementById("base-np-next").addEventListener("click", playSetNext);
+    document.getElementById("base-np-bpm-up").addEventListener("click", bpmSwapUp);
+    document.getElementById("base-np-bpm-down").addEventListener("click", bpmSwapDown);
     document.getElementById("base-np-progress-bar").addEventListener("click", (e) => {
         if (!setAudio || !setAudio.duration) return;
         const rect = e.currentTarget.getBoundingClientRect();
@@ -406,8 +410,9 @@ async function loadSavedSet(setId) {
     if (setDirty) {
         if (!confirm("You have unsaved changes. Discard and load a different set?")) return;
     }
-    // Stop any current playback before loading the new set
+    // Stop any current playback and reset mobile UI before loading the new set
     stopPlayback();
+    if (_isMobileView()) closeBaseDrawer();
 
     // Fetch the set data once — reused by init sequence loadFn
     let cachedData = null;
@@ -2000,6 +2005,7 @@ async function _runSetInitSequence(opts = {}) {
     const stepPosition = _addInitStep(log, "Positioning workshop grid");
     _markInitStep(stepPosition, "active");
     _setInitProgress(stepPosition, 50);
+    _updateWorkshopGridPosition();
     await new Promise(r => setTimeout(r, 300));
     _setInitProgress(stepPosition, 100);
     _markInitStep(stepPosition, "done");
@@ -2023,6 +2029,8 @@ function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
         // Restore elements hidden during init
         document.querySelector(".base-drawer-left").style.display = "";
         document.getElementById("base-drawer-detail").style.display = "";
+        // Reposition grid now that drawer layout has changed
+        _updateWorkshopGridPosition();
 
         if (firstTrack) {
             // Show expanded detail view by default on mobile
@@ -2849,7 +2857,13 @@ async function playFullTrack(idx) {
             return;
         }
 
-        // Other errors (404, format, network) — skip to next track
+        // BPM swap: try next track in same direction, or revert to original
+        if (_bpmSwapContext) {
+            _handleBpmSwapError();
+            return;
+        }
+
+        // Other errors (404, format, network) — skip to next slot
         const next = findNextPlaySetSlot(setPlaySetIndex + 1);
         if (next >= 0) {
             playFullTrack(next);
@@ -2925,7 +2939,13 @@ async function playSlotPreview(idx) {
             return;
         }
 
-        // Skip to next track on error
+        // BPM swap: try next track in same direction, or revert to original
+        if (_bpmSwapContext) {
+            _handleBpmSwapError();
+            return;
+        }
+
+        // Skip to next slot on error
         const next = findNextPlaySetSlot(setPlaySetIndex + 1);
         if (next >= 0) playSlotPreview(next);
     });
@@ -3015,6 +3035,9 @@ async function updateNowPlayingDrawer(track, slotIdx) {
     if (baseDrawer && baseDrawer.classList.contains("expanded")) {
         syncBaseDrawerDetail();
     }
+
+    // Update BPM arrow button states for current slot
+    updateBpmArrowButtons();
 }
 
 function renderAlsoAppearsIn(container, leaves) {
@@ -3105,6 +3128,98 @@ function playSetPrev() {
 function playSetNext() {
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
     if (next >= 0) playSlot(next);
+}
+
+// ── BPM Up/Down: switch to higher/lower BPM track in current slot ──
+
+function bpmSwapUp() {
+    const slotIdx = setPlaySetIndex;
+    const slot = setSlots[slotIdx];
+    if (!slot) return;
+    const cur = slot.selectedTrackIndex;
+    for (let i = cur + 1; i < slot.tracks.length; i++) {
+        if (slot.tracks[i]) {
+            _bpmSwapContext = { direction: "up", origIndex: cur, slotIdx };
+            slot.selectedTrackIndex = i;
+            renderSet();
+            scheduleAutoSave();
+            playSlot(slotIdx);
+            return;
+        }
+    }
+}
+
+function bpmSwapDown() {
+    const slotIdx = setPlaySetIndex;
+    const slot = setSlots[slotIdx];
+    if (!slot) return;
+    const cur = slot.selectedTrackIndex;
+    for (let i = cur - 1; i >= 0; i--) {
+        if (slot.tracks[i]) {
+            _bpmSwapContext = { direction: "down", origIndex: cur, slotIdx };
+            slot.selectedTrackIndex = i;
+            renderSet();
+            scheduleAutoSave();
+            playSlot(slotIdx);
+            return;
+        }
+    }
+}
+
+function _handleBpmSwapError() {
+    const ctx = _bpmSwapContext;
+    if (!ctx) return;
+
+    const slot = setSlots[ctx.slotIdx];
+    if (!slot) { _bpmSwapContext = null; return; }
+
+    const cur = slot.selectedTrackIndex;
+    const isUp = ctx.direction === "up";
+
+    // Try next track in the same direction
+    const start = isUp ? cur + 1 : cur - 1;
+    const end = isUp ? slot.tracks.length : -1;
+    const step = isUp ? 1 : -1;
+    for (let i = start; i !== end; i += step) {
+        if (slot.tracks[i]) {
+            slot.selectedTrackIndex = i;
+            renderSet();
+            scheduleAutoSave();
+            playSlot(ctx.slotIdx);
+            return;  // keep _bpmSwapContext alive for the next attempt
+        }
+    }
+
+    // No more tracks in that direction — revert to the original track
+    slot.selectedTrackIndex = ctx.origIndex;
+    _bpmSwapContext = null;
+    renderSet();
+    scheduleAutoSave();
+    playSlot(ctx.slotIdx);
+}
+
+function updateBpmArrowButtons() {
+    const upBtn = document.getElementById("base-np-bpm-up");
+    const downBtn = document.getElementById("base-np-bpm-down");
+    if (!upBtn || !downBtn) return;
+
+    const slot = setSlots[setPlaySetIndex];
+    if (!slot || slot.selectedTrackIndex == null) {
+        upBtn.disabled = true;
+        downBtn.disabled = true;
+        return;
+    }
+
+    const cur = slot.selectedTrackIndex;
+    let hasHigher = false, hasLower = false;
+    for (let i = cur + 1; i < slot.tracks.length; i++) {
+        if (slot.tracks[i]) { hasHigher = true; break; }
+    }
+    for (let i = cur - 1; i >= 0; i--) {
+        if (slot.tracks[i]) { hasLower = true; break; }
+    }
+    upBtn.disabled = !hasHigher;
+    downBtn.disabled = !hasLower;
 }
 
 function updatePlaySetProgress() {

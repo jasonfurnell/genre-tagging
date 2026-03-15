@@ -3267,6 +3267,35 @@ tr.ws-seed-selected {
     height: 42px;
     font-size: 0.95rem;
 }
+
+/* BPM up/down arrow stack (mobile base drawer) */
+.base-np-bpm-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.bpm-arrow-btn {
+    display: none;  /* hidden on desktop, shown via mobile media query */
+    width: 28px !important;
+    height: 20px !important;
+    border-radius: 10px !important;
+    font-size: 0.6rem !important;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.15s, border-color 0.15s;
+}
+.bpm-arrow-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+}
+.bpm-arrow-btn:not(:disabled):active {
+    border-color: var(--accent);
+    opacity: 1;
+}
 .base-drawer-progress {
     width: 100%;
 }
@@ -5376,6 +5405,9 @@ tr.ws-seed-selected {
     .base-drawer-progress { width: 100%; }
     .now-playing-progress-bar { height: 3px; }
     .base-np-time { font-size: 0.55rem; }
+
+    /* Show BPM arrow buttons on mobile */
+    .bpm-arrow-btn { display: flex; }
 
     /* Row 2: track info card — simple box, no overflow fights */
     .base-drawer-panel.base-drawer-left {
