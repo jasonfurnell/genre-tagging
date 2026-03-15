@@ -1630,7 +1630,7 @@ function _isMobileView() {
 // ── Mobile: vertically center grid in available viewport space ──
 // When the expanded detail drawer is open, cap height at 5 track covers
 // so the selected track sits in the middle with ~2 above and ~2 below.
-const SET_MOBILE_EXPANDED_H = 200;
+const SET_MOBILE_EXPANDED_H = 300;
 
 function _updateWorkshopGridPosition() {
     const wrapper = document.getElementById("set-grid-wrapper");
@@ -1696,6 +1696,48 @@ function _scrollToActiveTrack(col) {
 
     // Single scrollBy call for both axes to avoid cancellation
     scroller.scrollBy({ left: offsetX, top: offsetY, behavior: "smooth" });
+}
+
+// ── Mobile wide-column: swap selected track img to cover_big ──
+function _upgradePlayingArtwork(col, track) {
+    if (!_isMobileView() || !col || !track) return;
+    const img = col.querySelector(".set-track-slot.selected img");
+    if (!img) return;
+    // Store original small src so we can restore later
+    if (!img.dataset.smallSrc) img.dataset.smallSrc = img.src;
+    // Fetch big artwork via the same endpoint used by now-playing drawer
+    loadNowPlayingArtwork(track.artist, track.title, img);
+    // Widen the matching insert-row spacer (inline width set by JS)
+    const slotId = col.dataset.slotId;
+    const spacer = _findInsertSpacer(slotId);
+    if (spacer) { spacer.dataset.origWidth = spacer.style.width; spacer.style.width = "112px"; }
+}
+
+function _downgradePlayingArtwork(col) {
+    if (!col) return;
+    const img = col.querySelector(".set-track-slot.selected img");
+    if (img && img.dataset.smallSrc) {
+        img.src = img.dataset.smallSrc;
+        delete img.dataset.smallSrc;
+    }
+    // Restore insert-row spacer width
+    const slotId = col.dataset.slotId;
+    const spacer = _findInsertSpacer(slotId);
+    if (spacer && spacer.dataset.origWidth) {
+        spacer.style.width = spacer.dataset.origWidth;
+        delete spacer.dataset.origWidth;
+    }
+}
+
+// Find the insert-row spacer (delete btn cell) for a given slot
+function _findInsertSpacer(slotId) {
+    if (!slotId) return null;
+    // Insert row spacers don't have data attributes — match by index
+    const colIdx = Array.from(document.querySelectorAll(".set-column")).findIndex(
+        c => c.dataset.slotId === slotId
+    );
+    if (colIdx < 0) return null;
+    return document.querySelectorAll(".set-insert-spacer")[colIdx] || null;
 }
 
 function _recenterAfterDrawerChange() {
@@ -2600,9 +2642,10 @@ function stopPlayback() {
     _previewStartTime = 0;
     stopEnergyLineAnim();
     removeAllEqOverlays();
-    document.querySelectorAll(".set-column.play-set-active").forEach(
-        el => el.classList.remove("play-set-active")
-    );
+    document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        _downgradePlayingArtwork(el);
+        el.classList.remove("play-set-active");
+    });
     document.querySelectorAll(".set-key-cell.play-set-active").forEach(
         el => el.classList.remove("play-set-active")
     );
@@ -2767,6 +2810,7 @@ async function playFullTrack(idx) {
 
     // Highlight column + EQ overlay + key cell
     document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        _downgradePlayingArtwork(el);
         removeEqOverlay(el);
         el.classList.remove("play-set-active");
     });
@@ -2776,8 +2820,10 @@ async function playFullTrack(idx) {
     const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (col) {
         col.classList.add("play-set-active");
+        _upgradePlayingArtwork(col, track);
         createEqOverlay(col, track.bpm);
-        _scrollToActiveTrack(col);
+        // Delay scroll to let the wide-column CSS transition settle
+        setTimeout(() => _scrollToActiveTrack(col), 320);
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");
@@ -2832,6 +2878,7 @@ async function playSlotPreview(idx) {
 
     // Highlight column + EQ overlay
     document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        _downgradePlayingArtwork(el);
         removeEqOverlay(el);
         el.classList.remove("play-set-active");
     });
@@ -2841,8 +2888,9 @@ async function playSlotPreview(idx) {
     const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (col) {
         col.classList.add("play-set-active");
+        _upgradePlayingArtwork(col, track);
         createEqOverlay(col, track.bpm);
-        _scrollToActiveTrack(col);
+        setTimeout(() => _scrollToActiveTrack(col), 320);
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");

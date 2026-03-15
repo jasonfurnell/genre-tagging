@@ -5274,11 +5274,66 @@ tr.ws-seed-selected {
         min-height: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;             /* Firefox */
         /* height set dynamically by JS (_updateWorkshopGridPosition) */
     }
+    .set-grid-wrapper::-webkit-scrollbar { display: none; }
     .set-grid-scroll {
         margin-top: auto;
         margin-bottom: auto;
+        padding-bottom: 0;
+        scrollbar-width: thin;
+    }
+    .set-grid-scroll::-webkit-scrollbar { height: 2px; width: 2px; }
+    .set-grid-scroll::-webkit-scrollbar-track { background: transparent; }
+    .set-grid-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 1px; }
+    /* ── Wide Column: playing track's column doubles in width ───── */
+    .set-column {
+        transition: width 0.3s ease;
+    }
+    .set-column.play-set-active {
+        width: 112px;              /* 2× the normal 56px */
+    }
+    /* Only the selected (now-playing) track enlarges to 2× */
+    .set-column.play-set-active .set-track-slot.selected {
+        width: 96px;
+        height: 96px;
+        left: 8px;                /* center 96px in 112px col */
+        transition: width 0.3s ease, height 0.3s ease, left 0.3s ease;
+    }
+    /* Non-selected tracks stay normal size, centered in the wider column */
+    .set-column.play-set-active .set-track-slot:not(.selected) {
+        left: 32px;               /* center 48px in 112px col */
+    }
+    /* Key cell matches wider playing column */
+    .set-key-cell.play-set-active {
+        width: 112px;
+        transition: width 0.3s ease;
+    }
+    .set-key-cell {
+        transition: width 0.3s ease;
+    }
+
+    /* ── Hide phase row and time row on mobile ─────────────────── */
+    .set-phase-area { display: none; }
+    .set-time-area  { display: none; }
+
+    /* ── Sticky insert row (top) and key row (bottom) ──────────── */
+    .set-insert-row-area {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--bg);
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .set-key-area {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        background: var(--bg);
+        margin-top: 0;
+        padding: 6px 0;
     }
 
     /* ── Dance tab: dancer window height set dynamically by JS ──── */
@@ -5381,18 +5436,9 @@ tr.ws-seed-selected {
         flex-direction: column;
     }
 
-    /* Detail panel styles */
+    /* Detail panel styles — hide artwork (now visible as 2× in grid) */
     .base-detail-artwork {
-        text-align: center;
-        margin-bottom: 0.75rem;
-    }
-    .base-detail-artwork-img {
-        width: 100%;
-        max-width: 140px;
-        aspect-ratio: 1;
-        border-radius: var(--radius);
-        object-fit: cover;
-        background: rgba(255,255,255,0.04);
+        display: none;
     }
     .base-detail-track-info {
         text-align: center;
