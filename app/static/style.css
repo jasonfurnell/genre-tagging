@@ -3296,6 +3296,9 @@ tr.ws-seed-selected {
     border-color: var(--accent);
     opacity: 1;
 }
+.bpm-arrow-btn:focus {
+    outline: none;
+}
 .base-drawer-progress {
     width: 100%;
 }
