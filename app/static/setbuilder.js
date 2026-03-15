@@ -658,11 +658,17 @@ async function refreshHasAudioFlags() {
     if (trackIds.size === 0) return;
 
     try {
+        // 15s timeout — Dropbox checks can hang if network is slow
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 15000);
+
         const res = await fetch("/api/set-workshop/check-audio", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ track_ids: [...trackIds] }),
+            signal: controller.signal,
         });
+        clearTimeout(timer);
         if (!res.ok) return;
         const audioMap = await res.json();
 
@@ -676,7 +682,11 @@ async function refreshHasAudioFlags() {
         }
         updateToolbarState();
     } catch (e) {
-        console.error("Failed to refresh has_audio flags:", e);
+        if (e.name === "AbortError") {
+            console.warn("Audio availability check timed out (15s) — skipping");
+        } else {
+            console.error("Failed to refresh has_audio flags:", e);
+        }
     }
 }
 

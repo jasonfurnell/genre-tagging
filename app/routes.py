@@ -202,6 +202,7 @@ def _init_dropbox_client(refresh_token):
             oauth2_refresh_token=refresh_token,
             app_key=app_key,
             app_secret=app_secret,
+            timeout=5,  # 5s per-request timeout — prevents hung audio checks
         )
         _state["_dropbox_client"] = dbx
     except Exception:
