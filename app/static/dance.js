@@ -24,8 +24,8 @@
   // ── Dancer window sizing ─────────────────────────────────
   // Dynamically measures nav bar and bottom drawer to compute
   // the true visible area, then sizes #dancer-window to fit.
-  // 5 track covers high when drawer is expanded (matches workshop grid)
-  const DANCER_EXPANDED_H = 5 * 56;  // 5 × (48img + 8pad) = 280
+  // 4 track covers high when drawer is expanded (matches workshop grid)
+  const DANCER_EXPANDED_H = 4 * 56;  // 4 × (48img + 8pad) = 224
 
   function _updateDancerWindow() {
     const win = document.getElementById("dancer-window");
