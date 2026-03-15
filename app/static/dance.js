@@ -21,6 +21,38 @@
   // ── DOM refs ───────────────────────────────────────────────
   let _els = {};
 
+  // ── Dancer window sizing ─────────────────────────────────
+  // Dynamically measures nav bar and bottom drawer to compute
+  // the true visible area, then sizes #dancer-window to fit.
+  function _updateDancerWindow() {
+    const win = document.getElementById("dancer-window");
+    if (!win) return;
+
+    const nav = document.getElementById("tab-bar");
+    const drawer = document.getElementById("base-drawer");
+
+    const navH = nav ? nav.getBoundingClientRect().height : 0;
+    const drawerH = (drawer && drawer.classList.contains("open"))
+      ? drawer.getBoundingClientRect().height : 0;
+
+    const available = window.innerHeight - navH - drawerH;
+    win.style.height = Math.max(available, 100) + "px";
+
+    // Scale robot panel to fit within 80% of the dancer window
+    const panel = document.getElementById("robot-panel");
+    if (panel) {
+      // Reset scale to measure natural height
+      panel.style.transform = "";
+      const naturalH = panel.scrollHeight;
+      const maxH = available * 0.8;
+      if (naturalH > maxH && naturalH > 0) {
+        const s = maxH / naturalH;
+        panel.style.transform = `scale(${s})`;
+        panel.style.transformOrigin = "center center";
+      }
+    }
+  }
+
   // ── BPM sync ──────────────────────────────────────────────
   function _syncBpm(track) {
     if (track?.bpm && typeof setRobotBpm === "function") {
@@ -275,11 +307,23 @@
 
     // Hook workshop events early so dancers respond to audio state
     _hookWorkshopEvents();
+
+    // ── Dancer window: dynamic sizing ──────────────────────
+    _updateDancerWindow();
+    window.addEventListener("resize", _updateDancerWindow);
+
+    // Watch the base drawer for class changes (open/expanded)
+    const drawer = document.getElementById("base-drawer");
+    if (drawer) {
+      const obs = new MutationObserver(_updateDancerWindow);
+      obs.observe(drawer, { attributes: true, attributeFilter: ["class"] });
+    }
   };
 
   // ── Tab Enter ──────────────────────────────────────────────
   window.startDance = function () {
     if (!_inited) initDanceTab();
+    _updateDancerWindow();
 
     if (_settingsVisible) {
       if (typeof startRobotDancer === "function") startRobotDancer();

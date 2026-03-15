@@ -4600,15 +4600,22 @@ tr.ws-seed-selected {
     padding: 0.5rem 0;
 }
 
-/* Performance view: fills the tab, centers the 3 robots */
+/* Performance view: fills the tab, positions the dancer window */
 .dance-performance {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Dancer window: dynamically sized via JS to reflect true visible area */
+.dancer-window {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 46px - 130px);  /* nav bar + base drawer */
+    width: 100%;
     overflow: hidden;
-    position: relative;
+    /* height set dynamically by JS */
 }
 
 .dance-robot-panel {
@@ -5315,11 +5322,7 @@ tr.ws-seed-selected {
     .mode-toggle-option { font-size: 10px; letter-spacing: 0.02em; }
     .mode-toggle-track { min-width: 150px; padding: 3px; }
 
-    /* ── Dance tab: size & center the dancer on mobile ────────────  */
-    .dance-performance {
-        height: calc(100vh - var(--header-height) - 120px);
-        /* Account for header + base drawer */
-    }
+    /* ── Dance tab: dancer window height set dynamically by JS ──── */
     .dance-robot-panel {
         transform-origin: center center;
     }
