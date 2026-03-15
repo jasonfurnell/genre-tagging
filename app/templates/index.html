@@ -18,12 +18,7 @@
                 <span></span><span></span><span></span>
             </button>
             <div id="hamburger-menu" class="hamburger-menu hidden">
-                <div class="hamburger-group-label">Booty Shaker</div>
-                <button class="hamburger-item" data-tab="dance">Dance</button>
-                <button class="hamburger-item" data-tab="sets" data-modes="dance dj">Sets</button>
-                <button class="hamburger-item" data-tab="tree" data-modes="dance dj">Trees</button>
-                <button class="hamburger-item" data-tab="chat" data-modes="dance dj">Chat</button>
-                <div class="hamburger-group-label">DJ Maker</div>
+                <div class="hamburger-group-label">Set.Makin</div>
                 <button class="hamburger-item" data-tab="setbuilder">Workshop</button>
                 <button class="hamburger-item" data-tab="tagger">Tagger</button>
                 <button class="hamburger-item" data-tab="intersections">Intersections</button>
@@ -31,6 +26,11 @@
                 <button class="hamburger-item" data-tab="tracks">Tracks</button>
                 <button class="hamburger-item" data-tab="phases">Phases</button>
                 <button class="hamburger-item" data-tab="autoset">Auto Set</button>
+                <div class="hamburger-group-label">Rump.Shakin</div>
+                <button class="hamburger-item" data-tab="dance">Dance</button>
+                <button class="hamburger-item" data-tab="sets" data-modes="dance dj">Sets</button>
+                <button class="hamburger-item" data-tab="tree" data-modes="dance dj">Trees</button>
+                <button class="hamburger-item" data-tab="chat" data-modes="dance dj">Chat</button>
                 <div class="hamburger-group-label">Tools</div>
                 <div class="hamburger-item hamburger-item--tools">
                     <span id="set-current-name" class="set-current-name"></span>
@@ -55,8 +55,8 @@
         <!-- Mode toggle switch (center) -->
         <div id="mode-toggle" class="mode-toggle">
             <div class="mode-toggle-track" id="mode-toggle-track">
-                <span class="mode-toggle-option mode-toggle-option--left">Booty Shaker</span>
-                <span class="mode-toggle-option mode-toggle-option--right">DJ Maker</span>
+                <span class="mode-toggle-option mode-toggle-option--left">Set.Makin</span>
+                <span class="mode-toggle-option mode-toggle-option--right">Rump.Shakin</span>
                 <div class="mode-toggle-thumb"></div>
             </div>
         </div>
@@ -549,6 +549,15 @@
             </div>
         </div>
 
+        <!-- Init Sequence Mode -->
+        <div id="set-drawer-init" class="set-drawer-section hidden">
+            <div class="set-init-container">
+                <div class="set-init-header">Loading Set</div>
+                <div id="set-init-log" class="set-init-log"></div>
+                <div id="set-init-error" class="set-init-error hidden"></div>
+            </div>
+        </div>
+
         <!-- Now Playing Mode -->
         <div id="set-drawer-now-playing" class="set-drawer-section hidden">
             <div class="now-playing-artwork-container">
@@ -642,6 +651,15 @@
         <button id="base-drawer-chevron" class="base-drawer-chevron" aria-label="Expand player">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12.5L10 7.5L15 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+    </div>
+
+    <!-- Init sequence (mobile, shown during loading) -->
+    <div id="base-drawer-init" class="base-drawer-init" style="display:none;">
+        <div class="set-init-container">
+            <div class="set-init-header">Loading Set</div>
+            <div id="set-init-log-mobile" class="set-init-log"></div>
+            <div id="set-init-error-mobile" class="set-init-error hidden"></div>
+        </div>
     </div>
 
     <!-- Expanded detail (mobile only, hidden by default) -->

@@ -909,8 +909,8 @@ const TAB_LABELS = {
     tree: "Trees", phases: "Phases", autoset: "Auto Set", chat: "Chat",
 };
 
-let _currentMode = "dance";  // Always start on Booty Shaker; mode persists only within session
-let _activeTab = "dance";
+let _currentMode = "dj";  // Always start on Set.Makin; mode persists only within session
+let _activeTab = "setbuilder";
 
 function _updateModeToggleUI() {
     const track = document.getElementById("mode-toggle-track");
@@ -1065,7 +1065,7 @@ document.getElementById("mode-toggle-track").addEventListener("click", (e) => {
     const rect = track.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const half = rect.width / 2;
-    const clickedMode = clickX < half ? "dance" : "dj";
+    const clickedMode = clickX < half ? "dj" : "dance";
 
     // Only switch if clicking the other side
     if (clickedMode !== _currentMode) {

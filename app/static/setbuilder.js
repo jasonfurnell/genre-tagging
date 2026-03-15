@@ -69,6 +69,9 @@ function camelotColor(key) {
     return CAMELOT_COLORS[norm] || null;
 }
 
+// ── Init Sequence State ──
+let _setInitRunning = false;  // true while init sequence is in progress
+
 // ── Layout Constants ──
 const SET_IMG = 48;
 const SET_PAD = 4;
@@ -188,26 +191,24 @@ async function initSetBuilder() {
         }
     });
 
-    // Load saved state or init empty grid
-    await loadSavedSetState();
-
-    // Pre-select slot 0 and prepare now-playing info (no audio yet)
-    const firstSlot = findNextPlaySetSlot(0);
-    if (firstSlot >= 0) {
-        setPlaySetIndex = firstSlot;
-        const slot = setSlots[firstSlot];
-        const track = slot.tracks[slot.selectedTrackIndex];
-        if (track) {
-            // Populate now-playing drawer with slot 0 info
-            updateNowPlayingDrawer(track, firstSlot);
-            // If landing directly on setbuilder tab, open the drawer
-            const currentTab = document.querySelector(".tab-content:not(.hidden)");
-            if (currentTab && currentTab.id === "tab-setbuilder") {
-                openDrawer("now-playing", null);
-            }
+    // Run the init sequence (loads state, checks audio, transitions to now-playing)
+    const currentTab = document.querySelector(".tab-content:not(.hidden)");
+    if (currentTab && currentTab.id === "tab-setbuilder") {
+        // On the setbuilder tab — show the full init sequence in the drawer
+        await _runSetInitSequence({ isNewLoad: false });
+    } else {
+        // Not on setbuilder tab — load silently in background
+        await loadSavedSetState();
+        const firstSlot = findNextPlaySetSlot(0);
+        if (firstSlot >= 0) {
+            setPlaySetIndex = firstSlot;
+            const slot = setSlots[firstSlot];
+            const track = slot.tracks[slot.selectedTrackIndex];
+            if (track) updateNowPlayingDrawer(track, firstSlot);
         }
+        setAudioFlagsReady = refreshHasAudioFlags();
+        updateModeToggleUI();
     }
-    updateModeToggleUI();
 }
 
 
@@ -308,7 +309,6 @@ async function loadSavedSetState() {
             ensureBookendSlots();
             renderSet();
             updateSaveButtons();
-            setAudioFlagsReady = refreshHasAudioFlags();
             return;
         }
     } catch (e) {
@@ -390,43 +390,60 @@ async function loadSavedSet(setId) {
     if (setDirty) {
         if (!confirm("You have unsaved changes. Discard and load a different set?")) return;
     }
+    // Stop any current playback before loading the new set
+    stopPlayback();
+
+    // Fetch the set data once — reused by init sequence loadFn
+    let cachedData = null;
     try {
         const res = await fetch(`/api/saved-sets/${setId}`);
         if (!res.ok) { alert("Failed to load set."); return; }
-        const data = await res.json();
-        setResumeSlotIdx = -1;
-        setSlots = data.slots || [];
-        currentSetId = data.id;
-        currentSetName = data.name;
-        setDirty = false;
-        // Restore phase profile if saved with set
-        if (data.phase_profile_id) {
-            activePhaseProfileId = data.phase_profile_id;
-            try {
-                const pRes = await fetch(`/api/phase-profiles/${data.phase_profile_id}`);
-                if (pRes.ok) {
-                    const prof = await pRes.json();
-                    setActivePhases = prof.phases;
-                }
-            } catch (_) { /* keep current phases */ }
-        }
-        ensureBookendSlots();
-        renderSet();
-        updateSaveButtons();
-        refreshHasAudioFlags();
-        saveSetState(); // persist to working state immediately
-        if (typeof switchToTab === "function") switchToTab("setbuilder");
-        showToast(`Loaded "${currentSetName}"`);
+        cachedData = await res.json();
     } catch (e) {
         console.error("Failed to load set:", e);
         alert("Failed to load set.");
+        return;
     }
+
+    if (typeof switchToTab === "function") switchToTab("setbuilder");
+
+    // Run the init sequence with the set load as the loadFn
+    await _runSetInitSequence({
+        isNewLoad: true,
+        setName: cachedData.name || null,
+        loadFn: async () => {
+            const data = cachedData;
+            setResumeSlotIdx = -1;
+            setSlots = data.slots || [];
+            currentSetId = data.id;
+            currentSetName = data.name;
+            setDirty = false;
+            // Restore phase profile if saved with set
+            if (data.phase_profile_id) {
+                activePhaseProfileId = data.phase_profile_id;
+                try {
+                    const pRes = await fetch(`/api/phase-profiles/${data.phase_profile_id}`);
+                    if (pRes.ok) {
+                        const prof = await pRes.json();
+                        setActivePhases = prof.phases;
+                    }
+                } catch (_) { /* keep current phases */ }
+            }
+            ensureBookendSlots();
+            renderSet();
+            updateSaveButtons();
+            saveSetState();
+        },
+    });
+
+    if (currentSetName) showToast(`Loaded "${currentSetName}"`);
 }
 
 function startNewSet() {
     if (setDirty) {
         if (!confirm("You have unsaved changes. Start a new set?")) return;
     }
+    stopPlayback();
     initEmptySlots();
     currentSetId = null;
     currentSetName = null;
@@ -1529,6 +1546,11 @@ function openDrawer(mode, targetSlotId) {
         document.getElementById("set-drawer-selected-track").innerHTML = "";
         document.getElementById("set-drawer-search-context").classList.add("hidden");
         setTimeout(() => document.getElementById("set-drawer-track-search").focus(), 350);
+    } else if (mode === "init") {
+        document.getElementById("set-drawer-init").classList.remove("hidden");
+        document.getElementById("set-drawer-title").textContent = "Loading Set";
+        // Close base drawer if open
+        if (baseDrawerOpen) closeBaseDrawer();
     } else if (mode === "now-playing") {
         document.getElementById("set-drawer-now-playing").classList.remove("hidden");
         document.getElementById("set-drawer-title").textContent = "Now Playing";
@@ -1552,7 +1574,7 @@ function openDrawer(mode, targetSlotId) {
 function closeDrawer() {
     // In Play Mode: closing an edit drawer (browse/search/detail) returns
     // to Now Playing; closing Now Playing itself transitions to base drawer.
-    if (isPlaySetMode() && setDrawerMode !== "now-playing") {
+    if (isPlaySetMode() && setDrawerMode !== "now-playing" && setDrawerMode !== "init") {
         openDrawer("now-playing", null);
         return;
     }
@@ -1635,8 +1657,10 @@ function syncBaseDrawer() {
     document.getElementById("base-np-collection").textContent = leafH4 ? leafH4.textContent : "";
     const descEl = collSrc.querySelector(".set-search-card-desc");
     if (descEl) {
-        const fullText = descEl.textContent.replace(/Show (More|Less)/g, "").trim();
-        document.getElementById("base-np-collection-desc").textContent = fullText;
+        const fullSpan = descEl.querySelector(".set-search-card-desc-full");
+        const raw = fullSpan ? fullSpan.textContent : descEl.textContent;
+        document.getElementById("base-np-collection-desc").textContent =
+            raw.replace(/Show (More|Less)/g, "").trim();
     }
 
     // Also appears in (compact)
@@ -1707,8 +1731,10 @@ function syncBaseDrawerDetail() {
     if (leafH4) {
         let html = "<strong>" + leafH4.textContent + "</strong>";
         if (descEl) {
+            const fullSpan = descEl.querySelector(".set-search-card-desc-full");
+            const raw = fullSpan ? fullSpan.textContent : descEl.textContent;
             html += "<br><span style='font-size:0.7rem;color:var(--text-muted);'>" +
-                descEl.textContent.replace(/Show (More|Less)/g, "").trim() + "</span>";
+                raw.replace(/Show (More|Less)/g, "").trim() + "</span>";
         }
         collEl.innerHTML = html;
     } else {
@@ -1736,6 +1762,230 @@ expandFromBaseDrawer = function() {
         _originalExpandFromBaseDrawer();
     }
 };
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Init Sequence — step-by-step loading with progress bars
+// ═══════════════════════════════════════════════════════════════════════════
+
+function _addInitStep(log, label) {
+    const el = document.createElement("div");
+    el.className = "set-init-step";
+    el.innerHTML = `
+        <div class="set-init-step-row">
+            <span class="init-icon"></span><span>${label}</span>
+        </div>
+        <div class="set-init-progress"><div class="set-init-progress-fill"></div></div>
+    `;
+    log.appendChild(el);
+    return el;
+}
+
+function _markInitStep(el, state) {
+    el.classList.remove("active", "done", "fail");
+    el.classList.add(state);
+}
+
+function _setInitProgress(el, pct) {
+    const fill = el.querySelector(".set-init-progress-fill");
+    if (fill) fill.style.width = Math.min(100, Math.max(0, pct)) + "%";
+}
+
+/**
+ * Run the set initialization sequence, showing progress in the appropriate panel.
+ * @param {Object} opts
+ * @param {boolean} opts.isNewLoad - true when loading a saved set (vs initial startup)
+ * @param {string|null} opts.setName - name of set being loaded (for display)
+ * @returns {Promise<boolean>} true if init succeeded and has a playable first track
+ */
+async function _runSetInitSequence(opts = {}) {
+    if (_setInitRunning) return false;
+    _setInitRunning = true;
+
+    const isMobile = _isMobileView();
+    let log, errorEl;
+
+    if (isMobile) {
+        // Show init in mobile base drawer
+        const baseDrawer = document.getElementById("base-drawer");
+        const initPanel = document.getElementById("base-drawer-init");
+        log = document.getElementById("set-init-log-mobile");
+        errorEl = document.getElementById("set-init-error-mobile");
+
+        // Open the base drawer with the init panel visible
+        baseDrawerOpen = true;
+        baseDrawer.classList.add("open", "expanded");
+        document.querySelectorAll(".tab-content").forEach(t => {
+            t.classList.add("base-drawer-open", "base-drawer-expanded");
+        });
+        // Hide the normal detail and track info, show init
+        document.getElementById("base-drawer-detail").style.display = "none";
+        document.querySelector(".base-drawer-left").style.display = "none";
+        initPanel.style.display = "block";
+    } else {
+        // Desktop: show init in right drawer
+        openDrawer("init", null);
+        log = document.getElementById("set-init-log");
+        errorEl = document.getElementById("set-init-error");
+    }
+
+    // Reset
+    log.innerHTML = "";
+    errorEl.textContent = "";
+    errorEl.classList.add("hidden");
+
+    // Update header
+    const headerText = opts.setName ? `Loading "${opts.setName}"` : "Loading Set";
+    log.closest(".set-init-container").querySelector(".set-init-header").textContent = headerText;
+
+    // ── Step 1: Load set data ──
+    const stepLoad = _addInitStep(log, opts.isNewLoad ? "Loading set data" : "Restoring session state");
+    _markInitStep(stepLoad, "active");
+    _setInitProgress(stepLoad, 10);
+
+    try {
+        if (opts.isNewLoad && opts.loadFn) {
+            _setInitProgress(stepLoad, 30);
+            await opts.loadFn();
+            _setInitProgress(stepLoad, 100);
+        } else {
+            // Initial startup — loadSavedSetState
+            _setInitProgress(stepLoad, 30);
+            await loadSavedSetState();
+            _setInitProgress(stepLoad, 100);
+        }
+        _markInitStep(stepLoad, "done");
+    } catch (e) {
+        console.error("Set load failed:", e);
+        _markInitStep(stepLoad, "fail");
+        _setInitProgress(stepLoad, 100);
+        errorEl.textContent = `Failed to load set data: ${e.message || e}`;
+        errorEl.classList.remove("hidden");
+        _setInitRunning = false;
+        return false;
+    }
+
+    // ── Step 2: Validate slots ──
+    const stepValidate = _addInitStep(log, "Validating set structure");
+    _markInitStep(stepValidate, "active");
+    _setInitProgress(stepValidate, 20);
+    await new Promise(r => setTimeout(r, 100));
+
+    const hasSlots = setSlots.length > 0;
+    const filledSlots = setSlots.filter(s => s.selectedTrackIndex != null).length;
+    _setInitProgress(stepValidate, 100);
+
+    if (!hasSlots) {
+        _markInitStep(stepValidate, "fail");
+        errorEl.textContent = "No slots found. The set may be empty or corrupted.";
+        errorEl.classList.remove("hidden");
+        _setInitRunning = false;
+        return false;
+    }
+    _markInitStep(stepValidate, filledSlots > 0 ? "done" : "fail");
+    if (filledSlots === 0) {
+        errorEl.textContent = "Set has no tracks assigned. Add tracks via the source browser.";
+        errorEl.classList.remove("hidden");
+        // Not a fatal error — still allow the workshop to open
+    }
+
+    // ── Step 3: Check audio availability ──
+    const stepAudio = _addInitStep(log, "Checking audio availability");
+    _markInitStep(stepAudio, "active");
+    _setInitProgress(stepAudio, 10);
+
+    try {
+        _setInitProgress(stepAudio, 40);
+        setAudioFlagsReady = refreshHasAudioFlags();
+        await setAudioFlagsReady;
+        _setInitProgress(stepAudio, 100);
+        _markInitStep(stepAudio, "done");
+    } catch (e) {
+        console.error("Audio flags check failed:", e);
+        _setInitProgress(stepAudio, 100);
+        _markInitStep(stepAudio, "fail");
+        errorEl.textContent = `Audio check failed: ${e.message || e}. Playback may be unavailable.`;
+        errorEl.classList.remove("hidden");
+        // Non-fatal — continue
+    }
+
+    // ── Step 4: Prepare first track ──
+    const stepFirst = _addInitStep(log, "Preparing first track");
+    _markInitStep(stepFirst, "active");
+    _setInitProgress(stepFirst, 20);
+    await new Promise(r => setTimeout(r, 100));
+
+    const firstSlot = findNextPlaySetSlot(0);
+    let firstTrack = null;
+    if (firstSlot >= 0) {
+        setPlaySetIndex = firstSlot;
+        const slot = setSlots[firstSlot];
+        firstTrack = slot.tracks[slot.selectedTrackIndex];
+        if (firstTrack) {
+            updateNowPlayingDrawer(firstTrack, firstSlot);
+            _setInitProgress(stepFirst, 80);
+        }
+    }
+    _setInitProgress(stepFirst, 100);
+    _markInitStep(stepFirst, firstTrack ? "done" : "fail");
+
+    if (!firstTrack && filledSlots > 0) {
+        errorEl.textContent = "Could not find a playable first track. Tracks may lack audio files.";
+        errorEl.classList.remove("hidden");
+    }
+
+    // ── Step 5: Ready ──
+    const stepReady = _addInitStep(log, "Workshop ready");
+    _markInitStep(stepReady, "active");
+    _setInitProgress(stepReady, 50);
+    await new Promise(r => setTimeout(r, 300));
+    _setInitProgress(stepReady, 100);
+    _markInitStep(stepReady, "done");
+
+    updateModeToggleUI();
+    _setInitRunning = false;
+
+    // ── Transition out after a brief pause ──
+    await new Promise(r => setTimeout(r, 600));
+    _completeInitSequence(firstTrack, firstSlot);
+
+    return !!firstTrack;
+}
+
+function _completeInitSequence(firstTrack, firstSlotIdx) {
+    const isMobile = _isMobileView();
+
+    if (isMobile) {
+        // Hide the init panel, restore normal base drawer state
+        document.getElementById("base-drawer-init").style.display = "none";
+        // Restore elements hidden during init
+        document.querySelector(".base-drawer-left").style.display = "";
+        document.getElementById("base-drawer-detail").style.display = "";
+
+        if (firstTrack) {
+            // Collapse expanded state, show minimised track details
+            const baseDrawer = document.getElementById("base-drawer");
+            baseDrawer.classList.remove("expanded");
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+            // Sync track info to base drawer
+            syncBaseDrawer();
+            // Auto-play first track
+            if (firstSlotIdx >= 0 && firstTrack.has_audio) playSlot(firstSlotIdx);
+        } else {
+            // No track — close the base drawer entirely
+            closeBaseDrawer();
+        }
+    } else {
+        // Desktop: switch from init drawer to now-playing with first track
+        if (firstTrack) {
+            openDrawer("now-playing", null);
+            // Auto-play first track
+            if (firstSlotIdx >= 0 && firstTrack.has_audio) playSlot(firstSlotIdx);
+        } else {
+            closeDrawer();
+        }
+    }
+}
 
 
 // ── Browse Mode ──

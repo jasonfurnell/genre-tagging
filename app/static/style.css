@@ -456,12 +456,12 @@ body {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
 }
-.mode-toggle-track.dj .mode-toggle-thumb {
+.mode-toggle-track.dance .mode-toggle-thumb {
     transform: translateX(calc(100% - 0px));
 }
 /* Active label gets white text */
-.mode-toggle-track.dance .mode-toggle-option--left,
-.mode-toggle-track.dj .mode-toggle-option--right {
+.mode-toggle-track.dj .mode-toggle-option--left,
+.mode-toggle-track.dance .mode-toggle-option--right {
     color: #fff;
 }
 
@@ -4507,6 +4507,98 @@ tr.ws-seed-selected {
     line-height: 1.5;
 }
 .dance-init-error.hidden { display: none; }
+
+/* ── Set Workshop Init Sequence ────────────────────────────── */
+.set-init-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 2rem 1rem;
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto;
+}
+.set-init-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+}
+.set-init-log {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+}
+.set-init-step {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+}
+.set-init-step-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.set-init-step.active { color: rgba(255, 255, 255, 0.85); }
+.set-init-step.done { color: #1db954; }
+.set-init-step.fail { color: #e74c3c; }
+.set-init-step .init-icon {
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.set-init-step.active .init-icon::after { content: "\25CB"; }
+.set-init-step.done .init-icon::after { content: "\2713"; }
+.set-init-step.fail .init-icon::after { content: "\2717"; }
+.set-init-step:not(.active):not(.done):not(.fail) .init-icon::after { content: "\00B7"; }
+
+/* Progress bar within each step */
+.set-init-progress {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-left: 24px;  /* align with text after icon */
+}
+.set-init-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent, #1db954);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+.set-init-step.done .set-init-progress-fill { width: 100%; background: #1db954; }
+.set-init-step.fail .set-init-progress-fill { width: 100%; background: #e74c3c; }
+.set-init-step.active .set-init-progress-fill { background: var(--accent, #1db954); }
+
+/* Error message */
+.set-init-error {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.5;
+    padding: 0.75rem;
+    background: rgba(231, 76, 60, 0.08);
+    border: 1px solid rgba(231, 76, 60, 0.2);
+    border-radius: var(--radius);
+    width: 100%;
+}
+.set-init-error.hidden { display: none; }
+
+/* Mobile init in base drawer */
+.base-drawer-init {
+    padding: 1rem 0.5rem;
+}
+.base-drawer-init .set-init-container {
+    padding: 0.5rem 0;
+}
 
 /* Performance view: fills the tab, centers the 3 robots */
 .dance-performance {
