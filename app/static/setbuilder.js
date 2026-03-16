@@ -125,10 +125,12 @@ async function initSetBuilder() {
         _clearAutoplayBlockedHint();
         _bpmSwapContext = null;  // playback succeeded — clear BPM swap state
         startEnergyLineAnim();
+        document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.add("eq-playing"));
         window.dispatchEvent(new CustomEvent("playset-playing"));
     });
     setAudio.addEventListener("pause", () => {
         stopEnergyLineAnim();
+        document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.remove("eq-playing"));
     });
 
     // Now Playing controls
@@ -2723,6 +2725,7 @@ function findPrevPlaySetSlot(fromIdx) {
 const EQ_BAR_COUNT = 7;
 const EQ_SPEEDS  = [1.2, 0.8, 1.5, 0.9, 1.35, 1.05, 1.4];   // seconds
 const EQ_DELAYS  = [0, 0.12, 0.05, 0.18, 0.08, 0.22, 0.03];  // seconds
+const EQ_IDLES   = [75, 60, 82, 55, 78, 65, 80];              // idle clip % (higher = shorter bar)
 
 function createEqOverlay(col, bpm) {
     removeEqOverlay(col);
@@ -2743,13 +2746,17 @@ function createEqOverlay(col, bpm) {
             bar.className = "set-eq-bar";
             bar.style.setProperty("--eq-speed", EQ_SPEEDS[i] + "s");
             bar.style.setProperty("--eq-delay", EQ_DELAYS[i] + "s");
+            bar.style.setProperty("--eq-idle", EQ_IDLES[i] + "%");
             overlay.appendChild(bar);
         }
     }
 
+    // If audio is actively playing, animate immediately
+    const eqPlaying = setAudio && !setAudio.paused ? " eq-playing" : "";
+
     // Top overlay: column top → track top edge, bars project upward
     const upOverlay = document.createElement("div");
-    upOverlay.className = "set-eq-overlay set-eq-overlay-up";
+    upOverlay.className = "set-eq-overlay set-eq-overlay-up" + eqPlaying;
     upOverlay.style.top = "0";
     upOverlay.style.bottom = (col.offsetHeight - trackTop) + "px";
     upOverlay.style.setProperty("--eq-pulse-speed", pulseSpeed + "s");
@@ -2758,7 +2765,7 @@ function createEqOverlay(col, bpm) {
 
     // Bottom overlay: track bottom edge → column bottom, bars project downward
     const downOverlay = document.createElement("div");
-    downOverlay.className = "set-eq-overlay set-eq-overlay-down";
+    downOverlay.className = "set-eq-overlay set-eq-overlay-down" + eqPlaying;
     downOverlay.style.top = trackBottom + "px";
     downOverlay.style.bottom = "0";
     downOverlay.style.setProperty("--eq-pulse-speed", pulseSpeed + "s");

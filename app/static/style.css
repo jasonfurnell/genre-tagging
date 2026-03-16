@@ -3440,9 +3440,11 @@ tr.ws-seed-selected {
     padding: 0 6px;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.35;
     border-radius: 4px;
     overflow: hidden;
+    opacity: 0.25;
+}
+.set-eq-overlay.eq-playing {
     animation: eqPulse var(--eq-pulse-speed, 0.5s) ease-in-out infinite;
 }
 /* Upward-projecting bars (from track top edge upward) */
@@ -3469,13 +3471,17 @@ tr.ws-seed-selected {
             transparent 6px
         );
     border-radius: 2px 2px 0 0;
+    clip-path: inset(var(--eq-idle, 70%) 0 0 0);
+    transition: clip-path 0.4s ease-out;
+}
+.set-eq-overlay.eq-playing .set-eq-bar {
     animation: eqBarUp var(--eq-speed) ease-in-out infinite;
     animation-delay: var(--eq-delay, 0s);
 }
 /* Downward bar variant: mirrored origin + gradient direction */
 .set-eq-overlay-down .set-eq-bar {
     border-radius: 0 0 2px 2px;
-    animation-name: eqBarDown;
+    clip-path: inset(0 0 var(--eq-idle, 70%) 0);
     background:
         repeating-linear-gradient(
             to bottom,
@@ -3484,6 +3490,9 @@ tr.ws-seed-selected {
             transparent 4px,
             transparent 6px
         );
+}
+.set-eq-overlay-down.eq-playing .set-eq-bar {
+    animation-name: eqBarDown;
 }
 
 /* Settings checkbox label */
