@@ -126,11 +126,13 @@ async function initSetBuilder() {
         _bpmSwapContext = null;  // playback succeeded — clear BPM swap state
         startEnergyLineAnim();
         document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.add("eq-playing"));
+        _updatePlayOverlayIcon();
         window.dispatchEvent(new CustomEvent("playset-playing"));
     });
     setAudio.addEventListener("pause", () => {
         stopEnergyLineAnim();
         document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.remove("eq-playing"));
+        _updatePlayOverlayIcon();
     });
 
     // Now Playing controls
@@ -1250,14 +1252,16 @@ function renderTrackColumns() {
         });
     }
 
-    // Re-apply play-set-active styling after DOM rebuild
-    if (isPlaySetMode() && setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
+    // Re-apply play-set-active styling + overlay after DOM rebuild
+    const _audioActive = setAudio && setAudio.src && !setAudio.ended;
+    if (_audioActive && setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
         const activeSlot = setSlots[setPlaySetIndex];
         const col = container.querySelector(`.set-column[data-slot-id="${activeSlot.id}"]`);
         if (col) {
             col.classList.add("play-set-active");
             const activeTrack = activeSlot.tracks[activeSlot.selectedTrackIndex];
             createEqOverlay(col, activeTrack ? activeTrack.bpm : null);
+            createPlayOverlay(col, setPlaySetIndex);
         }
     }
 }
@@ -2022,6 +2026,49 @@ async function _runSetInitSequence(opts = {}) {
     return !!firstTrack;
 }
 
+// Activate a slot visually (column highlight, EQ, play overlay, drawer) without starting audio.
+// Used on cold start so the user sees a "paused now-playing" state ready for play.
+function _activateSlotVisual(slotIdx) {
+    if (slotIdx < 0 || slotIdx >= setSlots.length) return;
+    const slot = setSlots[slotIdx];
+    const track = slot.tracks[slot.selectedTrackIndex];
+    if (!track) return;
+
+    setPlaySetIndex = slotIdx;
+
+    // Clear any previous active column
+    document.querySelectorAll(".set-column.play-set-active").forEach(el => {
+        _downgradePlayingArtwork(el);
+        removeEqOverlay(el);
+        el.classList.remove("play-set-active");
+    });
+    document.querySelectorAll(".set-key-cell.play-set-active").forEach(
+        el => el.classList.remove("play-set-active")
+    );
+    removePlayOverlay();
+
+    // Activate column
+    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
+    if (col) {
+        col.classList.add("play-set-active");
+        _upgradePlayingArtwork(col, track);
+        createEqOverlay(col, track.bpm);
+        createPlayOverlay(col, slotIdx);
+        setTimeout(() => _scrollToActiveTrack(col), 320);
+    }
+
+    // Activate key cell
+    const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
+    if (keyCell) keyCell.classList.add("play-set-active");
+
+    // Update drawer info
+    updateNowPlayingDrawer(track, slotIdx);
+
+    // Show paused icon
+    document.getElementById("now-playing-play-pause").innerHTML = "&#9654;";
+    document.getElementById("base-np-play-pause").innerHTML = "&#9654;";
+}
+
 function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
     const isMobile = _isMobileView();
 
@@ -2042,12 +2089,12 @@ function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
             // Sync track info to base drawer
             syncBaseDrawer();
             syncBaseDrawerDetail();
-            // Auto-play only on user-triggered set load (not cold start)
+            // Auto-play on user-triggered set load; visual-only on cold start
             if (isNewLoad && firstSlotIdx >= 0 && firstTrack.has_audio) {
                 playSlot(firstSlotIdx);
-            } else if (!isNewLoad && firstTrack.has_audio) {
-                // Cold start — invite user to tap play
-                _showAutoplayBlockedHint();
+            } else if (firstSlotIdx >= 0) {
+                // Cold start — activate visually (paused), user presses play on overlay
+                _activateSlotVisual(firstSlotIdx);
             }
         } else {
             // No track — close the base drawer entirely
@@ -2057,12 +2104,12 @@ function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
         // Desktop: switch from init drawer to now-playing with first track
         if (firstTrack) {
             openDrawer("now-playing", null);
-            // Auto-play only on user-triggered set load (not cold start)
+            // Auto-play on user-triggered set load; visual-only on cold start
             if (isNewLoad && firstSlotIdx >= 0 && firstTrack.has_audio) {
                 playSlot(firstSlotIdx);
-            } else if (!isNewLoad && firstTrack.has_audio) {
-                // Cold start — invite user to tap play
-                _showAutoplayBlockedHint();
+            } else if (firstSlotIdx >= 0) {
+                // Cold start — activate visually (paused), user presses play on overlay
+                _activateSlotVisual(firstSlotIdx);
             }
         } else {
             closeDrawer();
@@ -2652,6 +2699,7 @@ function stopPlayback() {
     _previewStartTime = 0;
     stopEnergyLineAnim();
     removeAllEqOverlays();
+    removePlayOverlay();
     document.querySelectorAll(".set-column.play-set-active").forEach(el => {
         _downgradePlayingArtwork(el);
         el.classList.remove("play-set-active");
@@ -2781,6 +2829,165 @@ function removeAllEqOverlays() {
     document.querySelectorAll(".set-eq-overlay").forEach(el => el.remove());
 }
 
+// ── Play Controls Overlay (crosshair on playing track) ──
+
+function createPlayOverlay(col, slotIdx) {
+    removePlayOverlay();
+
+    const slot = setSlots[slotIdx];
+    if (!slot) return;
+    const track = slot.tracks[slot.selectedTrackIndex];
+    if (!track) return;
+
+    const selectedEl = col.querySelector(".set-track-slot.selected");
+    if (!selectedEl) return;
+
+    const keyColor = camelotColor(track.key) || "#1db954";
+
+    // BPM-synced pulse: one full cycle per 2 beats (matches EQ overlay)
+    const bpm = track.bpm || 120;
+    const pulseSpeed = 120 / bpm;
+
+    // Container positioned relative to the column
+    const overlay = document.createElement("div");
+    overlay.className = "set-play-overlay";
+    overlay.style.setProperty("--play-key-color", keyColor);
+    overlay.style.setProperty("--play-pulse-speed", pulseSpeed + "s");
+    if (setAudio && !setAudio.paused) overlay.classList.add("playing");
+
+    // Use target dimensions — CSS transitions may not have completed yet.
+    // On mobile, play-set-active enlarges track to 96×96 at left:8px in 112px col.
+    // On desktop, track stays 48×48 at left:4px in 56px col.
+    const isMobile = _isMobileView();
+    const trackW = isMobile ? 96 : 48;
+    const trackH = isMobile ? 96 : 48;
+    const trackLeft = isMobile ? 8 : 4;
+    const trackTop = selectedEl.offsetTop;  // Y position doesn't change
+    const trackCX = trackLeft + trackW / 2;
+    const trackCY = trackTop + trackH / 2;
+
+    // Arm lengths
+    const armLen = 36;
+
+    // ── Scrim (dark backdrop behind the cross) ──
+    const scrim = document.createElement("div");
+    scrim.className = "set-play-scrim" + (setAudio && !setAudio.paused ? " playing" : "");
+    scrim.style.left = (trackLeft - 2) + "px";
+    scrim.style.top = (trackTop - 2) + "px";
+    scrim.style.width = (trackW + 4) + "px";
+    scrim.style.height = (trackH + 4) + "px";
+    overlay.appendChild(scrim);
+
+    // ── Center play/pause button ──
+    const center = document.createElement("div");
+    center.className = "set-play-center";
+    center.style.left = (trackCX - 18) + "px";
+    center.style.top = (trackCY - 18) + "px";
+    center.innerHTML = (setAudio && !setAudio.paused) ? "&#9646;&#9646;" : "&#9654;";
+    center.addEventListener("click", (e) => {
+        e.stopPropagation();
+        togglePlaySetPause();
+        // Update icon + pulse state
+        const isPlaying = setAudio && !setAudio.paused;
+        center.innerHTML = isPlaying ? "&#9646;&#9646;" : "&#9654;";
+        scrim.classList.toggle("playing", isPlaying);
+        overlay.classList.toggle("playing", isPlaying);
+    });
+    overlay.appendChild(center);
+
+    // ── Left arm (previous track in set) ──
+    const hasPrev = findPrevPlaySetSlot(slotIdx - 1) >= 0;
+    const armLeft = document.createElement("div");
+    armLeft.className = "set-play-arm arm-left";
+    armLeft.style.left = (trackLeft - armLen) + "px";
+    armLeft.style.top = trackCY + "px";
+    armLeft.style.width = armLen + "px";
+    const lineL = document.createElement("div");
+    lineL.className = "set-play-arm-line";
+    armLeft.appendChild(lineL);
+    const btnL = document.createElement("div");
+    btnL.className = "set-play-arm-btn" + (hasPrev ? "" : " disabled");
+    btnL.innerHTML = "&#9664;&#9664;";
+    btnL.addEventListener("click", (e) => { e.stopPropagation(); playSetPrev(); });
+    armLeft.appendChild(btnL);
+    overlay.appendChild(armLeft);
+
+    // ── Right arm (next track in set) ──
+    const hasNext = findNextPlaySetSlot(slotIdx + 1) >= 0;
+    const armRight = document.createElement("div");
+    armRight.className = "set-play-arm arm-right";
+    armRight.style.left = (trackLeft + trackW) + "px";
+    armRight.style.top = trackCY + "px";
+    armRight.style.width = armLen + "px";
+    const lineR = document.createElement("div");
+    lineR.className = "set-play-arm-line";
+    armRight.appendChild(lineR);
+    const btnR = document.createElement("div");
+    btnR.className = "set-play-arm-btn" + (hasNext ? "" : " disabled");
+    btnR.innerHTML = "&#9654;&#9654;";
+    btnR.addEventListener("click", (e) => { e.stopPropagation(); playSetNext(); });
+    armRight.appendChild(btnR);
+    overlay.appendChild(armRight);
+
+    // ── Up arm (higher BPM track in slot) ──
+    const cur = slot.selectedTrackIndex;
+    let hasHigher = false;
+    for (let i = cur + 1; i < slot.tracks.length; i++) {
+        if (slot.tracks[i]) { hasHigher = true; break; }
+    }
+    const armUp = document.createElement("div");
+    armUp.className = "set-play-arm arm-up";
+    armUp.style.left = trackCX + "px";
+    armUp.style.top = (trackTop - armLen) + "px";
+    armUp.style.height = armLen + "px";
+    const lineU = document.createElement("div");
+    lineU.className = "set-play-arm-line";
+    armUp.appendChild(lineU);
+    const btnU = document.createElement("div");
+    btnU.className = "set-play-arm-btn" + (hasHigher ? "" : " disabled");
+    btnU.innerHTML = "&#9650;";
+    btnU.addEventListener("click", (e) => { e.stopPropagation(); bpmSwapUp(); });
+    armUp.appendChild(btnU);
+    overlay.appendChild(armUp);
+
+    // ── Down arm (lower BPM track in slot) ──
+    let hasLower = false;
+    for (let i = cur - 1; i >= 0; i--) {
+        if (slot.tracks[i]) { hasLower = true; break; }
+    }
+    const armDown = document.createElement("div");
+    armDown.className = "set-play-arm arm-down";
+    armDown.style.left = trackCX + "px";
+    armDown.style.top = (trackTop + trackH) + "px";
+    armDown.style.height = armLen + "px";
+    const lineD = document.createElement("div");
+    lineD.className = "set-play-arm-line";
+    armDown.appendChild(lineD);
+    const btnD = document.createElement("div");
+    btnD.className = "set-play-arm-btn" + (hasLower ? "" : " disabled");
+    btnD.innerHTML = "&#9660;";
+    btnD.addEventListener("click", (e) => { e.stopPropagation(); bpmSwapDown(); });
+    armDown.appendChild(btnD);
+    overlay.appendChild(armDown);
+
+    col.appendChild(overlay);
+}
+
+function removePlayOverlay() {
+    document.querySelectorAll(".set-play-overlay").forEach(el => el.remove());
+}
+
+// Update play overlay icon state (called from audio events)
+function _updatePlayOverlayIcon() {
+    const isPlaying = setAudio && !setAudio.paused;
+    const overlay = document.querySelector(".set-play-overlay");
+    if (overlay) overlay.classList.toggle("playing", isPlaying);
+    const center = document.querySelector(".set-play-center");
+    if (center) center.innerHTML = isPlaying ? "&#9646;&#9646;" : "&#9654;";
+    const scrim = document.querySelector(".set-play-scrim");
+    if (scrim) scrim.classList.toggle("playing", isPlaying);
+}
+
 // Central dispatch: play slot respecting current mode
 function playSlot(idx) {
     // Choose drawer: mobile always uses base drawer, desktop uses tab-based logic
@@ -2837,6 +3044,7 @@ async function playFullTrack(idx) {
         col.classList.add("play-set-active");
         _upgradePlayingArtwork(col, track);
         createEqOverlay(col, track.bpm);
+        createPlayOverlay(col, idx);
         // Delay scroll to let the wide-column CSS transition settle
         setTimeout(() => _scrollToActiveTrack(col), 320);
     }
@@ -2911,6 +3119,7 @@ async function playSlotPreview(idx) {
         col.classList.add("play-set-active");
         _upgradePlayingArtwork(col, track);
         createEqOverlay(col, track.bpm);
+        createPlayOverlay(col, idx);
         setTimeout(() => _scrollToActiveTrack(col), 320);
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);

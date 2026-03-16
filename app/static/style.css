@@ -3253,9 +3253,7 @@ tr.ws-seed-selected {
     gap: 0.25rem;
 }
 .base-np-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    display: none;
 }
 .base-np-controls .now-playing-btn {
     width: 30px;
@@ -3493,6 +3491,143 @@ tr.ws-seed-selected {
 }
 .set-eq-overlay-down.eq-playing .set-eq-bar {
     animation-name: eqBarDown;
+}
+
+/* ── Play Controls Overlay (crosshair on playing track) ── */
+.set-play-overlay {
+    position: absolute;
+    pointer-events: none;
+    z-index: 20;
+}
+/* BPM-synced whole-overlay opacity pulse (half-time) */
+@keyframes playOverlayBreath {
+    0%   { opacity: 0.78; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.78; }
+}
+.set-play-overlay.playing {
+    animation: playOverlayBreath calc(var(--play-pulse-speed, 1s) * 2) ease-in-out infinite;
+}
+/* The cross-shaped container sits centered on the track */
+.set-play-cross {
+    position: absolute;
+    pointer-events: none;
+}
+/* Center play/pause button */
+.set-play-center {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 22;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+}
+.set-play-center:hover {
+    background: rgba(0,0,0,0.85);
+    transform: scale(1.1);
+}
+/* Directional arm: a line + arrow button */
+.set-play-arm {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.set-play-arm-line {
+    background: var(--play-key-color, #1db954);
+    opacity: 0.6;
+    border-radius: 1px;
+}
+.set-play-arm-btn {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.7);
+    border: 1.5px solid var(--play-key-color, #1db954);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    color: var(--play-key-color, #1db954);
+    font-size: 10px;
+    line-height: 1;
+    z-index: 22;
+    transition: background 0.15s, transform 0.15s;
+    box-shadow: 0 0 6px rgba(0,0,0,0.4);
+}
+.set-play-arm-btn:hover {
+    background: rgba(0,0,0,0.9);
+    transform: scale(1.15);
+}
+.set-play-arm-btn.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}
+/* Horizontal arms (left/right) */
+.set-play-arm.arm-left,
+.set-play-arm.arm-right {
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.set-play-arm.arm-left .set-play-arm-line,
+.set-play-arm.arm-right .set-play-arm-line {
+    width: 100%;
+    height: 2px;
+}
+.set-play-arm.arm-left .set-play-arm-btn {
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.set-play-arm.arm-right .set-play-arm-btn {
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* Vertical arms (up/down) */
+.set-play-arm.arm-up,
+.set-play-arm.arm-down {
+    width: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.set-play-arm.arm-up .set-play-arm-line,
+.set-play-arm.arm-down .set-play-arm-line {
+    height: 100%;
+    width: 2px;
+}
+.set-play-arm.arm-up .set-play-arm-btn {
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.set-play-arm.arm-down .set-play-arm-btn {
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* Subtle connecting border around the cross region */
+.set-play-scrim {
+    position: absolute;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid var(--play-key-color, #1db954);
+    opacity: 0.5;
+    z-index: 19;
+    pointer-events: none;
 }
 
 /* Settings checkbox label */
@@ -5403,16 +5538,14 @@ tr.ws-seed-selected {
         min-height: auto;
     }
 
-    /* Row 1: controls + progress — match desktop width, centered */
+    /* Progress + mode toggle — flows after track info */
     .base-drawer-panel.base-drawer-center {
-        order: -1;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 0.25rem;
         flex: none;
-        width: 280px;
-        margin: 0 auto;
+        width: 100%;
     }
     .base-drawer-progress { width: 100%; }
     .now-playing-progress-bar { height: 3px; }
