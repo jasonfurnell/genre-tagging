@@ -85,7 +85,7 @@ This means:
 - The gunicorn timeout (120s) kills stuck requests before they can accumulate. The health check + worker recycling catch longer-term issues
 - 8 threads (up from 4) gives `/healthz` room to respond even during heavy LLM usage
 
-**Why not more workers?** The app uses an in-memory `_state` dict (a Python dictionary that holds the loaded playlist, caches, etc.). Multiple workers = multiple copies of state = things break. This is fine for a single-user DJ tool.
+**Why not more workers?** The app uses an in-memory `_state` dict (a Python dictionary that holds the loaded playlist, caches, etc.). Multiple workers = multiple copies of state = things break. This is the fundamental architectural constraint. See `.claude/plans/multi-user.md` for the plan to move state to SQLite, which would unlock both multi-user support and multiple workers.
 
 **What this means practically**: You're unlikely to notice slowness during normal use. The 8-thread pool + daemon threads for long operations means the site stays responsive even during bulk tagging or tree building.
 
@@ -261,4 +261,4 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)
 - [ ] **Log rotation on EC2**: The `app.log` file rotates automatically (2MB x 3 backups), but Docker container logs grow unbounded. Add `--log-opt max-size=10m --log-opt max-file=3` to the `docker run` command
-- [ ] **Architectural simplification**: The single-worker + in-memory `_state` dict is the fundamental constraint. Future options include moving state to Redis/SQLite (enabling multiple workers), or splitting long-running LLM operations into a separate process/queue
+- [ ] **Multi-user support + architectural simplification**: See `.claude/plans/multi-user.md` for the full plan — SQLite-per-user state, authentication, per-user Dropbox, and optional multi-worker deployment. Also covers how Option B (background workers for LLM calls) fits alongside multi-user
