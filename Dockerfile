@@ -32,14 +32,16 @@ EXPOSE 5001
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:5001/healthz || exit 1
 
-# V1 Flask app — single process, threaded for SSE + background tasks
-# 600s timeout for long-running LLM calls (tree building, tagging)
+# V1 Flask app — single process, 8 threads for SSE + background tasks.
+# 8 threads (up from 4) gives /healthz room to respond even when several
+# threads are busy with LLM calls. 120s timeout (down from 600s) means
+# stuck requests get killed in 2 min instead of 10.
 # max-requests: recycle worker after 500 requests to prevent stuck/leaked state
 # max-requests-jitter: randomise so recycling doesn't hit mid-traffic
 CMD ["uv", "run", "gunicorn", "app.main_flask:app", \
      "--bind", "0.0.0.0:5001", \
      "--workers", "1", \
-     "--threads", "4", \
-     "--timeout", "600", \
+     "--threads", "8", \
+     "--timeout", "120", \
      "--max-requests", "500", \
      "--max-requests-jitter", "50"]

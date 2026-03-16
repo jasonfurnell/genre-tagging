@@ -25,7 +25,7 @@ EC2 Instance (t3.micro, ~$9/mo)
 ```
 
 ## Files Created
-1. `Dockerfile` — Single-stage: Python 3.13-slim + uv + gunicorn (1 worker, 4 threads, 600s timeout)
+1. `Dockerfile` — Single-stage: Python 3.13-slim + uv + gunicorn (1 worker, 8 threads, 120s timeout)
 2. `.dockerignore` — exclude .git, .env, output/, frontend/, __pycache__, .venv, docs/
 3. `.github/workflows/deploy.yml` — Build → ECR → SSH deploy to EC2
 4. `config.json.example` — Template for server config (sanitized defaults)
@@ -185,8 +185,8 @@ rsync -avz --exclude='artwork/' output/ ec2-user@<IP>:/data/genre-tagging/output
 ```
 
 ## Key Decisions
-- **1 gunicorn worker + 4 threads** — `_state` dict is an in-memory singleton, 1 worker keeps it consistent, threads handle concurrent requests (SSE, artwork, background tasks)
-- **600s timeout** — tree-building and tagging LLM calls can take 5-10 minutes
+- **1 gunicorn worker + 8 threads** — `_state` dict is an in-memory singleton, 1 worker keeps it consistent, 8 threads handle concurrent requests (SSE, artwork, API calls) with headroom for `/healthz`
+- **120s timeout** — long-running LLM work runs in daemon threads; web-facing requests should complete in under 2 minutes. All LLM clients have 120s per-request timeouts
 - **Port 5001 NOT exposed externally** — Nginx proxies :80 → :5001 on localhost only
 - **Elastic IP recommended** — public IP changes on EC2 stop/start without it
 - **Docker volumes for output/** — 7 persistent JSON files + 9K artwork images survive container updates

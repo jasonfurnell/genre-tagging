@@ -145,7 +145,8 @@ def _save_artwork_cache():
         except Exception:
             logging.exception("Failed to save artwork cache to disk")
 
-_load_artwork_cache()
+# NOTE: _load_artwork_cache() is called lazily via _ensure_initialized()
+# to prevent module-level I/O from blocking gunicorn worker startup.
 
 # ---------------------------------------------------------------------------
 # Local artwork files (downloaded from Deezer CDN for reliable serving)
@@ -202,9 +203,10 @@ def _init_dropbox_client(refresh_token):
             oauth2_refresh_token=refresh_token,
             app_key=app_key,
             app_secret=app_secret,
-            # No global timeout — audio playback (files_get_temporary_link)
-            # needs room to breathe. Startup protection is handled by the
-            # per-call 5s timeout in _dropbox_file_exists() instead.
+            timeout=30,  # 30s global timeout — generous enough for audio
+                         # link generation but prevents infinite hangs.
+                         # Per-call 5s timeout in _dropbox_file_exists()
+                         # handles fast metadata checks separately.
         )
         _state["_dropbox_client"] = dbx
     except Exception:
@@ -238,7 +240,39 @@ def _save_dropbox_tokens():
     except Exception:
         logging.exception("Failed to save Dropbox tokens to disk")
 
-_load_dropbox_tokens()
+# NOTE: _load_dropbox_tokens() is called lazily via _ensure_initialized()
+# to prevent module-level network calls from blocking gunicorn worker startup.
+
+# ---------------------------------------------------------------------------
+# Lazy initialization — runs once on first request, not at import time.
+# This prevents hung Dropbox/network calls from freezing the worker at boot.
+# ---------------------------------------------------------------------------
+_initialized = False
+_init_lock = threading.Lock()
+
+def _ensure_initialized():
+    """Lazy one-time initialization of Dropbox client and artwork cache.
+
+    Called on the first request instead of at module import time.
+    This ensures gunicorn can boot and start serving /healthz immediately,
+    even if Dropbox is slow or unreachable.
+    """
+    global _initialized
+    if _initialized:
+        return
+    with _init_lock:
+        if _initialized:
+            return
+        logging.info("Running lazy initialization (first request)...")
+        _load_artwork_cache()
+        _load_dropbox_tokens()
+        _initialized = True
+        logging.info("Lazy initialization complete")
+
+@api.before_request
+def _before_request_init():
+    """Trigger lazy initialization on the first request."""
+    _ensure_initialized()
 
 # ---------------------------------------------------------------------------
 # Dropbox path helpers
@@ -354,8 +388,14 @@ def _provider_for_model(model):
 
 def _get_client(provider):
     if provider == "anthropic":
-        return Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        return Anthropic(
+            api_key=os.getenv("ANTHROPIC_API_KEY"),
+            timeout=120.0,  # 2-minute per-request timeout
+        )
+    return OpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        timeout=120.0,  # 2-minute per-request timeout
+    )
 
 
 def _track_status(row):

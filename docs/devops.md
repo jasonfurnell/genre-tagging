@@ -45,7 +45,7 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **What**: After ~500 requests, gunicorn kills and restarts its worker process
 - **Why**: Prevents slow memory leaks or accumulated bad state from eventually crashing the app
 - **Impact**: Zero — gunicorn handles the swap seamlessly between requests. Users don't notice
-- **Config**: `Dockerfile` lines 44-45 (`--max-requests 500 --max-requests-jitter 50`)
+- **Config**: `Dockerfile` CMD (`--max-requests 500 --max-requests-jitter 50`)
 
 ### 3. Blue-Green Deploy with Auto-Rollback
 - **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's Docker health check for up to 2 minutes. If the canary is healthy, the old container is swapped out. If it's not, the canary is removed and the old container keeps running untouched
@@ -54,12 +54,18 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **Config**: `.github/workflows/deploy.yml` — the `deploy` job's SSH script
 
 ### 4. Timeouts on External Calls
-- **What**: All Dropbox API calls have a 10s default timeout. Individual metadata checks have a tighter 5s timeout
+- **What**: All external API calls have explicit timeouts — Dropbox client at 30s global, metadata checks at 5s per-call, LLM clients (Anthropic + OpenAI) at 120s per-request
 - **Why**: Without timeouts, a single hung network call can block the entire server (1 worker = 1 app = all users affected)
-- **The lesson we learned**: A global 5s timeout broke audio playback (streaming needs longer). The fix was a 10s default on the client + a targeted 5s timeout only on quick metadata checks. Always think about *which* calls need tight timeouts vs. which need room to breathe
-- **Config**: `app/routes.py` — `_init_dropbox_client()` and `_dropbox_file_exists()`
+- **The lesson we learned**: A global 5s timeout broke audio playback (streaming needs longer). The fix was a 30s default on the Dropbox client + a targeted 5s timeout only on quick metadata checks. LLM calls get 120s (enough for complex tree-building prompts, but not infinite)
+- **Config**: `app/routes.py` — `_init_dropbox_client()`, `_dropbox_file_exists()`, `_get_client()`, and `app/llm.py` async clients
 
-### 5. Cache-Busting
+### 5. Lazy Initialization
+- **What**: Dropbox client and artwork cache are initialized on the first HTTP request, not at module import time
+- **Why**: Module-level init runs during gunicorn worker startup. If Dropbox is slow or unreachable, the worker hangs before it can even register routes — meaning `/healthz` never becomes available, Docker marks the container unhealthy, and deploys fail with "canary went unhealthy"
+- **The lesson we learned**: The site went down multiple times because `_load_dropbox_tokens()` ran at import time (when `from app.routes import api` executes in `main_flask.py`). A transient Dropbox delay during init blocked the entire worker. Moving to lazy init means gunicorn boots instantly, `/healthz` works immediately, and Dropbox connects on the first real request
+- **Config**: `app/routes.py` — `_ensure_initialized()` + `@api.before_request`
+
+### 6. Cache-Busting
 - **What**: Static files (JS, CSS) include a deploy timestamp in their URLs (`?v=1710489600`)
 - **Why**: Cloudflare/browser caches can serve stale files after a deploy. The timestamp forces fresh downloads
 - **Config**: `app/main_flask.py` line 18 (`_boot_ts`)
@@ -70,17 +76,18 @@ These are the layers of protection that prevent or auto-recover from problems:
 
 This is the most important thing to understand about the current setup:
 
-> **GenreTagging runs 1 gunicorn worker with 4 threads.**
+> **GenreTagging runs 1 gunicorn worker with 8 threads.**
 
 This means:
-- The app can handle ~4 concurrent requests (one per thread)
-- If all 4 threads are busy (e.g. long LLM calls), new requests **queue** and eventually timeout (users see 504 errors)
-- If a thread hangs forever, it permanently reduces capacity from 4 to 3 (then 2, then 1, then 0 = site down)
-- The health check + worker recycling catch this, but there's a ~90 second window of pain
+- The app can handle ~8 concurrent requests (one per thread)
+- Long-running operations (bulk tagging, tree building) run in **daemon threads** — they don't consume gunicorn request threads, but their LLM callbacks still use the thread pool briefly
+- If many threads are busy (e.g. several LLM calls + SSE streams), new requests **queue** and eventually timeout (users see 504 errors)
+- The gunicorn timeout (120s) kills stuck requests before they can accumulate. The health check + worker recycling catch longer-term issues
+- 8 threads (up from 4) gives `/healthz` room to respond even during heavy LLM usage
 
 **Why not more workers?** The app uses an in-memory `_state` dict (a Python dictionary that holds the loaded playlist, caches, etc.). Multiple workers = multiple copies of state = things break. This is fine for a single-user DJ tool.
 
-**What this means practically**: Long-running operations (tree building, bulk tagging) tie up threads. If you trigger a big operation while using the site normally, you might notice slowness. This is normal and expected.
+**What this means practically**: You're unlikely to notice slowness during normal use. The 8-thread pool + daemon threads for long operations means the site stays responsive even during bulk tagging or tree building.
 
 ---
 
@@ -232,12 +239,26 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - **Fix**: Implemented blue-green deploy — new image is tested as a canary container on a temp port before touching the live container. If the canary fails, the old container stays running. Failed deploys now cause zero downtime
 - **Lesson**: Never stop the working container until the replacement has proven it can boot. Infrastructure changes should never assume the new version will start successfully
 
+### 2026-03-16 — Site down (ERR_CONNECTION_TIMED_OUT), recurring worker hang
+- **Symptom**: `ERR_CONNECTION_TIMED_OUT` in browser, site completely unreachable
+- **Cause**: gunicorn worker frozen again — same root pattern as the 2026-03-15 incidents. Docker health check detected it and marked the container unhealthy, but `--restart unless-stopped` wasn't recovering it cleanly
+- **Immediate fix**: Manual container restart via EC2 Instance Connect (`docker restart genre-tagging`)
+- **Root cause analysis**: Three architectural issues made hangs recurring: (1) module-level Dropbox init could freeze the worker before routes registered, (2) no timeouts on LLM/Dropbox calls meant individual requests could hang indefinitely, (3) 600s gunicorn timeout was far too generous — a stuck thread stayed alive for 10 minutes before being killed
+- **Permanent fixes applied**:
+  1. **Lazy initialization**: Dropbox client + artwork cache now init on first request, not at import time. gunicorn boots instantly, `/healthz` works immediately
+  2. **Timeouts everywhere**: Dropbox client 30s global, metadata checks 5s per-call, LLM clients (Anthropic/OpenAI) 120s per-request
+  3. **Reduced gunicorn timeout**: 600s → 120s. Stuck requests die in 2 minutes, not 10
+  4. **More threads**: 4 → 8. Gives `/healthz` room to respond even during heavy LLM usage
+- **Lesson**: Defence in depth — no single fix prevents all hangs, but the combination of lazy init + timeouts + faster kill + more headroom makes the system self-healing. The 600s timeout was the biggest mistake — it let a single stuck thread hold a slot for 10 minutes
+
 ---
 
 ## Future Improvements
 
 - [x] ~~**Blue-green deploy with rollback**: Test new image as canary before swapping — failed deploys no longer take the site down~~ *(done 2026-03-15)*
+- [x] ~~**Lazy init + timeouts + reduced gunicorn timeout**: Prevent recurring worker hangs from module-level Dropbox init and untimed external calls~~ *(done 2026-03-16)*
 - [ ] **Monitoring/alerts** *(recommended next — `GenreTagging-2u3`)* : Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually. Blue-green prevents deploy-caused downtime, but runtime crashes or server issues still need external detection
 - [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)
 - [ ] **Log rotation on EC2**: The `app.log` file rotates automatically (2MB x 3 backups), but Docker container logs grow unbounded. Add `--log-opt max-size=10m --log-opt max-file=3` to the `docker run` command
+- [ ] **Architectural simplification**: The single-worker + in-memory `_state` dict is the fundamental constraint. Future options include moving state to Redis/SQLite (enabling multiple workers), or splitting long-running LLM operations into a separate process/queue

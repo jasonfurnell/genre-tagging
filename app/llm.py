@@ -161,12 +161,12 @@ class LLMClient:
 
     def _get_openai(self) -> AsyncOpenAI:
         if self._openai is None:
-            self._openai = AsyncOpenAI(api_key=self._openai_key)
+            self._openai = AsyncOpenAI(api_key=self._openai_key, timeout=120.0)
         return self._openai
 
     def _get_anthropic(self) -> AsyncAnthropic:
         if self._anthropic is None:
-            self._anthropic = AsyncAnthropic(api_key=self._anthropic_key)
+            self._anthropic = AsyncAnthropic(api_key=self._anthropic_key, timeout=120.0)
         return self._anthropic
 
     # ----- Non-streaming text call -----
