@@ -3535,6 +3535,16 @@ tr.ws-seed-selected {
     background: rgba(0,0,0,0.85);
     transform: scale(1.1);
 }
+/* Loading spinner: rotating border on center icon while audio buffers */
+@keyframes playLoadingSpin {
+    to { transform: rotate(360deg); }
+}
+.set-play-center.loading {
+    border: 2px solid rgba(255,255,255,0.15);
+    border-top-color: var(--play-key-color, #1db954);
+    animation: playLoadingSpin 0.8s linear infinite;
+    color: transparent;
+}
 /* Directional arm: a line + arrow button */
 .set-play-arm {
     position: absolute;

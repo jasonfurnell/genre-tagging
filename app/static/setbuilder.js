@@ -126,6 +126,7 @@ async function initSetBuilder() {
         _bpmSwapContext = null;  // playback succeeded — clear BPM swap state
         startEnergyLineAnim();
         document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.add("eq-playing"));
+        _clearPlayOverlayLoading();
         _updatePlayOverlayIcon();
         window.dispatchEvent(new CustomEvent("playset-playing"));
     });
@@ -2989,6 +2990,18 @@ function _updatePlayOverlayIcon() {
     if (scrim) scrim.classList.toggle("playing", isPlaying);
 }
 
+// Show loading spinner on the play overlay center icon
+function _setPlayOverlayLoading() {
+    const center = document.querySelector(".set-play-center");
+    if (center) center.classList.add("loading");
+}
+
+// Clear loading spinner (called when audio "playing" event fires)
+function _clearPlayOverlayLoading() {
+    const center = document.querySelector(".set-play-center");
+    if (center) center.classList.remove("loading");
+}
+
 // Central dispatch: play slot respecting current mode
 function playSlot(idx) {
     // Choose drawer: mobile always uses base drawer, desktop uses tab-based logic
@@ -3060,9 +3073,11 @@ async function playFullTrack(idx) {
     setAudio.src = `/api/audio/${track.id}`;
     setAudio.load();
     _previewStartTime = 0; // Full track mode — no preview window
+    _setPlayOverlayLoading();
     setAudio.play().catch(err => {
         if (gen !== setPlayGen) return; // stale — another track was requested
         if (err.name === 'AbortError') return; // source changed, not a real error
+        _clearPlayOverlayLoading();
         console.error("Playback failed:", err);
 
         // Autoplay blocked by browser — flag it so togglePlaySetPause resumes on click
@@ -3145,9 +3160,11 @@ async function playSlotPreview(idx) {
     };
     setAudio.addEventListener("loadedmetadata", onLoaded);
 
+    _setPlayOverlayLoading();
     setAudio.play().catch(err => {
         if (gen !== setPlayGen) return;
         if (err.name === 'AbortError') return;
+        _clearPlayOverlayLoading();
         console.error("Short Preview audio failed:", err);
 
         if (err.name === 'NotAllowedError') {
