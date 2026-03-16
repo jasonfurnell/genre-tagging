@@ -3513,7 +3513,7 @@ tr.ws-seed-selected {
     position: absolute;
     pointer-events: none;
 }
-/* Center play/pause button */
+/* Center play/pause icon (visual indicator only — scrim is the tap target) */
 .set-play-center {
     position: absolute;
     width: 36px;
@@ -3524,14 +3524,14 @@ tr.ws-seed-selected {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    pointer-events: auto;
+    pointer-events: none;
     z-index: 22;
     color: #fff;
     font-size: 14px;
     line-height: 1;
 }
-.set-play-center:hover {
+.set-play-scrim:hover ~ .set-play-center,
+.set-play-scrim:active ~ .set-play-center {
     background: rgba(0,0,0,0.85);
     transform: scale(1.1);
 }
@@ -3626,8 +3626,9 @@ tr.ws-seed-selected {
     background: rgba(0,0,0,0.35);
     border: 1px solid var(--play-key-color, #1db954);
     opacity: 0.5;
-    z-index: 19;
-    pointer-events: none;
+    z-index: 21;
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 /* Settings checkbox label */

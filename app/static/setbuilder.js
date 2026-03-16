@@ -2878,22 +2878,23 @@ function createPlayOverlay(col, slotIdx) {
     scrim.style.height = (trackH + 4) + "px";
     overlay.appendChild(scrim);
 
-    // ── Center play/pause button ──
+    // ── Center play/pause icon (visual only — scrim handles tap) ──
     const center = document.createElement("div");
     center.className = "set-play-center";
     center.style.left = (trackCX - 18) + "px";
     center.style.top = (trackCY - 18) + "px";
     center.innerHTML = (setAudio && !setAudio.paused) ? "&#9646;&#9646;" : "&#9654;";
-    center.addEventListener("click", (e) => {
+    overlay.appendChild(center);
+
+    // Scrim is the full-image play/pause tap target
+    scrim.addEventListener("click", (e) => {
         e.stopPropagation();
         togglePlaySetPause();
-        // Update icon + pulse state
         const isPlaying = setAudio && !setAudio.paused;
         center.innerHTML = isPlaying ? "&#9646;&#9646;" : "&#9654;";
         scrim.classList.toggle("playing", isPlaying);
         overlay.classList.toggle("playing", isPlaying);
     });
-    overlay.appendChild(center);
 
     // ── Left arm (previous track in set) ──
     const hasPrev = findPrevPlaySetSlot(slotIdx - 1) >= 0;
