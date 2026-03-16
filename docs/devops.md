@@ -34,12 +34,13 @@ EC2 Instance (your server, ~$9/month)
 
 These are the layers of protection that prevent or auto-recover from problems:
 
-### 1. Docker Health Check
-- **What**: Every 30 seconds, Docker pings `http://localhost:5001/healthz` inside the container
-- **Why**: If gunicorn freezes (e.g. a stuck LLM call blocks all threads), the health check detects it
-- **Recovery**: After 3 consecutive failures (~90s), Docker marks the container "unhealthy". Combined with `--restart unless-stopped`, Docker restarts it automatically
-- **Downtime**: ~90 seconds max. Users see a brief error, then the site comes back on its own
-- **Config**: `Dockerfile` lines 32-33
+### 1. Self-Healing Health Check
+- **What**: Every 30 seconds, a custom script (`healthcheck.sh`) pings `http://localhost:5001/healthz` inside the container
+- **Why**: If gunicorn freezes (e.g. a stuck LLM call blocks all threads, or the worker hangs during boot), the health check detects it
+- **Recovery**: After 5 consecutive failures (~2.5 min), the script kills gunicorn (PID 1), which causes the container to exit, which triggers Docker's `--restart unless-stopped` policy to restart it automatically
+- **Why a script instead of plain curl?**: Docker's `--restart unless-stopped` only fires when a container *exits*, NOT when it's marked "unhealthy". Without the script, a frozen container would sit "unhealthy" forever and never restart. The script bridges that gap by killing the process after sustained failures
+- **Downtime**: ~2.5 minutes max. Users see errors, then the site comes back on its own
+- **Config**: `healthcheck.sh`, `Dockerfile` lines 30-37
 
 ### 2. Worker Recycling
 - **What**: After ~500 requests, gunicorn kills and restarts its worker process
@@ -250,6 +251,17 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
   3. **Reduced gunicorn timeout**: 600s → 120s. Stuck requests die in 2 minutes, not 10
   4. **More threads**: 4 → 8. Gives `/healthz` room to respond even during heavy LLM usage
 - **Lesson**: Defence in depth — no single fix prevents all hangs, but the combination of lazy init + timeouts + faster kill + more headroom makes the system self-healing. The 600s timeout was the biggest mistake — it let a single stuck thread hold a slot for 10 minutes
+
+### 2026-03-17 — Recurring "unhealthy" container, never self-recovers
+- **Symptom**: Site down, container running but "unhealthy" for 18+ minutes. Logs show gunicorn master started but no worker ever booted ("Booting worker" line missing)
+- **Cause**: Two compounding issues:
+  1. **`playlist.py` ran `_load_playlists()` at import time** — same class of bug as the Dropbox init (module-level I/O during worker boot). If the EBS volume has a transient hiccup, the worker hangs before routes register, `/healthz` never responds
+  2. **Docker never restarted the unhealthy container** — `--restart unless-stopped` only fires when a container EXITS, not when Docker marks it "unhealthy". The gunicorn master stayed alive (container "running"), so Docker never triggered a restart. The previous devops doc incorrectly stated Docker would auto-restart unhealthy containers
+- **Fix**:
+  1. **Lazy playlist init**: Moved `_load_playlists()` to first access (same pattern as Dropbox lazy init) — zero I/O during worker boot
+  2. **Self-healing healthcheck script** (`healthcheck.sh`): Tracks consecutive health check failures. After 5 in a row (~2.5 min), kills gunicorn PID 1, forcing container exit, which actually triggers the restart policy
+  3. **Increased start-period**: 10s → 60s, giving the worker more time on initial boot before health checks begin
+- **Lesson**: Docker's "unhealthy" status is informational only — it doesn't trigger any recovery action. If you need auto-restart on health failure, you must bridge the gap yourself (kill PID 1 to force an exit). Also: every module-level function call is a potential boot-time hang — audit all imports, not just the obvious ones
 
 ---
 

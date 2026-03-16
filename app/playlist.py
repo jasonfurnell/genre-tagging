@@ -22,10 +22,19 @@ _PLAYLISTS_FILE = os.path.join(
 )
 
 _playlists: dict = {}  # id -> playlist dict
+_playlists_loaded = False
 
 
-def _load_playlists():
-    global _playlists
+def _ensure_playlists_loaded():
+    """Lazy-load playlists on first access, not at import time.
+
+    Module-level I/O blocks gunicorn worker boot — if the disk is slow
+    the worker hangs before /healthz can respond, Docker marks the
+    container unhealthy, and it never recovers without a manual restart.
+    """
+    global _playlists, _playlists_loaded
+    if _playlists_loaded:
+        return
     if os.path.exists(_PLAYLISTS_FILE):
         try:
             with open(_PLAYLISTS_FILE) as f:
@@ -34,16 +43,14 @@ def _load_playlists():
             _playlists = {}
     else:
         _playlists = {}
+    _playlists_loaded = True
 
 
 def _save_playlists():
+    _ensure_playlists_loaded()
     os.makedirs(os.path.dirname(_PLAYLISTS_FILE), exist_ok=True)
     with open(_PLAYLISTS_FILE, "w") as f:
         json.dump(_playlists, f, indent=2)
-
-
-# Load on import
-_load_playlists()
 
 
 # ---------------------------------------------------------------------------
@@ -55,6 +62,7 @@ def _now():
 
 
 def create_playlist(name, description="", filters=None, track_ids=None, source="manual"):
+    _ensure_playlists_loaded()
     pid = str(uuid.uuid4())[:8]
     playlist = {
         "id": pid,
@@ -72,10 +80,12 @@ def create_playlist(name, description="", filters=None, track_ids=None, source="
 
 
 def get_playlist(playlist_id):
+    _ensure_playlists_loaded()
     return _playlists.get(playlist_id)
 
 
 def list_playlists():
+    _ensure_playlists_loaded()
     return sorted(
         _playlists.values(),
         key=lambda p: p.get("updated_at", ""),
@@ -84,6 +94,7 @@ def list_playlists():
 
 
 def update_playlist(playlist_id, updates):
+    _ensure_playlists_loaded()
     p = _playlists.get(playlist_id)
     if not p:
         return None
@@ -96,6 +107,7 @@ def update_playlist(playlist_id, updates):
 
 
 def delete_playlist(playlist_id):
+    _ensure_playlists_loaded()
     if playlist_id in _playlists:
         del _playlists[playlist_id]
         _save_playlists()
@@ -104,6 +116,7 @@ def delete_playlist(playlist_id):
 
 
 def add_tracks_to_playlist(playlist_id, track_ids):
+    _ensure_playlists_loaded()
     p = _playlists.get(playlist_id)
     if not p:
         return None
@@ -118,6 +131,7 @@ def add_tracks_to_playlist(playlist_id, track_ids):
 
 
 def remove_tracks_from_playlist(playlist_id, track_ids):
+    _ensure_playlists_loaded()
     p = _playlists.get(playlist_id)
     if not p:
         return None
@@ -425,6 +439,7 @@ def export_m3u(playlist_id, df):
     Returns string with #EXTM3U header, #PLAYLIST tag, and #EXTINF entries.
     Lexicon DJ can import this by dragging the .m3u8 file onto its playlists panel.
     """
+    _ensure_playlists_loaded()
     p = _playlists.get(playlist_id)
     if not p:
         return None
@@ -447,6 +462,7 @@ def export_m3u(playlist_id, df):
 
 def export_csv(playlist_id, df):
     """Return CSV content for a playlist's tracks. Returns BytesIO."""
+    _ensure_playlists_loaded()
     p = _playlists.get(playlist_id)
     if not p:
         return None

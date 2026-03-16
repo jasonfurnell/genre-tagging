@@ -27,10 +27,15 @@ RUN mkdir -p output output/artwork
 
 EXPOSE 5001
 
-# Health check: ping /healthz every 30s, fail after 5s, restart after 3 failures
-# This auto-restarts the container if gunicorn freezes (e.g. stuck LLM call)
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:5001/healthz || exit 1
+# Self-healing health check: the script tracks consecutive failures and
+# kills gunicorn (PID 1) after 5 in a row (~2.5 min), forcing a container
+# exit which triggers --restart unless-stopped. This closes the gap where
+# Docker marks a container "unhealthy" but never restarts it (restart
+# policy only fires on EXIT, not on unhealthy status).
+COPY healthcheck.sh /healthcheck.sh
+RUN chmod +x /healthcheck.sh
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD /healthcheck.sh
 
 # V1 Flask app — single process, 8 threads for SSE + background tasks.
 # 8 threads (up from 4) gives /healthz room to respond even when several
