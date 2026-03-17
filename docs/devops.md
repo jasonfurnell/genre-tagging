@@ -16,9 +16,9 @@ GitHub Actions (automated pipeline)
   3. SSHes into your EC2 server and:
      - Pulls the new image
      - Starts a "canary" copy alongside the old container
-     - Waits for the canary to pass a health check
-     - If healthy: swaps in the new container
-     - If unhealthy: kills the canary, old container stays up
+     - Waits for the canary's /ready endpoint to confirm init
+     - If ready: swaps in the new container
+     - If not ready: kills the canary, old container stays up
         |
         v
 EC2 Instance (your server, ~$9/month)
@@ -49,7 +49,7 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **Config**: `Dockerfile` CMD (`--max-requests 500 --max-requests-jitter 50`)
 
 ### 3. Blue-Green Deploy with Auto-Rollback
-- **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's Docker health check for up to 2 minutes. If the canary is healthy, the old container is swapped out. If it's not, the canary is removed and the old container keeps running untouched
+- **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's `/ready` endpoint for up to 2 minutes — this triggers lazy init and confirms the app can actually serve. If ready, the old container is swapped out. If not, the canary is removed and the old container keeps running untouched
 - **Why**: Prevents failed deploys from taking the site down. Before this, the deploy script would stop the old container *first*, then start the new one. If the new one couldn't boot (e.g. a hung network call during init), the site was down with no rollback
 - **The lesson we learned**: A trivial CSS change (`dance.js` height tweak) triggered a deploy where gunicorn's worker hung during startup. Because the old container was already stopped, the site was down until the next manual intervention. The fix was never to stop the old container until the new image has proven it can boot
 - **Config**: `.github/workflows/deploy.yml` — the `deploy` job's SSH script
@@ -61,10 +61,10 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **Config**: `app/routes.py` — `_init_dropbox_client()`, `_dropbox_file_exists()`, `_get_client()`, and `app/llm.py` async clients
 
 ### 5. Lazy Initialization
-- **What**: Dropbox client and artwork cache are initialized on the first HTTP request, not at module import time
-- **Why**: Module-level init runs during gunicorn worker startup. If Dropbox is slow or unreachable, the worker hangs before it can even register routes — meaning `/healthz` never becomes available, Docker marks the container unhealthy, and deploys fail with "canary went unhealthy"
-- **The lesson we learned**: The site went down multiple times because `_load_dropbox_tokens()` ran at import time (when `from app.routes import api` executes in `main_flask.py`). A transient Dropbox delay during init blocked the entire worker. Moving to lazy init means gunicorn boots instantly, `/healthz` works immediately, and Dropbox connects on the first real request
-- **Config**: `app/routes.py` — `_ensure_initialized()` + `@api.before_request`
+- **What**: ALL I/O (Dropbox tokens, artwork cache, playlist loading, artwork directory creation) is deferred to the first request via a unified `_ensure_initialized()` function. Zero disk or network I/O at import time
+- **Why**: Module-level init runs during gunicorn worker startup. If any I/O is slow (Dropbox, EBS volume, filesystem), the worker hangs before it can register routes — `/healthz` never responds, and the container appears frozen
+- **The lesson we learned**: This bug was fixed three separate times for three separate functions before being unified. Each time, a new module-level I/O call was discovered hanging during boot. The fix is one function that owns all init, with a Dropbox timeout wrapper (10s via ThreadPoolExecutor) so a slow token refresh is skipped, not blocking
+- **Config**: `app/routes.py` — `_ensure_initialized()` + `@api.before_request`. Also triggered by `/ready` endpoint in `app/main_flask.py`
 
 ### 6. Cache-Busting
 - **What**: Static files (JS, CSS) include a deploy timestamp in their URLs (`?v=1710489600`)
@@ -126,8 +126,7 @@ This means:
 
 | Symptom | Likely cause | Fix |
 |---------|-------------|-----|
-| Canary went unhealthy — aborting deploy | App can't start — import error, missing env var, or hung init. **Site is still up** (old container untouched) | Check canary logs in the GitHub Actions output, or `docker logs` on EC2 |
-| Canary "starting" for all 24 attempts | Worker hanging during import (probably a network call at startup). **Site is still up** | Re-run the deploy — transient hangs usually pass. If persistent, check Dropbox/API timeouts in `routes.py` |
+| Canary "not ready" for all 24 attempts | App boots but init hangs or crashes (Dropbox timeout, missing env var, import error). **Site is still up** (old container untouched) | Check canary logs in the GitHub Actions output. If transient, re-run the deploy. If persistent, check `_ensure_initialized()` in `routes.py` |
 | ECR login failed | AWS credentials expired or misconfigured | Check GitHub Secrets |
 | SSH connection refused | EC2 instance stopped or security group changed | Check AWS Console |
 
@@ -178,7 +177,7 @@ Every push to `main` triggers this (`.github/workflows/deploy.yml`):
 | `Dockerfile` | How the Docker image is built — base image, dependencies, health check, startup command |
 | `.github/workflows/deploy.yml` | The automated build-and-deploy pipeline |
 | `.dockerignore` | Files excluded from the Docker image (keeps it small and safe) |
-| `app/main_flask.py:36-39` | The `/healthz` health check endpoint |
+| `app/main_flask.py:36-55` | `/healthz` (liveness) and `/ready` (readiness) endpoints |
 | `.claude/plans/aws-deployment.md` | Full setup guide — AWS Console steps, server config, secrets |
 
 ---
@@ -278,6 +277,13 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
   4. **`/ready` endpoint**: Returns 503 until `_initialized=True`. Canary deploy now checks `/ready` instead of just Docker health. Post-swap verification retries `/ready` for 60s
   5. **Dockerfile start-period**: 60s → 120s to match deploy script timeout
 - **Lesson**: Defence-in-depth only works when all layers are complete. The lazy init pattern was applied three times to three different places but never unified into one function. The canary deploy tested "is the process alive?" but never "can it serve?" — two different questions
+
+### 2026-03-17 — Deploy failing: /ready never triggers init
+- **Symptom**: Canary shows "not ready" for all 24 attempts, deploy aborted. Gunicorn boots fine, Docker health shows "healthy", but `/ready` returns 503 forever
+- **Cause**: `/ready` in `main_flask.py` checked the `_initialized` flag but never called `_ensure_initialized()`. Since `/ready` is on the Flask app (not the `api` blueprint), `@api.before_request` never fires for it. The canary only hits `/ready`, so init was never triggered
+- **Fix**: `/ready` now calls `_ensure_initialized()` before checking the flag
+- **Also simplified**: Removed Docker health status check from canary loop — `/ready` is the single source of truth. Docker health was noise (120s start-period meant it showed "starting" for almost the entire canary window)
+- **Lesson**: If an endpoint checks state that's set by a different code path, verify the code path actually runs for that endpoint. Blueprint `before_request` hooks only fire for routes on that blueprint, not app-level routes
 
 ---
 
