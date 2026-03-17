@@ -42,10 +42,14 @@ def healthz():
 
 @app.route("/ready")
 def ready():
-    """Readiness check — verifies lazy init has completed.
+    """Readiness check — triggers lazy init, then confirms it completed.
     Used by canary deploy to confirm the app can actually serve requests,
     not just that gunicorn booted. Returns 503 until init is done."""
-    from app.routes import _initialized
+    from app.routes import _ensure_initialized, _initialized
+    try:
+        _ensure_initialized()
+    except Exception:
+        pass
     if not _initialized:
         return "initializing", 503
     return "ready", 200
