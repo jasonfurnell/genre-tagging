@@ -51,7 +51,7 @@ This leaves almost no headroom. During deploys, the blue-green strategy starts a
 - **Swap detection warning** — Deploy logs a warning if swap is missing.
 - **Failure diagnostics** — On deploy failure, the script now dumps Docker container logs and `free -m` output for post-mortem analysis.
 
-*Status: Committed locally. Needs `git push` from dev machine (SSH alias `github-personal` not available in CI).*
+*Status: Pushed to `main` (commit `698ec44`). Will take effect on next deploy.*
 
 ### 2. Swap file configured on EC2 ✅
 
