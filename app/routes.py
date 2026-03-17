@@ -154,7 +154,8 @@ def _save_artwork_cache():
 _ARTWORK_DIR = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), "output", "artwork"
 )
-os.makedirs(_ARTWORK_DIR, exist_ok=True)
+# NOTE: os.makedirs moved into _ensure_initialized() to avoid import-time I/O
+# that can block gunicorn worker boot if the filesystem is slow.
 
 
 def _artwork_filename(cache_key, size="small"):
@@ -251,11 +252,14 @@ _initialized = False
 _init_lock = threading.Lock()
 
 def _ensure_initialized():
-    """Lazy one-time initialization of Dropbox client and artwork cache.
+    """Lazy one-time initialization — ALL I/O deferred to first request.
 
     Called on the first request instead of at module import time.
     This ensures gunicorn can boot and start serving /healthz immediately,
-    even if Dropbox is slow or unreachable.
+    even if Dropbox or the filesystem is slow or unreachable.
+
+    Everything that touches disk or network MUST go in here, not at
+    module level. See incident log in docs/devops.md for why.
     """
     global _initialized
     if _initialized:
@@ -264,8 +268,26 @@ def _ensure_initialized():
         if _initialized:
             return
         logging.info("Running lazy initialization (first request)...")
+        # Ensure artwork directory exists (moved from module level)
+        try:
+            os.makedirs(_ARTWORK_DIR, exist_ok=True)
+        except Exception:
+            logging.exception("Failed to create artwork directory")
         _load_artwork_cache()
-        _load_dropbox_tokens()
+        # Wrap Dropbox init in a timeout — a slow token refresh
+        # must not hang the first request indefinitely
+        try:
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_load_dropbox_tokens)
+                future.result(timeout=10)
+        except TimeoutError:
+            logging.error("Dropbox initialization timed out after 10s — skipping")
+        except Exception:
+            logging.exception("Dropbox initialization failed — skipping")
+        # Load playlists (was previously a separate lazy-load in playlist.py
+        # with no locking — now unified here for consistency)
+        from app.playlist import _ensure_playlists_loaded
+        _ensure_playlists_loaded()
         _initialized = True
         logging.info("Lazy initialization complete")
 

@@ -263,12 +263,29 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
   3. **Increased start-period**: 10s → 60s, giving the worker more time on initial boot before health checks begin
 - **Lesson**: Docker's "unhealthy" status is informational only — it doesn't trigger any recovery action. If you need auto-restart on health failure, you must bridge the gap yourself (kill PID 1 to force an exit). Also: every module-level function call is a potential boot-time hang — audit all imports, not just the obvious ones
 
+### 2026-03-17 — Stability audit: unified init, /ready endpoint, timeout alignment
+- **Symptom**: Recurring site-down incidents despite multiple prior fixes — each fix addressed one init-time hang but the pattern kept repeating
+- **Root cause**: Accumulated fixes were incomplete and inconsistent:
+  1. `os.makedirs(_ARTWORK_DIR)` still ran at import time in routes.py (same class of bug fixed twice before)
+  2. Dropbox client init had no timeout wrapper — a slow token refresh could hang the first request indefinitely
+  3. Playlist lazy-load was separate from routes.py's `_ensure_initialized()` with no locking (race condition)
+  4. Canary deploy only checked `/healthz` (always fast) — never verified init actually completed
+  5. Dockerfile `start-period=60s` didn't match deploy script's 120s canary wait (confusing, misleading)
+- **Fixes**:
+  1. **Unified lazy init**: ALL I/O moved into `_ensure_initialized()` — artwork dir creation, artwork cache, Dropbox tokens, and playlists. Zero disk/network I/O at import time
+  2. **Dropbox init timeout**: Wrapped in `ThreadPoolExecutor` with 10s timeout — slow token refresh is skipped, not blocking
+  3. **Playlist locking**: Added `threading.Lock()` matching routes.py's double-check locking pattern
+  4. **`/ready` endpoint**: Returns 503 until `_initialized=True`. Canary deploy now checks `/ready` instead of just Docker health. Post-swap verification retries `/ready` for 60s
+  5. **Dockerfile start-period**: 60s → 120s to match deploy script timeout
+- **Lesson**: Defence-in-depth only works when all layers are complete. The lazy init pattern was applied three times to three different places but never unified into one function. The canary deploy tested "is the process alive?" but never "can it serve?" — two different questions
+
 ---
 
 ## Future Improvements
 
 - [x] ~~**Blue-green deploy with rollback**: Test new image as canary before swapping — failed deploys no longer take the site down~~ *(done 2026-03-15)*
 - [x] ~~**Lazy init + timeouts + reduced gunicorn timeout**: Prevent recurring worker hangs from module-level Dropbox init and untimed external calls~~ *(done 2026-03-16)*
+- [x] ~~**Unified init + /ready endpoint + timeout alignment**: Complete the lazy init pattern, add readiness check to deploy~~ *(done 2026-03-17)*
 - [ ] **Monitoring/alerts** *(recommended next — `GenreTagging-2u3`)* : Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually. Blue-green prevents deploy-caused downtime, but runtime crashes or server issues still need external detection
 - [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)

@@ -35,8 +35,20 @@ logging.root.setLevel(logging.DEBUG)
 
 @app.route("/healthz")
 def healthz():
-    """Lightweight health check — Docker pings this to detect frozen workers."""
+    """Lightweight health check — Docker pings this to detect frozen workers.
+    Always fast, never blocks on init. Proves the process is alive."""
     return "ok", 200
+
+
+@app.route("/ready")
+def ready():
+    """Readiness check — verifies lazy init has completed.
+    Used by canary deploy to confirm the app can actually serve requests,
+    not just that gunicorn booted. Returns 503 until init is done."""
+    from app.routes import _initialized
+    if not _initialized:
+        return "initializing", 503
+    return "ready", 200
 
 
 @app.route("/")

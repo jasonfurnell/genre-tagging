@@ -84,17 +84,22 @@ jobs:
               -v /data/genre-tagging/config.json:/app/config.json:ro \
               "${IMAGE}"
 
-            # Wait for canary to pass its Docker health check (up to 2 minutes)
+            # Wait for canary to be ready (up to 2 minutes).
+            # Two checks: /healthz (process alive) then /ready (init complete).
+            # This catches deployments where gunicorn boots but init hangs.
             CANARY_OK=false
             for i in $(seq 1 24); do
+              # First check Docker health (is the process alive?)
               STATUS=$(docker inspect --format='{{.State.Health.Status}}' genre-tagging-canary 2>/dev/null || echo "starting")
-              echo "  Canary attempt $i: $STATUS"
-              if [ "$STATUS" = "healthy" ]; then
-                CANARY_OK=true
+              if [ "$STATUS" = "unhealthy" ]; then
+                echo "  Canary attempt $i: Docker says unhealthy — aborting deploy"
                 break
               fi
-              if [ "$STATUS" = "unhealthy" ]; then
-                echo "Canary went unhealthy — aborting deploy"
+              # Then check /ready (has init completed?)
+              READY=$(curl -sf http://127.0.0.1:5002/ready 2>/dev/null || echo "not ready")
+              echo "  Canary attempt $i: docker=$STATUS ready=$READY"
+              if [ "$READY" = "ready" ]; then
+                CANARY_OK=true
                 break
               fi
               sleep 5
@@ -131,16 +136,24 @@ jobs:
               -v /data/genre-tagging/config.json:/app/config.json:ro \
               "${IMAGE}"
 
-            # Quick verification — image is already proven, just confirm it starts
+            # Verify production container is ready (not just alive).
+            # Image is already proven by canary, but confirm init completes.
             echo "Verifying production container..."
-            sleep 15
-            PROD_STATUS=$(docker inspect --format='{{.State.Health.Status}}' genre-tagging 2>/dev/null || echo "unknown")
-            echo "  Production status: $PROD_STATUS"
-            if [ "$PROD_STATUS" = "unhealthy" ]; then
-              echo "WARNING: Production container unhealthy after swap (canary was fine — likely transient)"
-              docker logs genre-tagging --tail 20
+            PROD_READY=false
+            for i in $(seq 1 12); do
+              READY=$(curl -sf http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
+              echo "  Verify attempt $i: $READY"
+              if [ "$READY" = "ready" ]; then
+                PROD_READY=true
+                break
+              fi
+              sleep 5
+            done
+            if [ "$PROD_READY" = "true" ]; then
+              echo "Deploy successful — production container ready"
             else
-              echo "Deploy successful"
+              echo "WARNING: Production container not ready after 60s (canary was fine — likely transient)"
+              docker logs genre-tagging --tail 30
             fi
 
             # Clean up old images

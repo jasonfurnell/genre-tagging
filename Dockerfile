@@ -34,7 +34,7 @@ EXPOSE 5001
 # policy only fires on EXIT, not on unhealthy status).
 COPY healthcheck.sh /healthcheck.sh
 RUN chmod +x /healthcheck.sh
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 \
     CMD /healthcheck.sh
 
 # V1 Flask app — single process, 8 threads for SSE + background tasks.

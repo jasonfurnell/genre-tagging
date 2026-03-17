@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import threading
 import uuid
 from datetime import datetime, timezone
 
@@ -23,6 +24,7 @@ _PLAYLISTS_FILE = os.path.join(
 
 _playlists: dict = {}  # id -> playlist dict
 _playlists_loaded = False
+_playlists_lock = threading.Lock()
 
 
 def _ensure_playlists_loaded():
@@ -31,19 +33,26 @@ def _ensure_playlists_loaded():
     Module-level I/O blocks gunicorn worker boot — if the disk is slow
     the worker hangs before /healthz can respond, Docker marks the
     container unhealthy, and it never recovers without a manual restart.
+
+    Also called from routes.py _ensure_initialized() to unify all init
+    behind one lock-protected sequence.
     """
     global _playlists, _playlists_loaded
     if _playlists_loaded:
         return
-    if os.path.exists(_PLAYLISTS_FILE):
-        try:
-            with open(_PLAYLISTS_FILE) as f:
-                _playlists = json.load(f)
-        except Exception:
+    with _playlists_lock:
+        if _playlists_loaded:
+            return
+        if os.path.exists(_PLAYLISTS_FILE):
+            try:
+                with open(_PLAYLISTS_FILE) as f:
+                    _playlists = json.load(f)
+            except Exception:
+                logging.exception("Failed to load playlists from disk — starting empty")
+                _playlists = {}
+        else:
             _playlists = {}
-    else:
-        _playlists = {}
-    _playlists_loaded = True
+        _playlists_loaded = True
 
 
 def _save_playlists():
