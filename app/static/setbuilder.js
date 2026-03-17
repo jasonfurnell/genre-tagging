@@ -26,6 +26,7 @@ let setResumeSlotIdx = -1;  // slot index to resume from after user-stop, -1 = n
 let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllowedError)
 let setAudioFlagsReady = null;   // promise resolved when refreshHasAudioFlags completes
 let _previewStartTime = 0;  // start time for 30s Short Preview window
+let _isAdvancing = false;    // guard: true while a track-advance is in progress
 const PREVIEW_DURATION = 30; // seconds for Short Preview mode
 let _bpmSwapContext = null;  // {direction: "up"|"down", origIndex: N, slotIdx: N} when BPM arrow triggered playback
 
@@ -124,6 +125,7 @@ async function initSetBuilder() {
     setAudio.addEventListener("playing", () => {
         _clearAutoplayBlockedHint();
         _bpmSwapContext = null;  // playback succeeded — clear BPM swap state
+        _isAdvancing = false;    // new track is playing — allow future advances
         startEnergyLineAnim();
         document.querySelectorAll(".set-eq-overlay").forEach(el => el.classList.add("eq-playing"));
         _clearPlayOverlayLoading();
@@ -3004,6 +3006,7 @@ function _clearPlayOverlayLoading() {
 
 // Central dispatch: play slot respecting current mode
 function playSlot(idx) {
+    _isAdvancing = false;  // user-initiated play — reset auto-advance guard
     // Choose drawer: mobile always uses base drawer, desktop uses tab-based logic
     const isDanceTab = !document.getElementById("tab-dance")?.classList.contains("hidden");
     const useBaseDrawer = isDanceTab || _isMobileView();
@@ -3489,8 +3492,11 @@ function updatePlaySetProgress() {
 
 // Called when a Short Preview 30s window ends — advance to next slot (with wrap)
 function onPreviewEnded() {
+    if (_isAdvancing) return;  // already advancing — prevent cascade from repeated timeupdate
+    _isAdvancing = true;
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
     if (next >= 0) playSlotPreview(next);
+    else _isAdvancing = false;  // no next track — reset
 }
 
 function formatPlaySetTime(seconds) {
@@ -3504,9 +3510,13 @@ function formatPlaySetTime(seconds) {
 function onPlaySetTrackEnded() {
     // In Full Track mode: advance to next slot (with wrap-around)
     if (isPlaySetMode()) {
+        if (_isAdvancing) return;
+        _isAdvancing = true;
         const next = findNextPlaySetSlot(setPlaySetIndex + 1);
         if (next >= 0) {
             playFullTrack(next);
+        } else {
+            _isAdvancing = false;
         }
         return;
     }
@@ -3522,6 +3532,7 @@ function onPlaySetTrackError() {
     // Only auto-advance on mid-stream errors where audio was already playing.
     if (setAudio.currentTime === 0) return;
     console.warn("Playback: mid-stream audio error, skipping to next track");
+    _isAdvancing = false;  // reset so the next advance can proceed
     const next = findNextPlaySetSlot(setPlaySetIndex + 1);
     if (next >= 0) playSlot(next);
 }
