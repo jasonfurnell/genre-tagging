@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre Tagger</title>
+    <link rel="stylesheet" href="/static/style.css?v={{ v }}">
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+</head>
+<body>
+
+<header id="unified-header" class="unified-header">
+    <nav id="tab-bar" class="tab-bar">
+        <!-- Hamburger menu (left) -->
+        <div class="hamburger-wrap">
+            <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div id="hamburger-menu" class="hamburger-menu hidden">
+                <div class="hamburger-group-label">Set.Makin</div>
+                <button class="hamburger-item" data-tab="setbuilder">Workshop</button>
+                <button class="hamburger-item" data-tab="tagger">Tagger</button>
+                <button class="hamburger-item" data-tab="intersections">Intersections</button>
+                <button class="hamburger-item" data-tab="workshop">Playlists</button>
+                <button class="hamburger-item" data-tab="tracks">Tracks</button>
+                <button class="hamburger-item" data-tab="phases">Phases</button>
+                <button class="hamburger-item" data-tab="autoset">Auto Set</button>
+                <div class="hamburger-group-label">Rump.Shakin</div>
+                <button class="hamburger-item" data-tab="dance">Dance</button>
+                <button class="hamburger-item" data-tab="sets" data-modes="dance dj">Sets</button>
+                <button class="hamburger-item" data-tab="tree" data-modes="dance dj">Trees</button>
+                <button class="hamburger-item" data-tab="chat" data-modes="dance dj">Chat</button>
+                <div class="hamburger-group-label">Tools</div>
+                <div class="hamburger-item hamburger-item--tools">
+                    <span id="set-current-name" class="set-current-name"></span>
+                </div>
+                <button id="set-save-btn" class="hamburger-item" style="display:none;" data-action="save">Save Set</button>
+                <button id="set-save-as-btn" class="hamburger-item" data-action="save-as">Save Set As</button>
+                <button id="set-search-btn" class="hamburger-item" data-action="search">Search Tracks</button>
+                <button id="set-export-btn" class="hamburger-item" data-action="export" disabled>Export M3U8 (Lexicon)</button>
+                <button id="set-refill-btn" class="hamburger-item" data-action="refill" disabled title="Re-fill all BPM rows using current anchor tracks">Refill BPM</button>
+                <button id="chat-clear-btn" class="hamburger-item" data-action="chat-clear">Clear Chat</button>
+                <button id="dedup-btn" class="hamburger-item" data-action="dedup">Clean Library (Remove Duplicates)</button>
+                <div class="hamburger-group-label">Connections</div>
+                <div class="hamburger-item hamburger-item--status">
+                    <span id="dropbox-status-text">Dropbox</span>
+                    <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
+                    <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
+                </div>
+                <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
+            </div>
+        </div>
+
+        <!-- Mode toggle switch (center) -->
+        <div id="mode-toggle" class="mode-toggle">
+            <div class="mode-toggle-track" id="mode-toggle-track">
+                <span class="mode-toggle-option mode-toggle-option--left">Set.Makin</span>
+                <span class="mode-toggle-option mode-toggle-option--right">Rump.Shakin</span>
+                <div class="mode-toggle-thumb"></div>
+            </div>
+        </div>
+
+    </nav>
+</header>
+
+<main>
+    <!-- ═══ Tab: Tagger (existing content) ═══ -->
+    <div id="tab-tagger" class="tab-content hidden">
+        <!-- Upload Area -->
+        <div id="upload-area" class="upload-area">
+            <p>Drag &amp; drop a CSV file here, or <label for="file-input" class="file-label">browse</label></p>
+            <input type="file" id="file-input" accept=".csv" hidden>
+        </div>
+
+        <!-- Summary -->
+        <div id="summary" class="summary hidden">
+            <span id="summary-total">0 tracks</span>
+            <span class="sep">&middot;</span>
+            <span id="summary-tagged" class="tagged-count">0 tagged</span>
+            <span class="sep">&middot;</span>
+            <span id="summary-untagged" class="untagged-count">0 untagged</span>
+        </div>
+
+        <!-- Toolbar -->
+        <div id="toolbar" class="toolbar hidden">
+            <button id="btn-tag-all" class="btn btn-primary">Tag All</button>
+            <button id="btn-stop" class="btn btn-danger hidden">Stop</button>
+            <button id="btn-clear-all" class="btn btn-secondary">Clear All</button>
+            <button id="btn-export" class="btn btn-secondary">Export CSV</button>
+            <button id="btn-settings" class="btn btn-secondary">Settings</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container" class="progress-container hidden">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <!-- Live Genre Chart -->
+        <div id="genre-chart" class="genre-chart hidden"></div>
+
+        <!-- Track Grid (AG Grid) -->
+        <div id="track-grid" style="width:100%;"></div>
+    </div>
+
+    <!-- ═══ Tab: Intersections (Lineage DNA Chord Diagram) ═══ -->
+    <div id="tab-intersections" class="tab-content hidden">
+        <!-- Intersection Playlist Cards (appear after Generate Playlists) -->
+        <div id="ix-cards-grid" class="trees-grid hidden"></div>
+
+        <!-- Chord Diagram Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Lineage DNA</h2>
+                <span id="chord-status" class="ws-status-text"></span>
+            </div>
+
+            <!-- Tree type toggle -->
+            <div class="chord-type-selector">
+                <button class="chord-type-btn active" data-tree-type="genre">Genre Tree</button>
+                <button class="chord-type-btn" data-tree-type="scene">Scene Tree</button>
+            </div>
+
+            <!-- Controls -->
+            <div class="chord-controls">
+                <div class="chord-control-group">
+                    <label for="chord-threshold">DNA Threshold:</label>
+                    <input type="range" id="chord-threshold" min="0.03" max="0.25" step="0.01" value="0.08">
+                    <span id="chord-threshold-val" class="chord-control-val">8%</span>
+                </div>
+                <div class="chord-control-group">
+                    <label for="chord-max-lineages">Max Lineages:</label>
+                    <input type="range" id="chord-max-lineages" min="4" max="20" step="1" value="12">
+                    <span id="chord-max-lineages-val" class="chord-control-val">12</span>
+                </div>
+            </div>
+
+            <!-- Chord SVG Container -->
+            <div id="chord-container" class="chord-container">
+                <p class="ws-placeholder">Loading lineage data...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- ═══ Tab: Playlist Workshop ═══ -->
+    <div id="tab-workshop" class="tab-content hidden">
+
+        <!-- LLM Suggestions Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Playlist Suggestions</h2>
+                <div class="ws-header-actions">
+                    <button id="ws-btn-import-playlist" class="btn btn-primary btn-sm">Import Playlist M3U</button>
+                    <input type="file" id="ws-import-file" accept=".m3u,.m3u8" hidden>
+                    <button id="ws-btn-suggest" class="btn btn-primary btn-sm">Explore Collection</button>
+                </div>
+            </div>
+            <div class="ws-vibe-input">
+                <label for="ws-vibe-text">Describe a vibe:</label>
+                <div class="ws-vibe-row">
+                    <input type="text" id="ws-vibe-text" placeholder='e.g. "sunset rooftop party", "dark warehouse techno", "chill Sunday morning grooves"' class="ws-text-input ws-vibe-field">
+                    <button id="ws-btn-vibe-suggest" class="btn btn-primary btn-sm">Create from Vibe</button>
+                </div>
+            </div>
+            <div id="ws-suggestions-list" class="ws-suggestions-list">
+                <p class="ws-placeholder">Use "Explore Collection" for broad suggestions, "Create from Vibe" to describe a mood, select tracks below to generate from seeds, or click a heatmap cell to explore an intersection.</p>
+            </div>
+        </section>
+
+        <!-- Playlist Builder Section -->
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>My Playlists</h2>
+                <button id="ws-btn-new-playlist" class="btn btn-primary btn-sm">New Playlist</button>
+            </div>
+            <div class="ws-playlists-layout">
+                <div id="ws-playlist-sidebar" class="ws-playlist-sidebar">
+                    <p class="ws-placeholder ws-playlist-empty">No playlists yet. Create one from a suggestion or search results.</p>
+                </div>
+                <div id="ws-playlist-detail" class="ws-playlist-detail"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ═══ Tab: Tracks ═══ -->
+    <div id="tab-tracks" class="tab-content hidden">
+        <section class="ws-section">
+            <div class="ws-section-header">
+                <h2>Search Tracks</h2>
+            </div>
+            <div id="ws-filters" class="ws-filters"></div>
+            <div id="ws-search-results" class="ws-search-results"></div>
+        </section>
+    </div>
+
+    <!-- ═══ Tab: Collection Tree ═══ -->
+    <div id="tab-tree" class="tab-content hidden">
+
+        <!-- Tree type selector -->
+        <div class="tree-type-selector">
+            <button class="tree-type-btn active" data-tree-type="collection">Collection</button>
+            <button class="tree-type-btn" data-tree-type="genre">Genre Tree</button>
+            <button class="tree-type-btn" data-tree-type="scene">Scene Tree</button>
+        </div>
+
+        <!-- Build state: shown when no tree exists -->
+        <div id="tree-build-section">
+            <div class="tree-intro">
+                <h2 id="tree-intro-title">Collection</h2>
+                <p id="tree-intro-desc">A curated map of your collection built by cross-referencing genre lineages with cultural scenes. Reveals the unique intersections and identities in your music. Requires both Genre and Scene trees to be built first.</p>
+                <div class="tree-build-actions">
+                    <button id="tree-build-btn" class="btn btn-primary btn-lg">Build Collection</button>
+                    <button id="tree-resume-btn" class="btn btn-primary btn-lg tree-resume-btn hidden">Resume</button>
+                    <button id="tree-test-btn" class="btn btn-sm tree-test-btn">Test Run (20 clusters)</button>
+                </div>
+            </div>
+            <!-- Progress: shown during build -->
+            <div id="tree-progress" class="tree-progress hidden">
+                <div class="tree-progress-header">
+                    <h3 id="tree-progress-phase">Analyzing collection...</h3>
+                    <button id="tree-stop-btn" class="btn btn-danger btn-sm">Stop</button>
+                </div>
+                <div class="tree-progress-bar-container">
+                    <div id="tree-progress-bar" class="tree-progress-bar"></div>
+                </div>
+                <p id="tree-progress-detail" class="tree-progress-detail"></p>
+                <!-- Phase timeline: only shown for collection builds -->
+                <div id="tree-progress-phases" class="progress-phases hidden"></div>
+                <!-- Narrative: explains what's happening and why -->
+                <div id="tree-progress-narrative" class="progress-narrative hidden">
+                    <h4 id="tree-progress-narrative-title"></h4>
+                    <p id="tree-progress-narrative-body"></p>
+                </div>
+                <!-- Activity log: scrolling list of recent messages -->
+                <div id="tree-progress-log" class="progress-log hidden">
+                    <div class="progress-log-header">Activity Log</div>
+                    <div id="tree-progress-log-entries" class="progress-log-entries"></div>
+                </div>
+                <!-- Inline error display -->
+                <div id="tree-progress-error" class="progress-error hidden"></div>
+            </div>
+        </div>
+
+        <!-- Tree view: shown when tree exists -->
+        <div id="tree-view-section" class="hidden">
+            <div id="tree-header" class="tree-header"></div>
+            <div class="tree-toolbar">
+                <button id="tree-create-all-btn" class="btn btn-primary btn-sm">Create All Playlists</button>
+                <button id="tree-rebuild-btn" class="btn btn-secondary btn-sm">Rebuild Tree</button>
+            </div>
+            <div id="tree-grid" class="trees-grid"></div>
+            <div id="tree-ungrouped" class="tree-ungrouped-section"></div>
+
+            <!-- Collection Tree: flat category + card layout -->
+            <div id="collection-view" class="collection-view hidden">
+                <div id="collection-header" class="collection-header"></div>
+                <div id="collection-leaves" class="collection-leaves"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ═══ Tab: Phase Profiles ═══ -->
+    <div id="tab-phases" class="tab-content hidden">
+        <div class="phases-layout">
+            <!-- Left: profile list -->
+            <div class="phases-sidebar">
+                <div class="phases-sidebar-header">
+                    <h2>Phase Profiles</h2>
+                    <button id="phases-new-btn" class="btn btn-primary btn-sm">New Profile</button>
+                </div>
+                <div id="phases-list" class="phases-list">
+                    <p class="phases-empty">Loading profiles...</p>
+                </div>
+            </div>
+
+            <!-- Right: editor -->
+            <div id="phases-editor" class="phases-editor hidden">
+                <div class="phases-editor-header">
+                    <input type="text" id="phases-name-input" class="phases-name-input"
+                           placeholder="Profile name" disabled>
+                    <span id="phases-default-badge" class="phases-badge hidden">Default</span>
+                </div>
+                <textarea id="phases-desc-input" class="phases-desc-input"
+                          placeholder="Description" rows="2" disabled></textarea>
+
+                <!-- Visual preview bar -->
+                <div id="phases-preview-bar" class="phases-preview-bar"></div>
+
+                <!-- Phase table -->
+                <div class="phases-table-header">
+                    <span>Phases</span>
+                    <button id="phases-add-btn" class="btn btn-sm btn-secondary hidden">+ Add Phase</button>
+                </div>
+                <div id="phases-table" class="phases-table"></div>
+
+                <!-- Actions -->
+                <div class="phases-actions">
+                    <button id="phases-apply-btn" class="btn btn-primary">Apply to Set Workshop</button>
+                    <button id="phases-duplicate-btn" class="btn btn-secondary">Duplicate</button>
+                    <button id="phases-save-btn" class="btn btn-success hidden">Save</button>
+                    <button id="phases-delete-btn" class="btn btn-danger hidden">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Tab: Saved Sets ═══ -->
+    <div id="tab-sets" class="tab-content hidden">
+        <div class="sets-header">
+            <h2>Saved Sets</h2>
+            <button id="sets-new-btn" class="btn btn-primary btn-sm">New Set</button>
+        </div>
+        <div id="sets-stats" class="sets-stats hidden"></div>
+        <div id="sets-grid" class="sets-grid">
+            <p class="sets-empty">No saved sets yet. Build a set in the Set Workshop and save it.</p>
+        </div>
+    </div>
+
+    <!-- ═══ Tab: Dance ═══ -->
+    <div id="tab-dance" class="tab-content">
+        <!-- Init sequence overlay (shown on every page load) -->
+        <div id="dance-play-overlay" class="dance-play-overlay">
+            <div class="dance-init-container">
+                <div id="dance-init-log" class="dance-init-log"></div>
+                <button id="dance-play-btn" class="dance-play-btn hidden" title="Start Playing">&#9654;</button>
+                <div id="dance-init-error" class="dance-init-error hidden"></div>
+            </div>
+        </div>
+        <!-- VIEW 1: Performance (default) -->
+        <div id="dance-performance" class="dance-performance">
+            <div id="dancer-window" class="dancer-window">
+                <div id="robot-panel" class="dance-robot-panel"></div>
+            </div>
+            <button id="dance-settings-btn" class="dance-settings-btn" title="Robot Settings">&#9881;</button>
+        </div>
+
+        <!-- VIEW 2: Settings (hidden until gear click) -->
+        <div id="dance-settings-view" class="dance-settings-view hidden">
+            <div class="dance-settings-view-header">
+                <button id="dance-back-btn" class="dance-back-btn">&#8592; Back to Dance</button>
+                <h3>Dance Settings</h3>
+            </div>
+            <div class="dance-settings-view-body">
+                <div id="dance-settings-controls" class="dance-settings-controls"></div>
+                <div class="dance-settings-preview">
+                    <div id="dance-preview-panel" class="dance-preview-panel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Tab: Set Workshop ═══ -->
+    <div id="tab-setbuilder" class="tab-content hidden">
+
+        <!-- Set Grid: always visible (starts empty) -->
+        <div id="set-grid-wrapper" class="set-grid-wrapper">
+            <div id="set-grid-scroll" class="set-grid-scroll">
+              <div class="set-grid-content">
+
+                <!-- Phase Row (energy phase indicators) -->
+                <div class="set-phase-area">
+                    <div class="set-row-label">Phase</div>
+                    <div id="set-phase-row" class="set-phase-row"></div>
+                </div>
+
+                <!-- Insert Row (add/delete column controls) -->
+                <div class="set-insert-row-area">
+                    <div class="set-row-label"></div>
+                    <div id="set-insert-row" class="set-insert-row"></div>
+                </div>
+
+                <!-- BPM Grid + Track Columns -->
+                <div class="set-bpm-area">
+                    <div class="set-bpm-axis">
+                        <span class="set-bpm-label" data-bpm="170">170</span>
+                        <span class="set-bpm-label" data-bpm="150">150</span>
+                        <span class="set-bpm-label" data-bpm="130">130</span>
+                        <span class="set-bpm-label" data-bpm="110">110</span>
+                        <span class="set-bpm-label" data-bpm="90">90</span>
+                        <span class="set-bpm-label" data-bpm="70">70</span>
+                        <span class="set-bpm-label" data-bpm="50">50</span>
+                    </div>
+                    <div id="set-bpm-grid" class="set-bpm-grid">
+                        <svg id="set-energy-svg" class="set-energy-svg"></svg>
+                        <div id="set-columns" class="set-columns"></div>
+                    </div>
+                </div>
+
+                <!-- Key Row -->
+                <div class="set-key-area">
+                    <div class="set-row-label">Key</div>
+                    <div id="set-key-row" class="set-key-row"></div>
+                </div>
+
+
+                <!-- Time Labels -->
+                <div class="set-time-area">
+                    <div class="set-row-label"></div>
+                    <div id="set-time-row" class="set-time-row"></div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Tab: Auto Set ═══ -->
+    <div id="tab-autoset" class="tab-content hidden">
+        <div class="autoset-layout">
+            <!-- Config Panel -->
+            <div class="autoset-config">
+                <div class="autoset-config-row">
+                    <label for="autoset-source-type">Source</label>
+                    <select id="autoset-source-type" class="autoset-select">
+                        <option value="playlist">Playlist</option>
+                        <option value="tree_node">Tree Leaf</option>
+                    </select>
+                    <select id="autoset-source-id" class="autoset-select autoset-source-picker">
+                        <option value="">— Select source —</option>
+                    </select>
+                    <span id="autoset-track-count" class="autoset-track-count"></span>
+                </div>
+                <div class="autoset-config-row">
+                    <label for="autoset-profile">Phase Profile</label>
+                    <select id="autoset-profile" class="autoset-select">
+                        <option value="classic_arc">Classic Arc</option>
+                    </select>
+                </div>
+                <div class="autoset-config-row">
+                    <button id="autoset-generate-btn" class="btn btn-primary" disabled>Generate Set</button>
+                    <button id="autoset-stop-btn" class="btn btn-secondary hidden">Stop</button>
+                </div>
+            </div>
+
+            <!-- Progress Area -->
+            <div id="autoset-progress" class="autoset-progress hidden">
+                <div class="autoset-phase-timeline" id="autoset-phase-timeline"></div>
+                <div class="autoset-progress-bar-wrap">
+                    <div id="autoset-progress-bar" class="autoset-progress-bar" style="width:0%"></div>
+                </div>
+                <div id="autoset-progress-status" class="autoset-progress-status"></div>
+                <div class="autoset-log-wrap">
+                    <div id="autoset-log" class="autoset-log"></div>
+                </div>
+            </div>
+
+            <!-- Result Area -->
+            <div id="autoset-result" class="autoset-result hidden">
+                <!-- Narrative -->
+                <div class="autoset-narrative-box">
+                    <h3>Set Narrative</h3>
+                    <div id="autoset-narrative-text" class="autoset-narrative-text"></div>
+                </div>
+
+                <!-- Act Breakdown -->
+                <div id="autoset-acts" class="autoset-acts"></div>
+
+                <!-- Actions -->
+                <div class="autoset-actions">
+                    <button id="autoset-open-workshop-btn" class="btn btn-primary">Open in Workshop</button>
+                    <button id="autoset-regenerate-btn" class="btn btn-secondary">Regenerate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Tab: Chat ═══ -->
+    <div id="tab-chat" class="tab-content hidden">
+        <div class="chat-layout chat-centered">
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-welcome">
+                    <h3>Music Collection Chat</h3>
+                    <p>Ask questions about your collection, search for tracks, or create playlists using natural language.</p>
+                    <div class="chat-suggestions">
+                        <button class="chat-suggestion" data-msg="What genres are in my collection?">What genres are in my collection?</button>
+                        <button class="chat-suggestion" data-msg="Find me some uplifting house tracks">Find me some uplifting house tracks</button>
+                        <button class="chat-suggestion" data-msg="Create a playlist of 90s hip-hop">Create a playlist of 90s hip-hop</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <textarea id="chat-input" class="chat-input" placeholder="Ask about your music collection..." rows="1"></textarea>
+                <button id="chat-send-btn" class="chat-send-btn" disabled>Send</button>
+                <button id="chat-stop-btn" class="chat-send-btn chat-stop-btn hidden">Stop</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Chat Playlist Drawer (right-hand slide-out) -->
+<div id="chat-drawer" class="chat-drawer">
+    <div class="chat-drawer-inner">
+        <div class="chat-drawer-header">
+            <div class="chat-drawer-title-row">
+                <h3 id="chat-drawer-title">Playlist</h3>
+                <span id="chat-drawer-badge" class="source-badge"></span>
+            </div>
+            <button id="chat-drawer-close" class="btn btn-sm btn-secondary">Close</button>
+        </div>
+        <p id="chat-drawer-desc" class="chat-drawer-desc"></p>
+        <span id="chat-drawer-count" class="chat-drawer-count"></span>
+        <div class="chat-drawer-actions">
+            <button id="chat-drawer-push-workshop" class="btn btn-sm btn-secondary">Push to Workshop</button>
+            <button id="chat-drawer-push-autoset" class="btn btn-sm btn-secondary">Push to Auto Set</button>
+        </div>
+        <div id="chat-drawer-tracks" class="chat-drawer-track-list"></div>
+    </div>
+</div>
+
+<!-- Set Workshop Drawer (right-hand slide-out) -->
+<div id="set-drawer" class="set-drawer">
+    <div class="set-drawer-inner">
+        <div class="set-drawer-header">
+            <h3 id="set-drawer-title">Source Browser</h3>
+            <button id="set-drawer-close" class="btn btn-sm btn-secondary">Close</button>
+        </div>
+
+        <!-- Browse Mode -->
+        <div id="set-drawer-browse" class="set-drawer-section hidden">
+            <input type="text" id="set-drawer-search" class="set-drawer-search" placeholder="Search collections and playlists...">
+            <div id="set-drawer-playlists" class="set-drawer-list"></div>
+            <div id="set-drawer-collection-leaves" class="set-drawer-list"></div>
+        </div>
+
+        <!-- Detail Mode -->
+        <div id="set-drawer-detail" class="set-drawer-section hidden">
+            <div id="set-drawer-detail-header" class="set-drawer-detail-header"></div>
+            <div id="set-drawer-detail-tracks" class="set-drawer-track-list"></div>
+        </div>
+
+        <!-- Track Search Mode -->
+        <div id="set-drawer-search-mode" class="set-drawer-section hidden">
+            <input type="text" id="set-drawer-track-search" class="set-drawer-search"
+                   placeholder="Search by title or artist...">
+            <div id="set-drawer-search-results" class="set-drawer-track-list"></div>
+            <div id="set-drawer-selected-track" class="set-drawer-selected-track hidden"></div>
+            <div id="set-drawer-search-context" class="set-drawer-search-context hidden">
+                <div id="set-search-card-collection" class="set-search-card"></div>
+            </div>
+        </div>
+
+        <!-- Init Sequence Mode -->
+        <div id="set-drawer-init" class="set-drawer-section hidden">
+            <div class="set-init-container">
+                <div class="set-init-header">Loading Set</div>
+                <div id="set-init-log" class="set-init-log"></div>
+                <div id="set-init-error" class="set-init-error hidden"></div>
+            </div>
+        </div>
+
+        <!-- Now Playing Mode -->
+        <div id="set-drawer-now-playing" class="set-drawer-section hidden">
+            <div class="now-playing-artwork-container">
+                <img id="now-playing-artwork" class="now-playing-artwork" alt="" src="">
+            </div>
+            <div class="now-playing-track-info">
+                <div id="now-playing-title" class="now-playing-title"></div>
+                <div id="now-playing-artist" class="now-playing-artist"></div>
+                <div class="now-playing-meta">
+                    <span id="now-playing-bpm"></span>
+                    <span id="now-playing-key"></span>
+                    <span id="now-playing-year"></span>
+                </div>
+                <div id="now-playing-comment" class="now-playing-comment"></div>
+            </div>
+            <div id="now-playing-collection-leaf" class="set-search-card"></div>
+            <div id="now-playing-also-in" class="now-playing-also-in"></div>
+            <div class="now-playing-controls">
+                <div class="now-playing-progress-container">
+                    <div id="now-playing-progress-bar" class="now-playing-progress-bar">
+                        <div id="now-playing-progress-fill" class="now-playing-progress-fill"></div>
+                    </div>
+                    <div class="now-playing-time">
+                        <span id="now-playing-current-time">0:00</span>
+                        <span id="now-playing-duration">0:00</span>
+                    </div>
+                </div>
+                <div class="now-playing-buttons">
+                    <button id="now-playing-prev" class="now-playing-btn" title="Previous">&#9664;&#9664;</button>
+                    <button id="now-playing-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                    <button id="now-playing-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
+                </div>
+                <div class="set-mode-toggle set-mode-toggle--drawer">
+                    <button id="set-mode-playset" class="set-mode-btn active">Full Track</button>
+                    <button id="set-mode-workshop" class="set-mode-btn">Short Preview</button>
+                </div>
+                <div id="now-playing-counter" class="now-playing-counter"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Base Drawer (bottom slide-up, horizontal now-playing) -->
+<div id="base-drawer" class="base-drawer">
+    <!-- Compact bar (always visible) -->
+    <div class="base-drawer-panels">
+        <!-- Left panel: artwork + track info -->
+        <div class="base-drawer-panel base-drawer-left">
+            <img id="base-np-artwork" class="base-np-artwork" alt="" src="">
+            <div class="base-np-info">
+                <div id="base-np-title" class="base-np-title"></div>
+                <div id="base-np-artist-line" class="base-np-artist-line"></div>
+                <div id="base-np-comment" class="base-np-comment"></div>
+            </div>
+        </div>
+
+        <!-- Center panel: controls + progress -->
+        <div class="base-drawer-panel base-drawer-center">
+            <div class="base-np-controls">
+                <button id="base-np-prev" class="now-playing-btn" title="Previous">&#9664;&#9664;</button>
+                <div class="base-np-bpm-stack">
+                    <button id="base-np-bpm-up" class="now-playing-btn bpm-arrow-btn" title="Higher BPM" disabled>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 9L7 5L11 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button id="base-np-play-pause" class="now-playing-btn now-playing-btn-main" title="Play/Pause">&#9654;</button>
+                    <button id="base-np-bpm-down" class="now-playing-btn bpm-arrow-btn" title="Lower BPM" disabled>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+                <button id="base-np-next" class="now-playing-btn" title="Next">&#9654;&#9654;</button>
+            </div>
+            <div class="base-drawer-progress">
+                <div id="base-np-progress-bar" class="now-playing-progress-bar">
+                    <div id="base-np-progress-fill" class="now-playing-progress-fill"></div>
+                </div>
+                <div class="base-np-time">
+                    <span id="base-np-current-time">0:00</span>
+                    <span id="base-np-duration">0:00</span>
+                </div>
+            </div>
+            <div class="set-mode-toggle set-mode-toggle--base">
+                <button class="set-mode-btn base-mode-playset active">Full Track</button>
+                <button class="set-mode-btn base-mode-workshop">Short Preview</button>
+            </div>
+            <div id="base-np-counter" class="base-np-counter"></div>
+        </div>
+
+        <!-- Right panel: collection source + side drawer button -->
+        <div class="base-drawer-panel base-drawer-right">
+            <div id="base-np-source" class="base-np-source">
+                <div id="base-np-collection" class="base-np-collection-title"></div>
+                <div id="base-np-collection-desc" class="base-np-collection-desc"></div>
+                <div id="base-np-also-in" class="base-np-also-in"></div>
+            </div>
+            <button id="base-drawer-expand" class="base-drawer-dig-btn">Dig Deeper<br>Open the draw<br>Grab some more</button>
+        </div>
+
+        <!-- Mobile expand chevron (between controls and track info via CSS order) -->
+        <button id="base-drawer-chevron" class="base-drawer-chevron" aria-label="Expand player">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12.5L10 7.5L15 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+    </div>
+
+    <!-- Init sequence (mobile, shown during loading) -->
+    <div id="base-drawer-init" class="base-drawer-init" style="display:none;">
+        <div class="set-init-container">
+            <div class="set-init-header">Loading Set</div>
+            <div id="set-init-log-mobile" class="set-init-log"></div>
+            <div id="set-init-error-mobile" class="set-init-error hidden"></div>
+        </div>
+    </div>
+
+    <!-- Expanded detail (mobile only, hidden by default) -->
+    <div id="base-drawer-detail" class="base-drawer-detail">
+        <div class="base-detail-artwork">
+            <img id="base-detail-artwork-img" class="base-detail-artwork-img" alt="" src="">
+        </div>
+        <div class="base-detail-track-info">
+            <div id="base-detail-title" class="base-detail-title"></div>
+            <div id="base-detail-artist" class="base-detail-artist"></div>
+            <div id="base-detail-meta" class="base-detail-meta"></div>
+            <div id="base-detail-comment" class="base-detail-comment"></div>
+        </div>
+        <div id="base-detail-collection" class="base-detail-collection"></div>
+        <div id="base-detail-also-in" class="base-detail-also-in"></div>
+    </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal">
+        <h2>Settings</h2>
+        <label for="cfg-model">Model</label>
+        <select id="cfg-model">
+            <optgroup label="Anthropic">
+                <option value="claude-sonnet-4-5-20250929">Claude Sonnet 4.5</option>
+                <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5</option>
+            </optgroup>
+            <optgroup label="OpenAI">
+                <option value="gpt-4">GPT-4</option>
+                <option value="gpt-4o">GPT-4o</option>
+                <option value="gpt-4o-mini">GPT-4o mini</option>
+            </optgroup>
+        </select>
+
+        <label for="cfg-system-prompt">System Prompt</label>
+        <textarea id="cfg-system-prompt" rows="3"></textarea>
+
+        <label for="cfg-user-prompt">User Prompt Template</label>
+        <textarea id="cfg-user-prompt" rows="6"></textarea>
+        <p class="hint">Placeholders: <code>{title}</code> <code>{artist}</code> <code>{bpm}</code> <code>{key}</code> <code>{year}</code></p>
+
+        <label for="cfg-delay">Delay between requests (seconds)</label>
+        <input type="number" id="cfg-delay" min="0" step="0.5" value="1.5">
+
+        <hr style="margin: 1rem 0; border-color: var(--border);">
+        <label class="cfg-checkbox-label">
+            <input type="checkbox" id="cfg-path-map-enabled">
+            Map music folder to My G computer
+        </label>
+        <div id="cfg-path-map-fields" class="hidden" style="margin-top: 0.5rem;">
+            <label for="cfg-path-from">From path prefix</label>
+            <input type="text" id="cfg-path-from" style="width:100%; font-size:0.8rem;">
+            <label for="cfg-path-to" style="margin-top:0.4rem;">To path prefix</label>
+            <input type="text" id="cfg-path-to" style="width:100%; font-size:0.8rem;">
+        </div>
+
+        <div class="modal-actions">
+            <button id="btn-cfg-save" class="btn btn-primary">Save</button>
+            <button id="btn-cfg-reset" class="btn btn-secondary">Reset to Defaults</button>
+            <button id="btn-cfg-close" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add-to-Playlist Modal -->
+<div id="add-to-playlist-modal" class="modal-overlay hidden">
+    <div class="modal" style="max-width:400px">
+        <h2>Add to Playlist</h2>
+        <div class="atp-create-row">
+            <input type="text" id="atp-new-name" placeholder="New playlist name…" class="atp-new-input">
+            <button id="atp-create-add" class="btn btn-primary btn-sm">Create &amp; Add</button>
+        </div>
+        <div class="atp-divider"><span>or add to existing</span></div>
+        <div id="atp-playlist-list" class="atp-playlist-list"></div>
+        <div class="modal-actions">
+            <button id="atp-cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dedup modal -->
+<div id="dedup-modal" class="modal-overlay hidden">
+    <div class="modal" style="max-width:700px; max-height:80vh; display:flex; flex-direction:column;">
+        <h2>Clean Library — Remove Duplicates</h2>
+        <div id="dedup-summary" class="dedup-summary"></div>
+        <div id="dedup-groups" class="dedup-groups" style="overflow-y:auto; flex:1;"></div>
+        <div class="modal-actions">
+            <button id="dedup-cancel" class="btn btn-secondary">Cancel</button>
+            <button id="dedup-confirm" class="btn btn-primary" disabled>Remove Duplicates</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/app.js?v={{ v }}"></script>
+<script src="/static/workshop.js?v={{ v }}"></script>
+<script src="/static/tree.js?v={{ v }}"></script>
+<script src="/static/setbuilder.js?v={{ v }}"></script>
+<script src="/static/phases.js?v={{ v }}"></script>
+<script src="/static/autoset.js?v={{ v }}"></script>
+<script src="/static/robot.js?v={{ v }}"></script>
+<script src="/static/dance.js?v={{ v }}"></script>
+<script src="/static/dancer-drawer.js?v={{ v }}"></script>
+<script src="/static/chat.js?v={{ v }}"></script>
+<script>boot();</script>
+</body>
+</html>
