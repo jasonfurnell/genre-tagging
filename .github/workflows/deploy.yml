@@ -85,19 +85,14 @@ jobs:
               "${IMAGE}"
 
             # Wait for canary to be ready (up to 2 minutes).
-            # Two checks: /healthz (process alive) then /ready (init complete).
-            # This catches deployments where gunicorn boots but init hangs.
+            # /ready triggers lazy init and returns "ready" once complete.
+            # This is the single source of truth — Docker health status is
+            # redundant noise (120s start-period means it shows "starting"
+            # for almost the entire canary window).
             CANARY_OK=false
             for i in $(seq 1 24); do
-              # First check Docker health (is the process alive?)
-              STATUS=$(docker inspect --format='{{.State.Health.Status}}' genre-tagging-canary 2>/dev/null || echo "starting")
-              if [ "$STATUS" = "unhealthy" ]; then
-                echo "  Canary attempt $i: Docker says unhealthy — aborting deploy"
-                break
-              fi
-              # Then check /ready (has init completed?)
               READY=$(curl -sf http://127.0.0.1:5002/ready 2>/dev/null || echo "not ready")
-              echo "  Canary attempt $i: docker=$STATUS ready=$READY"
+              echo "  Canary attempt $i: $READY"
               if [ "$READY" = "ready" ]; then
                 CANARY_OK=true
                 break

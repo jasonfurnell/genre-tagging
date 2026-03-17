@@ -162,9 +162,9 @@ Every push to `main` triggers this (`.github/workflows/deploy.yml`):
 2. Logs Docker into ECR (so it can pull images)
 3. Pulls the new `latest` image
 4. Starts a **canary container** (`genre-tagging-canary`) on port 5002 — the old container keeps running on 5001
-5. Polls the canary's Docker health check for up to 2 minutes
-6. **If canary is healthy**: stops the old container, starts the proven image as `genre-tagging` on port 5001
-7. **If canary is unhealthy**: removes the canary, old container untouched, deploy fails (site stays up)
+5. Polls the canary's `/ready` endpoint for up to 2 minutes (this triggers lazy init and confirms the app can serve)
+6. **If canary is ready**: stops the old container, starts the proven image as `genre-tagging` on port 5001
+7. **If canary never becomes ready**: removes the canary, old container untouched, deploy fails (site stays up)
 8. Cleans up old images to save disk space
 
 **Downtime**: There's a brief window (~5-15 seconds) during step 6 while swapping containers. This only happens on *successful* deploys. Failed deploys cause **zero downtime** — the old container keeps serving.
