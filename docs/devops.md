@@ -313,19 +313,40 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - **Also simplified**: Removed Docker health status check from canary loop — `/ready` is the single source of truth. Docker health was noise (120s start-period meant it showed "starting" for almost the entire canary window)
 - **Lesson**: If an endpoint checks state that's set by a different code path, verify the code path actually runs for that endpoint. Blueprint `before_request` hooks only fire for routes on that blueprint, not app-level routes
 
-### 2026-03-18 — Site down (504), failed deploy left no running container
-- **Symptom**: 504 Gateway Timeout on bjingo-r.us. Nginx running but returning 504 (no backend to proxy to). EC2 instance healthy (all AWS status checks passed)
-- **Cause**: Two rapid pushes to `main` triggered back-to-back deploys (#52 and #53). Deploy #52 ("fixed the rapid skip playback errors") ran the blue-green cycle but the production container failed verification after the swap — the deploy script logged a warning but did NOT exit with an error (the old `# Don't exit 1 here` comment at line 201). Deploy #53 ("refactor to get all playback logic into one file") then ran against an already-broken state and also failed. The old production container had been `docker rm`'d during the swap, and the new container never became ready, so **no container was running at all**
-- **Why SSH didn't work**: EC2 Instance Connect failed ("Permission denied") — the EC2 Instance Connect agent wasn't installed/configured on the instance. SSM Agent also wasn't installed, and the serial console wasn't enabled for the account. This left no way to access the instance directly
-- **Recovery**:
-  1. Rebooted the instance via CloudShell (`aws ec2 reboot-instances`) — nginx came back but no Docker container existed to auto-restart (it had been removed, not just stopped)
-  2. Re-ran the failed deploy #53 from GitHub Actions ("Re-run failed jobs") — the deploy job SSHed in using its own stored SSH key, pulled the image from ECR, and started a fresh container. Site was back up in 46 seconds
-- **Fixes applied**:
-  1. **Manual deploy trigger**: Changed `deploy.yml` from `on: push: branches: [main]` to `on: workflow_dispatch`. Deploys now only happen when you click "Run workflow" in GitHub Actions. This prevents auto-deploying every commit, which was the root cause of most outages
-  2. **Production verification now fails loudly**: Changed the post-swap verification from a silent warning to `exit 1`, so GitHub Actions reports failure and you get notified
-  3. **Emergency rollback**: If the new production container fails verification, the deploy script now automatically rolls back to the previous image instead of leaving the site down
-  4. **SSM Agent + EC2 Instance Connect**: Installed both packages via deploy script (idempotent). Attached `AmazonSSMManagedInstanceCore` IAM policy to the EC2 role. Enabled Default Host Management Configuration in Systems Manager. **Critical fix**: the instance had `HttpEndpoint: disabled` on IMDS — re-enabled via `aws ec2 modify-instance-metadata-options --http-endpoint enabled`. Without IMDS, nothing that needs instance identity works (SSM Agent, EC2 Instance Connect, IAM role credentials). Also set IMDS hop limit to 2 for Docker container compatibility
-- **Lesson**: Auto-deploying every push to `main` is the single biggest risk factor. Most outages were deploy-related, not runtime crashes. Manual deploys let you batch changes and deploy when you're ready to monitor the result. Also: always have a second way to access your server — SSH alone is a single point of failure. And never disable IMDS (`HttpEndpoint`) — it breaks SSM, Instance Connect, and IAM role credentials
+### 2026-03-18 — Site down (504), SSM/Instance Connect access failure
+- **Symptom**: 504 Gateway Timeout on bjingo-r.us. Nginx running but returning 504 (no backend to proxy to). EC2 instance healthy (all AWS status checks passed). No way to SSH into instance — both EC2 Instance Connect and SSM Agent "unavailable"
+- **Initial cause**: Two rapid pushes to `main` triggered back-to-back deploys (#52 and #53). Deploy #52 ("fixed the rapid skip playback errors") ran the blue-green cycle but the production container failed verification after the swap — the deploy script logged a warning but did NOT exit with an error (the old `# Don't exit 1 here` comment at line 201). Deploy #53 ("refactor to get all playback logic into one file") then ran against an already-broken state and also failed. The old production container had been `docker rm`'d during the swap, and the new container never became ready, so **no container was running at all**
+- **Why access methods failed**:
+  1. **EC2 Instance Connect**: "Permission denied" — EC2 Instance Connect requires a valid IMDS endpoint to verify credentials. The instance had `HttpEndpoint: disabled` at the account level
+  2. **SSM Agent**: Not registered in Fleet Manager despite being installed by deploy script. Instance showed "Managed: false" in EC2 console
+  3. **SSH**: No stored SSH key available and no way to create one without instance access
+- **Root cause analysis (discovered during troubleshooting)**:
+  1. **IMDS endpoint was disabled** (`HttpEndpoint: disabled`). This broke both EC2 Instance Connect (needs metadata for key verification) and SSM Agent authentication (can't get IAM role credentials)
+  2. **IAM policy was missing**. The deploy script had code to "attach" `AmazonSSMManagedInstanceCore`, but the policy was never actually attached to the `genre-tagging-ec2-role`. Without this policy, SSM Agent can't call AWS APIs (even if it could authenticate)
+- **Immediate recovery**:
+  1. User ran `aws ec2 modify-instance-metadata-options --instance-id i-02c583d86c9ac9320 --http-endpoint enabled` via CloudShell to re-enable IMDS
+  2. User used AWS Console to manually attach `AmazonSSMManagedInstanceCore` policy to the EC2 role
+  3. User SSHed into instance via **EC2 Instance Connect** (now working after IMDS was re-enabled) and ran `sudo systemctl restart amazon-ssm-agent`
+  4. Instance appeared in **Fleet Manager > Managed nodes** within 60 seconds, status: Online
+- **Fixes applied to deploy pipeline** (`.github/workflows/deploy.yml`):
+  1. **Manual deploy trigger**: Changed from `on: push: branches: [main]` to `on: workflow_dispatch`. Deploys now only happen when you click "Run workflow" in GitHub Actions
+  2. **Production verification now fails loudly**: Changed the post-swap verification from a silent warning to `exit 1`, so GitHub Actions reports failure and you're notified
+  3. **Emergency rollback**: If the new production container fails verification, the deploy script automatically rolls back to the previous image instead of leaving the site down
+  4. **SSM Agent + EC2 Instance Connect**: Installed both packages via deploy script (idempotent), set systemd restart logic, added reset-failed for crash-loop recovery
+- **Permanent fixes to prevent recurrence**:
+  1. **IMDS endpoint**: Verified enabled at account level. If disabled again, use: `aws ec2 modify-instance-metadata-options --http-endpoint enabled --http-put-response-hop-limit 2`
+  2. **IAM policy**: Verified `AmazonSSMManagedInstanceCore` is attached to `genre-tagging-ec2-role`. Check in AWS Console → IAM → Roles → genre-tagging-ec2-role → Permissions
+  3. **Access methods**: Now has three working fallback methods (in order of priority):
+     - **Session Manager**: AWS Console → Systems Manager → Session Manager → Start session
+     - **EC2 Instance Connect**: AWS Console → EC2 → Instances → Select instance → Connect → EC2 Instance Connect tab → Connect
+     - **CloudShell**: AWS Console → CloudShell → use `aws ssm send-command` or `aws ssm start-session`
+  4. **Verification**: After any infrastructure changes, verify instance shows in Fleet Manager with status "Online"
+- **Lessons learned**:
+  1. **IMDS is critical**: Never disable `HttpEndpoint` unless you specifically don't need instance identity (SSM, Instance Connect, IAM role credentials all depend on it)
+  2. **Always verify IAM policies**: Deploy scripts should include verification steps or post-deploy checks. "Attaching" a policy via script doesn't guarantee it succeeded
+  3. **Multiple access methods prevent lockout**: With only SSH available, the instance became completely inaccessible. Three independent access methods (SSM, Instance Connect, CloudShell) ensure there's always a way in
+  4. **Test the deployment pipeline in isolation**: The deploy script worked fine when it had SSH access, but the underlying infrastructure issues (IMDS, IAM) weren't caught until a real deployment failure occurred
+  5. **Auto-deploying is the biggest risk factor**: Most outages were deploy-related, not runtime crashes. Manual deploys let you batch changes and deploy when ready to monitor
 
 ---
 
