@@ -66,20 +66,24 @@ jobs:
               sudo dnf install -y amazon-ssm-agent || sudo yum install -y amazon-ssm-agent || true
               sudo systemctl enable amazon-ssm-agent 2>/dev/null || true
               sudo systemctl restart amazon-ssm-agent 2>/dev/null || true
-              sleep 2
-              # Log status for debugging
+              sleep 5
+              # Log status and recent journal for debugging
               echo "SSM Agent status:"
               sudo systemctl status amazon-ssm-agent --no-pager 2>&1 | head -10 || true
+              echo "SSM Agent recent logs:"
+              sudo journalctl -u amazon-ssm-agent --no-pager -n 20 2>&1 || true
             fi
 
-            # ── Ensure EC2 Instance Connect is installed (idempotent) ──
-            if ! rpm -q ec2-instance-connect &>/dev/null; then
-              echo "Installing EC2 Instance Connect..."
-              sudo dnf install -y ec2-instance-connect || sudo yum install -y ec2-instance-connect || true
-              # Restart sshd to pick up the new AuthorizedKeysCommand config
-              echo "Restarting sshd to enable EC2 Instance Connect..."
-              sudo systemctl restart sshd || true
+            # ── Ensure EC2 Instance Connect works (idempotent) ──
+            sudo dnf install -y ec2-instance-connect || sudo yum install -y ec2-instance-connect || true
+            # Always ensure sshd has the AuthorizedKeysCommand config loaded
+            if grep -q 'AuthorizedKeysCommand.*eic_' /etc/ssh/sshd_config 2>/dev/null || \
+               grep -rq 'AuthorizedKeysCommand.*eic_' /etc/ssh/sshd_config.d/ 2>/dev/null; then
+              echo "EC2 Instance Connect config found in sshd"
+            else
+              echo "WARNING: EC2 Instance Connect AuthorizedKeysCommand not found in sshd config"
             fi
+            sudo systemctl restart sshd 2>/dev/null || true
 
             # ── Memory diagnostics ──
             # t3.small has 2GB RAM + 1GB swap — log available memory before we start.
