@@ -60,18 +60,25 @@ jobs:
           script: |
             set -e
 
-            # ── Ensure SSM Agent is installed (idempotent) ──
+            # ── Ensure SSM Agent is installed and running (idempotent) ──
             if ! systemctl is-active --quiet amazon-ssm-agent 2>/dev/null; then
-              echo "Installing SSM Agent for Session Manager access..."
+              echo "Installing/starting SSM Agent for Session Manager access..."
               sudo dnf install -y amazon-ssm-agent || sudo yum install -y amazon-ssm-agent || true
               sudo systemctl enable amazon-ssm-agent 2>/dev/null || true
-              sudo systemctl start amazon-ssm-agent 2>/dev/null || true
+              sudo systemctl restart amazon-ssm-agent 2>/dev/null || true
+              sleep 2
+              # Log status for debugging
+              echo "SSM Agent status:"
+              sudo systemctl status amazon-ssm-agent --no-pager 2>&1 | head -10 || true
             fi
 
             # ── Ensure EC2 Instance Connect is installed (idempotent) ──
             if ! rpm -q ec2-instance-connect &>/dev/null; then
               echo "Installing EC2 Instance Connect..."
               sudo dnf install -y ec2-instance-connect || sudo yum install -y ec2-instance-connect || true
+              # Restart sshd to pick up the new AuthorizedKeysCommand config
+              echo "Restarting sshd to enable EC2 Instance Connect..."
+              sudo systemctl restart sshd || true
             fi
 
             # ── Memory diagnostics ──
