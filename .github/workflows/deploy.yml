@@ -61,17 +61,14 @@ jobs:
             set -e
 
             # ── Ensure SSM Agent is installed and running (idempotent) ──
+            sudo dnf install -y amazon-ssm-agent 2>/dev/null || true
+            sudo systemctl enable amazon-ssm-agent 2>/dev/null || true
+            # Reset failure counter (clears systemd rate-limit after crash loops)
+            sudo systemctl reset-failed amazon-ssm-agent 2>/dev/null || true
             if ! systemctl is-active --quiet amazon-ssm-agent 2>/dev/null; then
-              echo "Installing/starting SSM Agent for Session Manager access..."
-              sudo dnf install -y amazon-ssm-agent || sudo yum install -y amazon-ssm-agent || true
-              sudo systemctl enable amazon-ssm-agent 2>/dev/null || true
+              echo "Starting SSM Agent..."
               sudo systemctl restart amazon-ssm-agent 2>/dev/null || true
-              sleep 5
-              # Log status and recent journal for debugging
-              echo "SSM Agent status:"
-              sudo systemctl status amazon-ssm-agent --no-pager 2>&1 | head -10 || true
-              echo "SSM Agent recent logs:"
-              sudo journalctl -u amazon-ssm-agent --no-pager -n 20 2>&1 || true
+              sleep 3
             fi
 
             # ── Ensure EC2 Instance Connect works (idempotent) ──
