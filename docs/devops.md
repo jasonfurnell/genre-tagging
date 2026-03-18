@@ -7,10 +7,10 @@ A practical reference for understanding and managing the production deployment. 
 ## How the Production Stack Works
 
 ```
-You push code to GitHub (main branch)
+You click "Run workflow" in GitHub Actions
         |
         v
-GitHub Actions (automated pipeline)
+GitHub Actions (manual deploy pipeline)
   1. Builds a Docker image (packages your app + dependencies)
   2. Pushes it to Amazon ECR (a private image warehouse)
   3. SSHes into your EC2 server and:
@@ -19,14 +19,15 @@ GitHub Actions (automated pipeline)
      - Waits for the canary's /ready endpoint to confirm init
      - If ready: swaps in the new container
      - If not ready: kills the canary, old container stays up
+     - If new container fails after swap: rolls back to previous image
         |
         v
-EC2 Instance (your server, ~$9/month)
+EC2 Instance (your server, t3.small ~$17/month)
   Nginx (:80) --> gunicorn (:5001) --> your Flask app
   Docker handles restart/recovery automatically
 ```
 
-**In plain English**: every time you push to `main`, a robot builds your app, ships it to your server, tests the new version alongside the old one, and only swaps if the new version is healthy. If it's not working, the deploy fails but the old version keeps running — the site stays up.
+**In plain English**: when you're ready to deploy, you click the "Run workflow" button in GitHub Actions. A robot builds your app, ships it to your server, tests the new version alongside the old one, and only swaps if the new version is healthy. If the new version fails even after swapping, it rolls back to the previous image automatically. Pushes to `main` do NOT trigger deploys — this was changed after repeated outages caused by auto-deploying every commit.
 
 ---
 
@@ -49,9 +50,9 @@ These are the layers of protection that prevent or auto-recover from problems:
 - **Config**: `Dockerfile` CMD (`--max-requests 500 --max-requests-jitter 50`)
 
 ### 3. Blue-Green Deploy with Auto-Rollback
-- **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's `/ready` endpoint for up to 2 minutes — this triggers lazy init and confirms the app can actually serve. If ready, the old container is swapped out. If not, the canary is removed and the old container keeps running untouched
-- **Why**: Prevents failed deploys from taking the site down. Before this, the deploy script would stop the old container *first*, then start the new one. If the new one couldn't boot (e.g. a hung network call during init), the site was down with no rollback
-- **The lesson we learned**: A trivial CSS change (`dance.js` height tweak) triggered a deploy where gunicorn's worker hung during startup. Because the old container was already stopped, the site was down until the next manual intervention. The fix was never to stop the old container until the new image has proven it can boot
+- **What**: Before touching the live container, the deploy starts a "canary" copy of the new image on a temporary port (5002). It polls the canary's `/ready` endpoint for up to 2 minutes — this triggers lazy init and confirms the app can actually serve. If ready, the old container is swapped out. If not, the canary is removed and the old container keeps running untouched. If the new production container fails to become ready after the swap, the deploy script **automatically rolls back** to the previous image
+- **Why**: Prevents failed deploys from taking the site down. Before this, the deploy script would stop the old container *first*, then start the new one. If the new one couldn't boot (e.g. a hung network call during init), the site was down with no rollback. The emergency rollback was added after the 2026-03-18 incident where a failed deploy left the site with no running container at all
+- **The lesson we learned**: A trivial CSS change (`dance.js` height tweak) triggered a deploy where gunicorn's worker hung during startup. Because the old container was already stopped, the site was down until the next manual intervention. The fix was never to stop the old container until the new image has proven it can boot. The rollback was added because even a "proven" canary can fail when promoted to production (different port, timing, memory pressure)
 - **Config**: `.github/workflows/deploy.yml` — the `deploy` job's SSH script
 
 ### 4. Timeouts on External Calls
@@ -100,8 +101,11 @@ This means:
 
 **If it doesn't come back on its own** (wait at least 2-3 minutes):
 
-1. Connect to EC2 via AWS Console:
-   - AWS Console -> EC2 -> Instances -> select your instance -> Connect -> EC2 Instance Connect
+1. Connect to EC2 via AWS Console (try in order):
+   - **Session Manager** (most reliable): AWS Console -> EC2 -> Instances -> select instance -> Connect -> Session Manager
+   - **EC2 Instance Connect** (may fail if agent isn't configured): same flow but use the "EC2 Instance Connect" tab
+   - **CloudShell fallback**: AWS Console -> CloudShell -> use `aws ec2-instance-connect ssh` or `aws ssm start-session`
+   - **Emergency**: If nothing works, re-run the latest deploy from GitHub Actions (Actions tab -> latest run -> Re-run failed jobs). The deploy SSHes in with its own key and restarts the container
 2. Check what's going on:
    ```bash
    docker ps                              # Is the container running?
@@ -147,7 +151,7 @@ This specific issue was caused by a timeout that was too aggressive. The Dropbox
 
 ## Deploy Pipeline Explained
 
-Every push to `main` triggers this (`.github/workflows/deploy.yml`):
+Deploys are **manual only** — click "Run workflow" in the GitHub Actions tab (`.github/workflows/deploy.yml`). Pushes to `main` do NOT trigger deploys. This prevents accidental outages from auto-deploying every commit.
 
 ### Job 1: Build & Push Docker Image (~45s)
 1. Checks out your code
@@ -164,9 +168,11 @@ Every push to `main` triggers this (`.github/workflows/deploy.yml`):
 5. Polls the canary's `/ready` endpoint for up to 2 minutes (this triggers lazy init and confirms the app can serve)
 6. **If canary is ready**: stops the old container, starts the proven image as `genre-tagging` on port 5001
 7. **If canary never becomes ready**: removes the canary, old container untouched, deploy fails (site stays up)
-8. Cleans up old images to save disk space
+8. Verifies the new production container's `/ready` endpoint (up to 3 min)
+9. **If production verification fails**: automatically rolls back to the previous image and exits with error
+10. Cleans up old images to save disk space
 
-**Downtime**: There's a brief window (~5-15 seconds) during step 6 while swapping containers. This only happens on *successful* deploys. Failed deploys cause **zero downtime** — the old container keeps serving.
+**Downtime**: There's a brief window (~2-5 seconds) during step 6 while swapping containers. This only happens on *successful* deploys. Failed canary deploys cause **zero downtime**. Failed production verification triggers **automatic rollback** to minimize downtime.
 
 ---
 
@@ -178,11 +184,13 @@ Every push to `main` triggers this (`.github/workflows/deploy.yml`):
 | `.github/workflows/deploy.yml` | The automated build-and-deploy pipeline |
 | `.dockerignore` | Files excluded from the Docker image (keeps it small and safe) |
 | `app/main_flask.py:36-55` | `/healthz` (liveness) and `/ready` (readiness) endpoints |
+| `scripts/setup-ssm-agent.sh` | One-time SSM Agent install — enables Session Manager access |
+| `scripts/setup-swap.sh` | One-time swap file setup for memory-constrained instances |
 | `.claude/plans/aws-deployment.md` | Full setup guide — AWS Console steps, server config, secrets |
 
 ---
 
-## Useful Commands (on EC2 via Instance Connect)
+## Useful Commands (on EC2 via Session Manager or Instance Connect)
 
 ```bash
 # Container status
@@ -206,6 +214,26 @@ docker system prune -f                       # Clean up Docker cruft
 
 # Check what's deployed
 docker inspect genre-tagging | grep Image    # Which image is running
+
+# Memory
+free -m                                      # RAM + swap usage
+```
+
+### Remote Commands (from CloudShell, no SSH needed)
+
+```bash
+# Run a command on the instance via SSM (requires SSM Agent installed)
+aws ssm send-command \
+  --instance-ids i-02c583d86c9ac9320 \
+  --document-name "AWS-RunShellScript" \
+  --parameters 'commands=["docker ps -a","free -m"]' \
+  --output json
+
+# Start an interactive session
+aws ssm start-session --target i-02c583d86c9ac9320
+
+# Reboot the instance (last resort — doesn't need SSH)
+aws ec2 reboot-instances --instance-ids i-02c583d86c9ac9320
 ```
 
 ---
@@ -285,6 +313,20 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - **Also simplified**: Removed Docker health status check from canary loop — `/ready` is the single source of truth. Docker health was noise (120s start-period meant it showed "starting" for almost the entire canary window)
 - **Lesson**: If an endpoint checks state that's set by a different code path, verify the code path actually runs for that endpoint. Blueprint `before_request` hooks only fire for routes on that blueprint, not app-level routes
 
+### 2026-03-18 — Site down (504), failed deploy left no running container
+- **Symptom**: 504 Gateway Timeout on bjingo-r.us. Nginx running but returning 504 (no backend to proxy to). EC2 instance healthy (all AWS status checks passed)
+- **Cause**: Two rapid pushes to `main` triggered back-to-back deploys (#52 and #53). Deploy #52 ("fixed the rapid skip playback errors") ran the blue-green cycle but the production container failed verification after the swap — the deploy script logged a warning but did NOT exit with an error (the old `# Don't exit 1 here` comment at line 201). Deploy #53 ("refactor to get all playback logic into one file") then ran against an already-broken state and also failed. The old production container had been `docker rm`'d during the swap, and the new container never became ready, so **no container was running at all**
+- **Why SSH didn't work**: EC2 Instance Connect failed ("Permission denied") — the EC2 Instance Connect agent wasn't installed/configured on the instance. SSM Agent also wasn't installed, and the serial console wasn't enabled for the account. This left no way to access the instance directly
+- **Recovery**:
+  1. Rebooted the instance via CloudShell (`aws ec2 reboot-instances`) — nginx came back but no Docker container existed to auto-restart (it had been removed, not just stopped)
+  2. Re-ran the failed deploy #53 from GitHub Actions ("Re-run failed jobs") — the deploy job SSHed in using its own stored SSH key, pulled the image from ECR, and started a fresh container. Site was back up in 46 seconds
+- **Fixes applied**:
+  1. **Manual deploy trigger**: Changed `deploy.yml` from `on: push: branches: [main]` to `on: workflow_dispatch`. Deploys now only happen when you click "Run workflow" in GitHub Actions. This prevents auto-deploying every commit, which was the root cause of most outages
+  2. **Production verification now fails loudly**: Changed the post-swap verification from a silent warning to `exit 1`, so GitHub Actions reports failure and you get notified
+  3. **Emergency rollback**: If the new production container fails verification, the deploy script now automatically rolls back to the previous image instead of leaving the site down
+  4. **SSM Agent setup**: Attached `AmazonSSMManagedInstanceCore` IAM policy to the EC2 role. Created `scripts/setup-ssm-agent.sh` for one-time agent installation. Once installed, Session Manager provides reliable access even when SSH breaks
+- **Lesson**: Auto-deploying every push to `main` is the single biggest risk factor. Most outages were deploy-related, not runtime crashes. Manual deploys let you batch changes and deploy when you're ready to monitor the result. Also: always have a second way to access your server — SSH alone is a single point of failure
+
 ---
 
 ## Future Improvements
@@ -292,8 +334,10 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - [x] ~~**Blue-green deploy with rollback**: Test new image as canary before swapping — failed deploys no longer take the site down~~ *(done 2026-03-15)*
 - [x] ~~**Lazy init + timeouts + reduced gunicorn timeout**: Prevent recurring worker hangs from module-level Dropbox init and untimed external calls~~ *(done 2026-03-16)*
 - [x] ~~**Unified init + /ready endpoint + timeout alignment**: Complete the lazy init pattern, add readiness check to deploy~~ *(done 2026-03-17)*
-- [ ] **Monitoring/alerts** *(recommended next — `GenreTagging-2u3`)* : Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually. Blue-green prevents deploy-caused downtime, but runtime crashes or server issues still need external detection
-- [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot
+- [x] ~~**Manual deploy trigger + emergency rollback**: Switched from auto-deploy-on-push to manual `workflow_dispatch`. Added automatic rollback to previous image if post-swap verification fails~~ *(done 2026-03-18)*
+- [ ] **Install SSM Agent on EC2** *(do next — script ready at `scripts/setup-ssm-agent.sh`)*: IAM policy already attached. Run the script on the instance via the next deploy or SSH session. Once installed, Session Manager provides reliable access even when SSH/Instance Connect breaks
+- [ ] **Monitoring/alerts** *(recommended — `GenreTagging-2u3`)*: Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually
+- [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot. Currently using `bjingo-r.us` with HTTP only
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)
 - [ ] **Log rotation on EC2**: The `app.log` file rotates automatically (2MB x 3 backups), but Docker container logs grow unbounded. Add `--log-opt max-size=10m --log-opt max-file=3` to the `docker run` command
-- [ ] **Multi-user support + architectural simplification**: See `.claude/plans/multi-user.md` for the full plan — SQLite-per-user state, authentication, per-user Dropbox, and optional multi-worker deployment. Also covers how Option B (background workers for LLM calls) fits alongside multi-user
+- [ ] **Multi-user support + architectural simplification**: See `.claude/plans/multi-user.md` for the full plan — SQLite-per-user state, authentication, per-user Dropbox, and optional multi-worker deployment

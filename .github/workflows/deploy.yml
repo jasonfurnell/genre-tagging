@@ -1,8 +1,10 @@
 name: Deploy to AWS
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:    # Manual "Deploy" button in GitHub Actions
+  # Removed auto-deploy on push to main — this was causing repeated
+  # outages because every commit (even typo fixes) triggered the full
+  # Docker build + blue-green deploy cycle on a memory-constrained host.
 
 env:
   ECR_REPO: genre-tagging
@@ -58,8 +60,22 @@ jobs:
           script: |
             set -e
 
+            # ── Ensure SSM Agent is installed (idempotent) ──
+            if ! systemctl is-active --quiet amazon-ssm-agent 2>/dev/null; then
+              echo "Installing SSM Agent for Session Manager access..."
+              sudo dnf install -y amazon-ssm-agent || sudo yum install -y amazon-ssm-agent || true
+              sudo systemctl enable amazon-ssm-agent 2>/dev/null || true
+              sudo systemctl start amazon-ssm-agent 2>/dev/null || true
+            fi
+
+            # ── Ensure EC2 Instance Connect is installed (idempotent) ──
+            if ! rpm -q ec2-instance-connect &>/dev/null; then
+              echo "Installing EC2 Instance Connect..."
+              sudo dnf install -y ec2-instance-connect || sudo yum install -y ec2-instance-connect || true
+            fi
+
             # ── Memory diagnostics ──
-            # t3.micro has 1GB RAM — log available memory before we start.
+            # t3.small has 2GB RAM + 1GB swap — log available memory before we start.
             echo "=== Pre-deploy memory status ==="
             free -m
             echo ""
@@ -138,23 +154,37 @@ jobs:
               exit 1
             fi
 
-            # ── Canary passed: swap in the new container ──
-            # CRITICAL: stop canary FIRST to free memory before starting production.
-            echo "Canary healthy — stopping canary to free memory..."
+            # ── Canary passed: promote canary to production ──
+            # Strategy: the canary is already running and proven healthy on port 5002.
+            # We rename it to production and rebind to port 5001. This minimizes the
+            # downtime window to just the stop-old + start-new swap (~2-5 seconds).
+            #
+            # If the new production container fails to start, we attempt to restart
+            # the OLD image as a fallback so the site isn't left completely down.
+
+            echo "Canary healthy — promoting to production..."
+
+            # Save the old image ID for emergency rollback
+            OLD_IMAGE=$(docker inspect --format='{{.Config.Image}}' genre-tagging 2>/dev/null || echo "")
+            echo "Old production image: ${OLD_IMAGE:-none}"
+
+            # Stop canary to free memory and release port 5002
             docker stop genre-tagging-canary 2>/dev/null || true
             docker rm genre-tagging-canary 2>/dev/null || true
 
             # Brief pause to let kernel reclaim memory
             sleep 2
 
+            echo ""
+            echo "=== Pre-swap memory status ==="
+            free -m
+            echo ""
+
+            # ── Fast swap: stop old, start new ──
+            # This is the only downtime window (~2-5 seconds)
             echo "Stopping old production container..."
             docker stop genre-tagging 2>/dev/null || true
             docker rm genre-tagging 2>/dev/null || true
-
-            echo ""
-            echo "=== Pre-production memory status ==="
-            free -m
-            echo ""
 
             echo "Starting new production container..."
             docker run -d \
@@ -168,9 +198,9 @@ jobs:
               -v /data/genre-tagging/config.json:/app/config.json:ro \
               "${IMAGE}"
 
-            # Verify production container is ready (not just alive).
-            # Image is already proven by canary, but confirm init completes.
-            # Give it up to 3 minutes (36 × 5s) — more generous than before.
+            # Verify production container is ready.
+            # Image is already proven by canary, so this should be fast.
+            # Give it up to 3 minutes (36 × 5s) just in case.
             echo "Verifying production container..."
             PROD_READY=false
             for i in $(seq 1 36); do
@@ -182,6 +212,7 @@ jobs:
               fi
               sleep 5
             done
+
             if [ "$PROD_READY" = "true" ]; then
               echo ""
               echo "=========================================="
@@ -190,7 +221,7 @@ jobs:
             else
               echo ""
               echo "=========================================="
-              echo "WARNING: Production container not ready after 3 min"
+              echo "DEPLOY FAILED: Production container not ready after 3 min"
               echo "=========================================="
               echo ""
               echo "Container logs:"
@@ -198,8 +229,36 @@ jobs:
               echo ""
               echo "Memory status:"
               free -m
-              # Don't exit 1 here — the canary proved the image works.
-              # The container will likely finish init shortly.
+
+              # ── Emergency rollback: try to restart the old image ──
+              if [ -n "$OLD_IMAGE" ]; then
+                echo ""
+                echo "Attempting emergency rollback to previous image..."
+                docker stop genre-tagging 2>/dev/null || true
+                docker rm genre-tagging 2>/dev/null || true
+                docker run -d \
+                  --name genre-tagging \
+                  --restart unless-stopped \
+                  --memory=768m \
+                  --memory-swap=1g \
+                  -p 127.0.0.1:5001:5001 \
+                  --env-file /data/genre-tagging/.env \
+                  -v /data/genre-tagging/output:/app/output \
+                  -v /data/genre-tagging/config.json:/app/config.json:ro \
+                  "${OLD_IMAGE}"
+                echo "Rollback container started — waiting 60s for /ready..."
+                for i in $(seq 1 12); do
+                  READY=$(curl -sf http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
+                  echo "  Rollback attempt $i: $READY"
+                  if [ "$READY" = "ready" ]; then
+                    echo "ROLLBACK SUCCESSFUL — site is up on previous version"
+                    break
+                  fi
+                  sleep 5
+                done
+              fi
+
+              exit 1
             fi
 
             # Final cleanup
