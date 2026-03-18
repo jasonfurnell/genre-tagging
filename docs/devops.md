@@ -324,8 +324,8 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
   1. **Manual deploy trigger**: Changed `deploy.yml` from `on: push: branches: [main]` to `on: workflow_dispatch`. Deploys now only happen when you click "Run workflow" in GitHub Actions. This prevents auto-deploying every commit, which was the root cause of most outages
   2. **Production verification now fails loudly**: Changed the post-swap verification from a silent warning to `exit 1`, so GitHub Actions reports failure and you get notified
   3. **Emergency rollback**: If the new production container fails verification, the deploy script now automatically rolls back to the previous image instead of leaving the site down
-  4. **SSM Agent setup**: Attached `AmazonSSMManagedInstanceCore` IAM policy to the EC2 role. Created `scripts/setup-ssm-agent.sh` for one-time agent installation. Once installed, Session Manager provides reliable access even when SSH breaks
-- **Lesson**: Auto-deploying every push to `main` is the single biggest risk factor. Most outages were deploy-related, not runtime crashes. Manual deploys let you batch changes and deploy when you're ready to monitor the result. Also: always have a second way to access your server — SSH alone is a single point of failure
+  4. **SSM Agent + EC2 Instance Connect**: Installed both packages via deploy script (idempotent). Attached `AmazonSSMManagedInstanceCore` IAM policy to the EC2 role. Enabled Default Host Management Configuration in Systems Manager. **Critical fix**: the instance had `HttpEndpoint: disabled` on IMDS — re-enabled via `aws ec2 modify-instance-metadata-options --http-endpoint enabled`. Without IMDS, nothing that needs instance identity works (SSM Agent, EC2 Instance Connect, IAM role credentials). Also set IMDS hop limit to 2 for Docker container compatibility
+- **Lesson**: Auto-deploying every push to `main` is the single biggest risk factor. Most outages were deploy-related, not runtime crashes. Manual deploys let you batch changes and deploy when you're ready to monitor the result. Also: always have a second way to access your server — SSH alone is a single point of failure. And never disable IMDS (`HttpEndpoint`) — it breaks SSM, Instance Connect, and IAM role credentials
 
 ---
 
@@ -335,7 +335,7 @@ Record what went wrong and what fixed it. Patterns help predict future issues.
 - [x] ~~**Lazy init + timeouts + reduced gunicorn timeout**: Prevent recurring worker hangs from module-level Dropbox init and untimed external calls~~ *(done 2026-03-16)*
 - [x] ~~**Unified init + /ready endpoint + timeout alignment**: Complete the lazy init pattern, add readiness check to deploy~~ *(done 2026-03-17)*
 - [x] ~~**Manual deploy trigger + emergency rollback**: Switched from auto-deploy-on-push to manual `workflow_dispatch`. Added automatic rollback to previous image if post-swap verification fails~~ *(done 2026-03-18)*
-- [ ] **Install SSM Agent on EC2** *(do next — script ready at `scripts/setup-ssm-agent.sh`)*: IAM policy already attached. Run the script on the instance via the next deploy or SSH session. Once installed, Session Manager provides reliable access even when SSH/Instance Connect breaks
+- [x] ~~**SSM Agent + EC2 Instance Connect**: Installed both agents, attached IAM policy, enabled DHMC, fixed IMDS endpoint. Session Manager and Instance Connect now work as backup access methods~~ *(done 2026-03-18)*
 - [ ] **Monitoring/alerts** *(recommended — `GenreTagging-2u3`)*: Set up uptime monitoring (e.g. UptimeRobot free tier) to get notified when the site goes down, instead of discovering it manually
 - [ ] **HTTPS/SSL**: Add a domain + Let's Encrypt certificate via Certbot. Currently using `bjingo-r.us` with HTTP only
 - [ ] **GitHub Actions Node.js 20 warning**: Update `actions/checkout` and `aws-actions/configure-aws-credentials` to versions supporting Node.js 24 (deadline: June 2026)
