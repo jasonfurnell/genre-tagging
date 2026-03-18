@@ -932,12 +932,12 @@ function switchTab(target) {
 
     _updateModeToggleUI();
 
-    // Update active highlight in hamburger menu
-    $$(".hamburger-item[data-tab]").forEach(item => {
+    // Update active highlight in drawer nav items
+    $$(".drawer-item[data-tab]").forEach(item => {
         item.classList.toggle("active", item.dataset.tab === target);
     });
 
-    // Show/hide context-sensitive hamburger items
+    // Show/hide context-sensitive drawer items (right drawer)
     const setBuilderActions = ["set-save-btn", "set-save-as-btn", "set-search-btn",
         "set-export-btn", "set-refill-btn"];
     setBuilderActions.forEach(id => {
@@ -1018,31 +1018,75 @@ function switchTab(target) {
     }
 }
 
-// ── Hamburger menu ────────────────────────────────────────
+// ── Nav Drawer system (left + right) ─────────────────────
+const _drawerOverlay = document.getElementById("drawer-overlay");
+const _drawerLeft = document.getElementById("drawer-left");
+const _drawerRight = document.getElementById("drawer-right");
 const _hamburgerBtn = document.getElementById("hamburger-btn");
-const _hamburgerMenu = document.getElementById("hamburger-menu");
+const _gearBtn = document.getElementById("gear-btn");
+const _unifiedHeader = document.getElementById("unified-header");
+let _openNavDrawer = null; // null | "left" | "right"
 
-function _toggleHamburger() {
-    _hamburgerMenu.classList.toggle("hidden");
-}
-function _closeHamburger() {
-    _hamburgerMenu.classList.add("hidden");
+function openNavDrawer(side) {
+    // Close the other drawer if open
+    if (_openNavDrawer && _openNavDrawer !== side) {
+        _drawerLeft.classList.remove("open");
+        _drawerRight.classList.remove("open");
+        _hamburgerBtn.classList.remove("drawer-active");
+        _gearBtn.classList.remove("drawer-active");
+    }
+    const drawer = side === "left" ? _drawerLeft : _drawerRight;
+    const btn = side === "left" ? _hamburgerBtn : _gearBtn;
+    drawer.classList.add("open");
+    btn.classList.add("drawer-active");
+    _drawerOverlay.classList.add("open");
+    _unifiedHeader.classList.add("drawer-open");
+    _openNavDrawer = side;
+    // Prevent body scroll while drawer is open
+    document.body.style.overflow = "hidden";
 }
 
+function closeNavDrawer() {
+    _drawerLeft.classList.remove("open");
+    _drawerRight.classList.remove("open");
+    _drawerOverlay.classList.remove("open");
+    _hamburgerBtn.classList.remove("drawer-active");
+    _gearBtn.classList.remove("drawer-active");
+    _unifiedHeader.classList.remove("drawer-open");
+    _openNavDrawer = null;
+    document.body.style.overflow = "";
+}
+
+function toggleNavDrawer(side) {
+    if (_openNavDrawer === side) {
+        closeNavDrawer();
+    } else {
+        openNavDrawer(side);
+    }
+}
+
+// Hamburger button → left drawer
 _hamburgerBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    _toggleHamburger();
+    toggleNavDrawer("left");
 });
 
-// Close menu when clicking outside
-document.addEventListener("click", (e) => {
-    if (!_hamburgerMenu.contains(e.target) && e.target !== _hamburgerBtn) {
-        _closeHamburger();
-    }
+// Gear button → right drawer
+_gearBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleNavDrawer("right");
 });
 
-// Hamburger menu item clicks (only items with data-tab navigate)
-$$(".hamburger-item[data-tab]").forEach(item => {
+// Overlay click → close drawer
+_drawerOverlay.addEventListener("click", () => closeNavDrawer());
+
+// Escape key → close drawer
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && _openNavDrawer) closeNavDrawer();
+});
+
+// Left drawer: nav item clicks
+$$(".drawer-item[data-tab]").forEach(item => {
     item.addEventListener("click", () => {
         const target = item.dataset.tab;
         // Auto-switch mode if needed
@@ -1054,29 +1098,28 @@ $$(".hamburger-item[data-tab]").forEach(item => {
             localStorage.setItem("gt-mode", "dj");
         }
         switchTab(target);
-        _closeHamburger();
+        closeNavDrawer();
     });
 });
 
-// Action items in hamburger (save, search, etc.) close menu on click
-$$(".hamburger-item[data-action]").forEach(item => {
-    item.addEventListener("click", () => _closeHamburger());
+// Right drawer: action items close drawer on click
+$$(".drawer-item[data-action]").forEach(item => {
+    item.addEventListener("click", () => closeNavDrawer());
 });
 
-// ── Mode toggle switch ────────────────────────────────────
+// ── Mode toggle switch (now inside left drawer) ──────────
 document.getElementById("mode-toggle-track").addEventListener("click", (e) => {
-    // Determine which side was clicked
     const track = document.getElementById("mode-toggle-track");
     const rect = track.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const half = rect.width / 2;
     const clickedMode = clickX < half ? "dj" : "dance";
 
-    // Only switch if clicking the other side
     if (clickedMode !== _currentMode) {
         _currentMode = clickedMode;
         localStorage.setItem("gt-mode", clickedMode);
         switchTab(MODE_HOME_TAB[clickedMode]);
+        closeNavDrawer();
     }
 });
 
@@ -1194,8 +1237,8 @@ function showToast(msg, duration = 4000) {
 let _dedupData = null;
 
 document.getElementById("dedup-btn")?.addEventListener("click", async () => {
-    // Close hamburger menu
-    document.getElementById("hamburger-menu")?.classList.add("hidden");
+    // Close nav drawer
+    closeNavDrawer();
     const modal = document.getElementById("dedup-modal");
     const summaryEl = document.getElementById("dedup-summary");
     const groupsEl = document.getElementById("dedup-groups");

@@ -12,48 +12,32 @@
 
 <header id="unified-header" class="unified-header">
     <nav id="tab-bar" class="tab-bar">
-        <!-- Hamburger menu (left) -->
-        <div class="hamburger-wrap">
-            <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
-            <div id="hamburger-menu" class="hamburger-menu hidden">
-                <div class="hamburger-group-label">Set.Makin</div>
-                <button class="hamburger-item" data-tab="setbuilder">Workshop</button>
-                <button class="hamburger-item" data-tab="tagger">Tagger</button>
-                <button class="hamburger-item" data-tab="intersections">Intersections</button>
-                <button class="hamburger-item" data-tab="workshop">Playlists</button>
-                <button class="hamburger-item" data-tab="tracks">Tracks</button>
-                <button class="hamburger-item" data-tab="phases">Phases</button>
-                <button class="hamburger-item" data-tab="autoset">Auto Set</button>
-                <div class="hamburger-group-label">Rump.Shakin</div>
-                <button class="hamburger-item" data-tab="dance">Dance</button>
-                <button class="hamburger-item" data-tab="sets" data-modes="dance dj">Sets</button>
-                <button class="hamburger-item" data-tab="tree" data-modes="dance dj">Trees</button>
-                <button class="hamburger-item" data-tab="chat" data-modes="dance dj">Chat</button>
-                <div class="hamburger-group-label">Tools</div>
-                <div class="hamburger-item hamburger-item--tools">
-                    <span id="set-current-name" class="set-current-name"></span>
-                </div>
-                <button id="set-save-btn" class="hamburger-item" style="display:none;" data-action="save">Save Set</button>
-                <button id="set-save-as-btn" class="hamburger-item" data-action="save-as">Save Set As</button>
-                <button id="set-search-btn" class="hamburger-item" data-action="search">Search Tracks</button>
-                <button id="set-export-btn" class="hamburger-item" data-action="export" disabled>Export M3U8 (Lexicon)</button>
-                <button id="set-refill-btn" class="hamburger-item" data-action="refill" disabled title="Re-fill all BPM rows using current anchor tracks">Refill BPM</button>
-                <button id="chat-clear-btn" class="hamburger-item" data-action="chat-clear">Clear Chat</button>
-                <button id="dedup-btn" class="hamburger-item" data-action="dedup">Clean Library (Remove Duplicates)</button>
-                <div class="hamburger-group-label">Connections</div>
-                <div class="hamburger-item hamburger-item--status">
-                    <span id="dropbox-status-text">Dropbox</span>
-                    <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
-                    <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
-                </div>
-                <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
-            </div>
-        </div>
+        <!-- Hamburger button (left) — opens left nav drawer -->
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
 
-        <!-- Mode toggle switch (center) -->
-        <div id="mode-toggle" class="mode-toggle">
+        <!-- Spacer -->
+        <div style="flex:1;"></div>
+
+        <!-- Gear button (right) — opens right settings drawer -->
+        <button id="gear-btn" class="gear-btn" aria-label="Settings">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="3"/>
+                <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M3.4 3.4l1.4 1.4M15.2 15.2l1.4 1.4M3.4 16.6l1.4-1.4M15.2 4.8l1.4-1.4"/>
+            </svg>
+        </button>
+    </nav>
+</header>
+
+<!-- Drawer overlay — blocks background interaction -->
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<!-- Left Drawer: Navigation -->
+<aside id="drawer-left" class="drawer drawer--left">
+    <div class="drawer-content">
+        <!-- Mode toggle -->
+        <div id="mode-toggle" class="mode-toggle mode-toggle--drawer">
             <div class="mode-toggle-track" id="mode-toggle-track">
                 <span class="mode-toggle-option mode-toggle-option--left">Set.Makin</span>
                 <span class="mode-toggle-option mode-toggle-option--right">Rump.Shakin</span>
@@ -61,8 +45,49 @@
             </div>
         </div>
 
-    </nav>
-</header>
+        <div class="drawer-group-label">Set.Makin</div>
+        <button class="drawer-item" data-tab="setbuilder">Workshop</button>
+        <button class="drawer-item" data-tab="workshop">Playlists</button>
+        <button class="drawer-item" data-tab="tracks">Tracks</button>
+        <button class="drawer-item" data-tab="tagger">Tagger</button>
+        <button class="drawer-item" data-tab="intersections">Intersections</button>
+        <button class="drawer-item" data-tab="phases">Phases</button>
+        <button class="drawer-item" data-tab="autoset">Auto Set</button>
+
+        <div class="drawer-group-label">Rump.Shakin</div>
+        <button class="drawer-item" data-tab="dance">Dance</button>
+        <button class="drawer-item" data-tab="sets" data-modes="dance dj">Sets</button>
+        <button class="drawer-item" data-tab="tree" data-modes="dance dj">Trees</button>
+        <button class="drawer-item" data-tab="chat" data-modes="dance dj">Chat</button>
+    </div>
+</aside>
+
+<!-- Right Drawer: Settings & Tools -->
+<aside id="drawer-right" class="drawer drawer--right">
+    <div class="drawer-content">
+        <div class="drawer-group-label" style="margin-top:0; border-top:none; padding-top:0.4rem;">Set Tools</div>
+        <div class="drawer-item drawer-item--tools">
+            <span id="set-current-name" class="set-current-name"></span>
+        </div>
+        <button id="set-save-btn" class="drawer-item" style="display:none;" data-action="save">Save Set</button>
+        <button id="set-save-as-btn" class="drawer-item" data-action="save-as">Save Set As</button>
+        <button id="set-search-btn" class="drawer-item" data-action="search">Search Tracks</button>
+        <button id="set-export-btn" class="drawer-item" data-action="export" disabled>Export M3U8 (Lexicon)</button>
+        <button id="set-refill-btn" class="drawer-item" data-action="refill" disabled title="Re-fill all BPM rows using current anchor tracks">Refill BPM</button>
+
+        <div class="drawer-group-label">Utilities</div>
+        <button id="chat-clear-btn" class="drawer-item" data-action="chat-clear">Clear Chat</button>
+        <button id="dedup-btn" class="drawer-item" data-action="dedup">Clean Library (Remove Duplicates)</button>
+
+        <div class="drawer-group-label">Connections</div>
+        <div class="drawer-item drawer-item--status">
+            <span id="dropbox-status-text">Dropbox</span>
+            <button id="dropbox-connect-btn" class="btn btn-sm dropbox-btn" onclick="connectDropbox()">Connect</button>
+            <button id="dropbox-disconnect-btn" class="btn btn-sm dropbox-btn-disconnect hidden" onclick="disconnectDropbox()">Disconnect</button>
+        </div>
+        <div id="artwork-warm-status" class="artwork-warm-status hidden"></div>
+    </div>
+</aside>
 
 <main>
     <!-- ═══ Tab: Tagger (existing content) ═══ -->

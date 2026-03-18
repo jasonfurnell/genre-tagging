@@ -54,11 +54,16 @@ body {
     position: sticky;
     top: 0;
     z-index: 60;
+    transition: z-index 0s;
+}
+/* When a drawer is open, lift the header above the overlay so buttons are clickable */
+.unified-header.drawer-open {
+    z-index: 10001;
 }
 .unified-header.hidden { display: none !important; }
 
-/* ── Set name in hamburger ────────────────────────────────── */
-.hamburger-menu .set-current-name {
+/* ── Set name in drawer ──────────────────────────────────── */
+.drawer .set-current-name {
     font-size: 0.75rem;
     max-width: 160px;
 }
@@ -326,14 +331,13 @@ body {
 }
 
 /* ── Hamburger Button ──────────────────────────────────── */
-.hamburger-wrap {
-    position: relative;
-}
 .hamburger-btn {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 5px;
+    align-items: center;
+    gap: 0;
     width: 36px;
     height: 36px;
     padding: 6px;
@@ -342,14 +346,19 @@ body {
     border-radius: var(--radius);
     cursor: pointer;
     transition: background 0.15s;
+    z-index: 1;
 }
 .hamburger-btn span {
     display: block;
+    width: 20px;
     height: 2px;
     background: var(--text-muted);
     border-radius: 1px;
-    transition: background 0.15s;
+    transition: transform 0.25s ease, opacity 0.2s ease, background 0.15s;
 }
+.hamburger-btn span:nth-child(1) { transform: translateY(-4px); }
+.hamburger-btn span:nth-child(2) { transform: translateY(0); }
+.hamburger-btn span:nth-child(3) { transform: translateY(4px); }
 .hamburger-btn:hover {
     background: rgba(233, 69, 96, 0.1);
     border-color: var(--accent);
@@ -357,26 +366,127 @@ body {
 .hamburger-btn:hover span {
     background: var(--accent);
 }
+/* Hamburger → X transform when drawer is open */
+.hamburger-btn.drawer-active {
+    z-index: 10001;
+    border-color: var(--accent);
+}
+.hamburger-btn.drawer-active span {
+    background: var(--accent);
+}
+.hamburger-btn.drawer-active span:nth-child(1) {
+    transform: translateY(0) rotate(45deg);
+}
+.hamburger-btn.drawer-active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger-btn.drawer-active span:nth-child(3) {
+    transform: translateY(0) rotate(-45deg);
+}
 
-/* ── Hamburger Dropdown Menu ───────────────────────────── */
-.hamburger-menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    min-width: 180px;
-    background: var(--surface);
+/* ── Gear Button ────────────────────────────────────────── */
+.gear-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    z-index: 200;
-    padding: 0.35rem 0;
-    animation: menu-appear 0.12s ease-out;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background 0.15s, color 0.15s;
+    z-index: 1;
 }
-@keyframes menu-appear {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
+.gear-btn svg {
+    transition: opacity 0.2s ease, transform 0.25s ease;
 }
-.hamburger-group-label {
+.gear-btn:hover {
+    background: rgba(233, 69, 96, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+/* Gear → X transform when drawer is open */
+.gear-btn.drawer-active {
+    z-index: 10001;
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.gear-btn.drawer-active svg {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+.gear-btn.drawer-active::before,
+.gear-btn.drawer-active::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+}
+.gear-btn.drawer-active::before {
+    transform: rotate(45deg);
+}
+.gear-btn.drawer-active::after {
+    transform: rotate(-45deg);
+}
+
+/* ── Drawer Overlay ─────────────────────────────────────── */
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+.drawer-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── Drawer (shared base) ───────────────────────────────── */
+.drawer {
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    width: var(--sidebar-width);
+    max-width: 80%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    z-index: 10001;
+    overflow-y: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.drawer-content {
+    padding: 0.5rem 0;
+}
+.drawer--left {
+    left: 0;
+    transform: translateX(-100%);
+    border-right: 1px solid var(--border);
+    border-left: none;
+}
+.drawer--left.open {
+    transform: translateX(0);
+}
+.drawer--right {
+    right: 0;
+    transform: translateX(100%);
+    border-left: 1px solid var(--border);
+    border-right: none;
+}
+.drawer--right.open {
+    transform: translateX(0);
+}
+
+/* ── Drawer Items ───────────────────────────────────────── */
+.drawer-group-label {
     padding: 0.4rem 0.75rem 0.2rem;
     font-size: 0.65rem;
     font-weight: 700;
@@ -385,12 +495,12 @@ body {
     color: var(--text-muted);
     opacity: 0.6;
 }
-.hamburger-group-label:not(:first-child) {
+.drawer-group-label:not(:first-child) {
     margin-top: 0.25rem;
     border-top: 1px solid var(--border);
     padding-top: 0.5rem;
 }
-.hamburger-item {
+.drawer-item {
     display: block;
     width: 100%;
     padding: 0.45rem 0.75rem;
@@ -403,12 +513,34 @@ body {
     cursor: pointer;
     transition: background 0.1s;
 }
-.hamburger-item:hover {
+.drawer-item:hover {
     background: rgba(233, 69, 96, 0.15);
 }
-.hamburger-item.active {
+.drawer-item.active {
     color: var(--accent);
     font-weight: 600;
+}
+.drawer-item--tools,
+.drawer-item--status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.drawer-item:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+.drawer-item:disabled:hover {
+    background: transparent;
+}
+
+/* ── Mode Toggle inside drawer ──────────────────────────── */
+.mode-toggle--drawer {
+    flex: unset;
+    padding: 0.75rem;
 }
 
 /* ── Mode Toggle Switch (big, labels inside) ──────────── */
@@ -466,23 +598,7 @@ body {
 }
 
 
-/* ── Hamburger tool/status items ──────────────────────── */
-.hamburger-item--tools,
-.hamburger-item--status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-.hamburger-item:disabled {
-    opacity: 0.4;
-    cursor: default;
-}
-.hamburger-item:disabled:hover {
-    background: transparent;
-}
+/* ── (Legacy hamburger classes removed — now using .drawer-item) ── */
 
 /* ── Workshop Sections ──────────────────────────────────── */
 .ws-section {
@@ -5345,7 +5461,7 @@ tr.ws-seed-selected {
 .toast-msg {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
     background: var(--surface, #16213e); color: var(--text, #eee); border: 1px solid var(--accent, #4ecca3);
-    padding: 10px 24px; border-radius: 8px; font-size: 14px; z-index: 10000;
+    padding: 10px 24px; border-radius: 8px; font-size: 14px; z-index: 10002;
     opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none;
 }
 .toast-msg.show { opacity: 1; transform: translateX(-50%) translateY(0); }
