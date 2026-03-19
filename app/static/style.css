@@ -3424,9 +3424,9 @@ tr.ws-seed-selected {
     height: calc(100vh - 46px - 130px);
 }
 
-/* Three-panel layout */
+/* Three-panel layout — hidden when context tabs are present */
 .base-drawer-panels {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 1.25rem;
     min-height: 105px;
@@ -3631,10 +3631,13 @@ tr.ws-seed-selected {
 
 /* -- Mobile-only elements (hidden on desktop) ----------------------------- */
 .base-drawer-chevron {
-    display: none;  /* shown via @media */
+    display: none;
 }
 .base-drawer-detail {
-    display: none;  /* shown via @media when expanded */
+    display: none;
+}
+.base-drawer-init {
+    display: none;
 }
 
 /* Play-set active column highlight (green, distinct from preview) */
@@ -5786,12 +5789,9 @@ tr.ws-seed-selected {
         bottom: -400px;
     }
 
-    /* Stack vertically: center (controls) on top, left (track) below */
+    /* Hidden — context tabs replace the compact now-playing bar */
     .base-drawer-panels {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-        min-height: auto;
+        display: none;
     }
 
     /* Progress + mode toggle — flows after track info */
@@ -5854,7 +5854,7 @@ tr.ws-seed-selected {
         display: none;
     }
     .base-drawer.expanded .base-drawer-detail {
-        display: block;
+        display: none;
         padding-top: 0.5rem;
         flex: 1;
         min-height: 0;
@@ -5991,6 +5991,51 @@ tr.ws-seed-selected {
     font-size: 0.75rem;
     text-align: center;
     padding: 1.5rem 0;
+}
+
+/* Info panel — track header */
+.ctx-info-track-header {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+.ctx-info-track-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+.ctx-info-track-artist {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.ctx-progress-wrap {
+    margin-top: 6px;
+}
+.ctx-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.ctx-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+.ctx-progress-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
 }
 
 /* Info panel */
@@ -6281,12 +6326,21 @@ tr.ws-seed-selected {
 }
 
 /* Dance panel */
+.ctx-dance-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 .ctx-dance-stage {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 180px;
+    height: 200px;
     overflow: hidden;
+}
+.ctx-dance-stage > div {
+    transform-origin: top center;
 }
 
 /* ── sm: 480px — small phone portrait ─────────────────────────── */

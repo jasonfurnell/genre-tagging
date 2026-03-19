@@ -999,6 +999,8 @@ function updatePlaySetProgress() {
         document.getElementById("base-np-progress-fill").style.width = pct + "%";
         document.getElementById("base-np-current-time").textContent = formatPlaySetTime(elapsed);
         document.getElementById("base-np-duration").textContent = formatPlaySetTime(PREVIEW_DURATION);
+        // Sync context tab progress
+        _syncCtxProgress(pct, elapsed, PREVIEW_DURATION);
         return;
     }
 
@@ -1010,6 +1012,17 @@ function updatePlaySetProgress() {
     document.getElementById("base-np-progress-fill").style.width = pct + "%";
     document.getElementById("base-np-current-time").textContent = formatPlaySetTime(setAudio.currentTime);
     document.getElementById("base-np-duration").textContent = formatPlaySetTime(setAudio.duration);
+    // Sync context tab progress
+    _syncCtxProgress(pct, setAudio.currentTime, setAudio.duration);
+}
+
+function _syncCtxProgress(pct, current, duration) {
+    const fill = document.getElementById("ctx-progress-fill");
+    const cur = document.getElementById("ctx-current-time");
+    const dur = document.getElementById("ctx-duration");
+    if (fill) fill.style.width = pct + "%";
+    if (cur) cur.textContent = formatPlaySetTime(current);
+    if (dur) dur.textContent = formatPlaySetTime(duration);
 }
 
 // Called when a Short Preview 30s window ends — advance to next slot (with wrap)

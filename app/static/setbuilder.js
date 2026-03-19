@@ -3227,6 +3227,19 @@ function _renderInfoPanel() {
     }
 
     el.innerHTML = `
+        <div class="ctx-info-track-header">
+            <div class="ctx-info-track-title">${_esc(t.title)}</div>
+            <div class="ctx-info-track-artist">${_esc(t.artist)}</div>
+            <div class="ctx-progress-wrap">
+                <div id="ctx-progress-bar" class="ctx-progress-bar">
+                    <div id="ctx-progress-fill" class="ctx-progress-fill"></div>
+                </div>
+                <div class="ctx-progress-time">
+                    <span id="ctx-current-time">0:00</span>
+                    <span id="ctx-duration">0:00</span>
+                </div>
+            </div>
+        </div>
         ${vibeHtml}
         <div class="ctx-info-grid">
             <div class="ctx-info-item"><span class="ctx-info-label">Genre</span><span class="ctx-info-value">${_esc(genre1)}${genre2 ? " / " + _esc(genre2) : ""}</span></div>
@@ -3503,6 +3516,15 @@ function _renderDancePanel() {
     if (!_ctxDancerInstance && typeof createRobotDancer === "function") {
         _ctxDancerInstance = createRobotDancer(stage, { showControls: false });
         _ctxDancerInstance.init();
+
+        // Scale dancer (180×252 native) to fit available height
+        const availH = stage.clientHeight || 200;
+        const scale = Math.min(1, availH / 252);
+        const inner = stage.querySelector("div");
+        if (inner) {
+            inner.style.transform = `scale(${scale})`;
+            inner.style.transformOrigin = "top center";
+        }
     }
 
     if (_ctxDancerInstance) {
