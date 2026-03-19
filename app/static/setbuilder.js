@@ -3140,8 +3140,15 @@ function showContextForTrack(track, contextData) {
     _ctxTrackData = track;
     _ctxContextData = contextData;
 
-    // Load the active panel
-    _loadCtxPanel(_ctxActiveTab);
+    // Update star icon for new track
+    _updateStarTabIcon();
+
+    // Load the active panel (star refreshes display without toggling on track change)
+    if (_ctxActiveTab === "star") {
+        _refreshStarPanel();
+    } else {
+        _loadCtxPanel(_ctxActiveTab);
+    }
 }
 
 function hideContextTabs() {
@@ -3158,6 +3165,7 @@ function _loadCtxPanel(tab) {
         case "next":  _renderNextPanel(); break;
         case "set":   _renderSetPanel(); break;
         case "dance": _renderDancePanel(); break;
+        case "star":  _handleStarTab(); break;
     }
 }
 
@@ -3541,3 +3549,135 @@ function _esc(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;")
         .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Star Tab — special starred playlist
+// ══════════════════════════════════════════════════════════════════════════════
+
+let _starredTrackIds = new Set();  // track IDs currently in the starred playlist
+let _starredLoaded = false;
+
+/** Called when the Star context tab is activated — toggle current track + render list */
+async function _handleStarTab() {
+    if (!_ctxTrackId) {
+        _renderStarPanel([]);
+        return;
+    }
+    // Toggle the current track in the starred playlist
+    try {
+        const res = await fetch("/api/starred/toggle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ track_id: _ctxTrackId }),
+        });
+        const data = await res.json();
+        _starredTrackIds = new Set((data.playlist?.track_ids) || []);
+        _renderStarPanel(data.tracks || []);
+        _updateStarTabIcon();
+    } catch (e) {
+        const el = document.getElementById("ctx-star-content");
+        if (el) el.innerHTML = '<div class="ctx-empty">Could not update starred tracks</div>';
+    }
+}
+
+/** Load starred playlist without toggling (for display refresh) */
+async function _loadStarredPlaylist() {
+    try {
+        const res = await fetch("/api/starred");
+        const data = await res.json();
+        _starredTrackIds = new Set((data.playlist?.track_ids) || []);
+        _starredLoaded = true;
+        _updateStarTabIcon();
+        return data;
+    } catch (e) {
+        return null;
+    }
+}
+
+/** Refresh star panel display without toggling (used on track change) */
+async function _refreshStarPanel() {
+    const data = await _loadStarredPlaylist();
+    if (data) {
+        _renderStarPanel(data.tracks || []);
+    }
+}
+
+/** Update the star tab icon to show + or check based on current track */
+function _updateStarTabIcon() {
+    const tabBtn = document.getElementById("ctx-tab-star");
+    if (!tabBtn) return;
+    const icon = tabBtn.querySelector(".context-tab-icon");
+    if (!icon) return;
+    const isStarred = _ctxTrackId != null && _starredTrackIds.has(_ctxTrackId);
+    icon.setAttribute("data-lucide", isStarred ? "check" : "plus");
+    tabBtn.classList.toggle("ctx-tab-starred", isStarred);
+    if (typeof lucide !== "undefined") lucide.createIcons({ nodes: [tabBtn] });
+}
+
+/** Render the starred track list following the ctx-next-row pattern */
+function _renderStarPanel(tracks) {
+    const el = document.getElementById("ctx-star-content");
+    if (!el) return;
+
+    if (!tracks.length) {
+        el.innerHTML = '<div class="ctx-empty">No starred tracks yet</div>';
+        return;
+    }
+
+    let html = '<div class="ctx-star-count">' + tracks.length + ' starred track' + (tracks.length !== 1 ? 's' : '') + '</div>';
+    html += '<div class="ctx-next-list">';
+    tracks.forEach((t, i) => {
+        const isPlaying = _ctxTrackId != null && t.id === _ctxTrackId;
+        html += `<div class="ctx-next-row${isPlaying ? ' ctx-star-active' : ''}" data-track-id="${t.id}">
+            <button class="ctx-star-remove-btn" data-track-id="${t.id}" title="Remove">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <button class="btn-preview ctx-next-preview" data-artist="${_esc(t.artist)}" data-title="${_esc(t.title)}" title="Preview">&#9654;</button>
+            <div class="ctx-next-info">
+                <div class="ctx-next-title">${_esc(t.title)}</div>
+                <div class="ctx-next-artist">${_esc(t.artist)}</div>
+            </div>
+            <div class="ctx-next-meta">
+                ${t.key ? `<span class="ctx-next-key">${_esc(t.key)}</span>` : ""}
+                <span class="ctx-next-bpm">${t.bpm ? Math.round(t.bpm) : ""}</span>
+            </div>
+        </div>`;
+    });
+    html += '</div>';
+    el.innerHTML = html;
+
+    // Preview buttons
+    el.querySelectorAll(".ctx-next-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            }
+        });
+    });
+
+    // Remove buttons
+    el.querySelectorAll(".ctx-star-remove-btn").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const trackId = parseInt(btn.dataset.trackId, 10) || btn.dataset.trackId;
+            try {
+                const res = await fetch("/api/starred/toggle", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ track_id: trackId }),
+                });
+                const data = await res.json();
+                _starredTrackIds = new Set((data.playlist?.track_ids) || []);
+                _renderStarPanel(data.tracks || []);
+                _updateStarTabIcon();
+            } catch (err) { /* ignore */ }
+        });
+    });
+}
+
+// Load starred state on init so the icon can reflect status
+document.addEventListener("DOMContentLoaded", () => {
+    _loadStarredPlaylist();
+});

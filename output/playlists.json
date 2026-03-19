@@ -2667,5 +2667,15 @@
     "source": "search",
     "created_at": "2026-03-13T12:56:42.573565+00:00",
     "updated_at": "2026-03-13T12:56:42.584507+00:00"
+  },
+  "231a0d35": {
+    "id": "231a0d35",
+    "name": "\u2b50 Starred",
+    "description": "Your starred tracks",
+    "filters": {},
+    "track_ids": [],
+    "source": "starred",
+    "created_at": "2026-03-19T20:53:59.430045+00:00",
+    "updated_at": "2026-03-19T20:55:33.253166+00:00"
   }
 }

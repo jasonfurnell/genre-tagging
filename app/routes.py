@@ -1214,6 +1214,9 @@ def workshop_update_playlist(playlist_id):
 
 @api.route("/api/workshop/playlists/<playlist_id>", methods=["DELETE"])
 def workshop_delete_playlist(playlist_id):
+    p = get_playlist(playlist_id)
+    if p and p.get("source") == "starred":
+        return jsonify({"error": "Cannot delete the starred playlist"}), 403
     if delete_playlist(playlist_id):
         return jsonify({"deleted": True})
     return jsonify({"error": "Playlist not found"}), 404
@@ -4279,3 +4282,55 @@ def library_deduplicate():
         "location_conflicts": result["location_conflicts"],
         "remap_results": result["remap_results"],
     })
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Starred Playlist (special, undeletable)
+# ═══════════════════════════════════════════════════════════════════════════
+
+_STARRED_PLAYLIST_NAME = "⭐ Starred"
+
+
+def _get_or_create_starred():
+    """Return the starred playlist, creating it if it doesn't exist."""
+    from app.playlist import list_playlists, create_playlist
+    for p in list_playlists():
+        if p.get("source") == "starred":
+            return p
+    return create_playlist(
+        _STARRED_PLAYLIST_NAME,
+        description="Your starred tracks",
+        source="starred",
+    )
+
+
+@api.route("/api/starred")
+def starred_get():
+    """Get the starred playlist with resolved tracks."""
+    p = _get_or_create_starred()
+    df = _state["df"]
+    tracks = _tracks_from_ids(df, p["track_ids"]) if df is not None else []
+    return jsonify({"playlist": p, "tracks": tracks})
+
+
+@api.route("/api/starred/toggle", methods=["POST"])
+def starred_toggle():
+    """Add or remove a track from the starred playlist. Returns new state."""
+    data = request.get_json()
+    track_id = data.get("track_id")
+    if track_id is None:
+        return jsonify({"error": "track_id required"}), 400
+
+    p = _get_or_create_starred()
+    if track_id in p["track_ids"]:
+        remove_tracks_from_playlist(p["id"], [track_id])
+        starred = False
+    else:
+        add_tracks_to_playlist(p["id"], [track_id])
+        starred = True
+
+    # Re-fetch for updated state
+    p = _get_or_create_starred()
+    df = _state["df"]
+    tracks = _tracks_from_ids(df, p["track_ids"]) if df is not None else []
+    return jsonify({"starred": starred, "playlist": p, "tracks": tracks})

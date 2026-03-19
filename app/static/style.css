@@ -6140,6 +6140,38 @@ tr.ws-seed-selected {
     font-variant-numeric: tabular-nums;
 }
 
+/* Star tab */
+.ctx-tab-starred {
+    color: var(--accent) !important;
+}
+.ctx-star-count {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+.ctx-star-active {
+    background: rgba(255,255,255,0.06);
+}
+.ctx-star-remove-btn {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.12s, background 0.12s;
+}
+.ctx-star-remove-btn:hover {
+    color: var(--danger, #f66);
+    background: rgba(255,100,100,0.12);
+}
+
 /* Vibe panel */
 .ctx-vibe-leaf {
     padding: 0.5rem;
