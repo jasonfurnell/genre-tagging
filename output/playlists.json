@@ -2673,9 +2673,13 @@
     "name": "\u2b50 Starred",
     "description": "Your starred tracks",
     "filters": {},
-    "track_ids": [],
+    "track_ids": [
+      2797,
+      6109,
+      6110
+    ],
     "source": "starred",
     "created_at": "2026-03-19T20:53:59.430045+00:00",
-    "updated_at": "2026-03-19T20:55:33.253166+00:00"
+    "updated_at": "2026-03-19T21:02:18.470095+00:00"
   }
 }

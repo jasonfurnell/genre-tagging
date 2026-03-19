@@ -3617,6 +3617,7 @@ function _updateStarTabIcon() {
 
 /** Render the starred track list following the ctx-next-row pattern */
 function _renderStarPanel(tracks) {
+    tracks = [...tracks].reverse();  // newest added at top
     const el = document.getElementById("ctx-star-content");
     if (!el) return;
 
