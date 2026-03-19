@@ -64,6 +64,17 @@ def _save_saved_sets():
 
 _load_saved_sets()
 
+# One-time migration: strip "Auto Set — " prefix from existing set names
+_migrated = False
+for _s in _saved_sets.values():
+    _name = _s.get("name", "")
+    if _name.startswith("Auto Set — ") or _name.startswith("Auto Set - "):
+        _s["name"] = _name.split(" — ", 1)[-1] if " — " in _name else _name.split(" - ", 1)[-1]
+        _migrated = True
+if _migrated:
+    _save_saved_sets()
+del _migrated
+
 
 def _now():
     return datetime.now(timezone.utc).isoformat()
@@ -126,6 +137,7 @@ def list_saved_sets():
         result.append({
             "id": s["id"],
             "name": s["name"],
+            "description": s.get("description", ""),
             "track_count": track_count,
             "slot_count": len(slots),
             "duration_minutes": len(slots) * 3,
@@ -138,7 +150,7 @@ def list_saved_sets():
     return result
 
 
-def update_saved_set(set_id, name=None, slots=None):
+def update_saved_set(set_id, name=None, slots=None, description=None):
     s = _saved_sets.get(set_id)
     if not s:
         return None
@@ -146,9 +158,42 @@ def update_saved_set(set_id, name=None, slots=None):
         s["name"] = name
     if slots is not None:
         s["slots"] = slots
+    if description is not None:
+        s["description"] = description
     s["updated_at"] = _now()
     _save_saved_sets()
     return s
+
+
+def summarise_set_tracks(set_id):
+    """Return a compact text summary of a set's selected tracks for LLM consumption."""
+    s = _saved_sets.get(set_id)
+    if not s:
+        return None
+    lines = []
+    for i, slot in enumerate(s.get("slots", [])):
+        si = slot.get("selectedTrackIndex")
+        trks = slot.get("tracks") or []
+        if si is None or si >= len(trks) or trks[si] is None:
+            continue
+        t = trks[si]
+        artist = t.get("artist", "?")
+        title = t.get("title", "?")
+        bpm = t.get("bpm", "")
+        key = t.get("key", "")
+        comment = t.get("comment", "")
+        line = f"{i+1}. {artist} – {title}"
+        meta = []
+        if bpm:
+            meta.append(f"{bpm}BPM")
+        if key:
+            meta.append(key)
+        if meta:
+            line += f" [{', '.join(meta)}]"
+        if comment:
+            line += f"  // {comment}"
+        lines.append(line)
+    return "\n".join(lines) if lines else None
 
 
 def delete_saved_set(set_id):

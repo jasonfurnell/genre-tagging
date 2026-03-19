@@ -6975,11 +6975,12 @@
       }
     ],
     "created_at": "2026-02-13T10:16:41.544715+00:00",
-    "updated_at": "2026-02-17T10:34:27.193179+00:00"
+    "updated_at": "2026-03-19T00:26:37.293666+00:00",
+    "description": "Soul-deep groove odyssey from blues whispers through disco fever to techno euphoria, weaving funk, world rhythms, and contemporary beats into a timeless dance communion."
   },
   "b3a60841": {
     "id": "b3a60841",
-    "name": "Auto Set \u2014 Rave it!!!!!!!",
+    "name": "Rave it!!!!!!!",
     "slots": [
       {
         "id": "slot-1771392499329-2q6d",
@@ -11651,12 +11652,13 @@
       }
     ],
     "created_at": "2026-02-18T05:26:08.175861+00:00",
-    "updated_at": "2026-02-18T20:43:16.261490+00:00",
-    "phase_profile_id": "classic_arc"
+    "updated_at": "2026-03-19T00:27:43.145790+00:00",
+    "phase_profile_id": "classic_arc",
+    "description": "A relentless sonic assault that tears through decades of UK rave, jungle, and house, escalating from grimy ragga foundations through breakneck drum-and-bass peaks before crashing into euphoric dancefloor catharsis."
   },
   "f546f111": {
     "id": "f546f111",
-    "name": "Auto Set \u2014 Rave it - 2 !!!!!!!",
+    "name": "Rave it - 2 !!!!!!!",
     "slots": [
       {
         "id": "slot-1771392499329-2q6d",
@@ -16331,11 +16333,12 @@
       }
     ],
     "created_at": "2026-02-18T21:06:03.000145+00:00",
-    "updated_at": "2026-02-18T21:06:03.000176+00:00"
+    "updated_at": "2026-03-19T00:27:43.923557+00:00",
+    "description": "Breakneck ragga-infused rave odyssey that pulses from gritty dancehall depths through euphoric jungle peaks and back to soulful, sweat-drenched house catharsis."
   },
   "fc2478c6": {
     "id": "fc2478c6",
-    "name": "Auto Set \u2014 African Rhythms: Roots to Ritual (1970s-2020s)",
+    "name": "African Rhythms: Roots to Ritual (1970s-2020s)",
     "slots": [
       {
         "id": "slot-1773409842235-qnti",
@@ -18839,11 +18842,12 @@
       }
     ],
     "created_at": "2026-02-18T21:07:11.703073+00:00",
-    "updated_at": "2026-03-13T13:51:56.096560+00:00"
+    "updated_at": "2026-03-19T00:27:41.489689+00:00",
+    "description": "Hypnotic voyage through five decades of African diasporic sound, where ancient polyrhythms and modern production collide in a sweat-soaked celebration of ancestral resilience and transcendent dance."
   },
   "cbe768ae": {
     "id": "cbe768ae",
-    "name": "Auto Set \u2014 90s Hip-Hop Classics",
+    "name": "90s Hip-Hop Classics",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -21022,11 +21026,12 @@
       }
     ],
     "created_at": "2026-02-19T02:23:38.592423+00:00",
-    "updated_at": "2026-02-19T02:23:38.592429+00:00"
+    "updated_at": "2026-03-19T00:27:42.948118+00:00",
+    "description": "Golden-age hip-hop nostalgia ride that bounces between laid-back 90s swagger and chaotic energy, anchored by Biggie and Tupac's eternal reign over dusty funk samples and playful breaks."
   },
   "f545537f": {
     "id": "f545537f",
-    "name": "Auto Set \u2014 Swampy NOLA Voodoo Funk",
+    "name": "Swampy NOLA Voodoo Funk",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -21714,11 +21719,12 @@
       }
     ],
     "created_at": "2026-02-19T02:57:17.578200+00:00",
-    "updated_at": "2026-02-19T02:57:17.578215+00:00"
+    "updated_at": "2026-03-19T00:27:42.906840+00:00",
+    "description": "Murky bayou spirits rise through creeping ghost blues into a sweat-soaked funk ascension where voodoo grooves and soulful shouts collide in the humid New Orleans night."
   },
   "a841aab3": {
     "id": "a841aab3",
-    "name": "Auto Set \u2014 Rave it !!!! Exporter",
+    "name": "Rave it !!!! Exporter",
     "slots": [
       {
         "id": "slot-1771392499329-2q6d",
@@ -26431,11 +26437,12 @@
       }
     ],
     "created_at": "2026-02-19T05:45:54.715822+00:00",
-    "updated_at": "2026-02-20T04:35:00.660354+00:00"
+    "updated_at": "2026-03-19T00:27:41.735293+00:00",
+    "description": "Breakneck ragga-fueled ascent through jungle, house, and techno that explodes into euphoric peak before melting into soulful, breathless comedown."
   },
   "a9a6f214": {
     "id": "a9a6f214",
-    "name": "Auto Set \u2014 Electronic Evolution: Krautrock to Berlin Techno (1972-2022)",
+    "name": "Electronic Evolution: Krautrock to Berlin Techno (1972-2022)",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -28080,11 +28087,12 @@
       }
     ],
     "created_at": "2026-02-19T07:30:54.660401+00:00",
-    "updated_at": "2026-02-19T07:30:54.660407+00:00"
+    "updated_at": "2026-03-19T00:27:43.088326+00:00",
+    "description": "Hypnotic krautrock pulses morph through shimmering dub and acid techno before erupting into pure dance floor euphoria, then drift back to cosmic introspection."
   },
   "1b830737": {
     "id": "1b830737",
-    "name": "Auto Set \u2014 Spiritual Jazz",
+    "name": "Spiritual Jazz",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -28850,11 +28858,12 @@
       }
     ],
     "created_at": "2026-02-20T03:49:25.052902+00:00",
-    "updated_at": "2026-02-20T03:49:25.052919+00:00"
+    "updated_at": "2026-03-19T00:27:41.751801+00:00",
+    "description": "Funky grooves melt into meditative harp refrains before building back toward transcendent Afrobeat and cosmic jazz\u2014a spiritual journey through rhythm's deeper frequencies."
   },
   "e7c4c897": {
     "id": "e7c4c897",
-    "name": "Auto Set \u2014 Spiritual Afro House Rituals",
+    "name": "Spiritual Afro House Rituals",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -29650,12 +29659,13 @@
       }
     ],
     "created_at": "2026-02-20T04:32:18.492500+00:00",
-    "updated_at": "2026-02-20T04:32:18.492508+00:00",
-    "phase_profile_id": "classic_arc"
+    "updated_at": "2026-03-19T00:27:41.559385+00:00",
+    "phase_profile_id": "classic_arc",
+    "description": "Hypnotic ancestral grooves build from meditative drum circles into transcendent heights, where sacred rhythms and layered percussion create a spiritual communion with African roots."
   },
   "10523c4d": {
     "id": "10523c4d",
-    "name": "Auto Set \u2014 Kindergarten Fete Fun",
+    "name": "Kindergarten Fete Fun",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -31459,12 +31469,13 @@
       }
     ],
     "created_at": "2026-02-23T00:07:08.496170+00:00",
-    "updated_at": "2026-02-23T00:07:08.496178+00:00",
-    "phase_profile_id": "classic_arc"
+    "updated_at": "2026-03-19T00:27:41.602576+00:00",
+    "phase_profile_id": "classic_arc",
+    "description": "Sunshine-soaked funk and soul rising from reggae roots through disco's golden age, a joyride of pure groove and unshakeable optimism."
   },
   "8dbc3922": {
     "id": "8dbc3922",
-    "name": "Auto Set \u2014 Trip-Hop Collection",
+    "name": "Trip-Hop Collection",
     "slots": [
       {
         "id": "autoset-slot-0",
@@ -34408,6 +34419,7 @@
       }
     ],
     "created_at": "2026-02-25T03:44:59.688772+00:00",
-    "updated_at": "2026-02-25T03:44:59.688778+00:00"
+    "updated_at": "2026-03-19T00:27:41.771155+00:00",
+    "description": "Hypnotic descent through smoky, soulful trip-hop depths where downtempo grooves twist into breakbeat surges before collapsing back into introspective, melancholic dub-laden spaces."
   }
 }

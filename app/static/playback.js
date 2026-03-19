@@ -763,9 +763,17 @@ async function updateNowPlayingDrawer(track, slotIdx) {
             if (data.also_in && data.also_in.length) {
                 document.getElementById("base-np-also-in").textContent = "Also in " + data.also_in.length + " more";
             }
+            // Feed context tabs
+            if (typeof showContextForTrack === "function") {
+                showContextForTrack(track, data);
+            }
         }
     } catch (e) {
         console.error("Failed to load track context:", e);
+    }
+    // Show context tabs even if context fetch failed (info panel uses track data only)
+    if (typeof showContextForTrack === "function" && typeof _ctxContextData !== "undefined" && !_ctxContextData) {
+        showContextForTrack(track, null);
     }
 
     // If the expanded base drawer is open (mobile detail view), sync it

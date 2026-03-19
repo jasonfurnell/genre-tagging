@@ -60,7 +60,7 @@ from app.setbuilder import (
     build_track_context, find_leaf_for_track, find_all_leaves_for_track,
     save_set_state, load_set_state,
     create_saved_set, get_saved_set, list_saved_sets,
-    update_saved_set, delete_saved_set,
+    update_saved_set, delete_saved_set, summarise_set_tracks,
 )
 from app.autoset import build_autoset
 from app.chat import run_chat_turn, simplify_history_for_frontend
@@ -3389,6 +3389,83 @@ def set_workshop_check_audio():
     return jsonify(result)
 
 
+@api.route("/api/set-workshop/track-nexts/<int:track_id>")
+def set_workshop_track_nexts(track_id):
+    """Find harmonically compatible next-track candidates.
+
+    Returns tracks sorted by compatibility score (key distance + BPM proximity).
+    """
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+    if track_id not in df.index:
+        return jsonify({"error": "Track not found"}), 404
+
+    from app.setbuilder import (
+        normalize_camelot, camelot_compatible, camelot_distance,
+        _sv, _is_nan,
+    )
+
+    row = df.loc[track_id]
+    src_key = _sv(row.get("key", ""))
+    src_bpm = row.get("bpm")
+    src_bpm_val = float(src_bpm) if src_bpm is not None and not _is_nan(src_bpm) else None
+    src_comment = str(row.get("comment", "")).lower()
+
+    candidates = []
+    for idx in df.index:
+        if idx == track_id:
+            continue
+        r = df.loc[idx]
+        key = _sv(r.get("key", ""))
+        bpm = r.get("bpm")
+        bpm_val = float(bpm) if bpm is not None and not _is_nan(bpm) else None
+
+        # Key filter: must be Camelot-compatible
+        if src_key and key and not camelot_compatible(src_key, key):
+            continue
+
+        # BPM filter: within ±15
+        if src_bpm_val and bpm_val and abs(bpm_val - src_bpm_val) > 15:
+            continue
+
+        # Score: lower is better
+        key_dist = camelot_distance(src_key, key) if src_key and key else 2
+        bpm_diff = abs(bpm_val - src_bpm_val) if src_bpm_val and bpm_val else 10
+        score = key_dist * 10 + bpm_diff
+
+        # Genre overlap bonus (subtract from score)
+        cmt = str(r.get("comment", "")).lower()
+        if src_comment and cmt:
+            src_genres = set(src_comment.split(";")[0:2])
+            trk_genres = set(cmt.split(";")[0:2])
+            overlap = len(src_genres & trk_genres)
+            score -= overlap * 5
+
+        candidates.append((score, idx))
+
+    candidates.sort(key=lambda x: x[0])
+    top = candidates[:20]
+
+    tracks = []
+    for score, idx in top:
+        r = df.loc[idx]
+        bpm = r.get("bpm")
+        bpm_val = round(float(bpm), 1) if bpm is not None and not _is_nan(bpm) else None
+        tracks.append({
+            "id": int(idx),
+            "title": _safe_val(r.get("title", "")),
+            "artist": _safe_val(r.get("artist", "")),
+            "bpm": bpm_val,
+            "key": _safe_val(r.get("key", "")),
+            "year": _safe_val(r.get("year", "")),
+            "comment": _safe_val(r.get("comment", "")),
+            "score": round(score, 1),
+        })
+
+    return jsonify({"tracks": tracks})
+
+
 @api.route("/api/set-workshop/state", methods=["GET"])
 def set_workshop_get_state():
     """Load saved set workshop state."""
@@ -3485,6 +3562,60 @@ def saved_sets_delete(set_id):
     if delete_saved_set(set_id):
         return jsonify({"ok": True})
     return jsonify({"error": "Set not found"}), 404
+
+
+@api.route("/api/saved-sets/<set_id>/describe", methods=["POST"])
+def saved_sets_describe(set_id):
+    """Generate a short AI description for a saved set and persist it."""
+    s = get_saved_set(set_id)
+    if not s:
+        return jsonify({"error": "Set not found"}), 404
+
+    # Already has a description? Return it.
+    if s.get("description"):
+        return jsonify({"description": s["description"]})
+
+    track_summary = summarise_set_tracks(set_id)
+    if not track_summary:
+        return jsonify({"description": ""})
+
+    set_name = s.get("name", "Untitled Set")
+    system_prompt = (
+        "You are a music curator writing ultra-short DJ set descriptions. "
+        "Write a single vivid sentence (max 120 characters) that captures the "
+        "energy, mood, and musical journey of this DJ set. No quotes, no set name, "
+        "no track counts. Just the vibe."
+    )
+    user_prompt = (
+        f"Set name: {set_name}\n\nTrack sequence:\n{track_summary}\n\n"
+        "Write one short, evocative sentence describing this set's vibe and journey."
+    )
+
+    try:
+        model, provider = "claude-haiku-4-5-20251001", "anthropic"
+        client = _get_client(provider)
+        if provider == "anthropic":
+            resp = client.messages.create(
+                model=model, max_tokens=100, system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+            description = resp.content[0].text.strip()
+        else:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
+            description = resp.choices[0].message.content.strip()
+
+        # Persist
+        update_saved_set(set_id, description=description)
+        return jsonify({"description": description})
+    except Exception as e:
+        print(f"[describe] LLM error for set {set_id}: {e}")
+        return jsonify({"description": "", "error": str(e)}), 200
 
 
 @api.route("/api/saved-sets/<set_id>/export/m3u")
@@ -3788,7 +3919,7 @@ def autoset_build():
             return jsonify({"error": f"Playlist '{source_id}' not found"}), 404
         track_ids = pl.get("track_ids", [])
         if not set_name or set_name == "Auto Set":
-            set_name = f"Auto Set — {pl.get('name', source_id)}"
+            set_name = pl.get("name", source_id)
     elif source_type == "tree_node":
         tree_type = body.get("tree_type", "collection")
         tree = None
@@ -3809,7 +3940,7 @@ def autoset_build():
             return jsonify({"error": f"Node '{source_id}' not found in {tree_type} tree"}), 404
         track_ids = node.get("track_ids", [])
         if not set_name or set_name == "Auto Set":
-            set_name = f"Auto Set — {node.get('title', source_id)}"
+            set_name = node.get("title", source_id)
     else:
         return jsonify({"error": f"Unknown source_type: {source_type}"}), 400
 

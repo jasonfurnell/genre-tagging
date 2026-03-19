@@ -102,6 +102,9 @@ async function initSetBuilder() {
     // Init playback engine (Audio element + control wiring) — see playback.js
     initPlayback();
 
+    // Init context tabs (below workshop grid)
+    initContextTabs();
+
     // Drawer close
     document.getElementById("set-drawer-close").addEventListener("click", closeDrawer);
     document.getElementById("base-drawer-expand").addEventListener("click", expandFromBaseDrawer);
@@ -309,6 +312,127 @@ function updateSaveButtons() {
     nameEl.textContent = currentSetName
         ? (setDirty && currentSetId ? currentSetName + " *" : currentSetName)
         : "";
+
+    // Update header set name
+    const headerLabel = document.getElementById("header-set-label");
+    if (headerLabel) {
+        headerLabel.textContent = currentSetName || "Untitled Set";
+        headerLabel.classList.toggle("dirty", !!(setDirty && currentSetId));
+    }
+}
+
+// ── Set Picker (top drawer) ──
+
+async function populateSetPicker() {
+    const container = document.getElementById("drawer-top-sets");
+    const emptyEl = document.getElementById("drawer-top-empty");
+    if (!container) return;
+    try {
+        const res = await fetch("/api/saved-sets");
+        const data = await res.json();
+        const sets = data.sets || [];
+        if (sets.length === 0) {
+            container.innerHTML = "";
+            if (emptyEl) emptyEl.classList.remove("hidden");
+            return;
+        }
+        if (emptyEl) emptyEl.classList.add("hidden");
+        container.innerHTML = sets.map(s => {
+            const isActive = s.id === currentSetId;
+            const hasDesc = !!(s.description && s.description.trim());
+            return `<div class="drawer-top-set-item${isActive ? " active" : ""}" data-set-id="${s.id}">
+                <span class="drawer-top-set-title">${_escHtml(s.name)}</span>
+                <span class="drawer-top-set-desc" id="set-desc-${s.id}">${hasDesc
+                    ? _escHtml(s.description)
+                    : '<span class="drawer-top-set-loading"><span class="drawer-top-set-loading-bar"></span></span>'
+                }</span>
+            </div>`;
+        }).join("");
+        container.querySelectorAll(".drawer-top-set-item").forEach(item => {
+            item.addEventListener("click", () => {
+                const setId = item.dataset.setId;
+                if (setId === currentSetId) {
+                    if (typeof closeTopDrawer === "function") closeTopDrawer();
+                    return;
+                }
+                _loadSetFromPicker(setId);
+            });
+        });
+        // Fire off description generation for sets that don't have one
+        for (const s of sets) {
+            if (!s.description || !s.description.trim()) {
+                _fetchSetDescription(s.id);
+            }
+        }
+    } catch (e) {
+        console.error("Failed to populate set picker:", e);
+    }
+}
+
+async function _fetchSetDescription(setId) {
+    try {
+        const res = await fetch(`/api/saved-sets/${setId}/describe`, { method: "POST" });
+        const data = await res.json();
+        const descEl = document.getElementById(`set-desc-${setId}`);
+        if (descEl && data.description) {
+            descEl.textContent = data.description;
+        } else if (descEl) {
+            descEl.textContent = "";
+        }
+    } catch (e) {
+        console.error(`Failed to generate description for set ${setId}:`, e);
+    }
+}
+
+function _escHtml(str) {
+    const d = document.createElement("div");
+    d.textContent = str || "";
+    return d.innerHTML;
+}
+
+/** Show save/discard/cancel and load the chosen set */
+async function _loadSetFromPicker(setId) {
+    if (setDirty) {
+        const choice = await _showUnsavedDialog();
+        if (choice === "cancel") return;
+        if (choice === "save") {
+            await saveCurrentSet();
+        }
+        // "discard" falls through
+    }
+    if (typeof closeTopDrawer === "function") closeTopDrawer();
+    await loadSavedSet(setId, /* skipDirtyCheck */ true);
+}
+
+/** Returns a promise resolving to "save", "discard", or "cancel" */
+function _showUnsavedDialog() {
+    return new Promise(resolve => {
+        // Create modal
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay";
+        overlay.style.zIndex = "10010";
+        overlay.innerHTML = `
+            <div class="modal" style="max-width:380px; text-align:center;">
+                <h2 style="margin-bottom:0.75rem;">Unsaved Changes</h2>
+                <p style="color:var(--text-muted); margin-bottom:1.25rem; font-size:0.85rem;">
+                    "${currentSetName || "Untitled Set"}" has unsaved changes.
+                </p>
+                <div class="modal-actions" style="justify-content:center; gap:0.5rem;">
+                    <button class="btn btn-primary" data-choice="save">Save</button>
+                    <button class="btn btn-secondary" data-choice="discard">Discard</button>
+                    <button class="btn btn-secondary" data-choice="cancel">Cancel</button>
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+        // Force reflow then show
+        requestAnimationFrame(() => overlay.style.opacity = "1");
+        overlay.querySelectorAll("[data-choice]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                overlay.remove();
+                resolve(btn.dataset.choice);
+            });
+        });
+    });
 }
 
 async function saveCurrentSet() {
@@ -353,8 +477,8 @@ async function saveSetAs() {
     }
 }
 
-async function loadSavedSet(setId) {
-    if (setDirty) {
+async function loadSavedSet(setId, skipDirtyCheck) {
+    if (!skipDirtyCheck && setDirty) {
         if (!confirm("You have unsaved changes. Discard and load a different set?")) return;
     }
     // Stop any current playback and reset mobile UI before loading the new set
@@ -2976,4 +3100,422 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
     }
 
     div.appendChild(list);
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Context Tabs (below workshop grid)
+// ══════════════════════════════════════════════════════════════════════════════
+
+let _ctxTrackId = null;      // currently displayed track ID
+let _ctxTrackData = null;    // cached track object {id, title, artist, bpm, key, year, comment}
+let _ctxContextData = null;  // cached /track-context response
+let _ctxActiveTab = "info";
+
+function initContextTabs() {
+    const tabs = document.querySelectorAll(".context-tab");
+    tabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tab = btn.dataset.ctxTab;
+            _ctxActiveTab = tab;
+            tabs.forEach(b => b.classList.toggle("active", b === btn));
+            document.querySelectorAll(".context-panel").forEach(p => {
+                p.classList.toggle("active", p.id === `ctx-panel-${tab}`);
+            });
+            // Load content for newly selected tab if we have a track
+            if (_ctxTrackId != null) _loadCtxPanel(tab);
+        });
+    });
+    // Create Lucide icons
+    if (typeof lucide !== "undefined") lucide.createIcons();
+}
+
+/** Called from updateNowPlayingDrawer — show context tabs and load data */
+function showContextForTrack(track, contextData) {
+    const container = document.getElementById("context-tabs");
+    if (!container) return;
+    container.style.display = "";
+
+    _ctxTrackId = track.id;
+    _ctxTrackData = track;
+    _ctxContextData = contextData;
+
+    // Load the active panel
+    _loadCtxPanel(_ctxActiveTab);
+}
+
+function hideContextTabs() {
+    const container = document.getElementById("context-tabs");
+    if (container) container.style.display = "none";
+    _ctxTrackId = null;
+    _ctxTrackData = null;
+    _ctxContextData = null;
+}
+
+function _loadCtxPanel(tab) {
+    switch (tab) {
+        case "info":  _renderInfoPanel(); break;
+        case "next":  _renderNextPanel(); break;
+        case "set":   _renderSetPanel(); break;
+        case "dance": _renderDancePanel(); break;
+    }
+}
+
+// ── Info Panel (vibe + track details + mix) ──
+function _renderInfoPanel() {
+    const el = document.getElementById("ctx-info-content");
+    const t = _ctxTrackData;
+    if (!t) { el.innerHTML = '<div class="ctx-empty">No track selected</div>'; return; }
+
+    const ctx = _ctxContextData;
+    const comment = ctx?.comment || t.comment || "";
+    const parts = comment.split(";").map(s => s.trim());
+    const genre1 = parts[0] || "";
+    const genre2 = parts[1] || "";
+    const descriptors = parts[2] || "";
+    const mood = parts[3] || "";
+    const locEra = parts[4] || "";
+
+    // Vibe section
+    let vibeHtml = "";
+    const leaf = ctx?.collection_leaf;
+    if (leaf && leaf.available) {
+        vibeHtml = `<div class="ctx-vibe-leaf">
+            <div class="ctx-vibe-leaf-name">${_esc(leaf.name)}</div>
+            ${leaf.description ? `<div class="ctx-vibe-leaf-desc">${_esc(leaf.description)}</div>` : ""}
+        </div>`;
+    }
+    const alsoIn = ctx?.also_in || [];
+    if (alsoIn.length) {
+        vibeHtml += '<div class="ctx-vibe-also-header">Also appears in</div><div class="ctx-vibe-also-list">';
+        alsoIn.forEach(a => {
+            vibeHtml += `<span class="ctx-vibe-also-tag" data-leaf-id="${_esc(a.id)}">${_esc(a.title)} (${a.track_count})</span>`;
+        });
+        vibeHtml += '</div>';
+    }
+
+    // Mix section — Camelot wheel + BPM bar
+    const key = t.key || "";
+    const bpm = t.bpm ? Math.round(t.bpm) : null;
+    const compatKeys = _getCompatibleKeys(key);
+    const wheelSvg = key ? _buildCamelotWheelSvg(key, 72) : "";
+
+    let bpmBarHtml = "";
+    if (bpm) {
+        const bpmMin = 50, bpmMax = 170, range = bpmMax - bpmMin;
+        const lo = Math.max(bpmMin, bpm - 15), hi = Math.min(bpmMax, bpm + 15);
+        const leftPct = ((lo - bpmMin) / range * 100).toFixed(1);
+        const widthPct = ((hi - lo) / range * 100).toFixed(1);
+        const markerPct = ((bpm - bpmMin) / range * 100).toFixed(1);
+        bpmBarHtml = `<div class="ctx-mix-bpm-range">
+            <div class="ctx-mix-bpm-label">BPM Sweet Spot (±15)</div>
+            <div class="ctx-mix-bpm-bar">
+                <div class="ctx-mix-bpm-fill" style="left:${leftPct}%;width:${widthPct}%"></div>
+                <div class="ctx-mix-bpm-marker" style="left:${markerPct}%"></div>
+            </div>
+            <div class="ctx-mix-bpm-values"><span>${bpmMin}</span><span>${bpm} BPM</span><span>${bpmMax}</span></div>
+        </div>`;
+    }
+
+    let mixKeysHtml = "";
+    if (key && compatKeys.length) {
+        mixKeysHtml = '<div class="ctx-mix-keys">' + compatKeys.map(k => {
+            const c = CAMELOT_COLORS[k] || "var(--text-muted)";
+            const isCurrent = k === key;
+            return `<span class="ctx-mix-key-tag${isCurrent ? " current" : ""}" style="color:${c}">${k}</span>`;
+        }).join("") + '</div>';
+    }
+
+    el.innerHTML = `
+        ${vibeHtml}
+        <div class="ctx-info-grid">
+            <div class="ctx-info-item"><span class="ctx-info-label">Genre</span><span class="ctx-info-value">${_esc(genre1)}${genre2 ? " / " + _esc(genre2) : ""}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">BPM</span><span class="ctx-info-value">${bpm || ""}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">Mood</span><span class="ctx-info-value">${_esc(mood)}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">Key</span><span class="ctx-info-value">${_esc(key)}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">Descriptors</span><span class="ctx-info-value">${_esc(descriptors)}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">Year</span><span class="ctx-info-value">${_esc(t.year || "")}</span></div>
+            <div class="ctx-info-item" style="grid-column:1/-1"><span class="ctx-info-label">Location / Era</span><span class="ctx-info-value">${_esc(locEra)}</span></div>
+        </div>
+        ${key ? `<div class="ctx-info-mix-section">
+            <div class="ctx-mix-layout">
+                <div class="ctx-mix-wheel">${wheelSvg}</div>
+                <div class="ctx-mix-details">
+                    <div class="ctx-mix-current">Key: ${_esc(key)}</div>
+                    <div class="ctx-mix-compat-header">Harmonic Neighbors</div>
+                    ${mixKeysHtml}
+                    ${bpmBarHtml}
+                </div>
+            </div>
+        </div>` : ""}`;
+
+    // Wire also-in tag clicks
+    el.querySelectorAll(".ctx-vibe-also-tag").forEach(tag => {
+        tag.addEventListener("click", () => {
+            const leafId = tag.dataset.leafId;
+            const title = tag.textContent.replace(/\s*\(\d+\)$/, "");
+            assignSource("tree_node", leafId, "collection", title);
+        });
+    });
+}
+
+// ── Next / Explode Panel ──
+let _ctxNextCache = {};  // track_id -> tracks[]
+async function _renderNextPanel() {
+    const el = document.getElementById("ctx-next-content");
+    if (!_ctxTrackId) { el.innerHTML = '<div class="ctx-empty">No track selected</div>'; return; }
+
+    // Check cache
+    if (_ctxNextCache[_ctxTrackId]) {
+        _renderNextList(el, _ctxNextCache[_ctxTrackId]);
+        return;
+    }
+
+    el.innerHTML = '<div class="ctx-empty">Finding compatible tracks…</div>';
+    try {
+        const res = await fetch(`/api/set-workshop/track-nexts/${_ctxTrackId}`);
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        _ctxNextCache[_ctxTrackId] = data.tracks || [];
+        _renderNextList(el, data.tracks || []);
+    } catch (e) {
+        el.innerHTML = '<div class="ctx-empty">Could not load suggestions</div>';
+    }
+}
+
+function _renderNextList(el, tracks) {
+    if (!tracks.length) {
+        el.innerHTML = '<div class="ctx-empty">No compatible tracks found</div>';
+        return;
+    }
+    let html = '<div class="ctx-next-desc">Tracks with compatible key (Camelot ±1) and BPM (±15), ranked by harmonic proximity and genre overlap.</div>';
+    html += '<div class="ctx-next-list">';
+    tracks.slice(0, 12).forEach((t, i) => {
+        const keyColor = camelotColor(t.key) || "var(--text-muted)";
+        html += `<div class="ctx-next-row" data-track-id="${t.id}">
+            <span class="ctx-next-rank">${i + 1}</span>
+            <button class="btn-preview ctx-next-preview" data-artist="${_esc(t.artist)}" data-title="${_esc(t.title)}" title="Preview">&#9654;</button>
+            <div class="ctx-next-info">
+                <div class="ctx-next-title">${_esc(t.title)}</div>
+                <div class="ctx-next-artist">${_esc(t.artist)}</div>
+            </div>
+            <div class="ctx-next-meta">
+                <span class="ctx-next-key" style="color:${keyColor}">${_esc(t.key || "?")}</span>
+                <span class="ctx-next-bpm">${t.bpm ? Math.round(t.bpm) : "?"}</span>
+            </div>
+        </div>`;
+    });
+    html += '</div>';
+    el.innerHTML = html;
+
+    // Preview buttons
+    el.querySelectorAll(".ctx-next-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            }
+        });
+    });
+
+    // Click row to open in search drawer
+    el.querySelectorAll(".ctx-next-row").forEach(row => {
+        row.addEventListener("click", (e) => {
+            if (e.target.closest(".ctx-next-preview")) return;
+            const tid = parseInt(row.dataset.trackId);
+            const track = tracks.find(t => t.id === tid);
+            if (track) {
+                openDrawer("search", null);
+                const input = document.getElementById("set-drawer-track-search");
+                if (input) {
+                    input.value = track.title;
+                    input.dispatchEvent(new Event("input"));
+                }
+            }
+        });
+    });
+}
+
+// ── Create / Set Panel ──
+function _renderSetPanel() {
+    const el = document.getElementById("ctx-set-content");
+    if (!_ctxTrackData) { el.innerHTML = '<div class="ctx-empty">No track selected</div>'; return; }
+
+    const t = _ctxTrackData;
+    el.innerHTML = `<div class="ctx-set-actions">
+        <button class="ctx-set-action-btn" id="ctx-action-playlist">
+            <i data-lucide="list-music" class="ctx-set-action-icon"></i>
+            <div class="ctx-set-action-text">
+                <div class="ctx-set-action-title">Create Playlist</div>
+                <div class="ctx-set-action-desc">Build a playlist starting from "${_esc(t.title)}"</div>
+            </div>
+        </button>
+        <button class="ctx-set-action-btn" id="ctx-action-autoset">
+            <i data-lucide="sparkles" class="ctx-set-action-icon"></i>
+            <div class="ctx-set-action-text">
+                <div class="ctx-set-action-title">Generate Set</div>
+                <div class="ctx-set-action-desc">Auto-build a DJ set with this track as the anchor</div>
+            </div>
+        </button>
+        <button class="ctx-set-action-btn" id="ctx-action-fill">
+            <i data-lucide="columns-3" class="ctx-set-action-icon"></i>
+            <div class="ctx-set-action-text">
+                <div class="ctx-set-action-title">Fill Empty Slots</div>
+                <div class="ctx-set-action-desc">Use this track's vibe to fill remaining slots</div>
+            </div>
+        </button>
+        <button class="ctx-set-action-btn" id="ctx-action-similar">
+            <i data-lucide="search" class="ctx-set-action-icon"></i>
+            <div class="ctx-set-action-text">
+                <div class="ctx-set-action-title">Find Similar</div>
+                <div class="ctx-set-action-desc">Search for tracks with matching genre &amp; mood</div>
+            </div>
+        </button>
+    </div>`;
+
+    if (typeof lucide !== "undefined") lucide.createIcons({ nodes: el.querySelectorAll("[data-lucide]") });
+
+    // Wire up actions
+    document.getElementById("ctx-action-playlist")?.addEventListener("click", () => {
+        // Switch to chat tab and prefill a prompt
+        if (typeof switchToTab === "function") switchToTab("chat");
+        setTimeout(() => {
+            const input = document.getElementById("chat-input");
+            if (input) {
+                input.value = `Create a playlist of tracks similar to "${t.title}" by ${t.artist}`;
+                input.focus();
+            }
+        }, 200);
+    });
+
+    document.getElementById("ctx-action-autoset")?.addEventListener("click", () => {
+        if (typeof switchToTab === "function") switchToTab("autoset");
+    });
+
+    document.getElementById("ctx-action-fill")?.addEventListener("click", () => {
+        // Find the collection leaf and assign it to empty slots
+        const leaf = _ctxContextData?.collection_leaf;
+        if (leaf && leaf.available && leaf.node_id) {
+            // Find first empty slot
+            const emptySlot = setSlots.find(s => !s.source);
+            if (emptySlot) {
+                assignSource("tree_node", leaf.node_id, "collection", leaf.name, emptySlot.id);
+            }
+        }
+    });
+
+    document.getElementById("ctx-action-similar")?.addEventListener("click", () => {
+        openDrawer("search", null);
+        setTimeout(() => {
+            const input = document.getElementById("set-drawer-track-search");
+            if (input) {
+                input.value = t.artist;
+                input.dispatchEvent(new Event("input"));
+            }
+        }, 200);
+    });
+}
+
+function _getCompatibleKeys(keyStr) {
+    if (!keyStr) return [];
+    // Normalize
+    const m = keyStr.match(/^(\d{1,2})([A-Za-z])$/);
+    if (!m) return [];
+    const num = parseInt(m[1]);
+    const letter = m[2];
+    let norm;
+    if ("Aam".includes(letter)) norm = num + "A";
+    else if ("BbMDd".includes(letter)) norm = num + "B";
+    else return [];
+
+    const normLetter = norm.slice(-1);
+    const results = [norm];
+    // Same letter, ±1
+    const prev = ((num - 2 + 12) % 12) + 1;
+    const next = (num % 12) + 1;
+    results.push(prev + normLetter, next + normLetter);
+    // Cross letter, same number
+    results.push(num + (normLetter === "A" ? "B" : "A"));
+    return results;
+}
+
+function _buildCamelotWheelSvg(currentKey, size) {
+    const cx = size / 2, cy = size / 2;
+    const outerR = size / 2 - 2;
+    const innerR = outerR * 0.6;
+    const keys = [];
+    // Outer ring: B (major), Inner ring: A (minor)
+    for (let i = 1; i <= 12; i++) {
+        keys.push({ key: i + "B", ring: "outer", num: i });
+        keys.push({ key: i + "A", ring: "inner", num: i });
+    }
+
+    let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+
+    const compat = _getCompatibleKeys(currentKey);
+
+    for (const k of keys) {
+        const r = k.ring === "outer" ? outerR : innerR;
+        const rInner = k.ring === "outer" ? innerR + 1 : innerR * 0.35;
+        const angle = ((k.num - 1) * 30 - 90);
+        const a1 = (angle - 14) * Math.PI / 180;
+        const a2 = (angle + 14) * Math.PI / 180;
+
+        const x1o = cx + r * Math.cos(a1);
+        const y1o = cy + r * Math.sin(a1);
+        const x2o = cx + r * Math.cos(a2);
+        const y2o = cy + r * Math.sin(a2);
+        const x1i = cx + rInner * Math.cos(a1);
+        const y1i = cy + rInner * Math.sin(a1);
+        const x2i = cx + rInner * Math.cos(a2);
+        const y2i = cy + rInner * Math.sin(a2);
+
+        const color = CAMELOT_COLORS[k.key] || "#555";
+        const isCompat = compat.includes(k.key);
+        const isCurrent = k.key === currentKey;
+        const opacity = isCurrent ? 1 : isCompat ? 0.7 : 0.15;
+
+        svg += `<path d="M${x1i},${y1i} L${x1o},${y1o} A${r},${r} 0 0,1 ${x2o},${y2o} L${x2i},${y2i} A${rInner},${rInner} 0 0,0 ${x1i},${y1i}"
+            fill="${color}" opacity="${opacity}" stroke="var(--bg)" stroke-width="1"/>`;
+
+        // Label for current/compat
+        if (isCurrent || isCompat) {
+            const labelR = (r + rInner) / 2;
+            const aMid = ((angle) * Math.PI / 180);
+            const lx = cx + labelR * Math.cos(aMid);
+            const ly = cy + labelR * Math.sin(aMid);
+            svg += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="central"
+                fill="var(--bg)" font-size="${isCurrent ? 7 : 6}" font-weight="${isCurrent ? 700 : 600}">${k.key}</text>`;
+        }
+    }
+    svg += '</svg>';
+    return svg;
+}
+
+// ── Dance Panel ──
+let _ctxDancerInstance = null;
+
+function _renderDancePanel() {
+    const stage = document.getElementById("ctx-dance-stage");
+    if (!stage) return;
+
+    // Create dancer instance once, reuse it
+    if (!_ctxDancerInstance && typeof createRobotDancer === "function") {
+        _ctxDancerInstance = createRobotDancer(stage, { showControls: false });
+        _ctxDancerInstance.init();
+    }
+
+    if (_ctxDancerInstance) {
+        const t = _ctxTrackData;
+        const bpm = t?.bpm ? Math.round(t.bpm) : 120;
+        _ctxDancerInstance.setBpm(bpm);
+        _ctxDancerInstance.start();
+        _ctxDancerInstance.refreshArtwork();
+    }
+}
+
+function _esc(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }

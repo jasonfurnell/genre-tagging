@@ -1028,6 +1028,8 @@ const _unifiedHeader = document.getElementById("unified-header");
 let _openNavDrawer = null; // null | "left" | "right"
 
 function openNavDrawer(side) {
+    // Close top drawer if open
+    if (_topDrawerOpen) closeTopDrawer();
     // Close the other drawer if open
     if (_openNavDrawer && _openNavDrawer !== side) {
         _drawerLeft.classList.remove("open");
@@ -1065,24 +1067,73 @@ function toggleNavDrawer(side) {
     }
 }
 
+// ── Top Drawer (set picker) ──────────────────────────────
+const _drawerTop = document.getElementById("drawer-top");
+const _headerSetName = document.getElementById("header-set-name");
+let _topDrawerOpen = false;
+
+function openTopDrawer() {
+    // Close side drawers first
+    if (_openNavDrawer) closeNavDrawer();
+    // Populate the set list
+    if (typeof populateSetPicker === "function") populateSetPicker();
+    _drawerTop.classList.add("open");
+    _headerSetName.classList.add("open");
+    _drawerOverlay.classList.add("open");
+    _unifiedHeader.classList.add("drawer-open");
+    _topDrawerOpen = true;
+    document.body.style.overflow = "hidden";
+}
+
+function closeTopDrawer() {
+    _drawerTop.classList.remove("open");
+    _headerSetName.classList.remove("open");
+    _drawerOverlay.classList.remove("open");
+    _unifiedHeader.classList.remove("drawer-open");
+    _topDrawerOpen = false;
+    document.body.style.overflow = "";
+}
+
+function toggleTopDrawer() {
+    if (_topDrawerOpen) closeTopDrawer();
+    else openTopDrawer();
+}
+
+// Header set name click → top drawer
+_headerSetName.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleTopDrawer();
+});
+_headerSetName.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleTopDrawer(); }
+});
+
 // Hamburger button → left drawer
 _hamburgerBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    if (_topDrawerOpen) closeTopDrawer();
     toggleNavDrawer("left");
 });
 
 // Gear button → right drawer
 _gearBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    if (_topDrawerOpen) closeTopDrawer();
     toggleNavDrawer("right");
 });
 
-// Overlay click → close drawer
-_drawerOverlay.addEventListener("click", () => closeNavDrawer());
+// Overlay click → close any drawer (side or top)
+_drawerOverlay.addEventListener("click", () => {
+    if (_topDrawerOpen) closeTopDrawer();
+    if (_openNavDrawer) closeNavDrawer();
+});
 
-// Escape key → close drawer
+// Escape key → close any drawer
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && _openNavDrawer) closeNavDrawer();
+    if (e.key === "Escape") {
+        if (_topDrawerOpen) closeTopDrawer();
+        if (_openNavDrawer) closeNavDrawer();
+    }
 });
 
 // Left drawer: nav item clicks

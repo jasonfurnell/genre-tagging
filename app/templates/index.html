@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/style.css?v={{ v }}">
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -17,8 +18,13 @@
             <span></span><span></span><span></span>
         </button>
 
-        <!-- Spacer -->
-        <div style="flex:1;"></div>
+        <!-- Set Name (centered) — opens top set-picker drawer -->
+        <div id="header-set-name" class="header-set-name" role="button" tabindex="0" aria-label="Switch set">
+            <span id="header-set-label" class="header-set-label">Untitled Set</span>
+            <svg class="header-set-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
 
         <!-- Gear button (right) — opens right settings drawer -->
         <button id="gear-btn" class="gear-btn" aria-label="Settings">
@@ -32,6 +38,14 @@
 
 <!-- Drawer overlay — blocks background interaction -->
 <div id="drawer-overlay" class="drawer-overlay"></div>
+
+<!-- Top Drawer: Set Picker -->
+<aside id="drawer-top" class="drawer-top">
+    <div class="drawer-top-content">
+        <div id="drawer-top-sets" class="drawer-top-sets"></div>
+        <div class="drawer-top-empty hidden" id="drawer-top-empty">No saved sets yet.</div>
+    </div>
+</aside>
 
 <!-- Left Drawer: Navigation -->
 <aside id="drawer-left" class="drawer drawer--left">
@@ -429,6 +443,7 @@
               </div>
             </div>
         </div>
+
     </div>
 
     <!-- ═══ Tab: Auto Set ═══ -->
@@ -620,6 +635,50 @@
 
 <!-- Base Drawer (bottom slide-up, horizontal now-playing) -->
 <div id="base-drawer" class="base-drawer">
+    <!-- Context Tabs -->
+    <div id="context-tabs" class="context-tabs">
+        <div class="context-tab-bar">
+            <button class="context-tab active" data-ctx-tab="info">
+                <i data-lucide="disc-3" class="context-tab-icon"></i>
+                <span class="context-tab-label">Info</span>
+            </button>
+            <button class="context-tab" data-ctx-tab="next">
+                <i data-lucide="git-fork" class="context-tab-icon"></i>
+                <span class="context-tab-label">Next</span>
+            </button>
+            <button class="context-tab" data-ctx-tab="set">
+                <i data-lucide="wand-sparkles" class="context-tab-icon"></i>
+                <span class="context-tab-label">Create</span>
+            </button>
+            <button class="context-tab" data-ctx-tab="dance">
+                <i data-lucide="person-standing" class="context-tab-icon"></i>
+                <span class="context-tab-label">Dance</span>
+            </button>
+        </div>
+        <div class="context-tab-panels">
+            <div id="ctx-panel-info" class="context-panel active">
+                <div id="ctx-info-content" class="ctx-info-content">
+                    <div class="ctx-empty">Select a track to see details</div>
+                </div>
+            </div>
+            <div id="ctx-panel-next" class="context-panel">
+                <div id="ctx-next-content" class="ctx-next-content">
+                    <div class="ctx-empty">Select a track to see what's next</div>
+                </div>
+            </div>
+            <div id="ctx-panel-set" class="context-panel">
+                <div id="ctx-set-content" class="ctx-set-content">
+                    <div class="ctx-empty">Select a track to create from it</div>
+                </div>
+            </div>
+            <div id="ctx-panel-dance" class="context-panel">
+                <div id="ctx-dance-content" class="ctx-dance-content">
+                    <div id="ctx-dance-stage" class="ctx-dance-stage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Compact bar (always visible) -->
     <div class="base-drawer-panels">
         <!-- Left panel: artwork + track info -->
