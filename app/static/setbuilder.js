@@ -3259,9 +3259,10 @@ function _renderInfoPanel() {
         </div>` : ""}
         <div class="ctx-artist-tracks"></div>`;
 
-    // Fetch narrative if not cached
+    // Fetch narrative if not cached — defer until audio is playing so the
+    // LLM request doesn't compete with the Dropbox streaming request
     if (!cached) {
-        _fetchTrackNarrative(t.id);
+        _deferNarrativeUntilPlaying(t.id);
     }
 
     // Fetch other tracks by same artist(s)
@@ -3330,6 +3331,40 @@ function _buildNarrativeHtml(text) {
         <div class="ctx-info-narrative-title">${_esc(title)}</div>
         ${body ? `<div class="ctx-info-narrative-body">${_esc(body)}</div>` : ""}
     </div>`;
+}
+
+/**
+ * Wait for audio to start playing before firing the narrative LLM request.
+ * This ensures the Dropbox streaming redirect completes first.
+ * Falls back to a timeout so the narrative still loads if audio never plays.
+ */
+function _deferNarrativeUntilPlaying(trackId) {
+    if (!setAudio) {
+        // No audio element — just fetch immediately
+        _fetchTrackNarrative(trackId);
+        return;
+    }
+
+    // If audio is already playing (e.g. cached/local file), fetch now
+    if (!setAudio.paused && setAudio.currentTime > 0) {
+        _fetchTrackNarrative(trackId);
+        return;
+    }
+
+    let fired = false;
+    const fire = () => {
+        if (fired) return;
+        fired = true;
+        setAudio.removeEventListener("playing", onPlaying);
+        clearTimeout(fallback);
+        _fetchTrackNarrative(trackId);
+    };
+
+    const onPlaying = () => fire();
+    setAudio.addEventListener("playing", onPlaying, { once: true });
+
+    // Fallback: fetch after 8s even if audio never starts (e.g. no audio file)
+    const fallback = setTimeout(fire, 8000);
 }
 
 async function _fetchTrackNarrative(trackId) {
