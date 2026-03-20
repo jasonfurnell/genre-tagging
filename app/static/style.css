@@ -6034,9 +6034,6 @@ tr.ws-seed-selected {
 .ctx-info-narrative {
     margin-top: 0.6rem;
     margin-bottom: 0.5rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
 }
 .ctx-info-narrative-title {
     font-size: 0.85rem;
@@ -6375,9 +6372,6 @@ tr.ws-seed-selected {
 /* Scene panel */
 .ctx-scene-leaf {
     margin-top: 0.6rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     margin-bottom: 0.5rem;
 }
 .ctx-scene-leaf-name {
