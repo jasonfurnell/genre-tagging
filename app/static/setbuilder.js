@@ -1331,8 +1331,25 @@ function _positionMobileCtrl(col, card) {
     const rect = col.getBoundingClientRect();
     const cardH = card.offsetHeight || 80;
     const cardW = card.offsetWidth || 200;
-    card.style.left = `${rect.left + rect.width / 2 - cardW / 2}px`;
-    card.style.top  = `${rect.top - cardH - 6}px`;
+
+    // The column rect may extend behind the base drawer (overflow clipped).
+    // Use the scroll container's visible bottom as the true lower bound.
+    const scroller = document.querySelector(".set-grid-scroll") || document.querySelector(".set-grid-wrapper");
+    const visibleBottom = scroller ? scroller.getBoundingClientRect().bottom : rect.bottom;
+
+    // Center horizontally on the column, clamped to viewport
+    let left = rect.left + rect.width / 2 - cardW / 2;
+    left = Math.max(4, Math.min(left, window.innerWidth - cardW - 4));
+
+    // Place just above the visible bottom of the grid (above the drawer)
+    let top = visibleBottom - cardH - 6;
+    // If that goes above the column top, clamp to just below it
+    if (top < rect.top + 4) {
+        top = rect.top + 4;
+    }
+
+    card.style.left = `${left}px`;
+    card.style.top  = `${top}px`;
 }
 
 

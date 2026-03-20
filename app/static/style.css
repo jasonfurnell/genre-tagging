@@ -5758,7 +5758,7 @@ tr.ws-seed-selected {
     /* ── Mobile Slot Control Card (floats above now-playing) ── */
     .set-mobile-ctrl-card {
         position: fixed;
-        z-index: 100;
+        z-index: 250;
         display: flex;
         flex-direction: column;
         align-items: center;
