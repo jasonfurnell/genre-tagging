@@ -528,6 +528,9 @@ async function loadSavedSet(setId, skipDirtyCheck) {
         },
     });
 
+    // Refresh starred state so icons are accurate for the new set's tracks
+    _loadStarredPlaylist();
+
     if (currentSetName) showToast(`Loaded "${currentSetName}"`);
 }
 
@@ -3697,13 +3700,19 @@ function _esc(str) {
 let _starredTrackIds = new Set();  // track IDs currently in the starred playlist
 let _starredLoaded = false;
 
-/** Called when the Star context tab is activated — toggle current track + render list */
+/** Called when the Star context tab is activated — add current track (if not already starred) + render list */
 async function _handleStarTab() {
     if (!_ctxTrackId) {
-        _renderStarPanel([]);
+        // No track selected — just show the current starred list
+        await _refreshStarPanel();
         return;
     }
-    // Toggle the current track in the starred playlist
+    // If already starred, just refresh the display — don't un-star
+    if (_starredTrackIds.has(_ctxTrackId)) {
+        await _refreshStarPanel();
+        return;
+    }
+    // Add the current track to the starred playlist
     try {
         const res = await fetch("/api/starred/toggle", {
             method: "POST",

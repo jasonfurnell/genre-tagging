@@ -1,10 +1,13 @@
-/* ── Set Workshop — Playback Engine ─────────────────────────────────────── */
+/* ── Set Workshop — Playback Engine ─────────────────────────────────────── *
+ * Architecture, known issues & fix history: docs/playback.md               *
+ * ──────────────────────────────────────────────────────────────────────── */
 
 // ── Playback State ──
 let setWorkshopMode = "playset";  // "workshop" (Short Preview) | "playset" (Full Track)
 let setPlaySetIndex = 0;
 let setPlayGen = 0;    // generation counter to detect stale error events on skip
 let setAudio = null;   // single Audio element for ALL set playback (full + preview)
+let _errorGenAtPlay = 0; // generation at time error listener should honour
 let setResumeSlotIdx = -1;  // slot index to resume from after user-stop, -1 = none
 let setAutoplayBlocked = false;  // true when browser blocked autoplay (NotAllowedError)
 let setAudioFlagsReady = null;   // promise resolved when refreshHasAudioFlags completes
@@ -534,6 +537,7 @@ async function playFullTrack(idx) {
     setAudio.src = `/api/audio/${track.id}`;
     setAudio.load();
     _previewStartTime = 0; // Full track mode — no preview window
+    _errorGenAtPlay = gen; // sync error handler to this generation
     _setPlayOverlayLoading();
     setAudio.play().catch(err => {
         if (gen !== setPlayGen) return; // stale — another track was requested
@@ -610,6 +614,7 @@ async function playSlotPreview(idx) {
     _previewStartTime = 0;
     setAudio.src = `/api/audio/${track.id}`;
     setAudio.load();
+    _errorGenAtPlay = gen; // sync error handler to this generation
 
     // Wait for duration to be known, then seek to middle
     const onLoaded = () => {
@@ -1069,15 +1074,24 @@ function onPlaySetTrackEnded() {
 }
 
 function onPlaySetTrackError() {
-    // If currentTime is 0, this is likely a stale error from an aborted load
-    // (changing src aborts the previous fetch and fires an error event).
-    // Genuine initial load failures are handled by play().catch() above.
-    // Only auto-advance on mid-stream errors where audio was already playing.
+    // Stale error from an aborted load (changing src fires error on old fetch).
     if (setAudio.currentTime === 0) return;
-    console.warn("Playback: mid-stream audio error, skipping to next track");
-    _isAdvancing = false;  // reset so the next advance can proceed
-    const next = findNextPlaySetSlot(setPlaySetIndex + 1);
-    if (next >= 0) playSlot(next);
+
+    // Generation guard: if setPlayGen has moved on since the current track
+    // started playing, this error belongs to a previous track — ignore it.
+    if (setPlayGen !== _errorGenAtPlay) return;
+
+    // Debounce: wait briefly to confirm this is a genuine mid-stream failure
+    // and not a transient hiccup from a source change or network blip.
+    const genSnapshot = setPlayGen;
+    setTimeout(() => {
+        if (setPlayGen !== genSnapshot) return;  // stale by now
+        if (setAudio.paused && setAudio.currentTime === 0) return; // already stopped
+        console.warn("Playback: mid-stream audio error, skipping to next track");
+        _isAdvancing = false;
+        const next = findNextPlaySetSlot(setPlaySetIndex + 1);
+        if (next >= 0) playSlot(next);
+    }, 500);
 }
 
 
