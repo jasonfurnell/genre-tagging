@@ -5932,6 +5932,10 @@ tr.ws-seed-selected {
 .context-tabs {
     border-top: 1px solid var(--border);
     background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 /* Persistent track header (always visible above tabs) */
@@ -5983,6 +5987,7 @@ tr.ws-seed-selected {
     cursor: pointer;
     transition: color 0.15s, border-color 0.15s;
     max-width: 90px;
+    margin-bottom: 0.6rem;
 }
 .context-tab:hover {
     color: var(--text);
@@ -6005,9 +6010,10 @@ tr.ws-seed-selected {
 
 /* Panels */
 .context-tab-panels {
-    max-height: 220px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
-    padding-top: 0.4rem;
+    padding: 0.4rem 0.6rem 0;
 }
 .context-panel {
     display: none;
@@ -6026,7 +6032,7 @@ tr.ws-seed-selected {
 
 /* Track narrative */
 .ctx-info-narrative {
-    padding: 0.6rem;
+    margin-top: 0.6rem;
     margin-bottom: 0.5rem;
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--border);
@@ -6091,8 +6097,8 @@ tr.ws-seed-selected {
 /* Info panel */
 .ctx-info-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
 }
 .ctx-info-item {
     display: flex;
@@ -6139,55 +6145,6 @@ tr.ws-seed-selected {
 }
 .ctx-next-row:hover {
     background: rgba(255,255,255,0.06);
-}
-.ctx-next-rank {
-    width: 18px;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-align: center;
-    flex-shrink: 0;
-}
-.ctx-next-preview {
-    width: 24px;
-    height: 24px;
-    font-size: 0.55rem;
-    flex-shrink: 0;
-}
-.ctx-next-info {
-    flex: 1;
-    min-width: 0;
-}
-.ctx-next-title {
-    font-size: 0.75rem;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.ctx-next-artist {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.ctx-next-meta {
-    display: flex;
-    gap: 0.5rem;
-    flex-shrink: 0;
-    align-items: center;
-}
-.ctx-next-key {
-    font-size: 0.65rem;
-    font-weight: 600;
-    padding: 1px 5px;
-    border-radius: 3px;
-    background: rgba(255,255,255,0.08);
-}
-.ctx-next-bpm {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    font-variant-numeric: tabular-nums;
 }
 
 /* Star tab */
@@ -6327,12 +6284,6 @@ tr.ws-seed-selected {
     flex: 1;
     min-width: 0;
 }
-.ctx-mix-current {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-}
 .ctx-mix-compat-header {
     font-size: 0.65rem;
     color: var(--text-muted);
@@ -6400,6 +6351,20 @@ tr.ws-seed-selected {
     font-variant-numeric: tabular-nums;
 }
 
+/* Info panel — other tracks by artist */
+.ctx-artist-tracks {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+.ctx-artist-tracks-label {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
 /* Info panel — mix section separator */
 .ctx-info-mix-section {
     margin-top: 0.75rem;
@@ -6409,7 +6374,7 @@ tr.ws-seed-selected {
 
 /* Scene panel */
 .ctx-scene-leaf {
-    padding: 0.6rem;
+    margin-top: 0.6rem;
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--border);
     border-radius: var(--radius);

@@ -3333,6 +3333,39 @@ def set_workshop_track_search():
     return jsonify({"tracks": tracks, "count": len(tracks)})
 
 
+@api.route("/api/set-workshop/artist-tracks/<int:track_id>")
+def set_workshop_artist_tracks(track_id):
+    """Return other tracks by the same artist(s) as the given track."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+    if track_id not in df.index:
+        return jsonify({"error": "Track not found"}), 404
+
+    row = df.loc[track_id]
+    artist_str = str(row.get("artist", "")).strip()
+    if not artist_str:
+        return jsonify({"tracks": []})
+
+    # Split on common separators: comma, &, "feat.", "ft.", "vs"
+    import re
+    artists = re.split(r'\s*[,&]\s*|\s+feat\.?\s+|\s+ft\.?\s+|\s+vs\.?\s+', artist_str, flags=re.IGNORECASE)
+    artists = [a.strip().lower() for a in artists if a.strip()]
+
+    matches = set()
+    for idx in df.index:
+        if idx == track_id:
+            continue
+        row_artist = str(df.loc[idx].get("artist", "")).lower()
+        for a in artists:
+            if a in row_artist:
+                matches.add(idx)
+                break
+
+    tracks = _tracks_from_ids(df, sorted(matches))
+    return jsonify({"tracks": tracks})
+
+
 @api.route("/api/set-workshop/track-context/<int:track_id>")
 def set_workshop_track_context(track_id):
     """Return collection leaf context for a track."""

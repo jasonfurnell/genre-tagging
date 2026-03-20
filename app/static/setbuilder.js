@@ -2736,7 +2736,7 @@ function renderDrawerSearchResults(tracks) {
             </div>
             <div class="set-drawer-track-meta">
                 ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
-                ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
+                ${track.key ? `<span class="set-drawer-track-key" style="color:${camelotColor(track.key) || "var(--text-muted)"}">${escHtml(track.key)}</span>` : ""}
                 ${track.year ? `<span>${track.year}</span>` : ""}
             </div>
         `;
@@ -3057,7 +3057,7 @@ function renderSearchCard(containerId, cardData, cardTitle, sourceType, treeType
             </div>
             <div class="set-drawer-track-meta">
                 ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
-                ${track.key ? `<span class="set-drawer-track-key">${escHtml(track.key)}</span>` : ""}
+                ${track.key ? `<span class="set-drawer-track-key" style="color:${camelotColor(track.key) || "var(--text-muted)"}">${escHtml(track.key)}</span>` : ""}
             </div>
         `;
 
@@ -3202,7 +3202,7 @@ function _renderInfoPanel() {
     const key = t.key || "";
     const bpm = t.bpm ? Math.round(t.bpm) : null;
     const compatKeys = _getCompatibleKeys(key);
-    const wheelSvg = key ? _buildCamelotWheelSvg(key, 72) : "";
+    const wheelSvg = key ? _buildCamelotWheelSvg(key, 108) : "";
 
     let bpmBarHtml = "";
     if (bpm) {
@@ -3240,29 +3240,82 @@ function _renderInfoPanel() {
         ${narrativeHtml}
         <div class="ctx-info-grid">
             <div class="ctx-info-item"><span class="ctx-info-label">Genre</span><span class="ctx-info-value">${_esc(genre1)}${genre2 ? " / " + _esc(genre2) : ""}</span></div>
-            <div class="ctx-info-item"><span class="ctx-info-label">BPM</span><span class="ctx-info-value">${bpm || ""}</span></div>
             <div class="ctx-info-item"><span class="ctx-info-label">Mood</span><span class="ctx-info-value">${_esc(mood)}</span></div>
-            <div class="ctx-info-item"><span class="ctx-info-label">Key</span><span class="ctx-info-value">${_esc(key)}</span></div>
             <div class="ctx-info-item"><span class="ctx-info-label">Descriptors</span><span class="ctx-info-value">${_esc(descriptors)}</span></div>
-            <div class="ctx-info-item"><span class="ctx-info-label">Year</span><span class="ctx-info-value">${_esc(t.year || "")}</span></div>
-            <div class="ctx-info-item" style="grid-column:1/-1"><span class="ctx-info-label">Location / Era</span><span class="ctx-info-value">${_esc(locEra)}</span></div>
+            <div class="ctx-info-item"><span class="ctx-info-label">Location / Era</span><span class="ctx-info-value">${_esc(locEra)}</span></div>
         </div>
         ${key ? `<div class="ctx-info-mix-section">
             <div class="ctx-mix-layout">
-                <div class="ctx-mix-wheel">${wheelSvg}</div>
                 <div class="ctx-mix-details">
-                    <div class="ctx-mix-current">Key: ${_esc(key)}</div>
                     <div class="ctx-mix-compat-header">Harmonic Neighbors</div>
                     ${mixKeysHtml}
                     ${bpmBarHtml}
                 </div>
+                <div class="ctx-mix-wheel">${wheelSvg}</div>
             </div>
-        </div>` : ""}`;
+        </div>` : ""}
+        <div class="ctx-artist-tracks"></div>`;
 
     // Fetch narrative if not cached
     if (!cached) {
         _fetchTrackNarrative(t.id);
     }
+
+    // Fetch other tracks by same artist(s)
+    _fetchArtistTracks(t.id, el);
+}
+
+function _fetchArtistTracks(trackId, containerEl) {
+    fetch(`/api/set-workshop/artist-tracks/${trackId}`)
+        .then(r => r.json())
+        .then(data => {
+            const tracks = data.tracks || [];
+            const holder = containerEl.querySelector(".ctx-artist-tracks");
+            if (!holder || !tracks.length) {
+                if (holder) holder.remove();
+                return;
+            }
+            let html = '';
+            for (const track of tracks) {
+                const safeArtist = _esc(track.artist || "");
+                const safeTitle = _esc(track.title || "");
+                html += `<div class="ctx-scene-track-row" data-track-id="${track.id}">
+                    <img class="ctx-scene-track-art" alt="" draggable="false">
+                    <button class="btn-preview ctx-scene-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">&#9654;</button>
+                    <div class="ctx-scene-track-info">
+                        <span class="ctx-scene-track-title">${safeTitle}</span>
+                        <span class="ctx-scene-track-artist">${safeArtist}</span>
+                    </div>
+                    <div class="ctx-scene-track-meta">
+                        ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+                        ${track.key ? `<span class="ctx-scene-track-key" style="color:${camelotColor(track.key) || "var(--text-muted)"}">${_esc(track.key)}</span>` : ""}
+                    </div>
+                </div>`;
+            }
+            holder.innerHTML = `<div class="ctx-artist-tracks-label">Other tracks by this artist</div>
+                <div class="ctx-scene-tracks">${html}</div>`;
+
+            // Load artwork
+            holder.querySelectorAll(".ctx-scene-track-row").forEach(row => {
+                const img = row.querySelector(".ctx-scene-track-art");
+                const artist = row.querySelector(".ctx-scene-preview")?.dataset.artist || "";
+                const title = row.querySelector(".ctx-scene-preview")?.dataset.title || "";
+                if (img && typeof loadArtwork === "function") {
+                    loadArtwork(artist, title, img);
+                }
+            });
+
+            // Preview buttons
+            holder.querySelectorAll(".ctx-scene-preview").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if (typeof togglePreview === "function") {
+                        togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+                    }
+                });
+            });
+        })
+        .catch(err => console.warn("Artist tracks fetch failed:", err));
 }
 
 function _buildNarrativeHtml(text) {
@@ -3332,24 +3385,35 @@ function _renderNextList(el, tracks) {
     html += '<div class="ctx-next-list">';
     tracks.slice(0, 12).forEach((t, i) => {
         const keyColor = camelotColor(t.key) || "var(--text-muted)";
-        html += `<div class="ctx-next-row" data-track-id="${t.id}">
-            <span class="ctx-next-rank">${i + 1}</span>
-            <button class="btn-preview ctx-next-preview" data-artist="${_esc(t.artist)}" data-title="${_esc(t.title)}" title="Preview">&#9654;</button>
-            <div class="ctx-next-info">
-                <div class="ctx-next-title">${_esc(t.title)}</div>
-                <div class="ctx-next-artist">${_esc(t.artist)}</div>
+        html += `<div class="ctx-next-row ctx-scene-track-row" data-track-id="${t.id}">
+            <img class="ctx-scene-track-art" alt="" draggable="false">
+            <button class="btn-preview ctx-scene-preview" data-artist="${_esc(t.artist)}" data-title="${_esc(t.title)}" title="Preview">&#9654;</button>
+            <div class="ctx-scene-track-info">
+                <span class="ctx-scene-track-title">${_esc(t.title)}</span>
+                <span class="ctx-scene-track-artist">${_esc(t.artist)}</span>
             </div>
-            <div class="ctx-next-meta">
-                <span class="ctx-next-key" style="color:${keyColor}">${_esc(t.key || "?")}</span>
-                <span class="ctx-next-bpm">${t.bpm ? Math.round(t.bpm) : "?"}</span>
+            <div class="ctx-scene-track-meta">
+                ${t.bpm ? `<span>${Math.round(t.bpm)} BPM</span>` : ""}
+                ${t.key ? `<span class="ctx-scene-track-key" style="color:${keyColor}">${_esc(t.key)}</span>` : ""}
             </div>
         </div>`;
     });
     html += '</div>';
     el.innerHTML = html;
 
+    // Load artwork for track rows
+    el.querySelectorAll(".ctx-next-row").forEach(row => {
+        const img = row.querySelector(".ctx-scene-track-art");
+        const btn = row.querySelector(".ctx-scene-preview");
+        const artist = btn?.dataset.artist || "";
+        const title = btn?.dataset.title || "";
+        if (img && typeof loadArtwork === "function") {
+            loadArtwork(artist, title, img);
+        }
+    });
+
     // Preview buttons
-    el.querySelectorAll(".ctx-next-preview").forEach(btn => {
+    el.querySelectorAll(".ctx-scene-preview").forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
             if (typeof togglePreview === "function") {
@@ -3361,7 +3425,7 @@ function _renderNextList(el, tracks) {
     // Click row to open in search drawer
     el.querySelectorAll(".ctx-next-row").forEach(row => {
         row.addEventListener("click", (e) => {
-            if (e.target.closest(".ctx-next-preview")) return;
+            if (e.target.closest(".ctx-scene-preview")) return;
             const tid = parseInt(row.dataset.trackId);
             const track = tracks.find(t => t.id === tid);
             if (track) {
@@ -3580,7 +3644,7 @@ function _renderScenePanel() {
                 </div>
                 <div class="ctx-scene-track-meta">
                     ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
-                    ${track.key ? `<span class="ctx-scene-track-key">${_esc(track.key)}</span>` : ""}
+                    ${track.key ? `<span class="ctx-scene-track-key" style="color:${camelotColor(track.key) || "var(--text-muted)"}">${_esc(track.key)}</span>` : ""}
                 </div>
             </div>`;
         }
