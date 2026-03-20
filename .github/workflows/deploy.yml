@@ -136,7 +136,7 @@ jobs:
             # /ready triggers lazy init and returns "ready" once complete.
             CANARY_OK=false
             for i in $(seq 1 24); do
-              READY=$(curl -sf http://127.0.0.1:5002/ready 2>/dev/null || echo "not ready")
+              READY=$(curl -sf -m 5 http://127.0.0.1:5002/ready 2>/dev/null || echo "not ready")
               echo "  Canary attempt $i: $READY"
               if [ "$READY" = "ready" ]; then
                 CANARY_OK=true
@@ -212,7 +212,7 @@ jobs:
             echo "Verifying production container..."
             PROD_READY=false
             for i in $(seq 1 36); do
-              READY=$(curl -sf http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
+              READY=$(curl -sf -m 5 http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
               echo "  Verify attempt $i: $READY"
               if [ "$READY" = "ready" ]; then
                 PROD_READY=true
@@ -256,7 +256,7 @@ jobs:
                   "${OLD_IMAGE}"
                 echo "Rollback container started — waiting 60s for /ready..."
                 for i in $(seq 1 12); do
-                  READY=$(curl -sf http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
+                  READY=$(curl -sf -m 5 http://127.0.0.1:5001/ready 2>/dev/null || echo "not ready")
                   echo "  Rollback attempt $i: $READY"
                   if [ "$READY" = "ready" ]; then
                     echo "ROLLBACK SUCCESSFUL — site is up on previous version"
