@@ -3352,6 +3352,80 @@ def set_workshop_track_context(track_id):
     return jsonify(result)
 
 
+@api.route("/api/set-workshop/track-narrative/<int:track_id>", methods=["POST"])
+def set_workshop_track_narrative(track_id):
+    """Generate or return a cached narrative about a track and its artist."""
+    df = _ensure_parsed()
+    if df is None:
+        return jsonify({"error": "No file uploaded"}), 400
+    if track_id not in df.index:
+        return jsonify({"error": "Track not found"}), 404
+
+    # Check for cached narrative in DataFrame
+    if "_track_narrative" not in df.columns:
+        df["_track_narrative"] = ""
+    existing = df.at[track_id, "_track_narrative"]
+    if existing and str(existing).strip() and str(existing) != "nan":
+        return jsonify({"narrative": str(existing)})
+
+    row = df.loc[track_id]
+    title = _safe_val(row.get("title", ""))
+    artist = _safe_val(row.get("artist", ""))
+    bpm = _safe_val(row.get("bpm", ""))
+    key = _safe_val(row.get("key", ""))
+    year = _safe_val(row.get("year", ""))
+
+    system_prompt = (
+        "You are a music historian and cultural critic writing evocative, richly "
+        "detailed prose about music. Your writing style is immersive and atmospheric — "
+        "you paint pictures with words, drawing on cultural context, scene history, "
+        "and the emotional weight of the music. Never use bullet points, lists, or "
+        "markdown formatting. No # headers, no bold, no asterisks. Plain text only. "
+        "Write in flowing paragraphs."
+    )
+    user_prompt = (
+        f"Write about this track:\n\n"
+        f"Title: {title}\n"
+        f"Artist: {artist}\n"
+        f"{f'BPM: {bpm}' if bpm else ''}\n"
+        f"{f'Key: {key}' if key else ''}\n"
+        f"{f'Year: {year}' if year else ''}\n\n"
+        "First line: a short evocative title (5-8 words) that captures the essence of "
+        "this artist and track. Plain text only — no #, no quotes, no colon prefix, "
+        "no markdown.\n\n"
+        "Then a single paragraph (~80-100 words). Start with the artist — who they are, "
+        "where they come from, their significance. Then place this specific track within "
+        "their catalogue and history. Write with warmth and authority."
+    )
+
+    try:
+        model, provider = "claude-haiku-4-5-20251001", "anthropic"
+        client = _get_client(provider)
+        if provider == "anthropic":
+            resp = client.messages.create(
+                model=model, max_tokens=512, system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+            narrative = resp.content[0].text.strip()
+        else:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
+            narrative = resp.choices[0].message.content.strip()
+
+        # Persist to DataFrame and autosave
+        df.at[track_id, "_track_narrative"] = narrative
+        _autosave()
+        return jsonify({"narrative": narrative})
+    except Exception as e:
+        logging.exception(f"Track narrative LLM error for {track_id}")
+        return jsonify({"narrative": "", "error": str(e)}), 200
+
+
 @api.route("/api/set-workshop/check-audio", methods=["POST"])
 def set_workshop_check_audio():
     """Check which track IDs have playable audio (Dropbox or local).

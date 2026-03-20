@@ -3140,15 +3140,27 @@ function showContextForTrack(track, contextData) {
     _ctxTrackData = track;
     _ctxContextData = contextData;
 
+    // Populate persistent header
+    const titleEl = document.getElementById("ctx-persistent-title");
+    const metaEl = document.getElementById("ctx-persistent-meta");
+    if (titleEl) titleEl.textContent = track.title || "";
+    if (metaEl) {
+        const parts = [track.artist || "", track.bpm ? Math.round(track.bpm) + " BPM" : "", track.key || "", track.year || ""]
+            .filter(Boolean).join("  ·  ");
+        metaEl.textContent = parts;
+    }
+
     // Update star icon for new track
     _updateStarTabIcon();
 
-    // Load the active panel (star refreshes display without toggling on track change)
-    if (_ctxActiveTab === "star") {
-        _refreshStarPanel();
-    } else {
-        _loadCtxPanel(_ctxActiveTab);
-    }
+    // Auto-switch to INFO tab on new track
+    _ctxActiveTab = "info";
+    const tabs = document.querySelectorAll(".context-tab");
+    tabs.forEach(b => b.classList.toggle("active", b.dataset.ctxTab === "info"));
+    document.querySelectorAll(".context-panel").forEach(p => {
+        p.classList.toggle("active", p.id === "ctx-panel-info");
+    });
+    _loadCtxPanel("info");
 }
 
 function hideContextTabs() {
@@ -3162,14 +3174,16 @@ function hideContextTabs() {
 function _loadCtxPanel(tab) {
     switch (tab) {
         case "info":  _renderInfoPanel(); break;
+        case "scene": _renderScenePanel(); break;
         case "next":  _renderNextPanel(); break;
         case "set":   _renderSetPanel(); break;
-        case "dance": _renderDancePanel(); break;
         case "star":  _handleStarTab(); break;
     }
 }
 
-// ── Info Panel (vibe + track details + mix) ──
+// ── Info Panel (narrative + track details + mix) ──
+let _ctxNarrativeCache = {};  // track_id -> narrative string
+
 function _renderInfoPanel() {
     const el = document.getElementById("ctx-info-content");
     const t = _ctxTrackData;
@@ -3183,24 +3197,6 @@ function _renderInfoPanel() {
     const descriptors = parts[2] || "";
     const mood = parts[3] || "";
     const locEra = parts[4] || "";
-
-    // Vibe section
-    let vibeHtml = "";
-    const leaf = ctx?.collection_leaf;
-    if (leaf && leaf.available) {
-        vibeHtml = `<div class="ctx-vibe-leaf">
-            <div class="ctx-vibe-leaf-name">${_esc(leaf.name)}</div>
-            ${leaf.description ? `<div class="ctx-vibe-leaf-desc">${_esc(leaf.description)}</div>` : ""}
-        </div>`;
-    }
-    const alsoIn = ctx?.also_in || [];
-    if (alsoIn.length) {
-        vibeHtml += '<div class="ctx-vibe-also-header">Also appears in</div><div class="ctx-vibe-also-list">';
-        alsoIn.forEach(a => {
-            vibeHtml += `<span class="ctx-vibe-also-tag" data-leaf-id="${_esc(a.id)}">${_esc(a.title)} (${a.track_count})</span>`;
-        });
-        vibeHtml += '</div>';
-    }
 
     // Mix section — Camelot wheel + BPM bar
     const key = t.key || "";
@@ -3234,21 +3230,14 @@ function _renderInfoPanel() {
         }).join("") + '</div>';
     }
 
+    // Narrative placeholder (or cached)
+    const cached = _ctxNarrativeCache[t.id];
+    const narrativeHtml = cached
+        ? _buildNarrativeHtml(cached)
+        : `<div class="ctx-info-narrative ctx-info-narrative-loading" id="ctx-narrative-${t.id}">Researching this track…</div>`;
+
     el.innerHTML = `
-        <div class="ctx-info-track-header">
-            <div class="ctx-info-track-title">${_esc(t.title)}</div>
-            <div class="ctx-info-track-artist">${_esc(t.artist)}</div>
-            <div class="ctx-progress-wrap">
-                <div id="ctx-progress-bar" class="ctx-progress-bar">
-                    <div id="ctx-progress-fill" class="ctx-progress-fill"></div>
-                </div>
-                <div class="ctx-progress-time">
-                    <span id="ctx-current-time">0:00</span>
-                    <span id="ctx-duration">0:00</span>
-                </div>
-            </div>
-        </div>
-        ${vibeHtml}
+        ${narrativeHtml}
         <div class="ctx-info-grid">
             <div class="ctx-info-item"><span class="ctx-info-label">Genre</span><span class="ctx-info-value">${_esc(genre1)}${genre2 ? " / " + _esc(genre2) : ""}</span></div>
             <div class="ctx-info-item"><span class="ctx-info-label">BPM</span><span class="ctx-info-value">${bpm || ""}</span></div>
@@ -3270,14 +3259,44 @@ function _renderInfoPanel() {
             </div>
         </div>` : ""}`;
 
-    // Wire also-in tag clicks
-    el.querySelectorAll(".ctx-vibe-also-tag").forEach(tag => {
-        tag.addEventListener("click", () => {
-            const leafId = tag.dataset.leafId;
-            const title = tag.textContent.replace(/\s*\(\d+\)$/, "");
-            assignSource("tree_node", leafId, "collection", title);
-        });
-    });
+    // Fetch narrative if not cached
+    if (!cached) {
+        _fetchTrackNarrative(t.id);
+    }
+}
+
+function _buildNarrativeHtml(text) {
+    // First line is the title, rest is the body
+    const lines = text.split("\n").filter(l => l.trim());
+    const title = (lines[0] || "").replace(/^#+\s*/, "").replace(/^\*+/, "").trim();
+    const body = lines.slice(1).join("\n").trim();
+    return `<div class="ctx-info-narrative">
+        <div class="ctx-info-narrative-title">${_esc(title)}</div>
+        ${body ? `<div class="ctx-info-narrative-body">${_esc(body)}</div>` : ""}
+    </div>`;
+}
+
+async function _fetchTrackNarrative(trackId) {
+    try {
+        const res = await fetch(`/api/set-workshop/track-narrative/${trackId}`, { method: "POST" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.narrative) {
+            _ctxNarrativeCache[trackId] = data.narrative;
+            // Replace placeholder with structured narrative
+            const placeholder = document.getElementById(`ctx-narrative-${trackId}`);
+            if (placeholder) {
+                placeholder.outerHTML = _buildNarrativeHtml(data.narrative);
+            }
+        } else {
+            const placeholder = document.getElementById(`ctx-narrative-${trackId}`);
+            if (placeholder) placeholder.remove();
+        }
+    } catch (e) {
+        console.error("Failed to fetch track narrative:", e);
+        const placeholder = document.getElementById(`ctx-narrative-${trackId}`);
+        if (placeholder) placeholder.remove();
+    }
 }
 
 // ── Next / Explode Panel ──
@@ -3513,35 +3532,91 @@ function _buildCamelotWheelSvg(currentKey, size) {
     return svg;
 }
 
-// ── Dance Panel ──
-let _ctxDancerInstance = null;
+// ── Scene Panel (collection leaf + track list) ──
+function _renderScenePanel() {
+    const el = document.getElementById("ctx-scene-content");
+    if (!el) return;
 
-function _renderDancePanel() {
-    const stage = document.getElementById("ctx-dance-stage");
-    if (!stage) return;
+    const ctx = _ctxContextData;
+    const leaf = ctx?.collection_leaf;
 
-    // Create dancer instance once, reuse it
-    if (!_ctxDancerInstance && typeof createRobotDancer === "function") {
-        _ctxDancerInstance = createRobotDancer(stage, { showControls: false });
-        _ctxDancerInstance.init();
+    if (!leaf || !leaf.available) {
+        el.innerHTML = '<div class="ctx-empty">No scene data available</div>';
+        return;
+    }
 
-        // Scale dancer (180×252 native) to fit available height
-        const availH = stage.clientHeight || 200;
-        const scale = Math.min(1, availH / 252);
-        const inner = stage.querySelector("div");
-        if (inner) {
-            inner.style.transform = `scale(${scale})`;
-            inner.style.transformOrigin = "top center";
+    let html = '';
+
+    // Leaf name + description
+    html += `<div class="ctx-scene-leaf">
+        <div class="ctx-scene-leaf-name">${_esc(leaf.name)}</div>
+        ${leaf.description ? `<div class="ctx-scene-leaf-desc">${_esc(leaf.description)}</div>` : ""}
+        ${leaf.track_count ? `<div class="ctx-scene-leaf-count">${leaf.track_count} tracks</div>` : ""}
+    </div>`;
+
+    // Also appears in
+    const alsoIn = ctx?.also_in || [];
+    if (alsoIn.length) {
+        html += '<div class="ctx-vibe-also-header">Also appears in</div><div class="ctx-vibe-also-list">';
+        alsoIn.forEach(a => {
+            html += `<span class="ctx-vibe-also-tag" data-leaf-id="${_esc(a.id)}">${_esc(a.title)} (${a.track_count})</span>`;
+        });
+        html += '</div>';
+    }
+
+    // Track list
+    const tracks = leaf.tracks || [];
+    if (tracks.length) {
+        html += '<div class="ctx-scene-tracks">';
+        for (const track of tracks) {
+            const safeArtist = _esc(track.artist || "");
+            const safeTitle = _esc(track.title || "");
+            html += `<div class="ctx-scene-track-row" data-track-id="${track.id}">
+                <img class="ctx-scene-track-art" alt="" draggable="false">
+                <button class="btn-preview ctx-scene-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">&#9654;</button>
+                <div class="ctx-scene-track-info">
+                    <span class="ctx-scene-track-title">${safeTitle}</span>
+                    <span class="ctx-scene-track-artist">${safeArtist}</span>
+                </div>
+                <div class="ctx-scene-track-meta">
+                    ${track.bpm ? `<span>${Math.round(track.bpm)} BPM</span>` : ""}
+                    ${track.key ? `<span class="ctx-scene-track-key">${_esc(track.key)}</span>` : ""}
+                </div>
+            </div>`;
         }
+        html += '</div>';
     }
 
-    if (_ctxDancerInstance) {
-        const t = _ctxTrackData;
-        const bpm = t?.bpm ? Math.round(t.bpm) : 120;
-        _ctxDancerInstance.setBpm(bpm);
-        _ctxDancerInstance.start();
-        _ctxDancerInstance.refreshArtwork();
-    }
+    el.innerHTML = html;
+
+    // Load artwork for track rows
+    el.querySelectorAll(".ctx-scene-track-row").forEach(row => {
+        const img = row.querySelector(".ctx-scene-track-art");
+        const artist = row.querySelector(".ctx-scene-preview")?.dataset.artist || "";
+        const title = row.querySelector(".ctx-scene-preview")?.dataset.title || "";
+        if (img && typeof loadArtwork === "function") {
+            loadArtwork(artist, title, img);
+        }
+    });
+
+    // Preview buttons
+    el.querySelectorAll(".ctx-scene-preview").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof togglePreview === "function") {
+                togglePreview(btn.dataset.artist, btn.dataset.title, btn);
+            }
+        });
+    });
+
+    // Also-in tag clicks
+    el.querySelectorAll(".ctx-vibe-also-tag").forEach(tag => {
+        tag.addEventListener("click", () => {
+            const leafId = tag.dataset.leafId;
+            const title = tag.textContent.replace(/\s*\(\d+\)$/, "");
+            assignSource("tree_node", leafId, "collection", title);
+        });
+    });
 }
 
 function _esc(str) {

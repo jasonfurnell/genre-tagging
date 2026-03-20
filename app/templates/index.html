@@ -637,10 +637,28 @@
 <div id="base-drawer" class="base-drawer">
     <!-- Context Tabs -->
     <div id="context-tabs" class="context-tabs">
+        <!-- Persistent track header (always visible above tabs) -->
+        <div id="ctx-persistent-header" class="ctx-persistent-header">
+            <div id="ctx-persistent-title" class="ctx-persistent-title"></div>
+            <div id="ctx-persistent-meta" class="ctx-persistent-meta"></div>
+            <div class="ctx-persistent-progress">
+                <div id="ctx-progress-bar" class="ctx-progress-bar">
+                    <div id="ctx-progress-fill" class="ctx-progress-fill"></div>
+                </div>
+                <div class="ctx-progress-time">
+                    <span id="ctx-current-time">0:00</span>
+                    <span id="ctx-duration">0:00</span>
+                </div>
+            </div>
+        </div>
         <div class="context-tab-bar">
             <button class="context-tab active" data-ctx-tab="info">
                 <i data-lucide="disc-3" class="context-tab-icon"></i>
                 <span class="context-tab-label">Info</span>
+            </button>
+            <button class="context-tab" data-ctx-tab="scene">
+                <i data-lucide="map-pin" class="context-tab-icon"></i>
+                <span class="context-tab-label">Scene</span>
             </button>
             <button class="context-tab" data-ctx-tab="next">
                 <i data-lucide="git-fork" class="context-tab-icon"></i>
@@ -649,10 +667,6 @@
             <button class="context-tab" data-ctx-tab="set">
                 <i data-lucide="wand-sparkles" class="context-tab-icon"></i>
                 <span class="context-tab-label">Create</span>
-            </button>
-            <button class="context-tab" data-ctx-tab="dance">
-                <i data-lucide="person-standing" class="context-tab-icon"></i>
-                <span class="context-tab-label">Dance</span>
             </button>
             <button class="context-tab" data-ctx-tab="star" id="ctx-tab-star">
                 <i data-lucide="plus" class="context-tab-icon"></i>
@@ -665,6 +679,11 @@
                     <div class="ctx-empty">Select a track to see details</div>
                 </div>
             </div>
+            <div id="ctx-panel-scene" class="context-panel">
+                <div id="ctx-scene-content" class="ctx-scene-content">
+                    <div class="ctx-empty">No scene data available</div>
+                </div>
+            </div>
             <div id="ctx-panel-next" class="context-panel">
                 <div id="ctx-next-content" class="ctx-next-content">
                     <div class="ctx-empty">Select a track to see what's next</div>
@@ -673,11 +692,6 @@
             <div id="ctx-panel-set" class="context-panel">
                 <div id="ctx-set-content" class="ctx-set-content">
                     <div class="ctx-empty">Select a track to create from it</div>
-                </div>
-            </div>
-            <div id="ctx-panel-dance" class="context-panel">
-                <div id="ctx-dance-content" class="ctx-dance-content">
-                    <div id="ctx-dance-stage" class="ctx-dance-stage"></div>
                 </div>
             </div>
             <div id="ctx-panel-star" class="context-panel">

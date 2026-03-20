@@ -5933,6 +5933,35 @@ tr.ws-seed-selected {
     border-top: 1px solid var(--border);
     background: var(--surface);
 }
+
+/* Persistent track header (always visible above tabs) */
+.ctx-persistent-header {
+    text-align: center;
+    padding: 0.3rem 0.75rem 0.2rem;
+    border-bottom: 1px solid var(--border);
+}
+.ctx-persistent-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ctx-persistent-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ctx-persistent-progress {
+    margin-top: 6px;
+    position: relative;
+    z-index: 10;
+}
 .context-tab-bar {
     display: flex;
     justify-content: center;
@@ -5946,7 +5975,7 @@ tr.ws-seed-selected {
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: 8px 4px 6px;
+    padding: 5px 4px 4px;
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
@@ -5963,8 +5992,8 @@ tr.ws-seed-selected {
     border-bottom-color: var(--accent);
 }
 .context-tab-icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 .context-tab-label {
     font-size: 9px;
@@ -5978,7 +6007,7 @@ tr.ws-seed-selected {
 .context-tab-panels {
     max-height: 220px;
     overflow-y: auto;
-    padding: 0.75rem 1rem;
+    padding-top: 0.4rem;
 }
 .context-panel {
     display: none;
@@ -5993,27 +6022,48 @@ tr.ws-seed-selected {
     padding: 1.5rem 0;
 }
 
-/* Info panel — track header */
-.ctx-info-track-header {
-    text-align: center;
+/* (track header styles moved to .ctx-persistent-header) */
+
+/* Track narrative */
+.ctx-info-narrative {
+    padding: 0.6rem;
     margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
-.ctx-info-track-title {
-    font-size: 0.95rem;
+.ctx-info-narrative-title {
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.2;
+    line-height: 1.25;
 }
-.ctx-info-track-artist {
-    font-size: 0.75rem;
+.ctx-info-narrative-body {
+    font-size: 0.72rem;
     color: var(--text-muted);
-    margin-top: 2px;
+    line-height: 1.4;
+    margin-top: 4px;
 }
-.ctx-progress-wrap {
-    margin-top: 6px;
+.ctx-info-narrative-loading {
+    font-size: 0.72rem;
+    font-style: italic;
+    color: var(--text-muted);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
+.ctx-info-narrative-loading::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: ws-spin 0.8s linear infinite;
+    flex-shrink: 0;
+}
+
 .ctx-progress-bar {
     width: 100%;
     height: 4px;
@@ -6357,22 +6407,98 @@ tr.ws-seed-selected {
     border-top: 1px solid var(--border);
 }
 
-/* Dance panel */
-.ctx-dance-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+/* Scene panel */
+.ctx-scene-leaf {
+    padding: 0.6rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
 }
-.ctx-dance-stage {
+.ctx-scene-leaf-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+}
+.ctx-scene-leaf-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+.ctx-scene-leaf-count {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.ctx-scene-tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 0.5rem;
+}
+.ctx-scene-track-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 200px;
+    gap: 0.5rem;
+    padding: 4px 6px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.12s;
+}
+.ctx-scene-track-row:hover {
+    background: rgba(255,255,255,0.06);
+}
+.ctx-scene-track-art {
+    width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+}
+.ctx-scene-preview {
+    width: 24px;
+    height: 24px;
+    font-size: 0.55rem;
+    flex-shrink: 0;
+}
+.ctx-scene-track-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.ctx-scene-track-title {
+    font-size: 0.75rem;
+    color: var(--text);
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
-.ctx-dance-stage > div {
-    transform-origin: top center;
+.ctx-scene-track-artist {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ctx-scene-track-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+.ctx-scene-track-key {
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.08);
 }
 
 /* ── sm: 480px — small phone portrait ─────────────────────────── */

@@ -78,6 +78,14 @@ function initPlayback() {
         const pct = (e.clientX - rect.left) / rect.width;
         setAudio.currentTime = pct * setAudio.duration;
     });
+
+    // Persistent header progress bar (context tabs area)
+    document.getElementById("ctx-progress-bar").addEventListener("click", (e) => {
+        if (!setAudio || !setAudio.duration) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        setAudio.currentTime = pct * setAudio.duration;
+    });
 }
 
 
