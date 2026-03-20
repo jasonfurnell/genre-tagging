@@ -135,6 +135,7 @@ The deploy script's `aws ecr get-login-password` command will now automatically 
 
 | Date | Issue | Root Cause | Resolution |
 |------|-------|-----------|------------|
+| 2026-03-20 | Deploy failed: prod verify hung on attempt 1 for 9min | `curl` had no `-m` timeout; hung when `/ready` blocked during init | Added `-m 5` to all curl health checks (`5b5d3a4`). Manual `docker restart` brought site back |
 | 2026-03-17 | Deploy #47 failed: prod verify timeout | SSH 5m timeout too short + memory pressure | Extended timeout to 10m, added memory limits |
 | 2026-03-17 | Deploy #44 failed: canary never ready (24 attempts) | OOM: two containers + Docker exceeded 1GB | Added swap, memory limits, sequential lifecycle |
 | 2026-03-17 | Frequent manual EC2 restarts needed | Docker/app OOM kills with no recovery | Swap file + memory-limited containers |
