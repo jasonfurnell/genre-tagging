@@ -3763,7 +3763,7 @@ function _updateStarTabIcon() {
     if (typeof lucide !== "undefined") lucide.createIcons({ nodes: [tabBtn] });
 }
 
-/** Render the starred track list following the ctx-next-row pattern */
+/** Render the starred track list matching the scene-tab track-row style */
 function _renderStarPanel(tracks) {
     tracks = [...tracks].reverse();  // newest added at top
     const el = document.getElementById("ctx-star-content");
@@ -3775,29 +3775,43 @@ function _renderStarPanel(tracks) {
     }
 
     let html = '<div class="ctx-star-count">' + tracks.length + ' starred track' + (tracks.length !== 1 ? 's' : '') + '</div>';
-    html += '<div class="ctx-next-list">';
-    tracks.forEach((t, i) => {
-        const isPlaying = _ctxTrackId != null && t.id === _ctxTrackId;
-        html += `<div class="ctx-next-row${isPlaying ? ' ctx-star-active' : ''}" data-track-id="${t.id}">
+    html += '<div class="ctx-scene-tracks">';
+    tracks.forEach((t) => {
+        const isActive = _ctxTrackId != null && t.id === _ctxTrackId;
+        const safeArtist = _esc(t.artist || "");
+        const safeTitle = _esc(t.title || "");
+        html += `<div class="ctx-scene-track-row${isActive ? ' ctx-star-active' : ''}" data-track-id="${t.id}">
+            <img class="ctx-scene-track-art" alt="" draggable="false">
+            <button class="btn-preview ctx-scene-preview" data-artist="${safeArtist}" data-title="${safeTitle}" title="Preview">&#9654;</button>
+            <div class="ctx-scene-track-info">
+                <span class="ctx-scene-track-title">${safeTitle}</span>
+                <span class="ctx-scene-track-artist">${safeArtist}</span>
+            </div>
+            <div class="ctx-scene-track-meta">
+                ${t.bpm ? `<span>${Math.round(t.bpm)} BPM</span>` : ""}
+                ${t.key ? `<span class="ctx-scene-track-key" style="color:${camelotColor(t.key) || "var(--text-muted)"}">${_esc(t.key)}</span>` : ""}
+            </div>
             <button class="ctx-star-remove-btn" data-track-id="${t.id}" title="Remove">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
-            <button class="btn-preview ctx-next-preview" data-artist="${_esc(t.artist)}" data-title="${_esc(t.title)}" title="Preview">&#9654;</button>
-            <div class="ctx-next-info">
-                <div class="ctx-next-title">${_esc(t.title)}</div>
-                <div class="ctx-next-artist">${_esc(t.artist)}</div>
-            </div>
-            <div class="ctx-next-meta">
-                ${t.key ? `<span class="ctx-next-key">${_esc(t.key)}</span>` : ""}
-                <span class="ctx-next-bpm">${t.bpm ? Math.round(t.bpm) : ""}</span>
-            </div>
         </div>`;
     });
     html += '</div>';
     el.innerHTML = html;
 
+    // Load artwork for track rows
+    el.querySelectorAll(".ctx-scene-track-row").forEach(row => {
+        const img = row.querySelector(".ctx-scene-track-art");
+        const preview = row.querySelector(".ctx-scene-preview");
+        const artist = preview?.dataset.artist || "";
+        const title = preview?.dataset.title || "";
+        if (img && typeof loadArtwork === "function") {
+            loadArtwork(artist, title, img);
+        }
+    });
+
     // Preview buttons
-    el.querySelectorAll(".ctx-next-preview").forEach(btn => {
+    el.querySelectorAll(".ctx-scene-preview").forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
             if (typeof togglePreview === "function") {
