@@ -1243,6 +1243,99 @@ function renderTimeRow() {
 }
 
 
+// ── Mobile Slot Control Card (now-playing only) ──
+
+function renderMobileSlotControl() {
+    // Remove any existing card + its scroll listener
+    const existing = document.getElementById("set-mobile-ctrl");
+    if (existing) {
+        if (existing._cleanupScroll) existing._cleanupScroll();
+        existing.remove();
+    }
+
+    if (!_isMobileView()) return;
+    if (setPlaySetIndex < 0 || setPlaySetIndex >= setSlots.length) return;
+
+    const slot = setSlots[setPlaySetIndex];
+    const slotIdx = setPlaySetIndex;
+    const selTrack = (slot.selectedTrackIndex != null) ? slot.tracks[slot.selectedTrackIndex] : null;
+
+    // Find the playing column to position against
+    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
+    if (!col) return;
+
+    const card = document.createElement("div");
+    card.id = "set-mobile-ctrl";
+    card.className = "set-mobile-ctrl-card";
+
+    // ── Key badge (prominent) ──
+    const keyBadge = document.createElement("div");
+    keyBadge.className = "set-mobile-ctrl-key";
+    if (selTrack && selTrack.key) {
+        const kc = camelotColor(selTrack.key);
+        keyBadge.textContent = selTrack.key;
+        if (kc) {
+            keyBadge.style.color = kc;
+            keyBadge.style.backgroundColor = kc + "22";
+            keyBadge.style.borderColor = kc + "60";
+        }
+    } else {
+        keyBadge.textContent = "—";
+    }
+    card.appendChild(keyBadge);
+
+    // ── Action buttons ──
+    const actions = document.createElement("div");
+    actions.className = "set-mobile-ctrl-actions";
+
+    const mkBtn = (label, cls, handler) => {
+        const btn = document.createElement("button");
+        btn.className = "set-mobile-ctrl-btn" + (cls ? " " + cls : "");
+        btn.innerHTML = label;
+        btn.addEventListener("click", (e) => { e.stopPropagation(); handler(); });
+        return btn;
+    };
+
+    actions.appendChild(mkBtn("+&larr;", "", () => insertBlankColumn(slotIdx)));
+    actions.appendChild(mkBtn("&#x2630;", "set-mobile-ctrl-grip", () => {}));
+    actions.appendChild(mkBtn("&#x2715;", "set-mobile-ctrl-del", () => handleSlotControl(slot.id, "delete")));
+    actions.appendChild(mkBtn("&rarr;+", "", () => insertBlankColumn(slotIdx + 1)));
+
+    card.appendChild(actions);
+
+    // Append to body (outside all overflow-hidden containers)
+    document.body.appendChild(card);
+
+    // Position fixed, centered above the playing column
+    requestAnimationFrame(() => _positionMobileCtrl(col, card));
+
+    // Reposition on scroll
+    const scrollEl = document.querySelector(".set-grid-scroll");
+    const wrapEl = document.querySelector(".set-grid-wrapper");
+    const onScroll = () => {
+        const c = document.getElementById("set-mobile-ctrl");
+        if (!c) { cleanup(); return; }
+        _positionMobileCtrl(col, c);
+    };
+    const cleanup = () => {
+        if (scrollEl) scrollEl.removeEventListener("scroll", onScroll);
+        if (wrapEl) wrapEl.removeEventListener("scroll", onScroll);
+    };
+    // Store cleanup so we can remove on next render
+    card._cleanupScroll = cleanup;
+    if (scrollEl) scrollEl.addEventListener("scroll", onScroll, { passive: true });
+    if (wrapEl) wrapEl.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function _positionMobileCtrl(col, card) {
+    const rect = col.getBoundingClientRect();
+    const cardH = card.offsetHeight || 80;
+    const cardW = card.offsetWidth || 200;
+    card.style.left = `${rect.left + rect.width / 2 - cardW / 2}px`;
+    card.style.top  = `${rect.top - cardH - 6}px`;
+}
+
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Track Selection
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2040,7 +2133,7 @@ function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
     // Scroll to the first track in the set (center both horizontally and vertically)
     if (firstSlotIdx >= 0) {
         setTimeout(() => {
-            const col = document.querySelector(`.set-column[data-slot-id="${workshopSlots[firstSlotIdx]?.id}"]`);
+            const col = document.querySelector(`.set-column[data-slot-id="${setSlots[firstSlotIdx]?.id}"]`);
             if (col) _scrollToActiveTrack(col);
         }, 400);
     }

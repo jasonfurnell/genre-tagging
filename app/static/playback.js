@@ -161,6 +161,10 @@ function stopPlayback() {
         el => el.classList.remove("play-set-active")
     );
 
+    // Remove mobile control card
+    const mobileCtrl = document.getElementById("set-mobile-ctrl");
+    if (mobileCtrl) mobileCtrl.remove();
+
     // Reset progress display
     document.getElementById("now-playing-progress-fill").style.width = "0%";
     document.getElementById("now-playing-current-time").textContent = "0:00";
@@ -529,6 +533,9 @@ async function playFullTrack(idx) {
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");
 
+    // Mobile control card (above now-playing column)
+    if (typeof renderMobileSlotControl === "function") renderMobileSlotControl();
+
     // Update play/pause button
     document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
     document.getElementById("base-np-play-pause").innerHTML = "&#9646;&#9646;";
@@ -605,6 +612,9 @@ async function playSlotPreview(idx) {
     }
     const keyCell = document.querySelector(`.set-key-cell[data-slot-id="${slot.id}"]`);
     if (keyCell) keyCell.classList.add("play-set-active");
+
+    // Mobile control card (above now-playing column)
+    if (typeof renderMobileSlotControl === "function") renderMobileSlotControl();
 
     // Update play/pause button
     document.getElementById("now-playing-play-pause").innerHTML = "&#9646;&#9646;";
