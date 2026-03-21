@@ -808,6 +808,14 @@ function renderSet() {
     renderTrackColumns();
     renderTimeRow();
     updateToolbarState();
+
+    // Re-attach mobile controls only if they were already showing before
+    // this DOM rebuild (i.e. _mobileCtrlSlotIdx was set by a prior call).
+    // This avoids showing controls during the init sequence before the set
+    // has fully loaded.
+    if (_isMobileView() && _mobileCtrlSlotIdx >= 0 && _mobileCtrlSlotIdx < setSlots.length) {
+        renderMobileSlotControl(_mobileCtrlSlotIdx);
+    }
 }
 
 
@@ -1114,6 +1122,9 @@ function renderTrackColumns() {
         col.addEventListener("drop", (e) => { col.classList.remove("drag-over"); onSlotDrop(e, slot.id); });
         col.addEventListener("dragend", () => { dragSlotId = null; dragGroupSlotIds = null; });
 
+        // Desktop: shift+click to start slot reorder drag
+        col.addEventListener("mousedown", (e) => _onDesktopSlotDragStart(e, slot.id));
+
         if (!slot.source || slot.tracks.length === 0) {
             // Empty slot
             const placeholder = document.createElement("div");
@@ -1243,48 +1254,51 @@ function renderTimeRow() {
 }
 
 
-// ── Mobile Slot Control Card (now-playing only) ──
+// ── Mobile Slot Control Card ──
+// Shows above the active track (playing OR selected) in the grid.
+// The card is placed INSIDE the column DOM so it scrolls naturally with it.
+// No scroll listeners or getBoundingClientRect positioning needed.
 
-function renderMobileSlotControl() {
-    // Remove any existing card + its scroll listener
+// Track which slot the controls are targeting (may differ from setPlaySetIndex)
+let _mobileCtrlSlotIdx = -1;
+
+function renderMobileSlotControl(forceSlotIdx) {
+    // Remove any existing card
     const existing = document.getElementById("set-mobile-ctrl");
-    if (existing) {
-        if (existing._cleanupScroll) existing._cleanupScroll();
-        existing.remove();
-    }
+    if (existing) existing.remove();
 
     if (!_isMobileView()) return;
-    if (setPlaySetIndex < 0 || setPlaySetIndex >= setSlots.length) return;
 
-    const slot = setSlots[setPlaySetIndex];
-    const slotIdx = setPlaySetIndex;
-    const selTrack = (slot.selectedTrackIndex != null) ? slot.tracks[slot.selectedTrackIndex] : null;
+    // Determine which slot to show controls for:
+    //  1. Explicit forceSlotIdx (e.g. after track selection)
+    //  2. Currently playing slot
+    //  3. Fall back to last controlled slot
+    let slotIdx = -1;
+    if (typeof forceSlotIdx === "number" && forceSlotIdx >= 0 && forceSlotIdx < setSlots.length) {
+        slotIdx = forceSlotIdx;
+    } else if (setPlaySetIndex >= 0 && setPlaySetIndex < setSlots.length) {
+        slotIdx = setPlaySetIndex;
+    } else if (_mobileCtrlSlotIdx >= 0 && _mobileCtrlSlotIdx < setSlots.length) {
+        slotIdx = _mobileCtrlSlotIdx;
+    }
+    if (slotIdx < 0) return;
 
-    // Find the playing column to position against
+    const slot = setSlots[slotIdx];
+    if (!slot) return;
+    _mobileCtrlSlotIdx = slotIdx;
+
+    // Find the column element
     const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
     if (!col) return;
+
+    // Find the selected track element inside the column (for positioning above it)
+    const selTrackEl = col.querySelector(".set-track-slot.selected");
 
     const card = document.createElement("div");
     card.id = "set-mobile-ctrl";
     card.className = "set-mobile-ctrl-card";
 
-    // ── Key badge (prominent) ──
-    const keyBadge = document.createElement("div");
-    keyBadge.className = "set-mobile-ctrl-key";
-    if (selTrack && selTrack.key) {
-        const kc = camelotColor(selTrack.key);
-        keyBadge.textContent = selTrack.key;
-        if (kc) {
-            keyBadge.style.color = kc;
-            keyBadge.style.backgroundColor = kc + "22";
-            keyBadge.style.borderColor = kc + "60";
-        }
-    } else {
-        keyBadge.textContent = "—";
-    }
-    card.appendChild(keyBadge);
-
-    // ── Action buttons ──
+    // ── Row 1: action buttons (add-left, delete, add-right) ──
     const actions = document.createElement("div");
     actions.className = "set-mobile-ctrl-actions";
 
@@ -1297,59 +1311,399 @@ function renderMobileSlotControl() {
     };
 
     actions.appendChild(mkBtn("+&larr;", "", () => insertBlankColumn(slotIdx)));
-    actions.appendChild(mkBtn("&#x2630;", "set-mobile-ctrl-grip", () => {}));
     actions.appendChild(mkBtn("&#x2715;", "set-mobile-ctrl-del", () => handleSlotControl(slot.id, "delete")));
     actions.appendChild(mkBtn("&rarr;+", "", () => insertBlankColumn(slotIdx + 1)));
-
     card.appendChild(actions);
 
-    // Append to body (outside all overflow-hidden containers)
-    document.body.appendChild(card);
+    // ── Row 2: full-width drag grip ──
+    const gripBtn = document.createElement("button");
+    gripBtn.className = "set-mobile-ctrl-btn set-mobile-ctrl-grip";
+    gripBtn.innerHTML = "&#x2630;";
+    gripBtn.addEventListener("click", (e) => e.stopPropagation());
+    gripBtn.addEventListener("mousedown",  (e) => _onSlotGripDown(e, slotIdx, "mouse"));
+    gripBtn.addEventListener("touchstart", (e) => _onSlotGripDown(e, slotIdx, "touch"), { passive: false });
+    card.appendChild(gripBtn);
 
-    // Position fixed, centered above the playing column
-    requestAnimationFrame(() => _positionMobileCtrl(col, card));
+    // ── Place INSIDE the column, positioned above the selected track ──
+    // Column has position:relative, so absolute positioning works naturally.
+    // The card scrolls with the column — no scroll listeners needed.
+    col.appendChild(card);
 
-    // Reposition on scroll
-    const scrollEl = document.querySelector(".set-grid-scroll");
-    const wrapEl = document.querySelector(".set-grid-wrapper");
-    const onScroll = () => {
-        const c = document.getElementById("set-mobile-ctrl");
-        if (!c) { cleanup(); return; }
-        _positionMobileCtrl(col, c);
-    };
-    const cleanup = () => {
-        if (scrollEl) scrollEl.removeEventListener("scroll", onScroll);
-        if (wrapEl) wrapEl.removeEventListener("scroll", onScroll);
-    };
-    // Store cleanup so we can remove on next render
-    card._cleanupScroll = cleanup;
-    if (scrollEl) scrollEl.addEventListener("scroll", onScroll, { passive: true });
-    if (wrapEl) wrapEl.addEventListener("scroll", onScroll, { passive: true });
+    // Position vertically: above the selected track's top offset within the column
+    requestAnimationFrame(() => {
+        if (selTrackEl) {
+            // selTrackEl.offsetTop is relative to the column (position:relative parent)
+            const trackTop = selTrackEl.offsetTop;
+            const cardH = card.offsetHeight || 60;
+            card.style.top = `${trackTop - cardH - 4}px`;
+        }
+    });
 }
 
-function _positionMobileCtrl(col, card) {
-    const rect = col.getBoundingClientRect();
-    const cardH = card.offsetHeight || 80;
-    const cardW = card.offsetWidth || 200;
 
-    // The column rect may extend behind the base drawer (overflow clipped).
-    // Use the scroll container's visible bottom as the true lower bound.
-    const scroller = document.querySelector(".set-grid-scroll") || document.querySelector(".set-grid-wrapper");
-    const visibleBottom = scroller ? scroller.getBoundingClientRect().bottom : rect.bottom;
+// ═══════════════════════════════════════════════════════════════════════════
+// Slot Drag-to-Reorder
+// ═══════════════════════════════════════════════════════════════════════════
 
-    // Center horizontally on the column, clamped to viewport
-    let left = rect.left + rect.width / 2 - cardW / 2;
-    left = Math.max(4, Math.min(left, window.innerWidth - cardW - 4));
+const DRAG_SCROLL_EDGE_PX = 60;
+const DRAG_SCROLL_SPEED   = 8;
 
-    // Place just above the visible bottom of the grid (above the drawer)
-    let top = visibleBottom - cardH - 6;
-    // If that goes above the column top, clamp to just below it
-    if (top < rect.top + 4) {
-        top = rect.top + 4;
+let _slotDrag = {
+    active: false,
+    slotId: null,
+    fromIdx: -1,
+    startX: 0,
+    curX: 0,
+    startScrollLeft: 0,   // grid scrollLeft at drag start
+    insertIdx: null,
+    scrollDir: null,
+    scrollTimer: null,
+};
+
+// ── Unified grip-down handler (mobile card grip button) ──
+
+function _onSlotGripDown(e, slotIdx, mode) {
+    if (_slotDrag.active) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const slot = setSlots[slotIdx];
+    if (!slot) return;
+
+    const isTouch = mode === "touch";
+    const pt = isTouch ? e.touches[0] : e;
+
+    _slotDrag.active  = true;
+    _slotDrag.slotId  = slot.id;
+    _slotDrag.fromIdx = slotIdx;
+    _slotDrag.startX  = pt.clientX;
+    _slotDrag.curX    = pt.clientX;
+    const scrollEl = document.getElementById("set-grid-scroll");
+    _slotDrag.startScrollLeft = scrollEl ? scrollEl.scrollLeft : 0;
+
+    // Visual feedback on grip button
+    const gripBtn = e.currentTarget;
+    gripBtn.classList.add("dragging");
+    gripBtn.innerHTML = "&#x2194;";  // ↔ arrows
+
+    // Highlight the column being dragged
+    const col = document.querySelector(`.set-column[data-slot-id="${slot.id}"]`);
+    if (col) col.classList.add("dragging-slot");
+
+    // Create insert line
+    _ensureInsertLine();
+
+    // Attach document-level move/end handlers
+    if (isTouch) {
+        document.addEventListener("touchmove",   _onSlotDragMove, { passive: false });
+        document.addEventListener("touchend",    _onSlotDragEnd,  { passive: false });
+        document.addEventListener("touchcancel", _onSlotDragEnd,  { passive: false });
+    } else {
+        document.addEventListener("mousemove", _onSlotDragMove, { passive: false });
+        document.addEventListener("mouseup",   _onSlotDragEnd,  { passive: false });
+    }
+}
+
+// ── Desktop: shift+mousedown on a column to start drag ──
+
+function _onDesktopSlotDragStart(e, slotId) {
+    if (_slotDrag.active) return;
+    if (!e.shiftKey) return;  // only shift+click
+    e.preventDefault();
+    e.stopPropagation();
+
+    const idx = setSlots.findIndex(s => s.id === slotId);
+    if (idx < 0) return;
+
+    _slotDrag.active  = true;
+    _slotDrag.slotId  = slotId;
+    _slotDrag.fromIdx = idx;
+    _slotDrag.startX  = e.clientX;
+    _slotDrag.curX    = e.clientX;
+    const scrollEl = document.getElementById("set-grid-scroll");
+    _slotDrag.startScrollLeft = scrollEl ? scrollEl.scrollLeft : 0;
+
+    const col = document.querySelector(`.set-column[data-slot-id="${slotId}"]`);
+    if (col) col.classList.add("dragging-slot");
+
+    _ensureInsertLine();
+
+    document.addEventListener("mousemove", _onSlotDragMove, { passive: false });
+    document.addEventListener("mouseup",   _onSlotDragEnd,  { passive: false });
+}
+
+// ── Move handler (shared by touch & mouse) ──
+
+function _onSlotDragMove(e) {
+    if (!_slotDrag.active) return;
+    e.preventDefault();
+
+    const pt = e.touches ? e.touches[0] : e;
+    _slotDrag.curX = pt.clientX;
+
+    _updateDragVisuals();
+    _updateInsertLine();
+    _updateDragAutoScroll();
+}
+
+// Separated so auto-scroll can also call it each frame
+function _updateDragVisuals() {
+    const dragCol = document.querySelector(`.set-column[data-slot-id="${_slotDrag.slotId}"]`);
+    if (!dragCol) return;
+
+    // Account for both finger movement AND grid scroll since drag started
+    const scrollEl = document.getElementById("set-grid-scroll");
+    const scrollDelta = scrollEl ? (scrollEl.scrollLeft - _slotDrag.startScrollLeft) : 0;
+    const dx = (_slotDrag.curX - _slotDrag.startX) + scrollDelta;
+
+    dragCol.style.transform = `translateX(${dx}px)`;
+    dragCol.style.zIndex = "20";
+    // The control card is a child of dragCol, so it moves with it automatically
+}
+
+// ── End handler (shared) ──
+
+function _onSlotDragEnd(e) {
+    if (!_slotDrag.active) return;
+
+    // Perform reorder if a valid drop target was identified
+    if (_slotDrag.insertIdx !== null) {
+        _executeSlotReorder();
     }
 
-    card.style.left = `${left}px`;
-    card.style.top  = `${top}px`;
+    _cleanupSlotDrag();
+}
+
+// ── Insert line management ──
+
+function _ensureInsertLine() {
+    if (document.getElementById("set-drag-insert-line")) return;
+    const line = document.createElement("div");
+    line.id = "set-drag-insert-line";
+    line.className = "set-drag-insert-line";
+
+    // Use the dragged track's Camelot key color for the line
+    const dragCol = _slotDrag.slotId
+        ? document.querySelector(`.set-column[data-slot-id="${_slotDrag.slotId}"]`)
+        : null;
+    const keyColor = dragCol ? dragCol.style.getPropertyValue("--key-raw") : null;
+    if (keyColor) line.style.setProperty("--insert-color", keyColor);
+
+    const container = document.getElementById("set-columns");
+    if (container) container.appendChild(line);
+}
+
+function _updateInsertLine() {
+    const allCols = document.querySelectorAll(".set-column");
+    if (allCols.length === 0) return;
+
+    const curX = _slotDrag.curX;
+    const fromIdx = _slotDrag.fromIdx;
+
+    // Build list of column rects, using the ORIGINAL (un-transformed) position
+    // for the dragged column to avoid confusion from translateX.
+    const colData = [];
+    for (let i = 0; i < allCols.length; i++) {
+        const col = allCols[i];
+        let rect = col.getBoundingClientRect();
+
+        // If this is the dragged column, undo the transform to get its natural position
+        if (i === fromIdx && col.style.transform) {
+            const dx = parseFloat(col.style.transform.replace(/[^-\d.]/g, "")) || 0;
+            rect = { left: rect.left - dx, right: rect.right - dx, width: rect.width };
+        }
+
+        colData.push({ idx: i, rect, col });
+    }
+
+    // Find drop position: where does the cursor fall among the un-dragged columns?
+    let dropIdx = null;
+    for (const { idx, rect } of colData) {
+        if (idx === fromIdx) continue;  // skip the dragged column
+        const mid = rect.left + rect.width / 2;
+        if (curX < mid) {
+            dropIdx = idx;
+            break;
+        }
+    }
+    if (dropIdx === null) dropIdx = allCols.length;
+
+    // A drop at fromIdx or fromIdx+1 is a no-op (same position)
+    if (dropIdx === fromIdx || dropIdx === fromIdx + 1) {
+        _slotDrag.insertIdx = null;
+        const line = document.getElementById("set-drag-insert-line");
+        if (line) line.classList.remove("active");
+        return;
+    }
+
+    _slotDrag.insertIdx = dropIdx;
+
+    // Position the insert line using the natural (un-transformed) rects
+    const line = document.getElementById("set-drag-insert-line");
+    if (!line) return;
+
+    const container = document.getElementById("set-columns");
+    if (!container) return;
+    const containerRect = container.getBoundingClientRect();
+
+    let lineX;
+    if (dropIdx < allCols.length) {
+        const target = colData[dropIdx];
+        lineX = target.rect.left - containerRect.left - 2;
+    } else {
+        // After last column — use the last non-dragged column's right edge
+        let lastRect = colData[colData.length - 1].rect;
+        lineX = lastRect.right - containerRect.left + 2;
+    }
+
+    line.style.left = `${lineX}px`;
+    line.classList.add("active");
+}
+
+// ── Auto-scroll near edges ──
+
+function _updateDragAutoScroll() {
+    const scrollEl = document.getElementById("set-grid-scroll");
+    if (!scrollEl) return;
+
+    const rect = scrollEl.getBoundingClientRect();
+    const curX = _slotDrag.curX;
+
+    let dir = null;
+    if (curX < rect.left + DRAG_SCROLL_EDGE_PX) dir = "left";
+    else if (curX > rect.right - DRAG_SCROLL_EDGE_PX) dir = "right";
+
+    if (dir === _slotDrag.scrollDir) return;  // no change
+
+    // Stop previous scroll
+    if (_slotDrag.scrollTimer) {
+        cancelAnimationFrame(_slotDrag.scrollTimer);
+        _slotDrag.scrollTimer = null;
+    }
+    _slotDrag.scrollDir = dir;
+
+    if (!dir) return;
+
+    const doScroll = () => {
+        if (!_slotDrag.active || _slotDrag.scrollDir !== dir) return;
+        const el = document.getElementById("set-grid-scroll");
+        if (!el) return;
+        el.scrollLeft += (dir === "left" ? -DRAG_SCROLL_SPEED : DRAG_SCROLL_SPEED);
+        // Update visuals as scroll changes column positions
+        _updateDragVisuals();
+        _updateInsertLine();
+        _slotDrag.scrollTimer = requestAnimationFrame(doScroll);
+    };
+    _slotDrag.scrollTimer = requestAnimationFrame(doScroll);
+}
+
+// ── Execute the reorder ──
+
+function _executeSlotReorder() {
+    const fromIdx = _slotDrag.fromIdx;
+    let toIdx = _slotDrag.insertIdx;
+    if (toIdx === null || fromIdx < 0) return;
+
+    // Adjust target: if dragging rightward, account for the removed element
+    if (toIdx > fromIdx) toIdx--;
+
+    if (toIdx === fromIdx) return;  // no-op
+
+    // Preserve playback state
+    const playingSlotId = (typeof setPlaySetIndex === "number" && setPlaySetIndex >= 0)
+        ? setSlots[setPlaySetIndex]?.id : null;
+
+    // Splice & reinsert
+    const [moved] = setSlots.splice(fromIdx, 1);
+    setSlots.splice(toIdx, 0, moved);
+
+    // Re-sync play index by ID
+    if (playingSlotId) {
+        const newIdx = setSlots.findIndex(s => s.id === playingSlotId);
+        if (newIdx >= 0) setPlaySetIndex = newIdx;
+    }
+
+    ensureBookendSlots();
+
+    // Clear so renderSet() doesn't re-attach controls at the stale index
+    _mobileCtrlSlotIdx = -1;
+
+    renderSet();
+
+    // Re-activate the slot visually (play-set-active, wide column, artwork, overlays).
+    // renderSet only re-applies this if audio is actively playing; after a drag-reorder
+    // the slot may be paused/selected-only, so we need to restore it explicitly.
+    _activateSlotVisual(toIdx);
+
+    // Now re-attach controls to the correct slot after column is fully set up
+    renderMobileSlotControl(toIdx);
+
+    // Landing animation: bounce + glow on the dropped column
+    const landedSlot = setSlots[toIdx];
+    if (landedSlot) {
+        const landedCol = document.querySelector(`.set-column[data-slot-id="${landedSlot.id}"]`);
+        if (landedCol) {
+            // Use the track's key color for the glow if available
+            const keyColor = landedCol.style.getPropertyValue("--key-raw");
+            if (keyColor) {
+                landedCol.style.setProperty("--drop-glow", keyColor + "88");
+            }
+            landedCol.classList.add("drop-landed");
+            landedCol.addEventListener("animationend", () => {
+                landedCol.classList.remove("drop-landed");
+                landedCol.style.removeProperty("--drop-glow");
+            }, { once: true });
+        }
+    }
+
+    // Visual-only until user saves — but schedule autosave for persistence
+    scheduleAutoSave();
+}
+
+// ── Cleanup ──
+
+function _cleanupSlotDrag() {
+    // Remove grip animation
+    const card = document.getElementById("set-mobile-ctrl");
+    if (card) {
+        const gripBtn = card.querySelector(".set-mobile-ctrl-grip");
+        if (gripBtn) {
+            gripBtn.classList.remove("dragging");
+            gripBtn.innerHTML = "&#x2630;";
+        }
+    }
+
+    // Remove column highlight and reset transform
+    document.querySelectorAll(".set-column.dragging-slot").forEach(el => {
+        el.classList.remove("dragging-slot");
+        el.style.transform = "";
+        el.style.zIndex = "";
+    });
+
+    // Hide insert line
+    const line = document.getElementById("set-drag-insert-line");
+    if (line) line.classList.remove("active");
+
+    // Stop auto-scroll
+    if (_slotDrag.scrollTimer) {
+        cancelAnimationFrame(_slotDrag.scrollTimer);
+        _slotDrag.scrollTimer = null;
+    }
+
+    // Remove document listeners
+    document.removeEventListener("mousemove", _onSlotDragMove);
+    document.removeEventListener("mouseup",   _onSlotDragEnd);
+    document.removeEventListener("touchmove",  _onSlotDragMove);
+    document.removeEventListener("touchend",   _onSlotDragEnd);
+    document.removeEventListener("touchcancel", _onSlotDragEnd);
+
+    // Reset state
+    _slotDrag.active          = false;
+    _slotDrag.slotId          = null;
+    _slotDrag.fromIdx         = -1;
+    _slotDrag.insertIdx       = null;
+    _slotDrag.scrollDir       = null;
+    _slotDrag.startScrollLeft = 0;
 }
 
 
@@ -1371,6 +1725,9 @@ function onTrackClick(slotId, trackIdx) {
         renderSet();
         scheduleAutoSave();
     }
+
+    // Show mobile controls on this slot (even if not playing yet)
+    if (_isMobileView()) renderMobileSlotControl(si);
 
     // Play the track respecting current mode (Full Track or Short Preview)
     // playSlot also opens the drawer and updates now-playing info
@@ -1945,6 +2302,9 @@ async function _runSetInitSequence(opts = {}) {
     if (_setInitRunning) return false;
     _setInitRunning = true;
 
+    // Reset mobile controls so they don't re-appear during init renderSet calls
+    _mobileCtrlSlotIdx = -1;
+
     const isMobile = _isMobileView();
     let log, errorEl;
 
@@ -2126,6 +2486,8 @@ function _completeInitSequence(firstTrack, firstSlotIdx, isNewLoad) {
             } else if (firstSlotIdx >= 0) {
                 // Cold start — activate visually (paused), user presses play on overlay
                 _activateSlotVisual(firstSlotIdx);
+                // Show slot controls now that the set is loaded and track is selected
+                renderMobileSlotControl(firstSlotIdx);
             }
         } else {
             // No track — close the base drawer entirely

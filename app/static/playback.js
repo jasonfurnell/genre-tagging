@@ -161,12 +161,9 @@ function stopPlayback() {
         el => el.classList.remove("play-set-active")
     );
 
-    // Remove mobile control card + detach its scroll listener
+    // Remove mobile control card
     const mobileCtrl = document.getElementById("set-mobile-ctrl");
-    if (mobileCtrl) {
-        if (mobileCtrl._cleanupScroll) mobileCtrl._cleanupScroll();
-        mobileCtrl.remove();
-    }
+    if (mobileCtrl) mobileCtrl.remove();
 
     // Reset progress display
     document.getElementById("now-playing-progress-fill").style.width = "0%";

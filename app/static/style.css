@@ -5645,6 +5645,56 @@ tr.ws-seed-selected {
     }
 }
 
+/* ── Drag-to-reorder (all viewports) ──────────────────────────── */
+
+/* Drop landing: bounce + key-color glow ring */
+@keyframes slot-drop-land {
+    0%   { transform: scale(1.08); }
+    35%  { transform: scale(0.97); }
+    65%  { transform: scale(1.02); }
+    100% { transform: scale(1.0);  }
+}
+@keyframes slot-drop-glow {
+    0%   { box-shadow: 0 0 0 0 var(--drop-glow, rgba(78,204,163,0.6)); }
+    30%  { box-shadow: 0 0 18px 6px var(--drop-glow, rgba(78,204,163,0.5)); }
+    100% { box-shadow: 0 0 0 0 var(--drop-glow, rgba(78,204,163,0)); }
+}
+.set-column.drop-landed {
+    animation: slot-drop-land 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both,
+               slot-drop-glow 450ms ease-out both;
+}
+@keyframes insert-line-pulse {
+    0%, 100% {
+        opacity: 0.5;
+        box-shadow: 0 0 16px 4px var(--insert-color, #4ECCA3);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 28px 8px var(--insert-color, #4ECCA3);
+    }
+}
+.set-drag-insert-line {
+    position: absolute;
+    display: none;
+    width: 3px;
+    top: 0;
+    bottom: 0;
+    background: var(--insert-color, #4ECCA3);
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 2px;
+    margin-left: -1px;
+}
+.set-drag-insert-line.active {
+    display: block;
+    animation: insert-line-pulse 0.8s ease-in-out infinite;
+}
+.set-column.dragging-slot {
+    opacity: 0.5;
+    outline: 2px dashed rgba(78,204,163,0.6);
+    outline-offset: -2px;
+}
+
 /* ── md: 768px — large phone / small tablet ───────────────────── */
 @media (max-width: 768px) {
     :root {
@@ -5753,53 +5803,47 @@ tr.ws-seed-selected {
     .set-phase-area      { display: none; }
     .set-time-area       { display: none; }
     .set-insert-row-area { display: none; }
-    .set-key-area        { display: none; }
+    /* key row stays visible on mobile */
 
-    /* ── Mobile Slot Control Card (floats above now-playing) ── */
+    /* ── Mobile Slot Control Card (inside column, above selected track) ── */
     .set-mobile-ctrl-card {
-        position: fixed;
-        z-index: 250;
+        position: absolute;
+        z-index: 20;
+        left: 50%;
+        transform: translateX(-50%);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        background: var(--bg);
+        align-items: stretch;
+        gap: 4px;
+        background: rgba(30,30,40,0.95);
         border: 1px solid rgba(255,255,255,0.12);
         border-radius: 10px;
-        padding: 8px 10px;
+        padding: 5px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        white-space: nowrap;
         pointer-events: auto;
-    }
-    .set-mobile-ctrl-key {
-        font-size: 0.85rem;
-        font-weight: 800;
-        padding: 3px 12px;
-        border-radius: 6px;
-        border: 1.5px solid transparent;
-        letter-spacing: 0.03em;
-        text-align: center;
-        color: var(--text-muted);
+        white-space: nowrap;
     }
     .set-mobile-ctrl-actions {
         display: flex;
-        gap: 6px;
+        gap: 4px;
         align-items: center;
+        justify-content: center;
     }
     .set-mobile-ctrl-btn {
-        min-width: 40px;
-        min-height: 40px;
+        min-width: 32px;
+        min-height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(255,255,255,0.07);
         border: 1px solid rgba(255,255,255,0.10);
         color: var(--text-muted);
-        font-size: 15px;
-        border-radius: 8px;
+        font-size: 13px;
+        border-radius: 6px;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
         transition: background 0.15s, color 0.15s;
+        flex: 1;
     }
     .set-mobile-ctrl-btn:active {
         background: rgba(255,255,255,0.18);
@@ -5809,10 +5853,26 @@ tr.ws-seed-selected {
         color: #ff6b6b;
         background: rgba(255,107,107,0.2);
     }
+    /* Drag grip: full width, matches track cover */
     .set-mobile-ctrl-grip {
-        font-size: 17px;
+        min-height: 28px;
+        font-size: 15px;
         cursor: grab;
+        width: 100%;
+        flex: none;
+        border-radius: 6px;
     }
+    .set-mobile-ctrl-grip.dragging {
+        color: #4ECCA3;
+        background: rgba(78,204,163,0.15);
+        border-color: rgba(78,204,163,0.4);
+        animation: grip-pulse 0.8s ease-in-out infinite;
+    }
+    @keyframes grip-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(78,204,163,0.3); }
+        50% { box-shadow: 0 0 8px 2px rgba(78,204,163,0.5); }
+    }
+
 
     /* ── Dance tab: dancer window height set dynamically by JS ──── */
     .dance-robot-panel {
