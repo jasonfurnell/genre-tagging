@@ -5840,7 +5840,9 @@ tr.ws-seed-selected {
     .mode-toggle-track { min-width: 160px; }
 
     /* Playlists tab (migrated from inline @media) */
-    .ws-playlists-layout { grid-template-columns: 1fr; }
+    /* minmax(0, 1fr) prevents min-content overflow when a long playlist
+       name would otherwise push the column wider than the viewport. */
+    .ws-playlists-layout { grid-template-columns: minmax(0, 1fr); }
     .ws-playlist-sidebar {
         border-right: none;
         border-bottom: 1px solid var(--border);
