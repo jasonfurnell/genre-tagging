@@ -5695,6 +5695,136 @@ tr.ws-seed-selected {
     outline-offset: -2px;
 }
 
+/* ── Desktop responsive drawer model ──────────────────────────────
+   base-drawer is the now-playing host on every viewport. It has two
+   variants:
+     · FULL  — rich 5-tab panel, shown on playback tabs (Workshop/Dance).
+               Bottom slide-up on mobile; right-side dock on desktop.
+     · MINI  — slim bottom strip with basic play controls, shown on every
+               other tab so the page isn't covered. Body gets
+               `drawer-mini-mode` class; drawer gets `.mini` class.
+   set-drawer remains for transient actions (browse/search/detail/init)
+   as a non-pushing overlay. */
+@media (min-width: 769px) {
+    /* set-drawer overlays content; don't reserve workshop width for it */
+    .tab-content.drawer-open,
+    #tab-setbuilder.drawer-open {
+        padding-right: 0;
+    }
+
+    /* base-drawer FULL mode: right-side dock instead of bottom slide-up */
+    .base-drawer:not(.mini) {
+        top: 0;
+        left: auto;
+        right: -420px;
+        bottom: auto;
+        width: 400px;
+        height: 100vh;
+        transition: right 0.3s ease;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.4);
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .base-drawer:not(.mini).open {
+        right: 0;
+        bottom: auto;
+    }
+    /* Push tab content left to make room for the docked drawer (FULL mode) */
+    body:not(.drawer-mini-mode) .tab-content.base-drawer-open,
+    body:not(.drawer-mini-mode) #tab-setbuilder.base-drawer-open {
+        padding-right: 400px;
+        padding-bottom: 0;
+    }
+    body:not(.drawer-mini-mode) .tab-content.base-drawer-expanded,
+    body:not(.drawer-mini-mode) #tab-setbuilder.base-drawer-expanded {
+        padding-bottom: 0;
+    }
+    body:not(.drawer-mini-mode) #tab-chat.base-drawer-open .chat-layout {
+        margin-right: 400px;
+        height: auto;
+    }
+    /* The horizontal compact bar belongs to mobile only when in FULL mode */
+    .base-drawer:not(.mini) .base-drawer-panels {
+        display: none;
+    }
+
+    /* MINI mode: bottom strip across full width (overrides right-dock).
+       Height is tuned to fit the center column's natural stack
+       (play controls 42px + progress 25px + mode toggle 30px + counter
+       ~14px + gaps ≈ 130px). Clipped just in case. */
+    .base-drawer.mini {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: -160px;
+        width: 100%;
+        height: 130px;
+        max-height: 130px;
+        transition: bottom 0.3s ease;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        overflow: hidden;
+    }
+    .base-drawer.mini.open {
+        bottom: 0;
+    }
+    body.drawer-mini-mode .tab-content.base-drawer-open {
+        padding-right: 0;
+        padding-bottom: 130px;
+    }
+    body.drawer-mini-mode #tab-chat.base-drawer-open .chat-layout {
+        margin-right: 0;
+        height: auto;
+    }
+
+    /* set-drawer is the transient action drawer (search/browse/detail/init).
+       Both drawers dock to the right; match its width to base-drawer and
+       bump z-index so its overlay fully covers the now-playing panel
+       while in use. */
+    .set-drawer {
+        z-index: 220;
+        width: 400px;
+    }
+}
+
+/* ── Mini drawer mode (both viewports) ───────────────────────────
+   In mini mode the rich content (5 tabs, init view, detail view) is
+   hidden and the compact 3-panel bar is shown instead. The bar gives
+   artwork, title, and basic play controls only. */
+.base-drawer.mini #context-tabs,
+.base-drawer.mini #base-drawer-init,
+.base-drawer.mini #base-drawer-detail {
+    display: none;
+}
+.base-drawer.mini .base-drawer-panels {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    align-items: center;
+    gap: 1rem;
+}
+/* Show play controls in mini bar (they're hidden by default) */
+.base-drawer.mini .base-np-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Mobile mini: bottom strip across the page */
+@media (max-width: 768px) {
+    .base-drawer.mini {
+        max-height: 90px;
+        padding: 0.5rem 0.75rem;
+    }
+    body.drawer-mini-mode .tab-content.base-drawer-open {
+        padding-bottom: 90px;
+    }
+}
+
 /* ── md: 768px — large phone / small tablet ───────────────────── */
 @media (max-width: 768px) {
     :root {
@@ -5714,7 +5844,9 @@ tr.ws-seed-selected {
     .mode-toggle-track { min-width: 160px; }
 
     /* Playlists tab (migrated from inline @media) */
-    .ws-playlists-layout { grid-template-columns: 1fr; }
+    /* minmax(0, 1fr) prevents min-content overflow when a long playlist
+       name would otherwise push the column wider than the viewport. */
+    .ws-playlists-layout { grid-template-columns: minmax(0, 1fr); }
     .ws-playlist-sidebar {
         border-right: none;
         border-bottom: 1px solid var(--border);

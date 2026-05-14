@@ -923,6 +923,23 @@ function switchTab(target) {
     const previousTab = _activeTab;
     _activeTab = target;
 
+    // Now-playing drawer: full content only on Workshop (where rich
+    // track context informs DJ decisions). Every other tab gets a slim
+    // control strip so the page underneath stays usable — including
+    // Dance, where the robot visualization is the focus.
+    const isPlaybackTab = target === "setbuilder";
+    document.body.classList.toggle("drawer-mini-mode", !isPlaybackTab);
+    const baseDrawerEl = document.getElementById("base-drawer");
+    if (baseDrawerEl) {
+        baseDrawerEl.classList.toggle("mini", !isPlaybackTab);
+        // Strip mobile-expanded state when switching to mini — the rich
+        // expanded layout is meaningless in the slim control strip.
+        if (!isPlaybackTab) {
+            baseDrawerEl.classList.remove("expanded");
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("base-drawer-expanded"));
+        }
+    }
+
     // Determine which mode this tab belongs to
     const mode = target === "dance" ? "dance" : target === "setbuilder" ? "dj" : _currentMode;
     if (mode !== _currentMode) {

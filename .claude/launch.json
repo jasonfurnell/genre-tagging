@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flask",
+      "runtimeExecutable": "/Users/jason.furnell/Sources/Jason_Learning/GenreTagging/.venv/bin/python",
+      "runtimeArgs": ["app/main_flask.py"],
+      "port": 5001
+    }
+  ]
+}
