@@ -5695,6 +5695,32 @@ tr.ws-seed-selected {
     outline-offset: -2px;
 }
 
+/* ── Desktop guard: hide mobile-only drawer chrome ────────────────
+   `.set-drawer` (Now Playing right panel) is force-opened on load and
+   `.base-drawer` (bottom INFO/SCENE/NEXT/CREATE/STAR card) is anchored
+   `bottom: -400px` but its height bleeds 138px into the viewport. Both
+   were intended for mobile only. Hide on desktop and undo the
+   layout-padding side effects so tabs use the full viewport. */
+@media (min-width: 769px) {
+    .set-drawer,
+    .base-drawer {
+        display: none;
+    }
+
+    .tab-content.drawer-open,
+    #tab-setbuilder.drawer-open {
+        padding-right: 0;
+    }
+    .tab-content.base-drawer-open,
+    .tab-content.base-drawer-expanded,
+    #tab-setbuilder.base-drawer-open {
+        padding-bottom: 0;
+    }
+    #tab-chat.base-drawer-open .chat-layout {
+        height: auto;
+    }
+}
+
 /* ── md: 768px — large phone / small tablet ───────────────────── */
 @media (max-width: 768px) {
     :root {
