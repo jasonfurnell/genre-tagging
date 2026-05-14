@@ -923,6 +923,13 @@ function switchTab(target) {
     const previousTab = _activeTab;
     _activeTab = target;
 
+    // Now-playing drawer: full content on playback tabs (Workshop / Dance),
+    // mini control strip on every other tab so the page isn't covered.
+    const isPlaybackTab = target === "setbuilder" || target === "dance";
+    document.body.classList.toggle("drawer-mini-mode", !isPlaybackTab);
+    const baseDrawerEl = document.getElementById("base-drawer");
+    if (baseDrawerEl) baseDrawerEl.classList.toggle("mini", !isPlaybackTab);
+
     // Determine which mode this tab belongs to
     const mode = target === "dance" ? "dance" : target === "setbuilder" ? "dj" : _currentMode;
     if (mode !== _currentMode) {
