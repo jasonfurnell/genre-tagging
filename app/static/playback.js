@@ -472,25 +472,17 @@ function _clearPlayOverlayLoading() {
 // Central dispatch: play slot respecting current mode
 function playSlot(idx) {
     _isAdvancing = false;  // user-initiated play — reset auto-advance guard
-    // Choose drawer: mobile always uses base drawer, desktop uses tab-based logic
-    const isDanceTab = !document.getElementById("tab-dance")?.classList.contains("hidden");
-    const useBaseDrawer = isDanceTab || _isMobileView();
-    if (useBaseDrawer) {
-        if (!baseDrawerOpen) {
-            baseDrawerOpen = true;
-            const drawer = document.getElementById("base-drawer");
-            document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
-            drawer.classList.add("open");
-            // Default to expanded detail view on mobile
-            if (_isMobileView()) {
-                drawer.classList.add("expanded");
-                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
-            }
-        }
-    } else {
-        // Desktop DJ mode: use side drawer
-        if (!setDrawerOpen || setDrawerMode !== "now-playing") {
-            openDrawer("now-playing", null);
+    // base-drawer is now the responsive now-playing host on every viewport
+    // (bottom on mobile, right-side dock on desktop).
+    if (!baseDrawerOpen) {
+        baseDrawerOpen = true;
+        const drawer = document.getElementById("base-drawer");
+        document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-open"));
+        drawer.classList.add("open");
+        // Default to expanded detail view on mobile
+        if (_isMobileView()) {
+            drawer.classList.add("expanded");
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.add("base-drawer-expanded"));
         }
     }
     if (isPlaySetMode()) {

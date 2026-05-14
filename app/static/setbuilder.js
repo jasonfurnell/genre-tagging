@@ -1880,6 +1880,14 @@ function onSlotDrop(e, targetSlotId) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function openDrawer(mode, targetSlotId) {
+    // Now-playing is owned by the responsive base-drawer (bottom on mobile,
+    // right-side on desktop). Route any caller that still asks for the
+    // side drawer's now-playing mode through transitionToBaseDrawer.
+    if (mode === "now-playing") {
+        transitionToBaseDrawer();
+        return;
+    }
+
     setDrawerMode = mode;
     setDrawerTargetSlotId = targetSlotId;
     setDrawerOpen = true;

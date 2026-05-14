@@ -5695,40 +5695,63 @@ tr.ws-seed-selected {
     outline-offset: -2px;
 }
 
-/* ── Desktop guard: hide mobile-only drawer chrome ────────────────
-   On mobile the set-drawer is forced open in "now-playing" mode and the
-   base-drawer (bottom INFO/SCENE/NEXT/CREATE/STAR card) pokes 138px into
-   the viewport. Both bleed onto desktop. Hide the now-playing variant
-   of the set-drawer and the base-drawer entirely; other set-drawer modes
-   (browse / search / detail / init, triggered from set tools) still
-   open as transient overlays. */
+/* ── Desktop responsive drawer model ──────────────────────────────
+   base-drawer is the now-playing host on every viewport. Mobile keeps
+   the bottom slide-up (defined in @media max-width: 768px below). On
+   desktop, dock it to the right side instead — 400px wide, full height,
+   pushes tab content via padding-right. set-drawer remains for transient
+   actions (browse / search / detail / init) as a non-pushing overlay. */
 @media (min-width: 769px) {
-    /* Hide set-drawer only when its active section is "now-playing".
-       openDrawer() removes .hidden from exactly one .set-drawer-section,
-       so this matches the always-on Now Playing state without breaking
-       Search Tracks / Browse / etc. (`#set-drawer-now-playing` is an
-       ID, not a class — don't write it as `.set-drawer-now-playing`). */
-    .set-drawer:has(#set-drawer-now-playing:not(.hidden)) {
-        display: none;
-    }
-
-    .base-drawer {
-        display: none;
-    }
-
-    /* Don't reserve workshop width for the now-playing drawer on desktop
-       (it's hidden). Other drawer modes overlay instead of push. */
+    /* set-drawer overlays content; don't reserve workshop width for it */
     .tab-content.drawer-open,
     #tab-setbuilder.drawer-open {
         padding-right: 0;
     }
+
+    /* base-drawer: right-side dock instead of bottom slide-up */
+    .base-drawer {
+        top: 0;
+        left: auto;
+        right: -420px;
+        bottom: auto;
+        width: 400px;
+        height: 100vh;
+        transition: right 0.3s ease;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.4);
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .base-drawer.open {
+        right: 0;
+        bottom: auto;
+    }
+    /* Push tab content left to make room for the docked drawer */
     .tab-content.base-drawer-open,
-    .tab-content.base-drawer-expanded,
     #tab-setbuilder.base-drawer-open {
+        padding-right: 400px;
+        padding-bottom: 0;
+    }
+    .tab-content.base-drawer-expanded,
+    #tab-setbuilder.base-drawer-expanded {
         padding-bottom: 0;
     }
     #tab-chat.base-drawer-open .chat-layout {
+        margin-right: 400px;
         height: auto;
+    }
+    /* The horizontal compact bar belongs to mobile only — keep hidden */
+    .base-drawer-panels {
+        display: none;
+    }
+
+    /* set-drawer is the transient action drawer (search/browse/detail/init).
+       Both drawers dock to the right; match its width to base-drawer and
+       bump z-index so its overlay fully covers the now-playing panel
+       while in use. */
+    .set-drawer {
+        z-index: 220;
+        width: 400px;
     }
 }
 
