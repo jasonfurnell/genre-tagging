@@ -5749,28 +5749,32 @@ tr.ws-seed-selected {
         display: none;
     }
 
-    /* MINI mode: bottom strip across full width (overrides right-dock) */
+    /* MINI mode: bottom strip across full width (overrides right-dock).
+       Height is tuned to fit the center column's natural stack
+       (play controls 42px + progress 25px + mode toggle 30px + counter
+       ~14px + gaps ≈ 130px). Clipped just in case. */
     .base-drawer.mini {
         top: auto;
         left: 0;
         right: 0;
-        bottom: -120px;
+        bottom: -160px;
         width: 100%;
-        height: auto;
-        max-height: 100px;
+        height: 130px;
+        max-height: 130px;
         transition: bottom 0.3s ease;
         box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 0.5rem 1rem;
+        overflow: hidden;
     }
     .base-drawer.mini.open {
         bottom: 0;
     }
     body.drawer-mini-mode .tab-content.base-drawer-open {
         padding-right: 0;
-        padding-bottom: 100px;
+        padding-bottom: 130px;
     }
     body.drawer-mini-mode #tab-chat.base-drawer-open .chat-layout {
         margin-right: 0;
