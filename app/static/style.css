@@ -5696,17 +5696,28 @@ tr.ws-seed-selected {
 }
 
 /* ── Desktop guard: hide mobile-only drawer chrome ────────────────
-   `.set-drawer` (Now Playing right panel) is force-opened on load and
-   `.base-drawer` (bottom INFO/SCENE/NEXT/CREATE/STAR card) is anchored
-   `bottom: -400px` but its height bleeds 138px into the viewport. Both
-   were intended for mobile only. Hide on desktop and undo the
-   layout-padding side effects so tabs use the full viewport. */
+   On mobile the set-drawer is forced open in "now-playing" mode and the
+   base-drawer (bottom INFO/SCENE/NEXT/CREATE/STAR card) pokes 138px into
+   the viewport. Both bleed onto desktop. Hide the now-playing variant
+   of the set-drawer and the base-drawer entirely; other set-drawer modes
+   (browse / search / detail / init, triggered from set tools) still
+   open as transient overlays. */
 @media (min-width: 769px) {
-    .set-drawer,
+    /* Hide set-drawer only when its active section is "now-playing".
+       openDrawer() removes .hidden from exactly one .set-drawer-section,
+       so this matches the always-on Now Playing state without breaking
+       Search Tracks / Browse / etc. (`#set-drawer-now-playing` is an
+       ID, not a class — don't write it as `.set-drawer-now-playing`). */
+    .set-drawer:has(#set-drawer-now-playing:not(.hidden)) {
+        display: none;
+    }
+
     .base-drawer {
         display: none;
     }
 
+    /* Don't reserve workshop width for the now-playing drawer on desktop
+       (it's hidden). Other drawer modes overlay instead of push. */
     .tab-content.drawer-open,
     #tab-setbuilder.drawer-open {
         padding-right: 0;
